@@ -5,11 +5,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export type ComfyWorkflowId = 'wan22_t2v_smoke' | 'ltx_smoke' | 'minimax_h3_i2v_smoke';
+export type ComfyWorkflowId =
+  | 'wan22_t2v_smoke'
+  | 'ltx_smoke'
+  | 'minimax_h3_i2v'
+  | 'minimax_h3_i2v_smoke';
 
 const WORKFLOW_FILES: Record<ComfyWorkflowId, string> = {
   wan22_t2v_smoke: 'wan22_t2v_smoke.json',
   ltx_smoke: 'ltx_smoke.json',
+  /** Official API Format I2V (production path). */
+  minimax_h3_i2v: 'minimax_h3_i2v.json',
+  /** DEPRECATED stub — wrong contracts; keep registered for regression only. */
   minimax_h3_i2v_smoke: 'minimax_h3_i2v_smoke.json',
 };
 
@@ -34,7 +41,11 @@ export function loadComfyWorkflow(
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error(`Invalid workflow JSON: ${full}`);
   }
-  return parsed;
+  // Strip aidrama _meta — Comfy /prompt only accepts nodeId keys.
+  const { _meta: _ignoredMeta, ...nodes } = parsed as Record<string, unknown> & {
+    _meta?: unknown;
+  };
+  return nodes;
 }
 
 /**

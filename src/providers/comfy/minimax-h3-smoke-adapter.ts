@@ -1,7 +1,8 @@
 /**
- * ShotSpec → MiniMax-H3 I2V smoke workflow (AutoDL remote via tunnel).
+ * ShotSpec → MiniMax-H3 I2V workflow (AutoDL remote via tunnel).
+ * Official API Format contract (Comfy-Org video_minimax_h3_i2v subgraph IDs).
+ * Stub minimax_h3_i2v_smoke is DEPRECATED — not the production path.
  * Adapter-only knobs — not stored on ShotSpec.
- * Node IDs are stub placeholders; replace graph with official I2V export when available.
  */
 import type { ShotSpec } from '@/schemas/shot-spec';
 import { loadComfyWorkflow, patchWorkflowInputs } from './workflow-loader';
@@ -81,7 +82,9 @@ export function assertMinimaxH3SubmitTier(tierId: string): MinimaxH3SmokeBuildRe
 }
 
 /**
- * Build ComfyJob for local.comfy.minimax_h3 I2V smoke.
+ * Build ComfyJob for local.comfy.minimax_h3 I2V (official API graph).
+ * Patches: 104.prompt/width/height/length, 6.unet_name, 13.clip_name,
+ * 11.vae_name (video), 24.vae_name (audio), 114.image when ref present.
  */
 export function buildMinimaxH3SmokeJob(input: MinimaxH3SmokeBuildInput): MinimaxH3SmokeBuildResult {
   const tierId = input.tierId ?? MINIMAX_H3_SMOKE_DEFAULTS.tierId;
@@ -107,18 +110,19 @@ export function buildMinimaxH3SmokeJob(input: MinimaxH3SmokeBuildInput): Minimax
       `durationSec=${input.shotSpec.durationSec}`,
     ].join(' | ');
 
-  const base = loadComfyWorkflow('minimax_h3_i2v_smoke');
+  const base = loadComfyWorkflow('minimax_h3_i2v');
   const patches: Array<{ nodeId: string; input: string; value: unknown }> = [
-    { nodeId: '10', input: 'text', value: promptText },
-    { nodeId: '20', input: 'width', value: MINIMAX_H3_SMOKE_DEFAULTS.width },
-    { nodeId: '20', input: 'height', value: MINIMAX_H3_SMOKE_DEFAULTS.height },
-    { nodeId: '20', input: 'num_frames', value: MINIMAX_H3_SMOKE_DEFAULTS.frames },
-    { nodeId: '30', input: 'unet_name', value: MINIMAX_H3_SMOKE_DEFAULTS.diffusionName },
-    { nodeId: '31', input: 'clip_name', value: MINIMAX_H3_SMOKE_DEFAULTS.textEncoderName },
-    { nodeId: '32', input: 'vae_name', value: MINIMAX_H3_SMOKE_DEFAULTS.videoVaeName },
+    { nodeId: '104', input: 'prompt', value: promptText },
+    { nodeId: '104', input: 'width', value: MINIMAX_H3_SMOKE_DEFAULTS.width },
+    { nodeId: '104', input: 'height', value: MINIMAX_H3_SMOKE_DEFAULTS.height },
+    { nodeId: '104', input: 'length', value: MINIMAX_H3_SMOKE_DEFAULTS.frames },
+    { nodeId: '6', input: 'unet_name', value: MINIMAX_H3_SMOKE_DEFAULTS.diffusionName },
+    { nodeId: '13', input: 'clip_name', value: MINIMAX_H3_SMOKE_DEFAULTS.textEncoderName },
+    { nodeId: '11', input: 'vae_name', value: MINIMAX_H3_SMOKE_DEFAULTS.videoVaeName },
+    { nodeId: '24', input: 'vae_name', value: MINIMAX_H3_SMOKE_DEFAULTS.audioVaeName },
   ];
   if (refName) {
-    patches.push({ nodeId: '40', input: 'image', value: refName });
+    patches.push({ nodeId: '114', input: 'image', value: refName });
   }
 
   const prompt = patchWorkflowInputs(base, patches);
