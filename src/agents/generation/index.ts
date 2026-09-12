@@ -63,3 +63,6 @@ export type {
   EnqueueH3TakeResult,
   EnqueueH3TakeValue,
 } from './enqueue-h3-take';
+
+export { assertRefDnaOrThrow, refDnaRefuse } from './assert-ref-dna';
+export type { RefDnaRefuseCode } from './assert-ref-dna';
