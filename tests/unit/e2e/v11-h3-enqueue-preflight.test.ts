@@ -17,6 +17,8 @@ import {
   enqueueH3Take,
   H3_GENERATOR_KEY,
 } from '@/agents/generation/enqueue-h3-take';
+import { assertRefDnaOrThrow } from '@/agents/generation/assert-ref-dna';
+import type { RefDnaGateInput } from '@/schemas/ref-binding';
 import type { ComfyJob, ComfyRenderPort } from '@/providers/comfy';
 import type { ShotSpec } from '@/schemas/shot-spec';
 import type { SceneState } from '@/schemas/scene-state';
@@ -152,6 +154,26 @@ function createMockComfyPort(opts?: { readonly contentSha256?: string }): {
   return { port, state };
 }
 
+
+const shaRef = 'c'.repeat(64);
+
+function validRefDna(overrides: Partial<RefDnaGateInput> = {}): RefDnaGateInput {
+  return {
+    bindings: [
+      {
+        characterId: 'char-1',
+        appearanceRevisionId: 'app-1',
+        refContentSha256: shaRef,
+        appearanceContentSha256: shaRef,
+        operatorKind: 'hero_portrait',
+      },
+    ],
+    leadOnly: true,
+    visibleCharacterIds: ['char-1'],
+    ...overrides,
+  };
+}
+
 describe('v11-h3-enqueue-preflight (Wave11-A)', () => {
   let lockStore: MemoryHumanLockStore;
   let humanLockService: HumanLockService;
@@ -269,6 +291,7 @@ describe('v11-h3-enqueue-preflight (Wave11-A)', () => {
       {
         shotSpec: validShotSpec(),
         takeManifestId: 'tm-w11a-1',
+        refDna: validRefDna(),
         referenceImageName: 'hero_frame.png',
         useFixture: false,
         seed: 'w11a-seed-ok',
@@ -363,4 +386,162 @@ describe('v11-h3-enqueue-preflight (Wave11-A)', () => {
 
     expect(H3_GENERATOR_KEY).toBe('local.comfy.minimax_h3');
   });
+
+
+  it('W12B-01: missing DNA RefBinding → zero Comfy submit', async () => {
+    // Wave12-B · IR-20…22 fail-closed · ≠ G3
+    const mock = createMockComfyPort();
+    const red = await enqueueH3Take(
+      {
+        shotSpec: validShotSpec(),
+        takeManifestId: 'tm-w11a-1',
+        referenceImageName: 'hero_frame.png',
+        useFixture: false,
+        // refDna omitted
+        preflight: {
+          continuityLock: continuityLock(),
+          priorState: priorState(),
+          requiredLocks,
+          actor: agent,
+        },
+      },
+      {
+        store: takeStore,
+        humanLockService,
+        comfy: mock.port,
+        skipLiveReadyAssert: true,
+        now: () => NOW,
+      },
+    );
+    expect(red.ok).toBe(false);
+    if (red.ok) return;
+    expect(red.code).toBe('INVALID_INPUT');
+    expect(red.message).toMatch(/^COMFY_I2V_REF_NO_DNA:/);
+    expect(mock.state.submitCalls).toBe(0);
+  });
+
+  it('W12B-01b: visualBibleRevisionId smuggled as appearance → zero submit', async () => {
+    const mock = createMockComfyPort();
+    const red = await enqueueH3Take(
+      {
+        shotSpec: validShotSpec(),
+        takeManifestId: 'tm-w11a-1',
+        useFixture: false,
+        refDna: {
+          bindings: [
+            {
+              characterId: 'char-1',
+              appearanceRevisionId: 'app-1',
+              refContentSha256: shaRef,
+              appearanceContentSha256: shaRef,
+              operatorKind: 'hero_portrait',
+              // @ts-expect-error intentional RED field
+              visualBibleRevisionId: 'vb-should-not-pass',
+            } as any,
+          ],
+        },
+        preflight: {
+          continuityLock: continuityLock(),
+          priorState: priorState(),
+          requiredLocks,
+          actor: agent,
+        },
+      },
+      {
+        store: takeStore,
+        humanLockService,
+        comfy: mock.port,
+        skipLiveReadyAssert: true,
+        now: () => NOW,
+      },
+    );
+    expect(red.ok).toBe(false);
+    if (red.ok) return;
+    expect(String(red.message)).toMatch(/^COMFY_I2V_REF_NO_DNA:/);
+    expect(mock.state.submitCalls).toBe(0);
+  });
+
+  it('W12B-01c: sha mismatch without approvedTemporary → zero submit', async () => {
+    const mock = createMockComfyPort();
+    const red = await enqueueH3Take(
+      {
+        shotSpec: validShotSpec(),
+        takeManifestId: 'tm-w11a-1',
+        useFixture: false,
+        refDna: validRefDna({
+          bindings: [
+            {
+              characterId: 'char-1',
+              appearanceRevisionId: 'app-1',
+              refContentSha256: shaRef,
+              appearanceContentSha256: 'd'.repeat(64),
+              operatorKind: 'hero_portrait',
+            },
+          ],
+        }),
+        preflight: {
+          continuityLock: continuityLock(),
+          priorState: priorState(),
+          requiredLocks,
+          actor: agent,
+        },
+      },
+      {
+        store: takeStore,
+        humanLockService,
+        comfy: mock.port,
+        skipLiveReadyAssert: true,
+        now: () => NOW,
+      },
+    );
+    expect(red.ok).toBe(false);
+    if (red.ok) return;
+    expect(String(red.message)).toMatch(/^COMFY_I2V_REF_SHA_MISMATCH:/);
+    expect(mock.state.submitCalls).toBe(0);
+  });
+
+  it('W12B-02: full DNA bindings + mock Port → green (still ≠ G3)', async () => {
+    const mock = createMockComfyPort({ contentSha256: shaFake });
+    const ok = await enqueueH3Take(
+      {
+        shotSpec: validShotSpec(),
+        takeManifestId: 'tm-w11a-1',
+        referenceImageName: 'hero_frame.png',
+        useFixture: false,
+        seed: 'w12b-seed-ok',
+        createdAt: NOW,
+        refDna: validRefDna(),
+        preflight: {
+          continuityLock: continuityLock(),
+          priorState: priorState(),
+          requiredLocks,
+          actor: agent,
+        },
+      },
+      {
+        store: takeStore,
+        humanLockService,
+        comfy: mock.port,
+        skipLiveReadyAssert: true,
+        now: () => NOW,
+      },
+    );
+    expect(ok.ok).toBe(true);
+    if (!ok.ok) return;
+    expect(mock.state.submitCalls).toBe(1);
+    expect(ok.value.artifacts.length).toBeGreaterThanOrEqual(1);
+    // W12B-03: unlocking enqueue must not imply G3
+    expect(ok.value).not.toHaveProperty('g3Pass');
+    expect(ok.value).not.toHaveProperty('identityGatePass');
+  });
+
+  it('W12B-03: assertRefDnaOrThrow documents ≠ G3 boundary', () => {
+    // Pure unit: gate returns refuse codes; never a G3 claim object
+    const refuse = assertRefDnaOrThrow(undefined);
+    expect(refuse?.ok).toBe(false);
+    expect(String(refuse && 'message' in refuse ? refuse.message : '')).toMatch(
+      /COMFY_I2V_REF_NO_DNA/,
+    );
+  });
+
 });

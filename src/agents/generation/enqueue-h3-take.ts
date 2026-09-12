@@ -22,6 +22,8 @@ import {
   type RunLocalComfyTakesResult,
   type StartLocalComfyTakesInput,
 } from './run-local-comfy-takes';
+import { assertRefDnaOrThrow } from './assert-ref-dna';
+import type { RefDnaGateInput } from '@/schemas/ref-binding';
 
 /** Factory default for H3 I2V (W11A-08). */
 export const H3_GENERATOR_KEY = 'local.comfy.minimax_h3' as const;
@@ -51,6 +53,11 @@ export interface EnqueueH3TakeInput {
    * Default: H3_GENERATOR_KEY.
    */
   readonly generatorKey?: string;
+  /**
+   * Wave12-B · IR-20…22 RefBinding gate (required for factory unlock).
+   * Missing ⇒ COMFY_I2V_REF_NO_DNA · zero Comfy submit. Still ≠ G3.
+   */
+  readonly refDna?: RefDnaGateInput;
 }
 
 export interface EnqueueH3TakeDeps {
@@ -123,6 +130,10 @@ export async function enqueueH3Take(
       message: `GENERATE_PREFLIGHT_REJECTED:${preflightResult.code}`,
     };
   }
+
+  // W12B-01: IR-20…22 DNA/RefBinding fail-closed — zero Comfy submit (≠ G3)
+  const dnaRefuse = assertRefDnaOrThrow(input.refDna);
+  if (dnaRefuse) return dnaRefuse;
 
   const comfyInput: StartLocalComfyTakesInput = {
     shotSpec: input.shotSpec,
