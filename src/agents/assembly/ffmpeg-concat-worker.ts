@@ -11,7 +11,7 @@ import { z } from 'zod';
 
 export const CONCAT_EXIT = {
   OK: 0, USAGE: 2, SHOTS_INVALID: 30, CANVAS_MISMATCH: 31, DURATION_OUT_OF_RANGE: 32, TAKE_MISSING: 33,
-  FFMPEG_FAILED: 70, PROBE_FAILED: 71, INTERNAL: 60,
+  FFMPEG_FAILED: 70, PROBE_FAILED: 71, DTS_NON_MONOTONIC: 72, INTERNAL: 60,
 } as const;
 
 /** Average H3 single-shot length observed (ADR). */
@@ -32,6 +32,9 @@ export const MultiShotConcatRequestSchema = z.object({
     takeId: z.string().min(1).optional(),
   })).min(1),
   outPath: z.string().min(1),
+  /** V12: 'reencode' rebuilds timestamps (fixes DTS across mixed takes / season concat). */
+  encode: z.enum(['copy', 'reencode']).default('copy'),
+  verifyDts: z.boolean().optional(),
 });
 export type MultiShotConcatRequest = z.infer<typeof MultiShotConcatRequestSchema>;
 
@@ -42,7 +45,9 @@ export interface ConcatDeps {
   exists?: (path: string) => Promise<boolean>;
   sha256File?: (path: string) => Promise<string>;
   writeListFile?: (path: string, content: string) => Promise<void>;
+  checkDts?: (path: string) => Promise<DtsReport>;
 }
+export interface DtsReport { ok: boolean; packets: number; violations: { index: number; dts: number; prevDts: number }[] }
 
 export interface ConcatResult {
   ok: boolean;
@@ -52,6 +57,8 @@ export interface ConcatResult {
   totalSeconds?: number;
   output?: { path: string; contentSha256: string };
   ffmpegArgs?: string[];
+  encode?: 'copy' | 'reencode';
+  dts?: DtsReport;
   identity: { status: 'PENDING_REVIEW'; note: string };
   gates: { V11_G3: 'NOT_EVALUATED'; publish: 'FORBIDDEN' };
   error?: { code: string; message: string };
@@ -62,7 +69,10 @@ export function buildConcatList(paths: string[]): string {
   return paths.map((p) => `file '${resolve(p).replace(/'/g, "'\\''")}'`).join('\n') + '\n';
 }
 
-export function buildFfmpegArgs(listPath: string, outPath: string): string[] {
+export function buildFfmpegArgs(listPath: string, outPath: string, o: { encode?: 'copy' | 'reencode'; fps?: number } = {}): string[] {
+  if (o.encode === 'reencode') return ['-hide_banner', '-nostdin', '-y', '-fflags', '+genpts', '-f', 'concat', '-safe', '0', '-i', listPath,
+    '-vf', `fps=${o.fps ?? 24},setpts=N/FRAME_RATE/TB`, '-fps_mode', 'cfr', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
+    '-af', 'aresample=async=1:first_pts=0', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', outPath];
   return ['-hide_banner', '-nostdin', '-y', '-f', 'concat', '-safe', '0', '-i', listPath, '-c', 'copy', '-movflags', '+faststart', outPath];
 }
 
@@ -72,6 +82,17 @@ const run = (cmd: string, args: string[]) => new Promise<{ code: number; stdout:
   });
 });
 
+export function analyzeDts(values: number[]): DtsReport {
+  const violations: DtsReport['violations'] = [];
+  for (let i = 1; i < values.length; i++) if (!(values[i] > values[i - 1])) violations.push({ index: i, dts: values[i], prevDts: values[i - 1] });
+  return { ok: violations.length === 0, packets: values.length, violations };
+}
+/** Video-stream packet DTS must strictly increase. */
+export async function checkDtsMonotonic(path: string): Promise<DtsReport> {
+  const r = await run('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'packet=dts', '-of', 'csv=p=0', path]);
+  if (r.code !== 0) throw new Error(`ffprobe dts failed: ${r.stderr.trim()}`);
+  return analyzeDts(r.stdout.split('\n').map((l) => l.trim()).filter((l) => l && l !== 'N/A').map(Number));
+}
 export async function ffprobeInfo(path: string): Promise<ProbeInfo> {
   const r = await run('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height,r_frame_rate:format=duration', '-of', 'json', path]);
   if (r.code !== 0) throw new Error(`ffprobe failed: ${r.stderr.trim()}`);
@@ -84,6 +105,7 @@ export async function ffprobeInfo(path: string): Promise<ProbeInfo> {
 
 const defaults: Required<ConcatDeps> = {
   probe: ffprobeInfo,
+  checkDts: checkDtsMonotonic,
   runFfmpeg: async (args) => { const r = await run('ffmpeg', args); return { code: r.code, stderr: r.stderr }; },
   exists: async (p) => readFile(p).then(() => true, () => false),
   sha256File: async (p) => createHash('sha256').update(await readFile(p)).digest('hex'),
@@ -129,11 +151,16 @@ export async function runMultiShotConcat(raw: unknown, deps: ConcatDeps = {}): P
 
     const listPath = `${req.outPath}.concat.txt`;
     await d.writeListFile(listPath, buildConcatList(shots.map((s) => s.takePath)));
-    const args = buildFfmpegArgs(listPath, req.outPath);
+    const args = buildFfmpegArgs(listPath, req.outPath, { encode: req.encode, fps: req.canvas.fps });
     const r = await d.runFfmpeg(args);
     if (r.code !== 0) return fail(CONCAT_EXIT.FFMPEG_FAILED, 'FFMPEG_FAILED', r.stderr.trim().split('\n').slice(-3).join(' | '), { ...ctx, totalSeconds, ffmpegArgs: args });
     if (!(await d.exists(req.outPath))) return fail(CONCAT_EXIT.FFMPEG_FAILED, 'FFMPEG_FAILED', 'ffmpeg exit 0 but no output', { ...ctx, totalSeconds, ffmpegArgs: args });
-    return { ...base, ...ctx, ok: true, exitCode: CONCAT_EXIT.OK, totalSeconds, ffmpegArgs: args, output: { path: req.outPath, contentSha256: await d.sha256File(req.outPath) } };
+    let dts: DtsReport | undefined;
+    if (req.verifyDts ?? req.encode === 'reencode') {
+      dts = await d.checkDts(req.outPath);
+      if (!dts.ok) return fail(CONCAT_EXIT.DTS_NON_MONOTONIC, 'DTS_NON_MONOTONIC', `${dts.violations.length} non-increasing DTS packets (first at #${dts.violations[0]?.index})`, { ...ctx, totalSeconds, ffmpegArgs: args, encode: req.encode, dts });
+    }
+    return { ...base, ...ctx, ok: true, exitCode: CONCAT_EXIT.OK, totalSeconds, ffmpegArgs: args, encode: req.encode, ...(dts ? { dts } : {}), output: { path: req.outPath, contentSha256: await d.sha256File(req.outPath) } };
   } catch (e) {
     return fail(CONCAT_EXIT.INTERNAL, 'INTERNAL', (e as Error).message);
   }
