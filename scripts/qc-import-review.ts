@@ -1,3 +1,4 @@
+import { join } from 'node:path';
 /**
  * Import a human QC review file (exported from qc/index.html) into qc-record.json and regenerate the page.
  * npx tsx scripts/qc-import-review.ts --qc-dir <run>/qc --review qc-review-XXX.json [--list multishot-list.json]
@@ -13,7 +14,7 @@ const qcDir = arg('--qc-dir'), file = arg('--review');
 if (!qcDir || !file) { process.stderr.write('usage: qc-import-review --qc-dir DIR --review FILE\n'); process.exit(2); }
 let raw: unknown;
 try { raw = JSON.parse(readFileSync(file, 'utf8')); } catch (e) { process.stderr.write(`bad review file: ${(e as Error).message}\n`); process.exit(2); }
-importQcReview(qcDir, raw).then(async (r) => {
+importQcReview(qcDir, raw, { receiptDir: arg('--receipt-dir') ?? join(qcDir, 'receipts') }).then(async (r) => {
   let page, summary;
   if (r.ok) { page = await regenerateQcPage(qcDir, { listPath: arg('--list') }); summary = await summarizeQcReview(qcDir, { listPath: arg('--list') }); }
   process.stdout.write(JSON.stringify({ ...r, page, summary }, null, 2) + '\n');
