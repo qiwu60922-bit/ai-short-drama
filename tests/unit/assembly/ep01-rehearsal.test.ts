@@ -98,5 +98,10 @@ describe('ep01 rehearsal', () => {
     expect(existsSync(r.episodeMp4!)).toBe(true);
     expect(readFileSync(r.qcHtml!, 'utf8')).toContain('待复核 16/16');
     expect(r.notes.join(' ')).toMatch(/FAKE provider/);
+    expect(existsSync(r.detectors!.reportPath)).toBe(true);
+    const det = JSON.parse(readFileSync(r.detectors!.reportPath, 'utf8'));
+    expect(det.continuity.pairs.map((p: any) => `${p.from}→${p.to}`)).toEqual(['S09a→S09b', 'S09b→S09c']);
+    expect(['FAIL', 'INCOMPLETE']).toContain(r.detectors!.overall); expect(r.detectors!.incomplete).toContain('identity');
+    expect(JSON.stringify(det.summary)).not.toMatch(/"PASS"/);
   }, 120_000);
 });
