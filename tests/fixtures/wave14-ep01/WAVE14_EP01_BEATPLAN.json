@@ -1,0 +1,348 @@
+{
+  "schema": "v11/BeatPlan/ep01/v1",
+  "planId": "WAVE14_EP01_FEIYUE_NIGHT",
+  "title": "EP01《绯月之夜》",
+  "series": "夜契学院：绯红刻印",
+  "targetDurationSec": {
+    "min": 90,
+    "max": 96
+  },
+  "policy": {
+    "zeroPost": true,
+    "noLiveGenerateUntilBudgetGO": true,
+    "separateFromYeYuanQ90": true,
+    "neqG3": true,
+    "neqFinal": true
+  },
+  "functions": [
+    "介绍男主祁夜",
+    "介绍女主绯月璃",
+    "建立学院超自然世界",
+    "男主体内绯红刻印伏笔",
+    "结尾钩子：被迫进入夜战世界"
+  ],
+  "createdAt": "2026-09-17T08:06:00+08:00",
+  "author": "V11-Architect",
+  "beats": [
+    {
+      "beatId": "B01",
+      "t0": 0,
+      "t1": 6,
+      "dur": 6,
+      "purpose": "建立夜澜市+曜川学院夜景氛围",
+      "shots": [
+        "S01"
+      ],
+      "cast": [],
+      "loc": "ye-lan-city/academy-ext-night"
+    },
+    {
+      "beatId": "B02",
+      "t0": 6,
+      "t1": 12,
+      "dur": 6,
+      "purpose": "介绍祁夜·夜间走廊吐槽停电",
+      "shots": [
+        "S02"
+      ],
+      "cast": [
+        "qi-ye"
+      ],
+      "loc": "academy-corridor-night",
+      "state": "qi-ye:daily"
+    },
+    {
+      "beatId": "B03",
+      "t0": 12,
+      "t1": 18,
+      "dur": 6,
+      "purpose": "异变起势·灯闪风压黑影",
+      "shots": [
+        "S03"
+      ],
+      "cast": [
+        "qi-ye"
+      ],
+      "loc": "academy-corridor-night",
+      "state": "qi-ye:daily"
+    },
+    {
+      "beatId": "B04",
+      "t0": 18,
+      "t1": 24,
+      "dur": 6,
+      "purpose": "天台门自开·被吸引上行",
+      "shots": [
+        "S04"
+      ],
+      "cast": [
+        "qi-ye"
+      ],
+      "loc": "rooftop-door",
+      "state": "qi-ye:daily"
+    },
+    {
+      "beatId": "B05",
+      "t0": 24,
+      "t1": 32,
+      "dur": 8,
+      "purpose": "坠羽使徒现身·压迫感",
+      "shots": [
+        "S05"
+      ],
+      "cast": [
+        "zhui-yu-shitu"
+      ],
+      "loc": "academy-rooftop-night"
+    },
+    {
+      "beatId": "B06",
+      "t0": 32,
+      "t1": 40,
+      "dur": 8,
+      "purpose": "祁夜险被攻击·狼狈后退",
+      "shots": [
+        "S06"
+      ],
+      "cast": [
+        "qi-ye",
+        "zhui-yu-shitu"
+      ],
+      "loc": "academy-rooftop-night",
+      "state": "qi-ye:daily"
+    },
+    {
+      "beatId": "B07",
+      "t0": 40,
+      "t1": 48,
+      "dur": 8,
+      "purpose": "绯月璃空降挡击·名场面",
+      "shots": [
+        "S07"
+      ],
+      "cast": [
+        "fei-yue-li",
+        "zhui-yu-shitu"
+      ],
+      "loc": "academy-rooftop-night"
+    },
+    {
+      "beatId": "B08",
+      "t0": 48,
+      "t1": 56,
+      "dur": 8,
+      "purpose": "女主侧脸特写·退后",
+      "shots": [
+        "S08"
+      ],
+      "cast": [
+        "fei-yue-li",
+        "qi-ye"
+      ],
+      "loc": "academy-rooftop-night"
+    },
+    {
+      "beatId": "B09",
+      "t0": 56,
+      "t1": 66,
+      "dur": 10,
+      "purpose": "短战斗压制·不秒杀",
+      "shots": [
+        "S09a",
+        "S09b",
+        "S09c"
+      ],
+      "cast": [
+        "fei-yue-li",
+        "zhui-yu-shitu"
+      ],
+      "loc": "academy-rooftop-night"
+    },
+    {
+      "beatId": "B10",
+      "t0": 66,
+      "t1": 74,
+      "dur": 8,
+      "purpose": "使徒暴走余波击中祁夜",
+      "shots": [
+        "S10"
+      ],
+      "cast": [
+        "zhui-yu-shitu",
+        "qi-ye",
+        "fei-yue-li"
+      ],
+      "loc": "academy-rooftop-night"
+    },
+    {
+      "beatId": "B11",
+      "t0": 74,
+      "t1": 82,
+      "dur": 8,
+      "purpose": "绯红刻印亮起吞噬能量",
+      "shots": [
+        "S11"
+      ],
+      "cast": [
+        "qi-ye"
+      ],
+      "loc": "academy-rooftop-night",
+      "state": "qi-ye:imprint-awaken"
+    },
+    {
+      "beatId": "B12",
+      "t0": 82,
+      "t1": 88,
+      "dur": 6,
+      "purpose": "绯月璃震惊确认非普通人",
+      "shots": [
+        "S12"
+      ],
+      "cast": [
+        "fei-yue-li"
+      ],
+      "loc": "academy-rooftop-night"
+    },
+    {
+      "beatId": "B13",
+      "t0": 88,
+      "t1": 93,
+      "dur": 5,
+      "purpose": "邀请钩子·你归我带",
+      "shots": [
+        "S13"
+      ],
+      "cast": [
+        "fei-yue-li",
+        "qi-ye"
+      ],
+      "loc": "academy-rooftop-night"
+    },
+    {
+      "beatId": "B14",
+      "t0": 93,
+      "t1": 96,
+      "dur": 3,
+      "purpose": "黑场标题钩子",
+      "shots": [
+        "S14"
+      ],
+      "cast": [],
+      "loc": "black"
+    }
+  ],
+  "refIndex": "pack/REF_INDEX.json",
+  "shotSpec": "shots/SHOT_SPEC.json",
+  "costSheet": "pack/COST_ESTIMATE_5S.md",
+  "ossL1": {
+    "source": "wave14/ep01/WAVE14_OSS_DUAL_LEAD_OPENING_L1.md",
+    "arc": [
+      "cold",
+      "escalate",
+      "turn",
+      "absorb",
+      "cliff"
+    ],
+    "arcMap": {
+      "cold": [
+        "B01",
+        "B02",
+        "B03",
+        "B04"
+      ],
+      "escalate": [
+        "B05",
+        "B06"
+      ],
+      "turn": [
+        "B07",
+        "B08",
+        "B09"
+      ],
+      "absorb": [
+        "B10",
+        "B11",
+        "B12"
+      ],
+      "cliff": [
+        "B13",
+        "B14"
+      ]
+    },
+    "dualLeadBeats": [
+      "B07",
+      "B08",
+      "B09"
+    ],
+    "dualLeadRule": "per-beat Character A/B split actions; forbid collective they",
+    "b01Hooks": {
+      "visual_hook": "月色下曜川学院结界微光",
+      "narrative_hook": "夜澜市的夜，从来不只是夜。",
+      "audio_hook": "低频风压/远处异响"
+    },
+    "yeYuanSeparateTrack": false,
+    "zeroPost": true,
+    "yeYuanStatus": "DELETED"
+  },
+  "yeYuan": {
+    "status": "DELETED",
+    "productionSoT": "ye-qi-ep01"
+  },
+  "fullScriptCoverage": {
+    "gateDoc": "pack/WAVE14_EP01_FULL_SCRIPT_COVERAGE_ACCEPTANCE.md",
+    "requiredBeats": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B12",
+      "B13",
+      "B14"
+    ],
+    "requiredShots": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09a",
+      "S09b",
+      "S09c",
+      "S10",
+      "S11",
+      "S12",
+      "S13",
+      "S14"
+    ],
+    "forbidCutScenes": true,
+    "forbidRepresentativeClipSubstitute": true,
+    "targetDurationSec": [
+      90,
+      96
+    ],
+    "zeroPostUntilBudgetGO": true
+  },
+  "costEstimate": {
+    "bandRmb": [
+      8.1,
+      9.0
+    ],
+    "rate": 0.09,
+    "finishedSec": [
+      90,
+      96
+    ],
+    "forbidUnexplainedBillableDouble": true,
+    "doc": "pack/COST_ESTIMATE_5S.md"
+  }
+}
