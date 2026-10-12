@@ -1,0 +1,235 @@
+{
+  "schema": "v11/ShotSpec/ep01/v1",
+  "episode": "EP01",
+  "shots": [
+    {
+      "shotId": "S01",
+      "beatId": "B01",
+      "durSec": 6,
+      "framesHint": "5s-cut→2 chunks if gen",
+      "camera": "WS establish",
+      "action": "夜澜市+学院月色结界",
+      "cast": [],
+      "refs": [],
+      "dialogue": null,
+      "vo": "夜澜市的夜，从来不只是夜。"
+    },
+    {
+      "shotId": "S02",
+      "beatId": "B02",
+      "durSec": 6,
+      "camera": "MS",
+      "action": "祁夜走廊拿手电/手机边走边吐槽",
+      "cast": [
+        "qi-ye"
+      ],
+      "state": "daily",
+      "refs": [],
+      "dialogue": "这破学校……停电就停电，怎么连信号都没了？",
+      "gapResolved": "qi-ye HUMAN_LOCK sheet"
+    },
+    {
+      "shotId": "S03",
+      "beatId": "B03",
+      "durSec": 6,
+      "camera": "CU atmosphere",
+      "action": "灯闪·风压·黑影延伸·停步皱眉",
+      "cast": [
+        "qi-ye"
+      ],
+      "state": "daily",
+      "refs": [],
+      "gapResolved": "qi-ye HUMAN_LOCK sheet"
+    },
+    {
+      "shotId": "S04",
+      "beatId": "B04",
+      "durSec": 6,
+      "camera": "follow MCU",
+      "action": "天台门咔哒自开",
+      "cast": [
+        "qi-ye"
+      ],
+      "state": "daily",
+      "refs": [],
+      "dialogue": "谁在上面？",
+      "gapResolved": "qi-ye HUMAN_LOCK sheet"
+    },
+    {
+      "shotId": "S05",
+      "beatId": "B05",
+      "durSec": 8,
+      "camera": "MS→CU",
+      "action": "背月光转身·黑羽散落·猩红眼",
+      "cast": [
+        "zhui-yu-shitu"
+      ],
+      "refs": [
+        "_inbox/black-feather-male"
+      ],
+      "labelPending": false,
+      "primaryRef": "refs/zhui-yu-shitu/rooftop_gothic.png"
+    },
+    {
+      "shotId": "S06",
+      "beatId": "B06",
+      "durSec": 8,
+      "camera": "MCU",
+      "action": "突袭·祁夜狼狈后退",
+      "cast": [
+        "qi-ye",
+        "zhui-yu-shitu"
+      ],
+      "state": "qi-ye:daily",
+      "refs": [],
+      "dialogue": "靠……这什么鬼东西？！",
+      "gapResolved": "qi-ye HUMAN_LOCK sheet"
+    },
+    {
+      "shotId": "S07",
+      "beatId": "B07",
+      "durSec": 8,
+      "camera": "action MS",
+      "action": "绯红枪影空切挡击·落地半蹲",
+      "cast": [
+        "fei-yue-li"
+      ],
+      "refs": [
+        "fei-yue-li/portrait_hero.png"
+      ]
+    },
+    {
+      "shotId": "S08",
+      "beatId": "B08",
+      "durSec": 8,
+      "camera": "female CU profile",
+      "action": "站起枪尖指向敌人",
+      "cast": [
+        "fei-yue-li",
+        "qi-ye"
+      ],
+      "refs": [
+        "fei-yue-li/portrait_hero.png"
+      ],
+      "dialogue": [
+        "退后。",
+        "……你是谁？"
+      ]
+    },
+    {
+      "shotId": "S09a",
+      "beatId": "B09",
+      "durSec": 4,
+      "camera": "action",
+      "action": "枪势破空",
+      "cast": [
+        "fei-yue-li",
+        "zhui-yu-shitu"
+      ],
+      "refs": [
+        "fei-yue-li/portrait_hero.png"
+      ]
+    },
+    {
+      "shotId": "S09b",
+      "beatId": "B09",
+      "durSec": 3,
+      "camera": "action",
+      "action": "红色术纹展开",
+      "cast": [
+        "fei-yue-li"
+      ],
+      "refs": [
+        "fei-yue-li/portrait_hero.png"
+      ]
+    },
+    {
+      "shotId": "S09c",
+      "beatId": "B09",
+      "durSec": 3,
+      "camera": "action",
+      "action": "使徒被压制未死",
+      "cast": [
+        "zhui-yu-shitu",
+        "fei-yue-li"
+      ],
+      "refs": [
+        "_inbox/black-feather-male"
+      ]
+    },
+    {
+      "shotId": "S10",
+      "beatId": "B10",
+      "durSec": 8,
+      "camera": "MS chaos",
+      "action": "黑红能量失控扩散",
+      "cast": [
+        "zhui-yu-shitu",
+        "qi-ye",
+        "fei-yue-li"
+      ],
+      "dialogue": "别碰那东西——！"
+    },
+    {
+      "shotId": "S11",
+      "beatId": "B11",
+      "durSec": 8,
+      "camera": "chest CU",
+      "action": "绯红刻印亮起吞噬能量",
+      "cast": [
+        "qi-ye"
+      ],
+      "state": "imprint-awaken",
+      "refs": [
+        "_inbox/black-feather-male"
+      ],
+      "dialogue": "这……是什么……",
+      "labelPending": false,
+      "note": "若人钉黑羽男=觉醒态，可作 S11 ref；日常态仍缺",
+      "primaryRef": "refs/zhui-yu-shitu/rooftop_gothic.png"
+    },
+    {
+      "shotId": "S12",
+      "beatId": "B12",
+      "durSec": 6,
+      "camera": "fei CU",
+      "action": "明显惊讶",
+      "cast": [
+        "fei-yue-li"
+      ],
+      "refs": [
+        "fei-yue-li/portrait_hero.png"
+      ],
+      "dialogue": "绯红刻印……怎么会在你身上？"
+    },
+    {
+      "shotId": "S13",
+      "beatId": "B13",
+      "durSec": 5,
+      "camera": "two-shot MCU",
+      "action": "逼近月光停住",
+      "cast": [
+        "fei-yue-li",
+        "qi-ye"
+      ],
+      "refs": [
+        "fei-yue-li/portrait_hero.png"
+      ],
+      "dialogue": [
+        "祁夜，从今晚起——",
+        "你归我带。"
+      ]
+    },
+    {
+      "shotId": "S14",
+      "beatId": "B14",
+      "durSec": 3,
+      "camera": "black/logo",
+      "action": "黑场标题",
+      "cast": [],
+      "title": "《夜契学院：绯红刻印》",
+      "hook": "普通人的夜晚，到此结束。"
+    }
+  ],
+  "createdAt": "2026-09-17T08:06:00+08:00"
+}

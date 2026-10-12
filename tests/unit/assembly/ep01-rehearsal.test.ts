@@ -84,17 +84,17 @@ describe('ep01 rehearsal', () => {
     expect(r.exitCode).toBe(24);
     expect(r.problems?.some((p) => p.shotId === 'S07')).toBe(true);
   });
-  it('default policy unchanged: no BeatPlan and no --duration-range → 96s rejected', async () => {
-    const r = await runEp01Rehearsal({ shotSpec: SPEC, refIndex: REF, workDir: tmp(), allowCandidatesForDryRun: true, sceneRefPath: sceneFile() });
+  it('default policy unchanged: v1 96s spec without --duration-range → rejected', async () => {
+    const r = await runEp01Rehearsal({ shotSpec: fx('SHOT_SPEC.v1-96s.json'), refIndex: REF, workDir: tmp(), allowCandidatesForDryRun: true, sceneRefPath: sceneFile() });
     expect(r.exitCode).toBe(24);
     expect(r.problems?.[0].code).toBe('DURATION_OUT_OF_RANGE');
   });
-  it.skipIf(!hasFfmpeg)('full rehearsal (small canvas, 90–96): mp4 + 16 QC triptychs + page', async () => {
+  it.skipIf(!hasFfmpeg)('full rehearsal v2 (small canvas, default 60–90, no override): mp4 + 16 QC triptychs + page', async () => {
     const w = tmp();
     const r = await runEp01Rehearsal({ shotSpec: SPEC, beatPlan: BEAT, refIndex: REF, workDir: w, allowCandidatesForDryRun: true,
-      durationRange: { minSeconds: 90, maxSeconds: 96 }, canvas: { width: 160, height: 96, fps: 24 } });
+      canvas: { width: 160, height: 96, fps: 24 } });
     expect(r.exitCode).toBe(0);
-    expect(r.run?.concat?.totalSeconds).toBeCloseTo(96, 0);
+    expect(r.run?.concat?.totalSeconds).toBeCloseTo(90, 0);
     expect(existsSync(r.episodeMp4!)).toBe(true);
     expect(readFileSync(r.qcHtml!, 'utf8')).toContain('待复核 16/16');
     expect(r.notes.join(' ')).toMatch(/FAKE provider/);
