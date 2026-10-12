@@ -32,6 +32,7 @@ export const OneClickShotRequestSchema = z.object({
     refContentSha256: sha,
     appearanceContentSha256: sha.optional(),
     operatorKind: z.enum(['hero_portrait', 'dna_locked_export']).default('dna_locked_export'),
+    approvedTemporary: z.object({ actor: z.string().min(1), reason: z.string().min(1) }).optional(),
     firstFramePath: z.string().min(1),
   }).optional(),
   render: z.object({
@@ -153,6 +154,7 @@ export async function runOneClickShot(raw: unknown, deps: OneClickDeps = {}): Pr
           refContentSha256: req.ref.refContentSha256,
           ...(req.ref.appearanceContentSha256 ? { appearanceContentSha256: req.ref.appearanceContentSha256 } : {}),
           operatorKind: req.ref.operatorKind,
+          ...(req.ref.approvedTemporary ? { approvedTemporary: req.ref.approvedTemporary } : {}),
         }],
       } : null);
       if (refused && !refused.ok) {

@@ -8,7 +8,7 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { OneClickLivePort } from '@/agents/generation/oneclick-shot';
 
-export interface FakeH3Options { outDir: string; seconds?: number; failShotSpecIds?: Set<string>; }
+export interface FakeH3Options { outDir: string; seconds?: number; secondsByShotSpecId?: Record<string, number>; failShotSpecIds?: Set<string>; preset?: string; }
 
 export function createFakeH3Provider(opts: FakeH3Options): OneClickLivePort & { calls: string[] } {
   const calls: string[] = [];
@@ -23,7 +23,7 @@ export function createFakeH3Provider(opts: FakeH3Options): OneClickLivePort & { 
       await mkdir(opts.outDir, { recursive: true });
       const path = join(opts.outDir, `FAKE_H3_${id}.mp4`);
       await new Promise<void>((res, rej) => execFile('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i',
-        `testsrc=size=${canvas.width}x${canvas.height}:rate=24:duration=${opts.seconds ?? 5.2}`, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', path],
+        `testsrc=size=${canvas.width}x${canvas.height}:rate=24:duration=${opts.secondsByShotSpecId?.[id] ?? opts.seconds ?? 5.2}`, '-c:v', 'libx264', '-preset', opts.preset ?? 'medium', '-pix_fmt', 'yuv420p', path],
         (err) => (err ? rej(err) : res())));
       const contentSha256 = createHash('sha256').update(await readFile(path)).digest('hex');
       return { status: 'SUCCEEDED', promptId: `fake-${id}`, artifact: { filename: `FAKE_H3_${id}.mp4`, contentSha256, path } };

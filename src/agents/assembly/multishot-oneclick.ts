@@ -21,6 +21,7 @@ const RefSchema = z.object({
   refContentSha256: sha,
   appearanceContentSha256: sha.optional(),
   operatorKind: z.enum(['hero_portrait', 'dna_locked_export']).optional(),
+  approvedTemporary: z.object({ actor: z.string().min(1), reason: z.string().min(1) }).optional(),
   firstFramePath: z.string().min(1),
 });
 

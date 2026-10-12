@@ -1,0 +1,152 @@
+{
+  "lockStatus": "HUMAN_CONFIRMED_PARTIAL",
+  "confirmedAt": "2026-09-17T08:10+08:00",
+  "source": "User「七夜」+ Director · sheet = 祁夜 HumanLock",
+  "fei-yue-li": {
+    "status": "LOCK_CANDIDATE",
+    "displayName": "绯月璃",
+    "files": [
+      {
+        "path": "/workspace/v11/wave14/ep01/refs/fei-yue-li/portrait_hero.png",
+        "role": "portrait_hero",
+        "sha256": "eb484a4a24132072eebb67800689f5a2eb37445447ab5fbdd6e508cc8a610dca",
+        "bytes": 2306025
+      }
+    ],
+    "humanLockBlockers": [
+      "full-body+spear still recommended"
+    ],
+    "continuityAlign": {
+      "matrix": "wave14/ep01/continuity/WAVE14_EP01_IDENTITY_GATE_MATRIX.md",
+      "dna": "character-pack/ye-qi-ep01/fei-yue-li/CharacterDNA.md",
+      "architectAck": "2026-09-17 · agree hold HUMAN_LOCK until full+weapon refs",
+      "yeYuanSeparateTrack": true
+    },
+    "dryRun": "ALLOW_PORTRAIT",
+    "dryRunPolicy": "portrait_ok_for_dryrun_and_live_soft",
+    "softGap": "全身+持枪为建议补，不再挡 live"
+  },
+  "qi-ye": {
+    "status": "HUMAN_LOCK",
+    "displayName": "祁夜（七夜）",
+    "states": [
+      "daily_school",
+      "awakened_imprint"
+    ],
+    "humanLockSheet": "/workspace/v11/character-pack/ye-qi-ep01/qi-ye/SHEET_FULL_DAILY_AWAKENED.png",
+    "packCopy": "/workspace/v11/wave14/ep01/refs/qi-ye/SHEET_FULL_DAILY_AWAKENED.png",
+    "files": [
+      {
+        "path": "/workspace/v11/character-pack/ye-qi-ep01/qi-ye/SHEET_FULL_DAILY_AWAKENED.png",
+        "role": "SHEET_FULL_DAILY_AWAKENED",
+        "sha256": "a64cdd8b1f039545d7a2796cf3438a10ac7f3ea4601b99cf26d418cd67fd8ab1",
+        "bytes": 2304231
+      },
+      {
+        "path": "/workspace/v11/wave14/ep01/refs/qi-ye/SHEET_FULL_DAILY_AWAKENED.png",
+        "role": "SHEET_FULL_DAILY_AWAKENED_pack_copy",
+        "sha256": "a64cdd8b1f039545d7a2796cf3438a10ac7f3ea4601b99cf26d418cd67fd8ab1",
+        "bytes": 2304231
+      }
+    ],
+    "unblocksShots": [
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S11"
+    ]
+  },
+  "zhui-yu-shitu": {
+    "status": "HUMAN_LOCK",
+    "displayName": "坠羽使徒",
+    "note": "Director 人令：黑羽图升 LOCK；主图钉 rooftop_gothic（与 ShotQueue dry-run 对齐）",
+    "files": [
+      {
+        "path": "/workspace/v11/wave14/ep01/refs/zhui-yu-shitu/bloodmoon_grasp.png",
+        "role": "bloodmoon_grasp",
+        "sha256": "a83bd0600b4310847d140155adf79cfaa0b7d0bea3dc3d85898ce68c218eff70",
+        "bytes": 2651638
+      },
+      {
+        "path": "/workspace/v11/wave14/ep01/refs/zhui-yu-shitu/ex_qi_label_turnaround_sheet.png",
+        "role": "ex_qi_label_turnaround_sheet",
+        "sha256": "8bc5dc7e41e135d9056c0c65c3b2db69862de2d29cbef173e4e9b6592fae7a74",
+        "bytes": 2600345
+      },
+      {
+        "path": "/workspace/v11/wave14/ep01/refs/zhui-yu-shitu/portrait_feathers.png",
+        "role": "portrait_feathers",
+        "sha256": "0d612e5e069807b285ab4d2552544d36f1839a3500c3c0322e02a9ea3a55d02a",
+        "bytes": 2196481
+      },
+      {
+        "path": "/workspace/v11/wave14/ep01/refs/zhui-yu-shitu/rooftop_gothic.png",
+        "role": "rooftop_gothic",
+        "sha256": "e7a66d22ada26950eb81ff701be25a9ce88cf97f63d74de1a9b146fb9ad7a321",
+        "bytes": 2642390
+      },
+      {
+        "path": "/workspace/v11/wave14/ep01/refs/zhui-yu-shitu/rooftop_modern.png",
+        "role": "rooftop_modern",
+        "sha256": "332c95e1d68c85df4298552bab6db11d68bc0758c62b23b769cfc13608bda0b8",
+        "bytes": 1928859
+      }
+    ],
+    "provisionalPrimary": "refs/zhui-yu-shitu/rooftop_gothic.png",
+    "humanLockPrimary": "/workspace/v11/wave14/ep01/refs/zhui-yu-shitu/rooftop_gothic.png",
+    "primary": "refs/zhui-yu-shitu/rooftop_gothic.png"
+  },
+  "qi-ye-daily": {
+    "status": "RESOLVED",
+    "resolvedBy": "qi-ye/SHEET_FULL_DAILY_AWAKENED.png",
+    "files": []
+  },
+  "blockers": [],
+  "crossCheck": {
+    "vsContinuityMatrix": "ALIGNED",
+    "qi-ye": "HUMAN_LOCK OK",
+    "fei-yue-li": "LOCK_CANDIDATE · portrait only · HOLD upgrade",
+    "zhui-yu-shitu": "CANDIDATE OK · not qi-ye face",
+    "ye-yuan": "DELETED · hard remove packs · EP01 must not bind",
+    "yeYuanSeparateTrack": false,
+    "yeYuanStatus": "DELETED"
+  },
+  "softBlockers": [
+    "fei-yue-li full-body + spear refs before HUMAN_LOCK",
+    "zhui-yu-shitu human pick 1 hero still (optional)"
+  ],
+  "ye-yuan": {
+    "status": "DELETED",
+    "deletedAt": "2026-09-17T08:15:00+08:00",
+    "authority": "Human GO via Director",
+    "removedPacks": [
+      "character-pack/ye-yuan",
+      "character-pack/ye-yuan-sheet-v2",
+      "character-pack/ye-yuan-w13"
+    ],
+    "productionSoT": "character-pack/ye-qi-ep01 ONLY",
+    "note": "历史文档可留档；禁止再作生产角色 SoT / 禁止再绑 EP01"
+  },
+  "productionCharacterSoT": "ye-qi-ep01",
+  "dryRunPolicy": {
+    "at": "2026-09-17T08:37+08:00",
+    "fei-yue-li": "portrait OK for dry-run; full+gun soft recommend",
+    "zhui-yu-shitu": "primary bound rooftop_gothic; await Continuity LOCK",
+    "shotQueue": "/workspace/v11/wave14/ep01/shots/SHOT_QUEUE_DRYRUN.json"
+  },
+  "continuityNote": {
+    "at": "2026-09-17T08:38+08:00",
+    "by": "Continuity QC",
+    "text": "使徒 HUMAN_LOCK=rooftop_gothic；绯月璃 portrait 可 dry-run/软放行 live；全身枪建议补"
+  },
+  "shotQueueDryRun": "wave14/ep01/shots/SHOT_QUEUE_DRYRUN.json",
+  "qEp01": {
+    "dir": "cloud-h3-live/q-ep01",
+    "oneclickDryRun": "PASS",
+    "postCount": 0,
+    "when": "2026-09-17T09:31:51+08:00",
+    "live": "AWAIT_HUMAN_GO"
+  }
+}
