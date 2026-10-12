@@ -11,6 +11,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { bindingsFromRefIndex, sceneRefsFromRefIndex, type BindingDecision, type SceneDecision } from './ref-index-bindings';
 import { summarizeQcReview, type ReviewSummary } from './qc-review-rerun';
+import { evaluateStoryRhythm, type RhythmReport, type RhythmOptions } from './story-rhythm-gate';
 import { convertShotSpecToMultiShot, type CharacterRefBinding, type ConvertProblem } from './beatplan-to-multishot';
 import { runMultiShotOneClick, type MultiShotResult } from './multishot-oneclick';
 import { createFakeH3Provider } from './fake-h3-provider';
@@ -26,10 +27,13 @@ export interface RehearsalInput {
   canvas?: { width: number; height: number; fps: number };
   verifyRefShaOnDisk?: boolean;
   ffmpegPreset?: string;
+  /** V12 Story Rhythm Gate: 'warn' (default, report only) or 'enforce' (FAIL stops before generation, exit 27). */
+  rhythmGate?: 'warn' | 'enforce';
+  rhythmOptions?: RhythmOptions;
 }
 
 export interface RehearsalReport {
-  ok: boolean; exitCode: number; stage: 'bindings' | 'convert' | 'generate' | 'done';
+  ok: boolean; exitCode: number; stage: 'bindings' | 'rhythm' | 'convert' | 'generate' | 'done'; rhythm?: RhythmReport;
   decisions: BindingDecision[]; sceneDecisions?: SceneDecision[]; reviewSummary?: ReviewSummary; problems?: ConvertProblem[];
   listPath?: string; run?: MultiShotResult; episodeMp4?: string; qcHtml?: string; qcMd?: string;
   durationRange?: { minSeconds: number; maxSeconds: number }; plannedSeconds?: number;
@@ -48,6 +52,9 @@ async function scenePlaceholder(workDir: string, canvas: { width: number; height
 export async function runEp01Rehearsal(input: RehearsalInput): Promise<RehearsalReport> {
   const notes: string[] = ['FAKE provider (ffmpeg testsrc) — not real generation; identity PENDING_REVIEW; V11_G3 NOT_EVALUATED'];
   await mkdir(input.workDir, { recursive: true });
+  const rhythm = evaluateStoryRhythm(input.shotSpec, input.rhythmOptions);
+  await writeFile(join(input.workDir, 'rhythm-report.json'), JSON.stringify(rhythm, null, 2));
+  if (rhythm.verdict === 'FAIL' && input.rhythmGate === 'enforce') return { ok: false, exitCode: 27, stage: 'rhythm', rhythm, decisions: [], notes };
   const canvas = input.canvas ?? { width: 1344, height: 768, fps: 24 };
 
   const { bindings, decisions } = bindingsFromRefIndex(input.refIndex, {
@@ -66,7 +73,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     operatorKind: 'hero_portrait', firstFramePath: scenePath, approvedTemporary: { actor: 'ep01-rehearsal', reason: 'scenery ref for fake-provider rehearsal only' } };
 
   const conv = convertShotSpecToMultiShot(input.shotSpec, input.beatPlan, { workDir: join(input.workDir, 'run'), mode: 'live', bindings, sceneRef, sceneRefsByShot: scenes.byShot, canvas, durationRange: input.durationRange });
-  if (!conv.ok) return { ok: false, exitCode: 24, stage: 'convert', decisions, problems: conv.problems, notes };
+  if (!conv.ok) return { ok: false, exitCode: 24, stage: 'convert', rhythm, decisions, problems: conv.problems, notes };
   const listPath = join(input.workDir, 'multishot-list.json');
   await writeFile(listPath, JSON.stringify(conv.list, null, 2));
 
@@ -84,7 +91,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     qcHtml = q.html; qcMd = q.md;
   }
   const reviewSummary = existsSync(qcDir) ? await summarizeQcReview(qcDir, { listPath }) : undefined;
-  const report: RehearsalReport = { ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
+  const report: RehearsalReport = { ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', rhythm, decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
     episodeMp4: run.output?.path, qcHtml, qcMd, durationRange: conv.list.durationRange, plannedSeconds, notes };
   await writeFile(join(input.workDir, 'rehearsal-report.json'), JSON.stringify(report, null, 2));
   return report;
