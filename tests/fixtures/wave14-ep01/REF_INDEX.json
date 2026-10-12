@@ -148,5 +148,31 @@
     "postCount": 0,
     "when": "2026-09-17T09:31:51+08:00",
     "live": "AWAIT_HUMAN_GO"
+  },
+  "scene-ep01-s01": {
+    "kind": "scene",
+    "status": "SPEC_PENDING",
+    "displayName": "S01 场景参考",
+    "shots": [
+      "S01"
+    ],
+    "role": "scene_establish",
+    "files": [],
+    "spec": "/workspace/v11/wave14/ep01/refs/SCENE_REF_SPEC_S01_S14.md",
+    "createdAt": "2026-10-12T15:00:00+08:00",
+    "note": "候选登记，未锁定；人工锁定前演练用合成占位图。禁止自动升锁。"
+  },
+  "scene-ep01-s14": {
+    "kind": "scene",
+    "status": "SPEC_PENDING",
+    "displayName": "S14 场景参考",
+    "shots": [
+      "S14"
+    ],
+    "role": "scene_title_bg",
+    "files": [],
+    "spec": "/workspace/v11/wave14/ep01/refs/SCENE_REF_SPEC_S01_S14.md",
+    "createdAt": "2026-10-12T15:00:00+08:00",
+    "note": "候选登记，未锁定；人工锁定前演练用合成占位图。禁止自动升锁。"
   }
 }

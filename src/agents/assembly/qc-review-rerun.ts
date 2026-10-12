@@ -3,7 +3,7 @@
  * and "rerun only HUMAN_FAIL shots" plan (optionally applied to checkpoint.json so the next
  * orchestrator run regenerates just those shots). Offline; never changes G3 or verdicts.
  */
-import { copyFile, mkdir, readFile, writeFile, rename } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, writeFile, rename, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { loadQcRecords, writeQcSummary } from './qc-summary-page';
@@ -32,6 +32,8 @@ export interface ReviewSummary {
   total: number; pass: number; fail: number; pending: number;
   failed: { shotId: string; note: string; reviewer: string | null; reviewedAt: string | null }[];
   pendingShots: string[];
+  /** PENDING shots regenerated after a HUMAN_FAIL (archived in qc/<shot>/history/). */
+  rerunAwaiting: { shotId: string; previousNote: string; rerunCount: number }[];
   g3: 'NOT_EVALUATED';
 }
 
@@ -39,19 +41,31 @@ export async function summarizeQcReview(qcDir: string, opts: { listPath?: string
   const l = await findMultishotList(qcDir, opts.listPath);
   const recs = await loadQcRecords(qcDir, l?.order);
   const failedRecs = recs.filter((r) => r.identity.status === 'HUMAN_FAIL');
+  const rerunAwaiting: ReviewSummary['rerunAwaiting'] = [];
+  for (const r of recs.filter((x) => x.identity.status === 'PENDING_REVIEW')) {
+    const hdir = join(qcDir, r.shotId, 'history');
+    if (!existsSync(hdir)) continue;
+    const files = (await readdir(hdir)).filter((f) => f.endsWith('.json')).sort();
+    const hist = await Promise.all(files.map(async (f) => JSON.parse(await readFile(join(hdir, f), 'utf8')) as { identity?: { status?: string; note?: string } }));
+    const fails = hist.filter((h) => h.identity?.status === 'HUMAN_FAIL');
+    if (fails.length) rerunAwaiting.push({ shotId: r.shotId, previousNote: fails[fails.length - 1].identity?.note ?? '', rerunCount: files.length });
+  }
+  const awaitingIds = new Set(rerunAwaiting.map((a) => a.shotId));
   const s: ReviewSummary = {
     total: recs.length,
     pass: recs.filter((r) => r.identity.status === 'HUMAN_PASS').length,
     fail: failedRecs.length,
     pending: recs.filter((r) => r.identity.status === 'PENDING_REVIEW').length,
     failed: failedRecs.map((r) => ({ shotId: r.shotId, note: r.identity.note, reviewer: r.identity.reviewer, reviewedAt: r.identity.reviewedAt })),
-    pendingShots: recs.filter((r) => r.identity.status === 'PENDING_REVIEW').map((r) => r.shotId),
+    pendingShots: recs.filter((r) => r.identity.status === 'PENDING_REVIEW' && !awaitingIds.has(r.shotId)).map((r) => r.shotId),
+    rerunAwaiting,
     g3: 'NOT_EVALUATED',
   };
   const md = [
     '# QC 人工复核汇总', '', `> 共 ${s.total} 镜 · 通过 ${s.pass} · 不通过 ${s.fail} · 待复核 ${s.pending} · V11_G3 = NOT_EVALUATED · publish = FORBIDDEN`, '',
     '## 不通过', '', s.failed.length ? '| 镜头 | 备注 | 审核人 | 时间 |\n|---|---|---|---|\n' + s.failed.map((f) => `| ${f.shotId} | ${f.note.replace(/\|/g, '\\|')} | ${f.reviewer ?? ''} | ${f.reviewedAt ?? ''} |`).join('\n') : '（无）', '',
-    '## 待复核', '', s.pendingShots.length ? s.pendingShots.join(', ') : '（无）', '',
+    '## 已重做，待再审', '', s.rerunAwaiting.length ? '| 镜头 | 上次不通过备注 | 重做次数 |\n|---|---|---|\n' + s.rerunAwaiting.map((a) => `| ${a.shotId} | ${a.previousNote.replace(/\|/g, '\\|')} | ${a.rerunCount} |`).join('\n') : '（无）', '',
+    '## 待复核（首次）', '', s.pendingShots.length ? s.pendingShots.join(', ') : '（无）', '',
     '续跑：`npm run qc:rerun-failed -- --work-dir <演练目录> --apply`，再用同一目录重跑演练，仅重做不通过的镜头。', '',
   ].join('\n');
   await writeFile(join(qcDir, 'review-summary.md'), md);
