@@ -13,12 +13,14 @@ async function main(): Promise<number> {
   const args = process.argv.slice(2);
   const fake = args.includes('--fake-provider');
   const src = args.find((a) => !a.startsWith('--'));
-  if (!src) { process.stderr.write('usage: multishot-oneclick <list.json|-> [--fake-provider]\n'); return MULTISHOT_EXIT.USAGE; }
+  if (!src) { process.stderr.write('usage: multishot-oneclick <list.json|-> [--fake-provider] [--ledger LEDGER.jsonl]\n'); return MULTISHOT_EXIT.USAGE; }
   let raw: { workDir?: string };
   try { raw = JSON.parse(readFileSync(src === '-' ? 0 : src, 'utf8')); }
   catch (e) { process.stderr.write(`bad input: ${(e as Error).message}\n`); return MULTISHOT_EXIT.USAGE; }
   const live = fake && raw.workDir ? createFakeH3Provider({ outDir: join(raw.workDir, 'takes') }) : undefined;
-  const r = await runMultiShotOneClick(raw, { env: process.env, live });
+  const li = args.indexOf('--ledger');
+  const ledger = li >= 0 ? { path: args[li + 1], provider: fake ? 'fake-h3' : 'local.comfy.minimax_h3', model: fake ? 'fake-h3-v1' : 'minimax_h3', costPerShotUsd: 0 } : undefined;
+  const r = await runMultiShotOneClick(raw, { env: process.env, live, ledger });
   process.stdout.write(JSON.stringify(r, null, 2) + '\n');
   return r.exitCode;
 }
