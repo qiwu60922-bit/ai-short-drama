@@ -96,6 +96,7 @@
     "test:behavior:guards": "npm run check:api-handler && npm run check:image-reference-normalization && npm run guard:task-idempotency && npm run check:test-coverage-guards && npm run check:requirements-matrix",
     "test:behavior:full": "npm run test:behavior:guards && npm run test:behavior:unit && npm run test:behavior:api && npm run test:behavior:provider && npm run test:behavior:chain",
     "test:coverage:core-baseline": "cross-env SYSTEM_TEST_BOOTSTRAP=1 vitest run --config vitest.core-coverage.config.ts tests/unit tests/integration/api tests/integration/provider tests/integration/chain tests/integration/task tests/system tests/regression",
+    "multishot:concat": "tsx scripts/multishot-concat.ts",
     "test:all": "npm run test:guards && npm run test:unit:all && npm run test:billing:integration && npm run test:billing:concurrency && npm run test:integration:api && npm run test:integration:provider && npm run test:integration:chain && npm run test:integration:task && npm run test:system && npm run test:regression:cases",
     "test:regression": "npm run test:all",
     "test:pr": "bash scripts/test-regression-runner.sh npm run test:all",
