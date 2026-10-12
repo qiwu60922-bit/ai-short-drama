@@ -1,0 +1,149 @@
+{
+  "schema": "wave14/ShotSpec/v2",
+  "episode": "ep02",
+  "synthetic": "OFFLINE_REHEARSAL_ONLY — not an approved script",
+  "shots": [
+    {
+      "shotId": "S01",
+      "durSec": 5,
+      "camera": "MS",
+      "action": "雨夜钟楼远景，月色结界闪烁",
+      "cast": [],
+      "refs": [],
+      "dialogue": null,
+      "vo": "钟声第三次响起。"
+    },
+    {
+      "shotId": "S02",
+      "durSec": 6,
+      "camera": "MS",
+      "action": "对白：又是这个梦。",
+      "cast": [
+        "qi-ye"
+      ],
+      "refs": [],
+      "dialogue": "又是这个梦。",
+      "vo": null
+    },
+    {
+      "shotId": "S03",
+      "durSec": 5,
+      "camera": "MS",
+      "action": "对白：你也听见了？",
+      "cast": [
+        "fei-yue-li"
+      ],
+      "refs": [],
+      "dialogue": "你也听见了？",
+      "vo": null
+    },
+    {
+      "shotId": "S04",
+      "durSec": 6,
+      "camera": "MS",
+      "action": "两人对视，结界裂开一道缝",
+      "cast": [
+        "qi-ye",
+        "fei-yue-li"
+      ],
+      "refs": [],
+      "dialogue": null,
+      "vo": null
+    },
+    {
+      "shotId": "S05a",
+      "durSec": 4,
+      "camera": "MS",
+      "action": "黑影掠过屋脊",
+      "cast": [
+        "zhui-yu-shitu"
+      ],
+      "refs": [],
+      "dialogue": null,
+      "vo": null
+    },
+    {
+      "shotId": "S05b",
+      "durSec": 3,
+      "camera": "MS",
+      "action": "黑影落地转身",
+      "cast": [
+        "zhui-yu-shitu"
+      ],
+      "refs": [],
+      "dialogue": null,
+      "vo": null
+    },
+    {
+      "shotId": "S06",
+      "durSec": 6,
+      "camera": "MS",
+      "action": "对白：钥匙在你身上。",
+      "cast": [
+        "zhui-yu-shitu"
+      ],
+      "refs": [],
+      "dialogue": "钥匙在你身上。",
+      "vo": null
+    },
+    {
+      "shotId": "S07",
+      "durSec": 6,
+      "camera": "MS",
+      "action": "对白：我不知道你在说什么。",
+      "cast": [
+        "qi-ye"
+      ],
+      "refs": [],
+      "dialogue": "我不知道你在说什么。",
+      "vo": null
+    },
+    {
+      "shotId": "S08",
+      "durSec": 6,
+      "camera": "MS",
+      "action": "飞月璃拔剑挡在前面",
+      "cast": [
+        "fei-yue-li"
+      ],
+      "refs": [],
+      "dialogue": null,
+      "vo": null
+    },
+    {
+      "shotId": "S09",
+      "durSec": 6,
+      "camera": "MS",
+      "action": "对白：那就让我看看。",
+      "cast": [
+        "qi-ye",
+        "zhui-yu-shitu"
+      ],
+      "refs": [],
+      "dialogue": "那就让我看看。",
+      "vo": null
+    },
+    {
+      "shotId": "S10",
+      "durSec": 5,
+      "camera": "MS",
+      "action": "钟楼崩塌，碎石坠落",
+      "cast": [],
+      "refs": [],
+      "dialogue": null,
+      "vo": "这一夜，没有人能睡着。"
+    },
+    {
+      "shotId": "S11",
+      "durSec": 4,
+      "camera": "MS",
+      "action": "齐夜握紧胸前的钥匙",
+      "cast": [
+        "qi-ye"
+      ],
+      "refs": [],
+      "dialogue": null,
+      "vo": null
+    }
+  ]
+}
