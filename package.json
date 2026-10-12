@@ -106,6 +106,7 @@
     "scene:selfcheck": "tsx scripts/scene-ref-selfcheck.ts",
     "rhythm:check": "tsx scripts/story-rhythm-check.ts",
     "auto:edit": "tsx scripts/auto-edit.ts",
+    "duration:budget": "tsx scripts/duration-budget.ts",
     "test:all": "npm run test:guards && npm run test:unit:all && npm run test:billing:integration && npm run test:billing:concurrency && npm run test:integration:api && npm run test:integration:provider && npm run test:integration:chain && npm run test:integration:task && npm run test:system && npm run test:regression:cases",
     "test:regression": "npm run test:all",
     "test:pr": "bash scripts/test-regression-runner.sh npm run test:all",
