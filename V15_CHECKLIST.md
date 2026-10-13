@@ -15,11 +15,11 @@
 | 项 | 状态 | 证据 / 缺什么 |
 |---|---|---|
 | 连续性：尾帧→首帧（阈值冻结） | ✅ 代码与逻辑；🟡 数值意义 | #23；目前用的是假素材 |
-| 身份：人脸 embedding 与角色包比对，FAIL 就是 FAIL | 🟡 | #24；缺模型（建议 AuraFace glintr100 + YuNet）⛔，以及人脸对齐 |
-| 服装 / 场景（直方图） | 🟡 | #24；缺 HUMAN_LOCK 参考图 ⛔ |
-| 口型：LatentSync/SyncNet，FAIL → G3 BLOCKED | 🟡 | #25；缺评分器及权重许可证 ⛔ |
+| 身份：人脸 embedding 与角色包比对，FAIL 就是 FAIL | ✅ 模型+对齐+真实数值；🟡 阈值标定 | YuNet(MIT)+AuraFace glintr100(Apache-2.0)，5 点对齐，演示素材真实分数见 V13_FACE_MODELS.md；缺 HUMAN_LOCK 角色参考图后标定 ⛔ |
+| 服装 / 场景（直方图） | 🟡 | #24；演示素材已出真实分数，但场景直方图区分力弱（不同场景 0.52 仍过 0.45）；缺 HUMAN_LOCK 参考图 ⛔ |
+| 口型：LatentSync/SyncNet，FAIL → G3 BLOCKED | 🟡 | #25；已核实：SyncNet 权重无许可证、LatentSync 权重为 openrail++，均不符合 MIT/Apache/BSD ⛔ |
 | LLM QC 只做建议，不能写 g3 | ✅ | #24 |
-| 出口条件「身份机器闸门有数值」 | 🟡 **未达成** | 需要模型 + 真实素材 |
+| 出口条件「身份机器闸门有数值」 | 🟡 **部分** | 机器闸门已能出数值（演示素材）；缺锁定的角色参考图与真实镜头 ⛔ |
 | 检测结果汇入彩排 / 工厂报告 | ✅ | #26 #28 |
 
 ## V14 工厂
