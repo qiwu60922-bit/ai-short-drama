@@ -15,11 +15,11 @@
 | 项 | 状态 | 证据 / 缺什么 |
 |---|---|---|
 | 连续性：尾帧→首帧（阈值冻结） | ✅ 代码与逻辑；🟡 数值意义 | #23；目前用的是假素材 |
-| 身份：人脸 embedding 与角色包比对，FAIL 就是 FAIL | ✅ qi-ye 已标定；🟡 zhui-yu-shitu / fei-yue-li | 已接入锁定参考图（只读）。qi-ye：cosineMin 0.67、margin 0.10（同角色 ≥0.7417，跨角色 ≤0.5947）。zhui-yu-shitu 自身参考图 0.18，不可分，只给 NOT_EVALUATED；fei-yue-li 仍是 LOCK_CANDIDATE。见 V13_IDENTITY_CALIBRATION.md |
-| 服装 / 场景（直方图） | 🟡 | 服装已接入锁定参考图。场景改为网格直方图：演示素材里不同场景 0.4473 → FAIL（以前 0.5249 会误放行），但余量很小；场景参考图目前只有 SCHEMATIC_PLACEHOLDER ⛔ |
-| 口型：LatentSync/SyncNet，FAIL → G3 BLOCKED | 🟡 | #25；已核实：SyncNet 权重无许可证、LatentSync 权重为 openrail++，均不符合 MIT/Apache/BSD ⛔ |
+| 身份：人脸 embedding 与角色包比对，FAIL 就是 FAIL | ✅ qi-ye（AuraFace 0.67/0.10）；✅ zhui-yu-shitu（DINOv2 整角色 0.66/0.10，样本少）；🟡 fei-yue-li | 锁定参考图只读。zhui 自身 0.7246–0.7281，对 qi-ye ≤0.37。fei-yue-li 仍是 LOCK_CANDIDATE。见 V13_IDENTITY_CALIBRATION.md、V13_DINO_LIPSYNC.md |
+| 服装 / 场景 | ✅ 方法（场景 DINOv2，阈值 0.68，同场景 ≥0.7733、不同场景 ≤0.5849）；🟡 素材 | 服装用锁定参考图做直方图；场景参考图仍只有 SCHEMATIC_PLACEHOLDER ⛔ |
+| 口型：LatentSync/SyncNet，FAIL → G3 BLOCKED | 🟡 | 没有可商用的 SyncNet 权重（SyncNet 无许可证，LatentSync 为 openrail++）⛔。已接入 MediaPipe（Apache-2.0）粗闸门，只会给 FAIL 或 NOT_EVALUATED；静止嘴实测 FAIL；还没在真实对白上标定 |
 | LLM QC 只做建议，不能写 g3 | ✅ | #24 |
-| 出口条件「身份机器闸门有数值」 | 🟡 **部分** | qi-ye 在锁定参考图上已有标定数值；zhui-yu-shitu、fei-yue-li 不可分或未锁；还缺真实镜头 ⛔ |
+| 出口条件「身份机器闸门有数值」 | 🟡 **大部分** | qi-ye、zhui-yu-shitu 在锁定参考图上有标定数值；fei-yue-li 未锁；还缺真实镜头复核 ⛔ |
 | 检测结果汇入彩排 / 工厂报告 | ✅ | #26 #28 |
 
 ## V14 工厂
