@@ -4,6 +4,8 @@
  * Resume: re-run with same request + workDir skips shots already SUCCEEDED in checkpoint.json.
  * Offline by design: the only "live" path is an injected OneClickLivePort (tests/CLI use a fake provider). ≠G3.
  */
+import { appendLedgerEntry, hashInputs } from '@/agents/ledger/generation-ledger';
+import { assertCastWritable } from '@/agents/ledger/character-registry';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -12,7 +14,7 @@ import { runOneClickShot, type OneClickLivePort, type OneClickShotResult } from 
 import { runMultiShotConcat, type ConcatDeps, type ConcatResult } from './ffmpeg-concat-worker';
 import { createShotQcRecord, type QcDeps } from './shot-qc-record';
 
-export const MULTISHOT_EXIT = { OK: 0, USAGE: 2, CHECKPOINT_MISMATCH: 34, QC_FAILED: 35, INTERNAL: 60 } as const;
+export const MULTISHOT_EXIT = { OK: 0, USAGE: 2, CHECKPOINT_MISMATCH: 34, QC_FAILED: 35, CAST_REJECTED: 36, INTERNAL: 60 } as const;
 
 const sha = z.string().regex(/^[a-f0-9]{64}$/i);
 const RefSchema = z.object({
@@ -62,6 +64,9 @@ export interface MultiShotDeps {
   fileExists?: (p: string) => Promise<boolean>;
   /** When set, save first/mid/last stills + qc-record.json per succeeded shot under <workDir>/qc (PENDING_REVIEW). */
   qc?: { enabled: boolean; deps?: QcDeps };
+  /** V12: append one generation-ledger entry per successful live shot; also enforces canonical Character IDs. */
+  ledger?: { path: string; provider: string; model: string; costPerShotUsd?: number; castByShot?: Record<string, string[]> };
+  now?: () => number;
 }
 
 export interface MultiShotResult {
@@ -130,6 +135,17 @@ export async function runMultiShotOneClick(raw: unknown, deps: MultiShotDeps = {
         continue;
       }
       const ref = s.ref ?? req.defaultRef;
+      let ledgerCast: string[] = [];
+      if (deps.ledger) {
+        try { ledgerCast = assertCastWritable(deps.ledger.castByShot?.[s.shotId] ?? (ref ? [ref.characterId] : [])); }
+        catch (e) {
+          report.push({ shotId: s.shotId, status: 'FAILED', exitCode: MULTISHOT_EXIT.CAST_REJECTED });
+          for (const rest of shots.slice(shots.indexOf(s) + 1)) report.push({ shotId: rest.shotId, status: 'NOT_RUN' });
+          return { ...base, ...ctx, ok: false, exitCode: MULTISHOT_EXIT.CAST_REJECTED, shots: report, failedShotId: s.shotId, resumable: false,
+            error: { code: 'CAST_REJECTED', message: (e as Error).message } };
+        }
+      }
+      const clock = deps.now ?? Date.now; const tGen = clock();
       const r: OneClickShotResult = await runOneClickShot({
         schemaVersion: 1,
         mode: req.mode,
@@ -147,6 +163,7 @@ export async function runMultiShotOneClick(raw: unknown, deps: MultiShotDeps = {
         continue;
       }
 
+      const latencyMs = clock() - tGen;
       const attempts = (prev?.attempts ?? 0) + 1;
       if (!r.ok || !r.artifact?.path) {
         cp.shots[s.shotId] = { status: 'FAILED', exitCode: r.exitCode, error: r.error?.message ?? 'no artifact path', attempts };
@@ -155,6 +172,12 @@ export async function runMultiShotOneClick(raw: unknown, deps: MultiShotDeps = {
         for (const rest of shots.slice(shots.indexOf(s) + 1)) report.push({ shotId: rest.shotId, status: 'NOT_RUN' });
         return { ...base, ...ctx, ok: false, exitCode: r.ok ? MULTISHOT_EXIT.INTERNAL : r.exitCode, shots: report, failedShotId: s.shotId,
           resumable: true, error: r.error ?? { code: 'NO_ARTIFACT', message: 'provider returned no artifact path' } };
+      }
+      if (deps.ledger) {
+        appendLedgerEntry(deps.ledger.path, { shotId: s.shotId, episode: req.episodeId, provider: deps.ledger.provider, model: deps.ledger.model,
+          costUsd: deps.ledger.costPerShotUsd ?? 0, latencyMs: Math.max(0, latencyMs), seed: s.seed,
+          inputHash: hashInputs({ episodeId: req.episodeId, shotId: s.shotId, seed: s.seed, prompt: s.positivePrompt, canvas: req.canvas, ref: ref ?? null }),
+          outputSha256: r.artifact.contentSha256.toLowerCase(), outputPath: r.artifact.path, cast: ledgerCast });
       }
       let qcRecordPath: string | undefined;
       if (deps.qc?.enabled) {
