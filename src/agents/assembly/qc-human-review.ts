@@ -29,9 +29,9 @@ export type QcReviewFile = z.infer<typeof QcReviewFileSchema>;
 type HistoryEntry = { status: string; reviewer: string; reviewedAt: string; note: string };
 type RecordWithHistory = ShotQcRecord & { reviewHistory?: HistoryEntry[] };
 
-export interface ImportResult { ok: boolean; applied: { shotId: string; status: string }[]; errors: string[]; }
+export interface ImportResult { ok: boolean; applied: { shotId: string; status: string }[]; errors: string[]; receiptPath?: string }
 
-export async function importQcReview(qcDir: string, raw: unknown): Promise<ImportResult> {
+export async function importQcReview(qcDir: string, raw: unknown, opts: { receiptDir?: string } = {}): Promise<ImportResult> {
   const p = QcReviewFileSchema.safeParse(raw);
   if (!p.success) return { ok: false, applied: [], errors: p.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`) };
   const review = p.data;
@@ -52,5 +52,10 @@ export async function importQcReview(qcDir: string, raw: unknown): Promise<Impor
   }
   if (errors.length) return { ok: false, applied: [], errors };
   for (const u of updates) { await writeFile(`${u.path}.tmp`, JSON.stringify(u.rec, null, 2)); await rename(`${u.path}.tmp`, u.path); }
-  return { ok: true, applied: updates.map((u) => ({ shotId: u.rec.shotId, status: u.rec.identity.status })), errors: [] };
+  let receiptPath: string | undefined;
+  if (opts.receiptDir) {
+    const { buildReviewReceipt, writeReviewReceipt } = await import('./human-review-receipt');
+    receiptPath = await writeReviewReceipt(opts.receiptDir, buildReviewReceipt(review, updates.map((u) => u.rec)));
+  }
+  return { ok: true, applied: updates.map((u) => ({ shotId: u.rec.shotId, status: u.rec.identity.status })), errors: [], ...(receiptPath ? { receiptPath } : {}) };
 }
