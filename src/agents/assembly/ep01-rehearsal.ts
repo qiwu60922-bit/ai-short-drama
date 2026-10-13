@@ -76,7 +76,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
   let qcHtml: string | undefined, qcMd: string | undefined;
   if (existsSync(qcDir)) {
     const prompts = Object.fromEntries(conv.list.shots.map((s) => [s.shotId, s.positivePrompt]));
-    const q = await writeQcSummary(qcDir, { title: `${conv.list.episodeId} 离线演练 · QC 三帧`, order: conv.list.shots.map((s) => s.shotId), prompts });
+    const q = await writeQcSummary(qcDir, { review: true, title: `${conv.list.episodeId} 离线演练 · QC 三帧`, order: conv.list.shots.map((s) => s.shotId), prompts });
     qcHtml = q.html; qcMd = q.md;
   }
   const report: RehearsalReport = { ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', decisions, listPath, run,
