@@ -1,0 +1,8 @@
+{
+  "ok": true,
+  "version": "fixture-comfy-0.0.0",
+  "vramHint": "8GB-offload",
+  "system": {
+    "comfyui_version": "fixture"
+  }
+}
