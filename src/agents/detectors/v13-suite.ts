@@ -7,6 +7,7 @@ import { runContinuityCheck, type Which } from './continuity-detector';
 import { runIdentityCheck, type Embed } from './identity-detector';
 import { runAppearanceCheck } from './appearance-detector';
 import { runLipsyncCheck, type Score } from './lipsync-detector';
+import { lockedPackFaces } from './locked-refs';
 export interface SuiteShot { shotId: string; takePath: string; midStill?: string; cast: string[]; dialogue: boolean; audioPath?: string; continuousWithPrev?: boolean }
 export function suiteShotsFromSpec(spec: { shots: { shotId: string; cast?: string[] | null; dialogue?: unknown; continuousWithPrev?: boolean }[] },
   takePath: (id: string) => string, midStill?: (id: string) => string | undefined): SuiteShot[] {
@@ -14,14 +15,15 @@ export function suiteShotsFromSpec(spec: { shots: { shotId: string; cast?: strin
     continuousWithPrev: s.continuousWithPrev ?? /^S\d+[b-z]$/.test(s.shotId) }));
 }
 export interface SuiteDeps { grab?: (p: string, w: Which) => Promise<Uint8Array>; embed?: Embed; faceModelPath?: string; load?: (p: string) => Promise<Uint8Array>; score?: Score; lipsyncScorer?: string }
-export async function runV13Detectors(input: { episodeId: string; shots: SuiteShot[]; packFaces?: Record<string, string[]>; costumeRefs?: Record<string, string[]>; sceneRefs?: Record<string, string[]> }, d: SuiteDeps = {}) {
+export async function runV13Detectors(input: { episodeId: string; shots: SuiteShot[]; packFaces?: Record<string, string[]>; costumeRefs?: Record<string, string[]>; sceneRefs?: Record<string, string[]>; useLockedRefs?: boolean }, d: SuiteDeps = {}) {
+  const packs = input.packFaces ?? (input.useLockedRefs ? lockedPackFaces() : {}); const costumeRefs = input.costumeRefs ?? (input.useLockedRefs ? packs : {});
   const continuity = await runContinuityCheck({ episodeId: input.episodeId, shots: input.shots }, { grab: d.grab });
   const chars = [...new Set(input.shots.flatMap(s => s.cast))];
   const framesOf = (c: string) => input.shots.filter(s => s.cast.includes(c) && s.midStill).map(s => ({ shotId: s.shotId, path: s.midStill! }));
   const identity = [], costume = [], scene = [];
   for (const c of chars) {
-    identity.push(await runIdentityCheck({ characterId: c, packFaces: input.packFaces?.[c] ?? [], frames: framesOf(c) }, { embed: d.embed, modelPath: d.faceModelPath }));
-    costume.push(await runAppearanceCheck({ kind: 'costume', refId: c, refImages: input.costumeRefs?.[c] ?? [], frames: framesOf(c) }, { load: d.load }));
+    identity.push(await runIdentityCheck({ characterId: c, packFaces: packs[c] ?? [], frames: framesOf(c), otherPacks: packs }, { embed: d.embed, modelPath: d.faceModelPath }));
+    costume.push(await runAppearanceCheck({ kind: 'costume', refId: c, refImages: costumeRefs[c] ?? [], frames: framesOf(c) }, { load: d.load }));
   }
   for (const s of input.shots.filter(x => !x.cast.length && x.midStill))
     scene.push(await runAppearanceCheck({ kind: 'scene', refId: s.shotId, refImages: input.sceneRefs?.[s.shotId] ?? [], frames: [{ shotId: s.shotId, path: s.midStill! }] }, { load: d.load }));
