@@ -58,3 +58,24 @@ describe('LLM QC guard', () => {
       expect(() => parseLlmQcAdvice(bad)).toThrow(/LLM/);
   });
 });
+describe('identity: licensed real models (YuNet MIT + AuraFace Apache-2.0)', () => {
+  it('rejects non-commercial InsightFace weights', async () => {
+    await expect(runIdentityCheck({ characterId: 'qi-ye', packFaces: ['p'], frames: [] }, { modelPath: '/m/w600k_r50.onnx' })).rejects.toThrow(/non-commercial/);
+  });
+  const { existsSync } = require('node:fs') as typeof import('node:fs');
+  const real = existsSync('/workspace/v11/models/face/glintr100.onnx') && existsSync('/workspace/v11/models/face/yunet.onnx') && existsSync('/workspace/v11/venv/bin/python');
+  it.skipIf(!real)('real numeric scores; never PASS, G3 untouched', async () => {
+    process.env.V13_PYTHON = '/workspace/v11/venv/bin/python';
+    const mod = await import('@/agents/detectors/identity-detector');
+    const { execFileSync } = await import('node:child_process'); const d = mkdtempSync(join(tmpdir(), 'v13-'));
+    execFileSync('/workspace/v11/venv/bin/python', ['scripts/detectors/make_face_fixtures.py', 'assets/demo-romance.png', 'assets/demo-anime.png', d]);
+    const r = await runIdentityCheck({ characterId: 'qi-ye', packFaces: [join(d, 'ref.png')], frames: ['same_bright', 'same_scaled', 'same_flip', 'other', 'noface'].map(s => ({ shotId: s, path: join(d, `${s}.png`) })) },
+      { embed: mod.pythonFaceEmbed('/workspace/v11/models/face/glintr100.onnx') });
+    const by = Object.fromEntries(r.frames.map(f => [f.shotId, f]));
+    expect(by.same_bright.similarity!).toBeGreaterThan(0.7); expect(by.same_bright.verdict).toBe('MACHINE_OK');
+    expect(by.other.similarity!).toBeLessThan(0.3); expect(by.other.verdict).toBe('FAIL'); expect(by.noface.verdict).toBe('FAIL');
+    for (const f of r.frames) if (f.similarity !== null) { expect(f.similarity).toBeGreaterThanOrEqual(-1); expect(f.similarity).toBeLessThanOrEqual(1); }
+    expect(r.gate).toBe('FAIL'); expect(r.gates.V11_G3).toBe('NOT_EVALUATED'); expect(JSON.stringify(r)).not.toMatch(/"PASS"/);
+    writeFileSync(join(d, 'report.json'), JSON.stringify(r, null, 1)); console.log('V13_SAMPLE', JSON.stringify(r.frames.map(f => [f.shotId, f.similarity, f.verdict])));
+  }, 120000);
+});
