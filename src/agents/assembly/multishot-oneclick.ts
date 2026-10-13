@@ -10,8 +10,9 @@ import { join } from 'node:path';
 import { z } from 'zod';
 import { runOneClickShot, type OneClickLivePort, type OneClickShotResult } from '@/agents/generation/oneclick-shot';
 import { runMultiShotConcat, type ConcatDeps, type ConcatResult } from './ffmpeg-concat-worker';
+import { createShotQcRecord, type QcDeps } from './shot-qc-record';
 
-export const MULTISHOT_EXIT = { OK: 0, USAGE: 2, CHECKPOINT_MISMATCH: 34, INTERNAL: 60 } as const;
+export const MULTISHOT_EXIT = { OK: 0, USAGE: 2, CHECKPOINT_MISMATCH: 34, QC_FAILED: 35, INTERNAL: 60 } as const;
 
 const sha = z.string().regex(/^[a-f0-9]{64}$/i);
 const RefSchema = z.object({
@@ -50,7 +51,7 @@ export const MultiShotListSchema = z.object({
 });
 export type MultiShotList = z.infer<typeof MultiShotListSchema>;
 
-export interface ShotCheckpoint { status: 'SUCCEEDED' | 'FAILED' | 'PLANNED'; exitCode: number; artifactPath?: string; contentSha256?: string; error?: string; attempts: number; }
+export interface ShotCheckpoint { status: 'SUCCEEDED' | 'FAILED' | 'PLANNED'; exitCode: number; artifactPath?: string; contentSha256?: string; qcRecordPath?: string; error?: string; attempts: number; }
 export interface Checkpoint { schemaVersion: 1; episodeId: string; requestSha256: string; shots: Record<string, ShotCheckpoint>; }
 
 export interface MultiShotDeps {
@@ -58,6 +59,8 @@ export interface MultiShotDeps {
   live?: OneClickLivePort;
   concat?: ConcatDeps;
   fileExists?: (p: string) => Promise<boolean>;
+  /** When set, save first/mid/last stills + qc-record.json per succeeded shot under <workDir>/qc (PENDING_REVIEW). */
+  qc?: { enabled: boolean; deps?: QcDeps };
 }
 
 export interface MultiShotResult {
@@ -152,7 +155,21 @@ export async function runMultiShotOneClick(raw: unknown, deps: MultiShotDeps = {
         return { ...base, ...ctx, ok: false, exitCode: r.ok ? MULTISHOT_EXIT.INTERNAL : r.exitCode, shots: report, failedShotId: s.shotId,
           resumable: true, error: r.error ?? { code: 'NO_ARTIFACT', message: 'provider returned no artifact path' } };
       }
-      cp.shots[s.shotId] = { status: 'SUCCEEDED', exitCode: 0, artifactPath: r.artifact.path, contentSha256: r.artifact.contentSha256, attempts };
+      let qcRecordPath: string | undefined;
+      if (deps.qc?.enabled) {
+        try {
+          await createShotQcRecord({ shotId: s.shotId, takePath: r.artifact.path, takeSha256: r.artifact.contentSha256, qcDir: join(req.workDir, 'qc') }, deps.qc.deps);
+          qcRecordPath = join(req.workDir, 'qc', s.shotId, 'qc-record.json');
+        } catch (e) {
+          cp.shots[s.shotId] = { status: 'FAILED', exitCode: MULTISHOT_EXIT.QC_FAILED, error: `QC stills: ${(e as Error).message}`, attempts };
+          await saveCheckpoint(checkpointPath, cp);
+          report.push({ shotId: s.shotId, status: 'FAILED', exitCode: MULTISHOT_EXIT.QC_FAILED });
+          for (const rest of shots.slice(shots.indexOf(s) + 1)) report.push({ shotId: rest.shotId, status: 'NOT_RUN' });
+          return { ...base, ...ctx, ok: false, exitCode: MULTISHOT_EXIT.QC_FAILED, shots: report, failedShotId: s.shotId, resumable: true,
+            error: { code: 'QC_FAILED', message: (e as Error).message } };
+        }
+      }
+      cp.shots[s.shotId] = { status: 'SUCCEEDED', exitCode: 0, artifactPath: r.artifact.path, contentSha256: r.artifact.contentSha256, attempts, ...(qcRecordPath ? { qcRecordPath } : {}) };
       await saveCheckpoint(checkpointPath, cp);
       report.push({ shotId: s.shotId, status: 'SUCCEEDED', exitCode: 0 });
       takes.push({ shotId: s.shotId, order: s.order, takePath: r.artifact.path });
