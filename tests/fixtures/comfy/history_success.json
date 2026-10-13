@@ -1,0 +1,25 @@
+{
+  "fixture-prompt-success-001": {
+    "prompt": [
+      1,
+      "fixture-prompt-success-001",
+      {}
+    ],
+    "outputs": {
+      "9": {
+        "images": [
+          {
+            "filename": "smoke.png",
+            "subfolder": "fixtures",
+            "type": "output"
+          }
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": []
+    }
+  }
+}
