@@ -103,6 +103,7 @@
     "ep01:rehearsal": "tsx scripts/ep01-offline-rehearsal.ts",
     "qc:import-review": "tsx scripts/qc-import-review.ts",
     "qc:rerun-failed": "tsx scripts/qc-rerun-failed.ts",
+    "scene:selfcheck": "tsx scripts/scene-ref-selfcheck.ts",
     "test:all": "npm run test:guards && npm run test:unit:all && npm run test:billing:integration && npm run test:billing:concurrency && npm run test:integration:api && npm run test:integration:provider && npm run test:integration:chain && npm run test:integration:task && npm run test:system && npm run test:regression:cases",
     "test:regression": "npm run test:all",
     "test:pr": "bash scripts/test-regression-runner.sh npm run test:all",
