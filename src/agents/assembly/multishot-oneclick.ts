@@ -46,6 +46,7 @@ export const MultiShotListSchema = z.object({
   })).min(1),
   workDir: z.string().min(1),
   outFile: z.string().default('episode.mp4'),
+  concatEncode: z.enum(['copy', 'reencode']).default('copy'),
 }).superRefine((v, ctx) => {
   const ids = new Set(v.shots.map((s) => s.shotId));
   if (ids.size !== v.shots.length) ctx.addIssue({ code: 'custom', path: ['shots'], message: 'duplicate shotId' });
@@ -203,7 +204,7 @@ export async function runMultiShotOneClick(raw: unknown, deps: MultiShotDeps = {
 
     const concat = await runMultiShotConcat({
       schemaVersion: 1, episodeId: req.episodeId, canvas: req.canvas, durationRange: req.durationRange,
-      shots: takes, outPath: join(req.workDir, req.outFile),
+      shots: takes, outPath: join(req.workDir, req.outFile), encode: req.concatEncode,
     }, deps.concat);
     if (!concat.ok)
       return { ...base, ...ctx, ok: false, exitCode: concat.exitCode, shots: report, concat, resumable: true, error: concat.error };
