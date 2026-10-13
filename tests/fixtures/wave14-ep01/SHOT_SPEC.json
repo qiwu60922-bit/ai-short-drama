@@ -5,7 +5,7 @@
     {
       "shotId": "S01",
       "beatId": "B01",
-      "durSec": 6,
+      "durSec": 4,
       "framesHint": "5s-cut→2 chunks if gen",
       "camera": "WS establish",
       "action": "夜澜市+学院月色结界",
@@ -31,7 +31,7 @@
     {
       "shotId": "S03",
       "beatId": "B03",
-      "durSec": 6,
+      "durSec": 4,
       "camera": "CU atmosphere",
       "action": "灯闪·风压·黑影延伸·停步皱眉",
       "cast": [
@@ -58,7 +58,7 @@
     {
       "shotId": "S05",
       "beatId": "B05",
-      "durSec": 8,
+      "durSec": 6,
       "camera": "MS→CU",
       "action": "背月光转身·黑羽散落·猩红眼",
       "cast": [
@@ -231,5 +231,11 @@
       "hook": "普通人的夜晚，到此结束。"
     }
   ],
-  "createdAt": "2026-09-17T08:06:00+08:00"
+  "createdAt": "2026-09-17T08:06:00+08:00",
+  "revision": {
+    "rev": "v2-90s",
+    "at": "2026-10-12T14:51:00+08:00",
+    "by": "吴琦 方案A",
+    "change": "S01 6→4, S03 6→4, S05 8→6 (S08/S10 untouched)"
+  }
 }

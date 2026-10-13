@@ -12,13 +12,14 @@ const bindings = { 'qi-ye': bind('qi-ye', 'a'), 'fei-yue-li': bind('fei-yue-li',
 const sceneRef = bind('scene-academy-night', 'd');
 
 describe('ShotSpec → MultiShotList', () => {
-  it('ep01 real fixture converts: 16 shots, 96s, range from BeatPlan 90–96', () => {
+  it('ep01 real fixture converts: 16 shots, 90s (v2 方案A), range from BeatPlan 60–90', () => {
     const r = convertShotSpecToMultiShot(SPEC, BEAT, { workDir: '/w', bindings, sceneRef });
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.list.shots).toHaveLength(16);
     expect(r.list.episodeId).toBe('ep01');
-    expect(r.list.durationRange).toEqual({ minSeconds: 90, maxSeconds: 96 });
+    expect(r.list.durationRange).toEqual({ minSeconds: 60, maxSeconds: 90 });
+    expect(r.list.shots.filter((x) => ['S01', 'S03'].includes(x.shotId))).toHaveLength(2);
     expect(r.list.mode).toBe('dry-run');
     expect(r.list.shots.map((s) => s.order)).toEqual([...Array(16).keys()]);
     expect(r.list.shots[0].seed).toBe('1000');
@@ -47,11 +48,12 @@ describe('ShotSpec → MultiShotList', () => {
     const codes = r.problems.map((p) => p.code);
     expect(codes).toEqual(expect.arrayContaining(['BEAT_SHOT_MISMATCH', 'BEAT_DURATION_MISMATCH', 'UNKNOWN_BEAT']));
   });
-  it('ep01 is 96s: default 60–90 (no BeatPlan) rejects; BeatPlan 90–96 accepts; override respected', () => {
+  it('v1 96s spec: default 60–90 rejects; override respected', () => {
+    const SPEC = fx('SHOT_SPEC.v1-96s.json');
     const r = convertShotSpecToMultiShot(SPEC, undefined, { workDir: '/w', bindings, sceneRef });
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.problems[0]).toMatchObject({ code: 'DURATION_OUT_OF_RANGE' });
-    const r2 = convertShotSpecToMultiShot(SPEC, BEAT, { workDir: '/w', bindings, sceneRef, durationRange: { minSeconds: 60, maxSeconds: 80 } });
+    const r2 = convertShotSpecToMultiShot(SPEC, undefined, { workDir: '/w', bindings, sceneRef, durationRange: { minSeconds: 60, maxSeconds: 80 } });
     expect(r2.ok).toBe(false);
     const r3 = convertShotSpecToMultiShot(SPEC, undefined, { workDir: '/w', bindings, sceneRef, durationRange: { minSeconds: 90, maxSeconds: 100 } });
     expect(r3.ok).toBe(true);
