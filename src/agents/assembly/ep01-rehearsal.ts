@@ -16,6 +16,7 @@ import { convertShotSpecToMultiShot, type CharacterRefBinding, type ConvertProbl
 import { runMultiShotOneClick, type MultiShotResult } from './multishot-oneclick';
 import { createFakeH3Provider } from './fake-h3-provider';
 import { writeQcSummary } from './qc-summary-page';
+import { runV13Detectors, suiteShotsFromSpec, type SuiteDeps } from '@/agents/detectors/v13-suite';
 
 export interface RehearsalInput {
   shotSpec: unknown; beatPlan?: unknown; refIndex: Record<string, unknown>;
@@ -30,6 +31,9 @@ export interface RehearsalInput {
   /** V12 Story Rhythm Gate: 'warn' (default, report only) or 'enforce' (FAIL stops before generation, exit 27). */
   rhythmGate?: 'warn' | 'enforce';
   rhythmOptions?: RhythmOptions;
+  /** V13: run detector suite after generation and write detectors-report.json (default 'report'). Never PASS. */
+  detectors?: 'off' | 'report';
+  detectorDeps?: SuiteDeps;
 }
 
 export interface RehearsalReport {
@@ -37,6 +41,7 @@ export interface RehearsalReport {
   decisions: BindingDecision[]; sceneDecisions?: SceneDecision[]; reviewSummary?: ReviewSummary; problems?: ConvertProblem[];
   listPath?: string; run?: MultiShotResult; episodeMp4?: string; qcHtml?: string; qcMd?: string;
   durationRange?: { minSeconds: number; maxSeconds: number }; plannedSeconds?: number;
+  detectors?: { reportPath: string; overall: string; g3: 'BLOCKED' | 'NOT_EVALUATED'; failing: string[]; incomplete: string[] };
   notes: string[];
 }
 
@@ -91,7 +96,16 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     qcHtml = q.html; qcMd = q.md;
   }
   const reviewSummary = existsSync(qcDir) ? await summarizeQcReview(qcDir, { listPath }) : undefined;
-  const report: RehearsalReport = { ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', rhythm, decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
+  let detectors: RehearsalReport['detectors'];
+  if (run.ok && (input.detectors ?? 'report') === 'report') {
+    const cpTake = (id: string) => { const safe = id.replace(/[^A-Za-z0-9._-]/g, '_'); return join(input.workDir, 'run', 'takes', `FAKE_H3_${conv.list.episodeId}-${safe}.mp4`); };
+    const suite = await runV13Detectors({ episodeId: conv.list.episodeId, shots: suiteShotsFromSpec(input.shotSpec as never, cpTake, (id) => join(qcDir, id.replace(/[^A-Za-z0-9._-]/g, '_'), 'mid.png')) }, input.detectorDeps);
+    const reportPath = join(input.workDir, 'detectors-report.json');
+    await writeFile(reportPath, JSON.stringify(suite, null, 2));
+    detectors = { reportPath, overall: suite.summary.overall, g3: suite.summary.g3, failing: suite.summary.failing, incomplete: suite.summary.incomplete };
+    notes.push(`V13 detectors: ${suite.summary.overall} (G3 ${suite.summary.g3}; fake-provider material — numbers are not quality evidence)`);
+  }
+  const report: RehearsalReport = { detectors, ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', rhythm, decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
     episodeMp4: run.output?.path, qcHtml, qcMd, durationRange: conv.list.durationRange, plannedSeconds, notes };
   await writeFile(join(input.workDir, 'rehearsal-report.json'), JSON.stringify(report, null, 2));
   return report;
