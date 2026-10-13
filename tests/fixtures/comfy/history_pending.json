@@ -1,0 +1,15 @@
+{
+  "fixture-prompt-pending-001": {
+    "prompt": [
+      3,
+      "fixture-prompt-pending-001",
+      {}
+    ],
+    "outputs": {},
+    "status": {
+      "status_str": "pending",
+      "completed": false,
+      "messages": []
+    }
+  }
+}
