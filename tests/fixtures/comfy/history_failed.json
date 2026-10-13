@@ -1,0 +1,22 @@
+{
+  "fixture-prompt-failed-001": {
+    "prompt": [
+      2,
+      "fixture-prompt-failed-001",
+      {}
+    ],
+    "outputs": {},
+    "status": {
+      "status_str": "error",
+      "completed": true,
+      "messages": [
+        [
+          "execution_error",
+          {
+            "exception_message": "fixture OOM"
+          }
+        ]
+      ]
+    }
+  }
+}
