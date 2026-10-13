@@ -48,6 +48,8 @@ export interface ConvertOptions {
   bindings: Record<string, CharacterRefBinding>;
   /** Ref for shots with empty cast (establishing/scenery). Without it those shots are problems. */
   sceneRef?: CharacterRefBinding;
+  /** Human-locked scene refs per shotId; take precedence over sceneRef. */
+  sceneRefsByShot?: Record<string, CharacterRefBinding>;
   /** Deterministic seeds: baseSeed + order. Default 1000. */
   baseSeed?: number;
   canvas?: { width: number; height: number; fps: number };
@@ -111,7 +113,7 @@ export function convertShotSpecToMultiShot(shotSpecRaw: unknown, beatPlanRaw: un
   const shots = spec.shots.map((s, i) => {
     let ref: CharacterRefBinding | undefined;
     if (s.cast.length === 0) {
-      ref = opts.sceneRef;
+      ref = opts.sceneRefsByShot?.[s.shotId] ?? opts.sceneRef;
       leadByShot[s.shotId] = null;
       if (!ref) problems.push({ shotId: s.shotId, code: 'NO_REF_BINDING', message: 'scenery shot needs sceneRef' });
     } else {

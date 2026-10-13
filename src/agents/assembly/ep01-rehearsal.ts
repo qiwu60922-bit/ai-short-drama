@@ -9,7 +9,8 @@ import { execFile } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { bindingsFromRefIndex, type BindingDecision } from './ref-index-bindings';
+import { bindingsFromRefIndex, sceneRefsFromRefIndex, type BindingDecision, type SceneDecision } from './ref-index-bindings';
+import { summarizeQcReview, type ReviewSummary } from './qc-review-rerun';
 import { convertShotSpecToMultiShot, type CharacterRefBinding, type ConvertProblem } from './beatplan-to-multishot';
 import { runMultiShotOneClick, type MultiShotResult } from './multishot-oneclick';
 import { createFakeH3Provider } from './fake-h3-provider';
@@ -29,7 +30,7 @@ export interface RehearsalInput {
 
 export interface RehearsalReport {
   ok: boolean; exitCode: number; stage: 'bindings' | 'convert' | 'generate' | 'done';
-  decisions: BindingDecision[]; problems?: ConvertProblem[];
+  decisions: BindingDecision[]; sceneDecisions?: SceneDecision[]; reviewSummary?: ReviewSummary; problems?: ConvertProblem[];
   listPath?: string; run?: MultiShotResult; episodeMp4?: string; qcHtml?: string; qcMd?: string;
   durationRange?: { minSeconds: number; maxSeconds: number }; plannedSeconds?: number;
   notes: string[];
@@ -55,13 +56,16 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
   });
   await writeFile(join(input.workDir, 'bindings.json'), JSON.stringify({ bindings, decisions }, null, 2));
 
+  const scenes = sceneRefsFromRefIndex(input.refIndex, {
+    verifySha: input.verifyRefShaOnDisk ? (p) => (existsSync(p) ? sha256(readFileSync(p)) : null) : undefined,
+  });
   const scenePath = input.sceneRefPath ?? (await scenePlaceholder(input.workDir, canvas));
   if (!input.sceneRefPath) notes.push(`scenery shots use synthetic placeholder ${scenePath} (approvedTemporary, rehearsal only)`);
   const sceneSha = sha256(await readFile(scenePath));
   const sceneRef: CharacterRefBinding = { characterId: 'scene-ep01', appearanceRevisionId: `apr-scene-${sceneSha.slice(0, 8)}`, refContentSha256: sceneSha,
     operatorKind: 'hero_portrait', firstFramePath: scenePath, approvedTemporary: { actor: 'ep01-rehearsal', reason: 'scenery ref for fake-provider rehearsal only' } };
 
-  const conv = convertShotSpecToMultiShot(input.shotSpec, input.beatPlan, { workDir: join(input.workDir, 'run'), mode: 'live', bindings, sceneRef, canvas, durationRange: input.durationRange });
+  const conv = convertShotSpecToMultiShot(input.shotSpec, input.beatPlan, { workDir: join(input.workDir, 'run'), mode: 'live', bindings, sceneRef, sceneRefsByShot: scenes.byShot, canvas, durationRange: input.durationRange });
   if (!conv.ok) return { ok: false, exitCode: 24, stage: 'convert', decisions, problems: conv.problems, notes };
   const listPath = join(input.workDir, 'multishot-list.json');
   await writeFile(listPath, JSON.stringify(conv.list, null, 2));
@@ -79,7 +83,8 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     const q = await writeQcSummary(qcDir, { review: true, title: `${conv.list.episodeId} 离线演练 · QC 三帧`, order: conv.list.shots.map((s) => s.shotId), prompts });
     qcHtml = q.html; qcMd = q.md;
   }
-  const report: RehearsalReport = { ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', decisions, listPath, run,
+  const reviewSummary = existsSync(qcDir) ? await summarizeQcReview(qcDir, { listPath }) : undefined;
+  const report: RehearsalReport = { ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
     episodeMp4: run.output?.path, qcHtml, qcMd, durationRange: conv.list.durationRange, plannedSeconds, notes };
   await writeFile(join(input.workDir, 'rehearsal-report.json'), JSON.stringify(report, null, 2));
   return report;

@@ -10,6 +10,7 @@ import type { CharacterRefBinding } from './beatplan-to-multishot';
 export interface RefIndexFile { path: string; role?: string; sha256?: string; }
 export interface RefIndexEntry {
   status?: string; displayName?: string; files?: RefIndexFile[];
+  kind?: string; shots?: string[];
   humanLockPrimary?: string; humanLockSheet?: string; primary?: string; dryRun?: string; dryRunPolicy?: string;
 }
 
@@ -42,7 +43,7 @@ export function bindingsFromRefIndex(index: Record<string, unknown>, opts: RefIn
   const decisions: BindingDecision[] = [];
   const bindings: Record<string, CharacterRefBinding> = {};
   for (const [id, v] of Object.entries(index)) {
-    if (!isEntry(v)) continue;
+    if (!isEntry(v) || v.kind === 'scene') continue;
     const status = String(v.status);
     if (status !== 'HUMAN_LOCK' && status !== 'LOCK_CANDIDATE') { decisions.push({ characterId: id, outcome: 'EXCLUDED', reason: `status ${status}` }); continue; }
     const f = pickPrimary(v);
@@ -69,4 +70,32 @@ export function bindingsFromRefIndex(index: Record<string, unknown>, opts: RefIn
     decisions.push({ characterId: id, outcome: 'TEMPORARY_DRY_RUN', binding, source: f.path });
   }
   return { bindings, decisions };
+}
+
+export type SceneDecision =
+  | { sceneId: string; outcome: 'LOCKED'; shots: string[]; binding: CharacterRefBinding }
+  | { sceneId: string; outcome: 'EXCLUDED'; reason: string };
+
+/**
+ * Scene refs (kind="scene", shots=[...]). Only HUMAN_LOCK scene entries bind; SPEC_PENDING / LOCK_CANDIDATE
+ * never do (caller keeps its placeholder). Never auto-locks.
+ */
+export function sceneRefsFromRefIndex(index: Record<string, unknown>, opts: Pick<RefIndexOptions, 'verifySha'> = {}) {
+  const byShot: Record<string, CharacterRefBinding> = {};
+  const decisions: SceneDecision[] = [];
+  for (const [id, v] of Object.entries(index)) {
+    if (!isEntry(v) || v.kind !== 'scene') continue;
+    if (v.status !== 'HUMAN_LOCK') { decisions.push({ sceneId: id, outcome: 'EXCLUDED', reason: `status ${v.status}; placeholder stays until human lock` }); continue; }
+    const f = pickPrimary(v);
+    if (!f) { decisions.push({ sceneId: id, outcome: 'EXCLUDED', reason: 'no file with sha256' }); continue; }
+    if (opts.verifySha) {
+      const actual = opts.verifySha(f.path);
+      if (actual === null || actual.toLowerCase() !== f.sha256!.toLowerCase()) { decisions.push({ sceneId: id, outcome: 'EXCLUDED', reason: `file missing or sha mismatch: ${f.path}` }); continue; }
+    }
+    const sha = f.sha256!.toLowerCase();
+    const binding: CharacterRefBinding = { characterId: id, appearanceRevisionId: `apr-${id}-${sha.slice(0, 8)}`, refContentSha256: sha, appearanceContentSha256: sha, operatorKind: 'dna_locked_export', firstFramePath: f.path };
+    for (const shot of v.shots ?? []) byShot[shot] = binding;
+    decisions.push({ sceneId: id, outcome: 'LOCKED', shots: v.shots ?? [], binding });
+  }
+  return { byShot, decisions };
 }
