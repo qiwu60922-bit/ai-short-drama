@@ -126,6 +126,7 @@
     "exposition:check": "tsx scripts/dialogue-exposition-check.ts",
     "foreshadow:check": "tsx scripts/foreshadow-check.ts",
     "conflict-payoff:check": "tsx scripts/conflict-payoff-check.ts",
+    "cut-timeline:check": "tsx scripts/cut-timeline-check.ts",
     "auto:edit": "tsx scripts/auto-edit.ts",
     "duration:budget": "tsx scripts/duration-budget.ts",
     "asset:index": "tsx scripts/asset-index.ts",
