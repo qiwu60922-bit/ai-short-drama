@@ -7,7 +7,7 @@
  *  - 《聚宝仙盆之杂灵根才是真BOSS》: 废柴设定反转 + 季末开放悬念、下季开篇承接.
  *  - 《不候，过期离婚》: 第一场就是危机（离婚当天车祸失忆），不做铺垫.
  *
- * Each ShotSpec shot may carry `beatRole` ∈ BEAT_ROLES. The gate checks:
+ * Each ShotSpec shot may carry `beatRole` ∈ BEAT_ROLES (incl. `reaction` for 天幕式反应镜). The gate checks:
  *  HOOK_LATE (FAIL)          no `hook` shot starting inside the first hookWindowSec (default 3s)
  *  TURN_MISSING (FAIL)       no `reversal`/`increment` shot starting in the middle window (default 25–75%)
  *  CLIFFHANGER_MISSING (FAIL) last `cliffhanger` shot does not end within tailToleranceSec of the end (default 3s,
@@ -20,7 +20,7 @@
  */
 import { ShotSpecDocSchema } from './beatplan-to-multishot';
 
-export const BEAT_ROLES = ['hook', 'increment', 'reversal', 'cliffhanger', 'setup'] as const;
+export const BEAT_ROLES = ['hook', 'increment', 'reversal', 'cliffhanger', 'setup', 'reaction'] as const;
 export type BeatRole = (typeof BEAT_ROLES)[number];
 
 export interface HookStructureOptions {
