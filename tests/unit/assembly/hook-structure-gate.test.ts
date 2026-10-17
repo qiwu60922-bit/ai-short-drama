@@ -29,7 +29,7 @@ const failCodes = (r: ReturnType<typeof evaluateHookStructure>) => r.findings.fi
 
 describe('evaluateHookStructure', () => {
   it('exposes the role vocabulary', () => {
-    expect(BEAT_ROLES).toEqual(['hook', 'increment', 'reversal', 'cliffhanger', 'setup']);
+    expect(BEAT_ROLES).toEqual(['hook', 'increment', 'reversal', 'cliffhanger', 'setup', 'reaction']);
   });
 
   it('hook ≤3s + mid reversal + cliffhanger ending → PASS with metrics, gates untouched', () => {
