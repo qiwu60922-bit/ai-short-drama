@@ -129,6 +129,7 @@
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
+    "motif-callback:check": "tsx scripts/motif-callback-check.ts",
     "cut-timeline:check": "tsx scripts/cut-timeline-check.ts",
     "assembly-review:check": "tsx scripts/assembly-review-check.ts",
     "auto:edit": "tsx scripts/auto-edit.ts",
