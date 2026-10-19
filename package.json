@@ -133,6 +133,7 @@
     "cut-timeline:check": "tsx scripts/cut-timeline-check.ts",
     "assembly-review:check": "tsx scripts/assembly-review-check.ts",
     "ordb:check": "tsx scripts/ordb-continuity-check.ts",
+    "dramakit:check": "tsx scripts/dramakit-structure-check.ts",
     "auto:edit": "tsx scripts/auto-edit.ts",
     "duration:budget": "tsx scripts/duration-budget.ts",
     "asset:index": "tsx scripts/asset-index.ts",
