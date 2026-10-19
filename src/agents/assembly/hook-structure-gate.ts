@@ -6,22 +6,33 @@
  *    "给每一集标注钩子、增量、悬念，归不进这三类的镜头全删".
  *  - 《聚宝仙盆之杂灵根才是真BOSS》: 废柴设定反转 + 季末开放悬念、下季开篇承接.
  *  - 《不候，过期离婚》: 第一场就是危机（离婚当天车祸失忆），不做铺垫.
+ *  - 2026-10-19 detail-hook:
+ *    《盛夏芬德拉》第一集推迟正脸、双手交叠 CU 当钩；
+ *    《回到70年代霸道婆婆带我飞》「掌公主」掌掴 CU 当爽点钩；
+ *    《老公请和我恋爱吧》派出所认亲叠钩——hook 不必是正脸.
  *
- * Each ShotSpec shot may carry `beatRole` ∈ BEAT_ROLES (incl. `reaction` for 天幕式反应镜). The gate checks:
- *  HOOK_LATE (FAIL)          no `hook` shot starting inside the first hookWindowSec (default 3s)
- *  TURN_MISSING (FAIL)       no `reversal`/`increment` shot starting in the middle window (default 25–75%)
- *  CLIFFHANGER_MISSING (FAIL) last `cliffhanger` shot does not end within tailToleranceSec of the end (default 3s,
- *                            so a short black title card may follow it)
- *  INVALID_ROLE (FAIL)       beatRole outside the vocabulary (typo guard)
- *  UNTAGGED_SHOT (WARN|FAIL) shot without beatRole (FAIL when requireAllTagged)
- *  FIRST_SHOT_LONG (WARN)    first shot longer than maxFirstShotSec (default 3s)
- *  SETUP_HEAVY (WARN)        `setup` seconds above maxSetupRatio of runtime (default 0.5)
+ * Each ShotSpec shot may carry `beatRole` ∈ BEAT_ROLES (incl. `reaction` for 天幕式反应镜).
+ * Hook shots may optionally carry `hookKind` ∈ HOOK_KINDS (`detail_cu` = 局部/身体特写, not face-required).
+ * The gate checks:
+ *  HOOK_LATE (FAIL)            no `hook` shot starting inside the first hookWindowSec (default 3s)
+ *  TURN_MISSING (FAIL)         no `reversal`/`increment` shot starting in the middle window (default 25–75%)
+ *  CLIFFHANGER_MISSING (FAIL)  last `cliffhanger` shot does not end within tailToleranceSec of the end
+ *  INVALID_ROLE (FAIL)         beatRole outside the vocabulary (typo guard)
+ *  INVALID_HOOK_KIND (FAIL)    hook shot has hookKind outside HOOK_KINDS
+ *  HOOK_KIND_MISSING (FAIL)    requireHookKind and a hook shot lacks hookKind
+ *  UNTAGGED_SHOT (WARN|FAIL)   shot without beatRole (FAIL when requireAllTagged)
+ *  FIRST_SHOT_LONG (WARN)      first shot longer than maxFirstShotSec (default 3s)
+ *  SETUP_HEAVY (WARN)          `setup` seconds above maxSetupRatio of runtime (default 0.5)
  * Engineering gate only: PASS ≠ Final ≠ G3 (a human still judges whether the hook actually lands).
  */
 import { ShotSpecDocSchema } from './beatplan-to-multishot';
 
 export const BEAT_ROLES = ['hook', 'increment', 'reversal', 'cliffhanger', 'setup', 'reaction'] as const;
 export type BeatRole = (typeof BEAT_ROLES)[number];
+
+/** How the hook is delivered visually — face is allowed but not required. */
+export const HOOK_KINDS = ['face', 'detail_cu', 'action', 'dialogue', 'situation'] as const;
+export type HookKind = (typeof HOOK_KINDS)[number];
 
 export interface HookStructureOptions {
   hookWindowSec?: number;
@@ -30,10 +41,22 @@ export interface HookStructureOptions {
   tailToleranceSec?: number;
   maxSetupRatio?: number;
   requireAllTagged?: boolean;
+  /** When true, every beatRole=hook shot must carry a valid hookKind. Default false. */
+  requireHookKind?: boolean;
 }
 
 export type HookFinding = {
-  code: 'SCHEMA' | 'HOOK_LATE' | 'TURN_MISSING' | 'CLIFFHANGER_MISSING' | 'INVALID_ROLE' | 'UNTAGGED_SHOT' | 'FIRST_SHOT_LONG' | 'SETUP_HEAVY';
+  code:
+    | 'SCHEMA'
+    | 'HOOK_LATE'
+    | 'TURN_MISSING'
+    | 'CLIFFHANGER_MISSING'
+    | 'INVALID_ROLE'
+    | 'INVALID_HOOK_KIND'
+    | 'HOOK_KIND_MISSING'
+    | 'UNTAGGED_SHOT'
+    | 'FIRST_SHOT_LONG'
+    | 'SETUP_HEAVY';
   severity: 'FAIL' | 'WARN';
   message: string;
   shotIds?: string[];
@@ -44,6 +67,8 @@ export interface HookStructureReport {
   metrics: {
     totalSeconds: number;
     firstHookAtSec: number | null;
+    firstHookKind: HookKind | null;
+    detailHookCount: number;
     turnAtSec: number | null;
     cliffhangerEndsAtSec: number | null;
     taggedShots: number;
@@ -57,67 +82,185 @@ export interface HookStructureReport {
 
 const r2 = (n: number) => Math.round(n * 100) / 100;
 const isRole = (v: unknown): v is BeatRole => typeof v === 'string' && (BEAT_ROLES as readonly string[]).includes(v);
+const isHookKind = (v: unknown): v is HookKind =>
+  typeof v === 'string' && (HOOK_KINDS as readonly string[]).includes(v);
 
 export function evaluateHookStructure(shotSpecRaw: unknown, opts: HookStructureOptions = {}): HookStructureReport {
   const t: Required<HookStructureOptions> = {
-    hookWindowSec: 3, maxFirstShotSec: 3, midWindow: [0.25, 0.75], tailToleranceSec: 3, maxSetupRatio: 0.5, requireAllTagged: false, ...opts,
+    hookWindowSec: 3,
+    maxFirstShotSec: 3,
+    midWindow: [0.25, 0.75],
+    tailToleranceSec: 3,
+    maxSetupRatio: 0.5,
+    requireAllTagged: false,
+    requireHookKind: false,
+    ...opts,
   };
   const gates = { Final: 'NOT_EVALUATED' as const, V11_G3: 'NOT_EVALUATED' as const };
+  const emptyMetrics = {
+    totalSeconds: 0,
+    firstHookAtSec: null as number | null,
+    firstHookKind: null as HookKind | null,
+    detailHookCount: 0,
+    turnAtSec: null as number | null,
+    cliffhangerEndsAtSec: null as number | null,
+    taggedShots: 0,
+    untaggedShots: 0,
+    setupSeconds: 0,
+  };
   const p = ShotSpecDocSchema.safeParse(shotSpecRaw);
   if (!p.success) {
     return {
-      verdict: 'FAIL', thresholds: t, gates,
-      metrics: { totalSeconds: 0, firstHookAtSec: null, turnAtSec: null, cliffhangerEndsAtSec: null, taggedShots: 0, untaggedShots: 0, setupSeconds: 0 },
-      findings: [{ code: 'SCHEMA', severity: 'FAIL', message: p.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ') }],
+      verdict: 'FAIL',
+      thresholds: t,
+      gates,
+      metrics: emptyMetrics,
+      findings: [
+        {
+          code: 'SCHEMA',
+          severity: 'FAIL',
+          message: p.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; '),
+        },
+      ],
     };
   }
 
   let clock = 0;
   const shots = p.data.shots.map((s) => {
     const raw = (s as { beatRole?: unknown }).beatRole;
+    const hookKindRaw = (s as { hookKind?: unknown }).hookKind;
     const start = clock;
     clock += s.durSec;
-    return { id: s.shotId, dur: s.durSec, start, end: clock, raw, role: isRole(raw) ? raw : undefined };
+    return {
+      id: s.shotId,
+      dur: s.durSec,
+      start,
+      end: clock,
+      raw,
+      role: isRole(raw) ? raw : undefined,
+      hookKindRaw,
+      hookKind: isHookKind(hookKindRaw) ? hookKindRaw : undefined,
+    };
   });
   const total = clock;
   const findings: HookFinding[] = [];
 
   const invalid = shots.filter((s) => s.raw !== undefined && s.raw !== null && !s.role);
-  if (invalid.length) findings.push({ code: 'INVALID_ROLE', severity: 'FAIL', message: `beatRole must be one of ${BEAT_ROLES.join('|')}`, shotIds: invalid.map((s) => s.id) });
+  if (invalid.length) {
+    findings.push({
+      code: 'INVALID_ROLE',
+      severity: 'FAIL',
+      message: `beatRole must be one of ${BEAT_ROLES.join('|')}`,
+      shotIds: invalid.map((s) => s.id),
+    });
+  }
 
-  const hook = shots.find((s) => s.role === 'hook');
+  const hookShots = shots.filter((s) => s.role === 'hook');
+  const badKind = hookShots.filter(
+    (s) => s.hookKindRaw !== undefined && s.hookKindRaw !== null && !s.hookKind,
+  );
+  if (badKind.length) {
+    findings.push({
+      code: 'INVALID_HOOK_KIND',
+      severity: 'FAIL',
+      message: `hookKind must be one of ${HOOK_KINDS.join('|')} (detail_cu = 局部特写可当钩子，不强制正脸)`,
+      shotIds: badKind.map((s) => s.id),
+    });
+  }
+
+  if (t.requireHookKind) {
+    const missing = hookShots.filter((s) => s.hookKindRaw === undefined || s.hookKindRaw === null);
+    if (missing.length) {
+      findings.push({
+        code: 'HOOK_KIND_MISSING',
+        severity: 'FAIL',
+        message: `${missing.length} hook shot(s) lack hookKind (face|detail_cu|action|dialogue|situation)`,
+        shotIds: missing.map((s) => s.id),
+      });
+    }
+  }
+
+  const hook = hookShots[0];
   if (!hook || hook.start >= t.hookWindowSec) {
-    findings.push({ code: 'HOOK_LATE', severity: 'FAIL', message: hook ? `first hook starts at ${r2(hook.start)}s ≥ ${t.hookWindowSec}s` : 'no hook shot', ...(hook ? { shotIds: [hook.id] } : {}) });
+    findings.push({
+      code: 'HOOK_LATE',
+      severity: 'FAIL',
+      message: hook
+        ? `first hook starts at ${r2(hook.start)}s ≥ ${t.hookWindowSec}s`
+        : 'no hook shot',
+      ...(hook ? { shotIds: [hook.id] } : {}),
+    });
   }
 
   const [lo, hi] = [total * t.midWindow[0], total * t.midWindow[1]];
-  const turn = shots.find((s) => (s.role === 'reversal' || s.role === 'increment') && s.start >= lo && s.start <= hi);
-  if (!turn) findings.push({ code: 'TURN_MISSING', severity: 'FAIL', message: `no reversal/increment starting between ${r2(lo)}s and ${r2(hi)}s` });
+  const turn = shots.find(
+    (s) => (s.role === 'reversal' || s.role === 'increment') && s.start >= lo && s.start <= hi,
+  );
+  if (!turn) {
+    findings.push({
+      code: 'TURN_MISSING',
+      severity: 'FAIL',
+      message: `no reversal/increment starting between ${r2(lo)}s and ${r2(hi)}s`,
+    });
+  }
 
   const cliff = [...shots].reverse().find((s) => s.role === 'cliffhanger');
   if (!cliff || total - cliff.end > t.tailToleranceSec) {
-    findings.push({ code: 'CLIFFHANGER_MISSING', severity: 'FAIL', message: cliff ? `last cliffhanger ends ${r2(total - cliff.end)}s before the end (> ${t.tailToleranceSec}s)` : 'no cliffhanger shot', ...(cliff ? { shotIds: [cliff.id] } : {}) });
+    findings.push({
+      code: 'CLIFFHANGER_MISSING',
+      severity: 'FAIL',
+      message: cliff
+        ? `last cliffhanger ends ${r2(total - cliff.end)}s before the end (> ${t.tailToleranceSec}s)`
+        : 'no cliffhanger shot',
+      ...(cliff ? { shotIds: [cliff.id] } : {}),
+    });
   }
 
   const untagged = shots.filter((s) => s.raw === undefined || s.raw === null);
-  if (untagged.length) findings.push({ code: 'UNTAGGED_SHOT', severity: t.requireAllTagged ? 'FAIL' : 'WARN', message: `${untagged.length} shots without beatRole (钩子/增量/悬念都不是的镜头考虑删掉)`, shotIds: untagged.map((s) => s.id) });
+  if (untagged.length) {
+    findings.push({
+      code: 'UNTAGGED_SHOT',
+      severity: t.requireAllTagged ? 'FAIL' : 'WARN',
+      message: `${untagged.length} shots without beatRole (钩子/增量/悬念都不是的镜头考虑删掉)`,
+      shotIds: untagged.map((s) => s.id),
+    });
+  }
 
-  if (shots[0].dur > t.maxFirstShotSec) findings.push({ code: 'FIRST_SHOT_LONG', severity: 'WARN', message: `first shot ${shots[0].dur}s > ${t.maxFirstShotSec}s`, shotIds: [shots[0].id] });
+  if (shots[0].dur > t.maxFirstShotSec) {
+    findings.push({
+      code: 'FIRST_SHOT_LONG',
+      severity: 'WARN',
+      message: `first shot ${shots[0].dur}s > ${t.maxFirstShotSec}s`,
+      shotIds: [shots[0].id],
+    });
+  }
 
   const setup = shots.filter((s) => s.role === 'setup').reduce((a, s) => a + s.dur, 0);
-  if (setup > total * t.maxSetupRatio) findings.push({ code: 'SETUP_HEAVY', severity: 'WARN', message: `setup ${r2(setup)}s > ${t.maxSetupRatio * 100}% of ${r2(total)}s` });
+  if (setup > total * t.maxSetupRatio) {
+    findings.push({
+      code: 'SETUP_HEAVY',
+      severity: 'WARN',
+      message: `setup ${r2(setup)}s > ${t.maxSetupRatio * 100}% of ${r2(total)}s`,
+    });
+  }
+
+  const detailHookCount = hookShots.filter((s) => s.hookKind === 'detail_cu').length;
 
   return {
     verdict: findings.some((f) => f.severity === 'FAIL') ? 'FAIL' : 'PASS',
     metrics: {
       totalSeconds: r2(total),
       firstHookAtSec: hook ? r2(hook.start) : null,
+      firstHookKind: hook?.hookKind ?? null,
+      detailHookCount,
       turnAtSec: turn ? r2(turn.start) : null,
       cliffhangerEndsAtSec: cliff ? r2(cliff.end) : null,
       taggedShots: shots.length - untagged.length,
       untaggedShots: untagged.length,
       setupSeconds: r2(setup),
     },
-    findings, thresholds: t, gates,
+    findings,
+    thresholds: t,
+    gates,
   };
 }

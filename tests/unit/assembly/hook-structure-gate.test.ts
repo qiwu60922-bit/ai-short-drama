@@ -7,9 +7,9 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { evaluateHookStructure, BEAT_ROLES } from '@/agents/assembly/hook-structure-gate';
+import { evaluateHookStructure, BEAT_ROLES, HOOK_KINDS } from '@/agents/assembly/hook-structure-gate';
 
-type S = { durSec: number; beatRole?: string; action?: string };
+type S = { durSec: number; beatRole?: string; action?: string; hookKind?: string };
 const spec = (shots: S[]) => ({ episode: 'T', shots: shots.map((s, i) => ({ shotId: `S${i}`, cast: [], ...s })) });
 // 60s reference episode: hook at 0s, reversal at ~30s, cliffhanger last.
 const good = (): S[] => [
@@ -126,5 +126,52 @@ describe('evaluateHookStructure', () => {
 
   it('bad input → FAIL with SCHEMA finding', () => {
     expect(evaluateHookStructure({ shots: [] }).findings[0].code).toBe('SCHEMA');
+  });
+
+  // ── detail-hook (2026-10-19): 局部 CU / 动作可记为 hook，不强制正脸
+  // Reverse: 《盛夏芬德拉》双手交叠 CU; 《回到70年代霸道婆婆带我飞》掌掴 CU; 《老公请和我恋爱吧》认亲叠钩
+
+  it('exposes HOOK_KINDS vocabulary (face|detail_cu|action|dialogue|situation)', () => {
+    expect(HOOK_KINDS).toEqual(['face', 'detail_cu', 'action', 'dialogue', 'situation']);
+  });
+
+  it('detail_cu hook inside 3s window → PASS (局部特写可当开场钩子，不强制正脸)', () => {
+    const shots = good();
+    shots[0].hookKind = 'detail_cu';
+    const r = evaluateHookStructure(spec(shots));
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics.firstHookKind).toBe('detail_cu');
+    expect(r.metrics.detailHookCount).toBe(1);
+    expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
+  });
+
+  it('unknown hookKind → INVALID_HOOK_KIND FAIL', () => {
+    const shots = good();
+    shots[0].hookKind = 'closeup_face_only';
+    const r = evaluateHookStructure(spec(shots));
+    expect(r.verdict).toBe('FAIL');
+    expect(failCodes(r)).toContain('INVALID_HOOK_KIND');
+    expect(r.findings.find((f) => f.code === 'INVALID_HOOK_KIND')).toMatchObject({ shotIds: ['S0'] });
+  });
+
+  it('requireHookKind + hook without kind → HOOK_KIND_MISSING FAIL', () => {
+    const shots = good();
+    const r = evaluateHookStructure(spec(shots), { requireHookKind: true });
+    expect(r.verdict).toBe('FAIL');
+    expect(failCodes(r)).toContain('HOOK_KIND_MISSING');
+  });
+
+  it('requireHookKind + detail_cu annotated → PASS', () => {
+    const shots = good();
+    shots[0].hookKind = 'detail_cu';
+    expect(evaluateHookStructure(spec(shots), { requireHookKind: true }).verdict).toBe('PASS');
+  });
+
+  it('hookKind on non-hook shot is ignored (no INVALID)', () => {
+    const shots = good();
+    shots[1].hookKind = 'detail_cu'; // setup
+    const r = evaluateHookStructure(spec(shots));
+    expect(failCodes(r)).not.toContain('INVALID_HOOK_KIND');
+    expect(r.metrics.detailHookCount).toBe(0);
   });
 });
