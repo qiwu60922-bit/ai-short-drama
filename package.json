@@ -130,6 +130,7 @@
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
     "motif-callback:check": "tsx scripts/motif-callback-check.ts",
+    "alliance-ledger:check": "tsx scripts/alliance-ledger-check.ts",
     "opening-cascade:check": "tsx scripts/opening-cascade-check.ts",
     "cut-timeline:check": "tsx scripts/cut-timeline-check.ts",
     "assembly-review:check": "tsx scripts/assembly-review-check.ts",
