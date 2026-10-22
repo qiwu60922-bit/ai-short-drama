@@ -123,6 +123,7 @@
     "qc:rerun-failed": "tsx scripts/qc-rerun-failed.ts",
     "scene:selfcheck": "tsx scripts/scene-ref-selfcheck.ts",
     "rhythm:check": "tsx scripts/story-rhythm-check.ts",
+    "series-rhythm:check": "tsx scripts/series-rhythm-check.ts",
     "exposition:check": "tsx scripts/dialogue-exposition-check.ts",
     "foreshadow:check": "tsx scripts/foreshadow-check.ts",
     "conflict-payoff:check": "tsx scripts/conflict-payoff-check.ts",
