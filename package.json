@@ -128,6 +128,7 @@
     "foreshadow:check": "tsx scripts/foreshadow-check.ts",
     "conflict-payoff:check": "tsx scripts/conflict-payoff-check.ts",
     "peak-before-payoff:check": "tsx scripts/peak-before-payoff-check.ts",
+    "persona-mask:check": "tsx scripts/persona-mask-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
