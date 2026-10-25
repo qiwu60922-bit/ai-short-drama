@@ -130,6 +130,7 @@
     "peak-before-payoff:check": "tsx scripts/peak-before-payoff-check.ts",
     "panelix-storyboard:check": "tsx scripts/panelix-storyboard-check.ts",
     "persona-mask:check": "tsx scripts/persona-mask-check.ts",
+    "identity-vest:check": "tsx scripts/identity-vest-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
