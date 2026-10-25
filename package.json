@@ -129,6 +129,7 @@
     "conflict-payoff:check": "tsx scripts/conflict-payoff-check.ts",
     "peak-before-payoff:check": "tsx scripts/peak-before-payoff-check.ts",
     "panelix-storyboard:check": "tsx scripts/panelix-storyboard-check.ts",
+    "manju-editorial:check": "tsx scripts/manju-editorial-check.ts",
     "persona-mask:check": "tsx scripts/persona-mask-check.ts",
     "identity-vest:check": "tsx scripts/identity-vest-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
