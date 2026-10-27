@@ -131,6 +131,7 @@
     "panelix-storyboard:check": "tsx scripts/panelix-storyboard-check.ts",
     "manju-editorial:check": "tsx scripts/manju-editorial-check.ts",
     "persona-card:check": "tsx scripts/persona-card-check.ts",
+    "mv-shotlist:check": "tsx scripts/mv-shotlist-check.ts",
     "persona-mask:check": "tsx scripts/persona-mask-check.ts",
     "identity-vest:check": "tsx scripts/identity-vest-check.ts",
     "frequency-tipping:check": "tsx scripts/frequency-tipping-check.ts",
