@@ -134,6 +134,7 @@
     "persona-mask:check": "tsx scripts/persona-mask-check.ts",
     "identity-vest:check": "tsx scripts/identity-vest-check.ts",
     "frequency-tipping:check": "tsx scripts/frequency-tipping-check.ts",
+    "amnesia-arc:check": "tsx scripts/amnesia-arc-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
