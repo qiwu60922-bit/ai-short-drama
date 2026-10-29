@@ -1177,5 +1177,112 @@
         "beatRole": "cliffhanger"
       }
     ]
+  },
+  "coldOpenHookWindow": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-COHW0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机冷开",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-COHW1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-COHW2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-COHW3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "reactionReversalCliff": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-RRC0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "开场"
+      },
+      {
+        "shotId": "EP01-RRC1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-RRC2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-RRC3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "脸色煞白"
+      },
+      {
+        "shotId": "EP01-RRC4",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "cliffhanger",
+        "action": "门外脚步"
+      }
+    ]
+  },
+  "coldCloseCliffTail": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-CCCT0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "开场"
+      },
+      {
+        "shotId": "EP01-CCCT1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-CCCT2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-CCCT3",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "cliffhanger",
+        "action": "门外脚步"
+      }
+    ]
   }
 }
