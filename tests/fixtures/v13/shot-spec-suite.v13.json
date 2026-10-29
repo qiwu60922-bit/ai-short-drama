@@ -5378,5 +5378,200 @@
       }
     ]
   },
-  "hookHardSetupRatioOpts": {}
+  "hookHardSetupRatioOpts": {},
+  "hookHardReactionWindow": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B131-hookHardReactionWindow-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardReactionWindowOpts": {},
+  "hookHardDetailCap": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B131-hookHardDetailCap-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardDetailCapOpts": {},
+  "hookHardMidRatio": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B131-hookHardMidRatio-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardMidRatioOpts": {}
 }
