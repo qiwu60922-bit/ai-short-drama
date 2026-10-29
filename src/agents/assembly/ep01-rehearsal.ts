@@ -18,6 +18,7 @@ import { createFakeH3Provider } from './fake-h3-provider';
 import { writeQcSummary } from './qc-summary-page';
 import { runV13Detectors, suiteShotsFromSpec, type SuiteDeps } from '@/agents/detectors/v13-suite';
 import { evaluateStoryLedgerSuite, type StoryLedgerSuiteReport } from './story-ledger-suite';
+import { evaluateShotSpecSuite, type ShotSpecSuiteReport } from './shot-spec-suite';
 
 export interface RehearsalInput {
   shotSpec: unknown; beatPlan?: unknown; refIndex: Record<string, unknown>;
@@ -39,11 +40,16 @@ export interface RehearsalInput {
   storyLedger?: unknown;
   /** 'off' (default) · 'warn' (report only) · 'enforce' (FAIL → exit 36 before generation). */
   storyLedgerGate?: 'off' | 'warn' | 'enforce';
+  /** V12 Shot-Spec Suite 旁路 (hook/cascade/cut/contract/prompt/rhythm/mv). Default 'off'. */
+  shotSpecSuite?: unknown;
+  /** 'off' (default) · 'warn' · 'enforce' (FAIL → exit 36 before generation). */
+  shotSpecGate?: 'off' | 'warn' | 'enforce';
 }
 
 export interface RehearsalReport {
-  ok: boolean; exitCode: number; stage: 'bindings' | 'rhythm' | 'storyLedger' | 'convert' | 'generate' | 'done'; rhythm?: RhythmReport;
+  ok: boolean; exitCode: number; stage: 'bindings' | 'rhythm' | 'storyLedger' | 'shotSpec' | 'convert' | 'generate' | 'done'; rhythm?: RhythmReport;
   storyLedger?: StoryLedgerSuiteReport;
+  shotSpecSuite?: ShotSpecSuiteReport;
   decisions: BindingDecision[]; sceneDecisions?: SceneDecision[]; reviewSummary?: ReviewSummary; problems?: ConvertProblem[];
   listPath?: string; run?: MultiShotResult; episodeMp4?: string; qcHtml?: string; qcMd?: string;
   durationRange?: { minSeconds: number; maxSeconds: number }; plannedSeconds?: number;
@@ -78,6 +84,17 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     }
   }
 
+  let shotSpecSuite: ShotSpecSuiteReport | undefined;
+  const shotMode = input.shotSpecGate ?? 'off';
+  if (input.shotSpecSuite != null && shotMode !== 'off') {
+    shotSpecSuite = evaluateShotSpecSuite(input.shotSpecSuite);
+    await writeFile(join(input.workDir, 'shot-spec-suite-report.json'), JSON.stringify(shotSpecSuite, null, 2));
+    notes.push(`shot-spec-suite: ${shotSpecSuite.verdict} (ran=${shotSpecSuite.metrics.ran} failed=${shotSpecSuite.metrics.failed} skipped=${shotSpecSuite.metrics.skipped})`);
+    if (shotSpecSuite.verdict === 'FAIL' && shotMode === 'enforce') {
+      return { ok: false, exitCode: 36, stage: 'shotSpec', rhythm, storyLedger, shotSpecSuite, decisions: [], notes };
+    }
+  }
+
   const canvas = input.canvas ?? { width: 1344, height: 768, fps: 24 };
 
   const { bindings, decisions } = bindingsFromRefIndex(input.refIndex, {
@@ -96,7 +113,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     operatorKind: 'hero_portrait', firstFramePath: scenePath, approvedTemporary: { actor: 'ep01-rehearsal', reason: 'scenery ref for fake-provider rehearsal only' } };
 
   const conv = convertShotSpecToMultiShot(input.shotSpec, input.beatPlan, { workDir: join(input.workDir, 'run'), mode: 'live', bindings, sceneRef, sceneRefsByShot: scenes.byShot, canvas, durationRange: input.durationRange });
-  if (!conv.ok) return { ok: false, exitCode: 24, stage: 'convert', rhythm, storyLedger, decisions, problems: conv.problems, notes };
+  if (!conv.ok) return { ok: false, exitCode: 24, stage: 'convert', rhythm, storyLedger, shotSpecSuite, decisions, problems: conv.problems, notes };
   const listPath = join(input.workDir, 'multishot-list.json');
   await writeFile(listPath, JSON.stringify(conv.list, null, 2));
 
@@ -123,7 +140,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     detectors = { reportPath, overall: suite.summary.overall, g3: suite.summary.g3, failing: suite.summary.failing, incomplete: suite.summary.incomplete };
     notes.push(`V13 detectors: ${suite.summary.overall} (G3 ${suite.summary.g3}; fake-provider material — numbers are not quality evidence)`);
   }
-  const report: RehearsalReport = { detectors, ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', rhythm, storyLedger, decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
+  const report: RehearsalReport = { detectors, ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', rhythm, storyLedger, shotSpecSuite, decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
     episodeMp4: run.output?.path, qcHtml, qcMd, durationRange: conv.list.durationRange, plannedSeconds, notes };
   await writeFile(join(input.workDir, 'rehearsal-report.json'), JSON.stringify(report, null, 2));
   return report;

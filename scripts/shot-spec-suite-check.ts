@@ -1,5 +1,5 @@
 /**
- * V12 Shot-Spec Suite CLI (offline) — hook / cascade / cut-timeline 旁路.
+ * V12 Shot-Spec Suite CLI (offline) — hook/cascade/cut + contract/prompt/rhythm/mv 旁路.
  * npx tsx scripts/shot-spec-suite-check.ts BUNDLE.json
  * Exit 0 PASS · 36 FAIL · 2 usage. PASS ≠ Final ≠ G3.
  */
