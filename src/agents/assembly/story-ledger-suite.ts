@@ -115,6 +115,8 @@
  *   · motifRhythmForeshadowLink · coldOpenQualityLink · maskRevealLink · maskQualityForeshadowLink
  *   · foreshadowQualityPeakBridge · stageGoalForeshadowPeakBridge · conflictQualityPeakBridge · maskQualityPeakBridge
  *   · vestRhythmForeshadowLink · personaColdOpenLink · maskRhythmForeshadowLink · allianceQualityForeshadowLink
+ *   · revealMaskPeakBridge · coldOpenMaskPeakBridge · stageGoalMaskPeakBridge · vestColdOpenPeakBridge
+ *   · coldOpenMaskLink · stageGoalMaskLink · revealBondLink · vestColdOpenLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -1916,6 +1918,50 @@ import {
   evaluateAllianceQualityForeshadowLink,
   type AllianceQualityForeshadowLinkReport,
 } from './alliance-quality-foreshadow-link-gate';
+import {
+  RevealMaskPeakBridgeLinkSchema,
+  evaluateRevealMaskPeakBridge,
+  type RevealMaskPeakBridgeReport,
+} from './reveal-mask-peak-bridge-gate';
+import {
+  ColdOpenMaskPeakBridgeLinkSchema,
+  ColdOpenMaskPeakColdOpenEntrySchema,
+  evaluateColdOpenMaskPeakBridge,
+  type ColdOpenMaskPeakBridgeReport,
+} from './cold-open-mask-peak-bridge-gate';
+import {
+  StageGoalMaskPeakBridgeLinkSchema,
+  evaluateStageGoalMaskPeakBridge,
+  type StageGoalMaskPeakBridgeReport,
+} from './stage-goal-mask-peak-bridge-gate';
+import {
+  VestColdOpenPeakBridgeLinkSchema,
+  VestColdOpenPeakColdOpenEntrySchema,
+  evaluateVestColdOpenPeakBridge,
+  type VestColdOpenPeakBridgeReport,
+} from './vest-cold-open-peak-bridge-gate';
+import {
+  ColdOpenMaskLinkEntrySchema,
+  ColdOpenMaskColdOpenEntrySchema,
+  evaluateColdOpenMaskLink,
+  type ColdOpenMaskLinkReport,
+} from './cold-open-mask-link-gate';
+import {
+  StageGoalMaskLinkEntrySchema,
+  evaluateStageGoalMaskLink,
+  type StageGoalMaskLinkReport,
+} from './stage-goal-mask-link-gate';
+import {
+  RevealBondLinkEntrySchema,
+  evaluateRevealBondLink,
+  type RevealBondLinkReport,
+} from './reveal-bond-link-gate';
+import {
+  VestColdOpenLinkEntrySchema,
+  VestColdOpenColdOpenEntrySchema,
+  evaluateVestColdOpenLink,
+  type VestColdOpenLinkReport,
+} from './vest-cold-open-link-gate';
 
 
 
@@ -2266,6 +2312,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'personaColdOpenLink',
   'maskRhythmForeshadowLink',
   'allianceQualityForeshadowLink',
+  'revealMaskPeakBridge',
+  'coldOpenMaskPeakBridge',
+  'stageGoalMaskPeakBridge',
+  'vestColdOpenPeakBridge',
+  'coldOpenMaskLink',
+  'stageGoalMaskLink',
+  'revealBondLink',
+  'vestColdOpenLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -4586,6 +4640,62 @@ const AllianceQualityForeshadowSectionSchema = z.object({
   links: z.array(AllianceQualityForeshadowLinkEntrySchema),
 });
 
+const RevealMaskPeakBridgeSectionSchema = z.object({
+  reveals: z.array(PersonaMaskEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(RevealMaskPeakBridgeLinkSchema),
+});
+
+const ColdOpenMaskPeakBridgeSectionSchema = z.object({
+  coldOpens: z.array(ColdOpenMaskPeakColdOpenEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ColdOpenMaskPeakBridgeLinkSchema),
+});
+
+const StageGoalMaskPeakBridgeSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(StageGoalMaskPeakBridgeLinkSchema),
+});
+
+const VestColdOpenPeakBridgeSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  coldOpens: z.array(VestColdOpenPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(VestColdOpenPeakBridgeLinkSchema),
+});
+
+const ColdOpenMaskSectionSchema = z.object({
+  coldOpens: z.array(ColdOpenMaskColdOpenEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(ColdOpenMaskLinkEntrySchema),
+});
+
+const StageGoalMaskSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(StageGoalMaskLinkEntrySchema),
+});
+
+const RevealBondSectionSchema = z.object({
+  reveals: z.array(PersonaMaskEntrySchema),
+  bonds: z.array(BondContractEntrySchema),
+  links: z.array(RevealBondLinkEntrySchema),
+});
+
+const VestColdOpenSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  coldOpens: z.array(VestColdOpenColdOpenEntrySchema),
+  links: z.array(VestColdOpenLinkEntrySchema),
+});
+
 
 
 
@@ -4936,6 +5046,14 @@ export const StoryLedgerSuiteSchema = z
     personaColdOpenLink: PersonaColdOpenSectionSchema.optional(),
     maskRhythmForeshadowLink: MaskRhythmForeshadowSectionSchema.optional(),
     allianceQualityForeshadowLink: AllianceQualityForeshadowSectionSchema.optional(),
+    revealMaskPeakBridge: RevealMaskPeakBridgeSectionSchema.optional(),
+    coldOpenMaskPeakBridge: ColdOpenMaskPeakBridgeSectionSchema.optional(),
+    stageGoalMaskPeakBridge: StageGoalMaskPeakBridgeSectionSchema.optional(),
+    vestColdOpenPeakBridge: VestColdOpenPeakBridgeSectionSchema.optional(),
+    coldOpenMaskLink: ColdOpenMaskSectionSchema.optional(),
+    stageGoalMaskLink: StageGoalMaskSectionSchema.optional(),
+    revealBondLink: RevealBondSectionSchema.optional(),
+    vestColdOpenLink: VestColdOpenSectionSchema.optional(),
   })
   .strict();
 
@@ -5283,7 +5401,15 @@ export type StoryLedgerChildReport =
   | VestRhythmForeshadowLinkReport
   | PersonaColdOpenLinkReport
   | MaskRhythmForeshadowLinkReport
-  | AllianceQualityForeshadowLinkReport;
+  | AllianceQualityForeshadowLinkReport
+  | RevealMaskPeakBridgeReport
+  | ColdOpenMaskPeakBridgeReport
+  | StageGoalMaskPeakBridgeReport
+  | VestColdOpenPeakBridgeReport
+  | ColdOpenMaskLinkReport
+  | StageGoalMaskLinkReport
+  | RevealBondLinkReport
+  | VestColdOpenLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -6007,6 +6133,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateMaskRhythmForeshadowLink({ series, latestEp, ...(section as object) }),
   allianceQualityForeshadowLink: (series, latestEp, section) =>
     evaluateAllianceQualityForeshadowLink({ series, latestEp, ...(section as object) }),
+  revealMaskPeakBridge: (series, latestEp, section) =>
+    evaluateRevealMaskPeakBridge({ series, latestEp, ...(section as object) }),
+  coldOpenMaskPeakBridge: (series, latestEp, section) =>
+    evaluateColdOpenMaskPeakBridge({ series, latestEp, ...(section as object) }),
+  stageGoalMaskPeakBridge: (series, latestEp, section) =>
+    evaluateStageGoalMaskPeakBridge({ series, latestEp, ...(section as object) }),
+  vestColdOpenPeakBridge: (series, latestEp, section) =>
+    evaluateVestColdOpenPeakBridge({ series, latestEp, ...(section as object) }),
+  coldOpenMaskLink: (series, latestEp, section) =>
+    evaluateColdOpenMaskLink({ series, latestEp, ...(section as object) }),
+  stageGoalMaskLink: (series, latestEp, section) =>
+    evaluateStageGoalMaskLink({ series, latestEp, ...(section as object) }),
+  revealBondLink: (series, latestEp, section) =>
+    evaluateRevealBondLink({ series, latestEp, ...(section as object) }),
+  vestColdOpenLink: (series, latestEp, section) =>
+    evaluateVestColdOpenLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
