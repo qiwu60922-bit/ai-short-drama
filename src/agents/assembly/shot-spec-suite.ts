@@ -18,6 +18,7 @@
  *   · coldOpenDetailHook · cliffTailDialogueBan · midHookSetupBan
  *   · coldOpenHookWindow · reactionReversalCliff · coldCloseCliffTail
  *   · midHookDialogueBan · setupDialogueCap · dialogueSetupBan
+ *   · midTurnHookWindow · hookWindowReaction · midTurnReaction
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -238,6 +239,22 @@ import {
   type DialogueSetupBanReport,
 } from './dialogue-setup-ban-gate';
 
+import {
+  evaluateMidTurnHookWindow,
+  type MidTurnHookWindowOptions,
+  type MidTurnHookWindowReport,
+} from './mid-turn-hook-window-gate';
+import {
+  evaluateHookWindowReaction,
+  type HookWindowReactionOptions,
+  type HookWindowReactionReport,
+} from './hook-window-reaction-gate';
+import {
+  evaluateMidTurnReaction,
+  type MidTurnReactionOptions,
+  type MidTurnReactionReport,
+} from './mid-turn-reaction-gate';
+
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
   'openingCascade',
@@ -280,6 +297,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'midHookDialogueBan',
   'setupDialogueCap',
   'dialogueSetupBan',
+  'midTurnHookWindow',
+  'hookWindowReaction',
+  'midTurnReaction',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -769,6 +789,58 @@ const DialogueSetupBanOptsSchema = z
 
 
 
+const MidTurnHookWindowOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    minTurns: z.number().int().positive().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+  })
+  .strict();
+
+const HookWindowReactionOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    requirePriorReaction: z.boolean().optional(),
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+  })
+  .strict();
+
+const MidTurnReactionOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    minTurns: z.number().int().positive().optional(),
+    requirePriorReaction: z.boolean().optional(),
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+  })
+  .strict();
+
+
+
 
 export const ShotSpecSuiteSchema = z
   .object({
@@ -814,6 +886,9 @@ export const ShotSpecSuiteSchema = z
     midHookDialogueBan: ShotSpecDocSchema.optional(),
     setupDialogueCap: ShotSpecDocSchema.optional(),
     dialogueSetupBan: ShotSpecDocSchema.optional(),
+    midTurnHookWindow: ShotSpecDocSchema.optional(),
+    hookWindowReaction: ShotSpecDocSchema.optional(),
+    midTurnReaction: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -853,6 +928,9 @@ export const ShotSpecSuiteSchema = z
     midHookDialogueBanOpts: MidHookDialogueBanOptsSchema.optional(),
     setupDialogueCapOpts: SetupDialogueCapOptsSchema.optional(),
     dialogueSetupBanOpts: DialogueSetupBanOptsSchema.optional(),
+    midTurnHookWindowOpts: MidTurnHookWindowOptsSchema.optional(),
+    hookWindowReactionOpts: HookWindowReactionOptsSchema.optional(),
+    midTurnReactionOpts: MidTurnReactionOptsSchema.optional(),
   })
   .strict();
 
@@ -899,7 +977,10 @@ export type ShotSpecChildReport =
   | ColdCloseCliffTailReport
   | MidHookDialogueBanReport
   | SetupDialogueCapReport
-  | DialogueSetupBanReport;
+  | DialogueSetupBanReport
+  | MidTurnHookWindowReport
+  | HookWindowReactionReport
+  | MidTurnReactionReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -1006,6 +1087,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     midHookDialogueBanOpts,
     setupDialogueCapOpts,
     dialogueSetupBanOpts,
+    midTurnHookWindowOpts,
+    hookWindowReactionOpts,
+    midTurnReactionOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -1371,6 +1455,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateDialogueSetupBan(
         sections.dialogueSetupBan,
         (dialogueSetupBanOpts ?? {}) as DialogueSetupBanOptions,
+      ),
+    );
+  }
+  if (sections.midTurnHookWindow !== undefined) {
+    run(
+      'midTurnHookWindow',
+      evaluateMidTurnHookWindow(
+        sections.midTurnHookWindow,
+        (midTurnHookWindowOpts ?? {}) as MidTurnHookWindowOptions,
+      ),
+    );
+  }
+  if (sections.hookWindowReaction !== undefined) {
+    run(
+      'hookWindowReaction',
+      evaluateHookWindowReaction(
+        sections.hookWindowReaction,
+        (hookWindowReactionOpts ?? {}) as HookWindowReactionOptions,
+      ),
+    );
+  }
+  if (sections.midTurnReaction !== undefined) {
+    run(
+      'midTurnReaction',
+      evaluateMidTurnReaction(
+        sections.midTurnReaction,
+        (midTurnReactionOpts ?? {}) as MidTurnReactionOptions,
       ),
     );
   }
