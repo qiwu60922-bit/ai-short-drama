@@ -26,6 +26,7 @@
  *   · hookWindowCliffTail · midTurnCliffTail · coldCloseMidHook
  *   · coldCloseHookWindow · reactionCliffTail · midTurnColdClose
  *   · coldCloseMidTurn · hookWindowColdClose · cliffTailMidHook
+ *   · coldCloseReaction · hookWindowMidHook · cliffTailHookWindow
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -368,6 +369,21 @@ import {
   type CliffTailMidHookOptions,
   type CliffTailMidHookReport,
 } from './cliff-tail-mid-hook-gate';
+import {
+  evaluateColdCloseReaction,
+  type ColdCloseReactionOptions,
+  type ColdCloseReactionReport,
+} from './cold-close-reaction-gate';
+import {
+  evaluateHookWindowMidHook,
+  type HookWindowMidHookOptions,
+  type HookWindowMidHookReport,
+} from './hook-window-mid-hook-gate';
+import {
+  evaluateCliffTailHookWindow,
+  type CliffTailHookWindowOptions,
+  type CliffTailHookWindowReport,
+} from './cliff-tail-hook-window-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -435,6 +451,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'coldCloseMidTurn',
   'hookWindowColdClose',
   'cliffTailMidHook',
+  'coldCloseReaction',
+  'hookWindowMidHook',
+  'cliffTailHookWindow',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -1304,6 +1323,54 @@ const CliffTailMidHookOptsSchema = z
   })
   .strict();
 
+const ColdCloseReactionOptsSchema = z
+  .object({
+    coldTailSec: z.number().positive().optional(),
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    reversalOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const HookWindowMidHookOptsSchema = z
+  .object({
+    hardHookWindowSec: z.number().positive().optional(),
+    midHookByRatio: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const CliffTailHookWindowOptsSchema = z
+  .object({
+    hardTailToleranceSec: z.number().positive().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 
 export const ShotSpecSuiteSchema = z
   .object({
@@ -1373,6 +1440,9 @@ export const ShotSpecSuiteSchema = z
     coldCloseMidTurn: ShotSpecDocSchema.optional(),
     hookWindowColdClose: ShotSpecDocSchema.optional(),
     cliffTailMidHook: ShotSpecDocSchema.optional(),
+    coldCloseReaction: ShotSpecDocSchema.optional(),
+    hookWindowMidHook: ShotSpecDocSchema.optional(),
+    cliffTailHookWindow: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -1436,6 +1506,9 @@ export const ShotSpecSuiteSchema = z
     coldCloseMidTurnOpts: ColdCloseMidTurnOptsSchema.optional(),
     hookWindowColdCloseOpts: HookWindowColdCloseOptsSchema.optional(),
     cliffTailMidHookOpts: CliffTailMidHookOptsSchema.optional(),
+    coldCloseReactionOpts: ColdCloseReactionOptsSchema.optional(),
+    hookWindowMidHookOpts: HookWindowMidHookOptsSchema.optional(),
+    cliffTailHookWindowOpts: CliffTailHookWindowOptsSchema.optional(),
   })
   .strict();
 
@@ -1506,7 +1579,10 @@ export type ShotSpecChildReport =
   | MidTurnColdCloseReport
   | ColdCloseMidTurnReport
   | HookWindowColdCloseReport
-  | CliffTailMidHookReport;
+  | CliffTailMidHookReport
+  | ColdCloseReactionReport
+  | HookWindowMidHookReport
+  | CliffTailHookWindowReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -1637,6 +1713,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     coldCloseMidTurnOpts,
     hookWindowColdCloseOpts,
     cliffTailMidHookOpts,
+    coldCloseReactionOpts,
+    hookWindowMidHookOpts,
+    cliffTailHookWindowOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -2218,6 +2297,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateCliffTailMidHook(
         sections.cliffTailMidHook,
         (cliffTailMidHookOpts ?? {}) as CliffTailMidHookOptions,
+      ),
+    );
+  }
+  if (sections.coldCloseReaction !== undefined) {
+    run(
+      'coldCloseReaction',
+      evaluateColdCloseReaction(
+        sections.coldCloseReaction,
+        (coldCloseReactionOpts ?? {}) as ColdCloseReactionOptions,
+      ),
+    );
+  }
+  if (sections.hookWindowMidHook !== undefined) {
+    run(
+      'hookWindowMidHook',
+      evaluateHookWindowMidHook(
+        sections.hookWindowMidHook,
+        (hookWindowMidHookOpts ?? {}) as HookWindowMidHookOptions,
+      ),
+    );
+  }
+  if (sections.cliffTailHookWindow !== undefined) {
+    run(
+      'cliffTailHookWindow',
+      evaluateCliffTailHookWindow(
+        sections.cliffTailHookWindow,
+        (cliffTailHookWindowOpts ?? {}) as CliffTailHookWindowOptions,
       ),
     );
   }
