@@ -2,10 +2,10 @@
  * V12 · Story-Ledger Suite (pre-gen rehearsal/assembly 总入口),
  * offline, deterministic.
  *
- * Bundles the 2026-10-29 cross-ledger / ensemble gates (#71–#76) into one
+ * Bundles the 2026-10-29+ cross-ledger / ensemble gates into one
  * entry so EP01 rehearsal / factory can enforce them before fake generation:
  *   bondFrequencyLink · vestMaskPeakLink · frequencyPeakLink · amnesiaMotifLink
- *   ensembleCast · fakeLedgerReconcile
+ *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -58,6 +58,11 @@ import {
   MotifEntrySchema,
   MotifAppearanceSchema,
 } from './motif-callback-gate';
+import {
+  CliffCascadeLinkEntrySchema,
+  evaluateCliffCascadeLink,
+  type CliffCascadeLinkReport,
+} from './cliff-cascade-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -68,6 +73,7 @@ export const STORY_LEDGER_GATE_IDS = [
   'amnesiaMotifLink',
   'ensembleCast',
   'fakeLedgerReconcile',
+  'cliffCascadeLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -109,6 +115,22 @@ const AmnesiaMotifSectionSchema = z.object({
   links: z.array(AmnesiaMotifLinkEntrySchema),
 });
 
+const CliffCascadeSectionSchema = z.object({
+  links: z.array(CliffCascadeLinkEntrySchema),
+  cliffOpts: z
+    .object({
+      hookWindowSec: z.number().positive().optional(),
+      tailToleranceSec: z.number().positive().optional(),
+    })
+    .optional(),
+  cascadeOpts: z
+    .object({
+      cascadeWindowSec: z.number().positive().optional(),
+      minCascadeBeats: z.number().int().positive().optional(),
+    })
+    .optional(),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -119,6 +141,7 @@ export const StoryLedgerSuiteSchema = z
     amnesiaMotifLink: AmnesiaMotifSectionSchema.optional(),
     ensembleCast: EnsembleSectionSchema.optional(),
     fakeLedgerReconcile: FakeLedgerSectionSchema.optional(),
+    cliffCascadeLink: CliffCascadeSectionSchema.optional(),
   })
   .strict();
 
@@ -130,7 +153,8 @@ export type StoryLedgerChildReport =
   | FrequencyPeakLinkReport
   | AmnesiaMotifLinkReport
   | EnsembleCastReport
-  | FakeLedgerReconcileReport;
+  | FakeLedgerReconcileReport
+  | CliffCascadeLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -183,6 +207,8 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateEnsembleCast({ series, latestEp, ...(section as object) }),
   fakeLedgerReconcile: (series, latestEp, section) =>
     evaluateFakeLedgerReconcile({ series, latestEp, ...(section as object) }),
+  cliffCascadeLink: (series, latestEp, section) =>
+    evaluateCliffCascadeLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
