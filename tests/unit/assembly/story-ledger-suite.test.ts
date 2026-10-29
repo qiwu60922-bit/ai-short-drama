@@ -1,6 +1,6 @@
 /**
  * V12 Story-Ledger Suite — pre-gen rehearsal/assembly 总入口.
- * 挂载 #71–#182 跨账本闸门；缺席 section = SKIP；全空 = EMPTY_SUITE FAIL.
+ * 挂载 #71–#190 跨账本闸门；缺席 section = SKIP；全空 = EMPTY_SUITE FAIL.
  * PASS ≠ Final ≠ G3. $0 offline.
  */
 import { describe, expect, it } from 'vitest';
@@ -268,6 +268,14 @@ describe('STORY_LEDGER_GATE_IDS', () => {
       'handoffPersonaLink',
       'cliffPersonaLink',
       'bondPersonaLink',
+      'frequencyPersonaPeakBridge',
+      'handoffPersonaPeakBridge',
+      'cliffPersonaPeakBridge',
+      'bondPersonaPeakBridge',
+      'abilityFrequencyLink',
+      'vestHandoffLink',
+      'maskCliffLink',
+      'maskFrequencyLink',
     ]);
   });
 });
@@ -279,7 +287,7 @@ describe('evaluateStoryLedgerSuite', () => {
     );
     expect(r.verdict).toBe('PASS');
     expect(r.schema).toBe('v12/StoryLedgerSuite/v1');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 180 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 188 });
     expect(r.results.ensembleCast.status).toBe('PASS');
     expect(r.results.fakeLedgerReconcile.status).toBe('PASS');
     expect(r.results.bondFrequencyLink.status).toBe('SKIP');
@@ -346,7 +354,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 10),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 178 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 186 });
     expect(r.results.stageGoal.status).toBe('PASS');
     expect(r.results.conflictPayoff.status).toBe('PASS');
     expect(r.results.peakBeforePayoff.status).toBe('PASS');
@@ -513,7 +521,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 80),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 175 });
+    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 183 });
     for (const id of [
       'qualityLeap',
       'foreshadowLedger',
@@ -621,7 +629,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 80),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 5, passed: 5, failed: 0, skipped: 177 });
+    expect(r.metrics).toMatchObject({ ran: 5, passed: 5, failed: 0, skipped: 185 });
     for (const id of [
       'personaCard',
       'personaMask',
@@ -679,7 +687,7 @@ describe('evaluateStoryLedgerSuite', () => {
   it('only fakeLedger section runs; others SKIP', () => {
     const r = evaluateStoryLedgerSuite(bundle({ fakeLedgerReconcile: fakeOk }, 20));
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 181 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 189 });
     expect(r.results.fakeLedgerReconcile.report?.verdict).toBe('PASS');
   });
 });
