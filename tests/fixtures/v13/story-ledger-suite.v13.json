@@ -123,5 +123,309 @@
         }
       }
     ]
+  },
+  "motifRhythmBridge": {
+    "profile": "dense",
+    "motifs": [
+      {
+        "id": "white-rose",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 8,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 20,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-echo",
+        "motifId": "white-rose",
+        "ep": 8,
+        "shotSpec": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S1",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S2",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S3",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S4",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S5",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S6",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S7",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S8",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S9",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S10",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S11",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S12",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S13",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S14",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S15",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S16",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S17",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            }
+          ]
+        },
+        "profile": "dense"
+      }
+    ]
+  },
+  "qualityCliffLink": {
+    "cliffLinks": [
+      {
+        "id": "C9-10",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qc",
+        "cliffLinkId": "C9-10",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }

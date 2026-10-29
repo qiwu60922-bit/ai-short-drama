@@ -17,6 +17,7 @@
  *   · qualityReactionLink · foreshadowHandoffLink
  *   · peakQualityLink · abilityMaskLink · cliffHandoffLink
  *   · qualityMaskLink · abilityCliffLink · peakHandoffLink
+ *   · motifRhythmBridge · qualityCliffLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -255,6 +256,16 @@ import {
   evaluatePeakHandoffLink,
   type PeakHandoffLinkReport,
 } from './peak-handoff-link-gate';
+import {
+  MotifRhythmBridgeLinkSchema,
+  evaluateMotifRhythmBridge,
+  type MotifRhythmBridgeReport,
+} from './motif-rhythm-bridge-gate';
+import {
+  QualityCliffLinkEntrySchema,
+  evaluateQualityCliffLink,
+  type QualityCliffLinkReport,
+} from './quality-cliff-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -303,6 +314,8 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityMaskLink',
   'abilityCliffLink',
   'peakHandoffLink',
+  'motifRhythmBridge',
+  'qualityCliffLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -570,6 +583,19 @@ const PeakHandoffSectionSchema = z.object({
   links: z.array(PeakHandoffLinkEntrySchema),
 });
 
+const MotifRhythmBridgeSectionSchema = z.object({
+  profile: z.enum(['dense', 'default', 'intrigue', 'slow_burn']).optional(),
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(MotifRhythmBridgeLinkSchema),
+});
+
+const QualityCliffSectionSchema = z.object({
+  minHandoffIntense: z.number().int().min(1).max(5).optional(),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  links: z.array(QualityCliffLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -618,6 +644,8 @@ export const StoryLedgerSuiteSchema = z
     qualityMaskLink: QualityMaskSectionSchema.optional(),
     abilityCliffLink: AbilityCliffSectionSchema.optional(),
     peakHandoffLink: PeakHandoffSectionSchema.optional(),
+    motifRhythmBridge: MotifRhythmBridgeSectionSchema.optional(),
+    qualityCliffLink: QualityCliffSectionSchema.optional(),
   })
   .strict();
 
@@ -667,7 +695,9 @@ export type StoryLedgerChildReport =
   | CliffHandoffLinkReport
   | QualityMaskLinkReport
   | AbilityCliffLinkReport
-  | PeakHandoffLinkReport;
+  | PeakHandoffLinkReport
+  | MotifRhythmBridgeReport
+  | QualityCliffLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -795,6 +825,10 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateAbilityCliffLink({ series, latestEp, ...(section as object) }),
   peakHandoffLink: (series, latestEp, section) =>
     evaluatePeakHandoffLink({ series, latestEp, ...(section as object) }),
+  motifRhythmBridge: (series, latestEp, section) =>
+    evaluateMotifRhythmBridge({ series, latestEp, ...(section as object) }),
+  qualityCliffLink: (series, latestEp, section) =>
+    evaluateQualityCliffLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
