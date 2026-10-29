@@ -278,6 +278,14 @@ describe('v13 suite fixtures', () => {
     expect(r.results.openingCascadeForeshadowLink.status).toBe('PASS');
     expect(r.results.maskForeshadowLink.status).toBe('PASS');
     expect(r.results.bondForeshadowLink.status).toBe('PASS');
+    expect(r.results.rhythmQualityPeakBridge.status).toBe('PASS');
+    expect(r.results.ensembleQualityPeakBridge.status).toBe('PASS');
+    expect(r.results.revealQualityPeakBridge.status).toBe('PASS');
+    expect(r.results.amnesiaQualityPeakBridge.status).toBe('PASS');
+    expect(r.results.rhythmForeshadowLink.status).toBe('PASS');
+    expect(r.results.ensembleForeshadowLink.status).toBe('PASS');
+    expect(r.results.revealForeshadowLink.status).toBe('PASS');
+    expect(r.results.coldOpenForeshadowLink.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(80);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
@@ -400,6 +408,9 @@ describe('v13 suite fixtures', () => {
     expect(r.results.hookHardColdDialogueBan.status).toBe('PASS');
     expect(r.results.hookHardTailDialogueBan.status).toBe('PASS');
     expect(r.results.hookHardWindowDialogueBan.status).toBe('PASS');
+    expect(r.results.hookHardWindowCap.status).toBe('PASS');
+    expect(r.results.hookHardFaceRatio.status).toBe('PASS');
+    expect(r.results.hookHardFaceCap.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(41);
   });
 

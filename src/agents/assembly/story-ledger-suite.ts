@@ -109,6 +109,9 @@
  *   · countdownQualityPeakBridge · stageGoalQualityPeakBridge · conflictPayoffPeakBridge · openingCascadeQualityPeakBridge
  *   · stageGoalForeshadowLink · openingCascadeForeshadowLink · maskForeshadowLink · bondForeshadowLink
  *
+ *   · rhythmQualityPeakBridge · ensembleQualityPeakBridge · revealQualityPeakBridge · amnesiaQualityPeakBridge
+ *   · rhythmForeshadowLink · ensembleForeshadowLink · revealForeshadowLink · coldOpenForeshadowLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -1780,6 +1783,50 @@ import {
   type BondForeshadowLinkReport,
 } from './bond-foreshadow-link-gate';
 
+import {
+  RhythmQualityPeakBridgeLinkSchema,
+  RhythmQualityPeakRhythmEntrySchema,
+  evaluateRhythmQualityPeakBridge,
+  type RhythmQualityPeakBridgeReport,
+} from './rhythm-quality-peak-bridge-gate';
+import {
+  EnsembleQualityPeakBridgeLinkSchema,
+  evaluateEnsembleQualityPeakBridge,
+  type EnsembleQualityPeakBridgeReport,
+} from './ensemble-quality-peak-bridge-gate';
+import {
+  RevealQualityPeakBridgeLinkSchema,
+  evaluateRevealQualityPeakBridge,
+  type RevealQualityPeakBridgeReport,
+} from './reveal-quality-peak-bridge-gate';
+import {
+  AmnesiaQualityPeakBridgeLinkSchema,
+  evaluateAmnesiaQualityPeakBridge,
+  type AmnesiaQualityPeakBridgeReport,
+} from './amnesia-quality-peak-bridge-gate';
+import {
+  RhythmForeshadowLinkEntrySchema,
+  RhythmForeshadowRhythmEntrySchema,
+  evaluateRhythmForeshadowLink,
+  type RhythmForeshadowLinkReport,
+} from './rhythm-foreshadow-link-gate';
+import {
+  EnsembleForeshadowLinkEntrySchema,
+  evaluateEnsembleForeshadowLink,
+  type EnsembleForeshadowLinkReport,
+} from './ensemble-foreshadow-link-gate';
+import {
+  RevealForeshadowLinkEntrySchema,
+  evaluateRevealForeshadowLink,
+  type RevealForeshadowLinkReport,
+} from './reveal-foreshadow-link-gate';
+import {
+  ColdOpenForeshadowLinkEntrySchema,
+  ColdOpenForeshadowColdOpenEntrySchema,
+  evaluateColdOpenForeshadowLink,
+  type ColdOpenForeshadowLinkReport,
+} from './cold-open-foreshadow-link-gate';
+
 
 
 
@@ -2105,6 +2152,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'openingCascadeForeshadowLink',
   'maskForeshadowLink',
   'bondForeshadowLink',
+  'rhythmQualityPeakBridge',
+  'ensembleQualityPeakBridge',
+  'revealQualityPeakBridge',
+  'amnesiaQualityPeakBridge',
+  'rhythmForeshadowLink',
+  'ensembleForeshadowLink',
+  'revealForeshadowLink',
+  'coldOpenForeshadowLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -4257,6 +4312,60 @@ const BondForeshadowSectionSchema = z.object({
   links: z.array(BondForeshadowLinkEntrySchema),
 });
 
+const RhythmQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  rhythms: z.array(RhythmQualityPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(RhythmQualityPeakBridgeLinkSchema),
+});
+
+const EnsembleQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(EnsembleQualityPeakBridgeLinkSchema),
+});
+
+const RevealQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  reveals: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(RevealQualityPeakBridgeLinkSchema),
+});
+
+const AmnesiaQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AmnesiaQualityPeakBridgeLinkSchema),
+});
+
+const RhythmForeshadowSectionSchema = z.object({
+  rhythms: z.array(RhythmForeshadowRhythmEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(RhythmForeshadowLinkEntrySchema),
+});
+
+const EnsembleForeshadowSectionSchema = z.object({
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(EnsembleForeshadowLinkEntrySchema),
+});
+
+const RevealForeshadowSectionSchema = z.object({
+  reveals: z.array(PersonaMaskEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(RevealForeshadowLinkEntrySchema),
+});
+
+const ColdOpenForeshadowSectionSchema = z.object({
+  coldOpens: z.array(ColdOpenForeshadowColdOpenEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(ColdOpenForeshadowLinkEntrySchema),
+});
+
 
 
 
@@ -4583,6 +4692,14 @@ export const StoryLedgerSuiteSchema = z
     openingCascadeForeshadowLink: OpeningCascadeForeshadowSectionSchema.optional(),
     maskForeshadowLink: MaskForeshadowSectionSchema.optional(),
     bondForeshadowLink: BondForeshadowSectionSchema.optional(),
+    rhythmQualityPeakBridge: RhythmQualityPeakBridgeSectionSchema.optional(),
+    ensembleQualityPeakBridge: EnsembleQualityPeakBridgeSectionSchema.optional(),
+    revealQualityPeakBridge: RevealQualityPeakBridgeSectionSchema.optional(),
+    amnesiaQualityPeakBridge: AmnesiaQualityPeakBridgeSectionSchema.optional(),
+    rhythmForeshadowLink: RhythmForeshadowSectionSchema.optional(),
+    ensembleForeshadowLink: EnsembleForeshadowSectionSchema.optional(),
+    revealForeshadowLink: RevealForeshadowSectionSchema.optional(),
+    coldOpenForeshadowLink: ColdOpenForeshadowSectionSchema.optional(),
   })
   .strict();
 
@@ -4906,7 +5023,15 @@ export type StoryLedgerChildReport =
   | StageGoalForeshadowLinkReport
   | OpeningCascadeForeshadowLinkReport
   | MaskForeshadowLinkReport
-  | BondForeshadowLinkReport;
+  | BondForeshadowLinkReport
+  | RhythmQualityPeakBridgeReport
+  | EnsembleQualityPeakBridgeReport
+  | RevealQualityPeakBridgeReport
+  | AmnesiaQualityPeakBridgeReport
+  | RhythmForeshadowLinkReport
+  | EnsembleForeshadowLinkReport
+  | RevealForeshadowLinkReport
+  | ColdOpenForeshadowLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -5582,6 +5707,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateMaskForeshadowLink({ series, latestEp, ...(section as object) }),
   bondForeshadowLink: (series, latestEp, section) =>
     evaluateBondForeshadowLink({ series, latestEp, ...(section as object) }),
+  rhythmQualityPeakBridge: (series, latestEp, section) =>
+    evaluateRhythmQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  ensembleQualityPeakBridge: (series, latestEp, section) =>
+    evaluateEnsembleQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  revealQualityPeakBridge: (series, latestEp, section) =>
+    evaluateRevealQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  amnesiaQualityPeakBridge: (series, latestEp, section) =>
+    evaluateAmnesiaQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  rhythmForeshadowLink: (series, latestEp, section) =>
+    evaluateRhythmForeshadowLink({ series, latestEp, ...(section as object) }),
+  ensembleForeshadowLink: (series, latestEp, section) =>
+    evaluateEnsembleForeshadowLink({ series, latestEp, ...(section as object) }),
+  revealForeshadowLink: (series, latestEp, section) =>
+    evaluateRevealForeshadowLink({ series, latestEp, ...(section as object) }),
+  coldOpenForeshadowLink: (series, latestEp, section) =>
+    evaluateColdOpenForeshadowLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
