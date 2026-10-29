@@ -233,6 +233,8 @@
  *   · qualityThiopheneLink · qualityImidazoleLink · qualityPyridineLink · qualityPyrazineLink
  *   · yapRhythmPeakBridge · yipRhythmPeakBridge · bayRhythmPeakBridge · woofRhythmPeakBridge
  *   · qualityPyrimidineLink · qualityPyridazineLink · qualityTriazoleLink · qualityThiazoleLink
+ *   · arfRhythmPeakBridge · bowwowRhythmPeakBridge · snuffleRhythmPeakBridge · sniffRhythmPeakBridge
+ *   · qualityOxazoleLink · qualityIsoxazoleLink · qualityOxadiazoleLink · qualityTetrazoleLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4369,6 +4371,58 @@ import {
   evaluateQualityThiazoleLink,
   type QualityThiazoleLinkReport,
 } from './quality-thiazole-link-gate';
+import {
+  ArfRhythmPeakBridgeLinkSchema,
+  ArfRhythmPeakArfEntrySchema,
+  ArfRhythmPeakRhythmEntrySchema,
+  evaluateArfRhythmPeakBridge,
+  type ArfRhythmPeakBridgeReport,
+} from './arf-rhythm-peak-bridge-gate';
+import {
+  BowwowRhythmPeakBridgeLinkSchema,
+  BowwowRhythmPeakBowwowEntrySchema,
+  BowwowRhythmPeakRhythmEntrySchema,
+  evaluateBowwowRhythmPeakBridge,
+  type BowwowRhythmPeakBridgeReport,
+} from './bowwow-rhythm-peak-bridge-gate';
+import {
+  SnuffleRhythmPeakBridgeLinkSchema,
+  SnuffleRhythmPeakSnuffleEntrySchema,
+  SnuffleRhythmPeakRhythmEntrySchema,
+  evaluateSnuffleRhythmPeakBridge,
+  type SnuffleRhythmPeakBridgeReport,
+} from './snuffle-rhythm-peak-bridge-gate';
+import {
+  SniffRhythmPeakBridgeLinkSchema,
+  SniffRhythmPeakSniffEntrySchema,
+  SniffRhythmPeakRhythmEntrySchema,
+  evaluateSniffRhythmPeakBridge,
+  type SniffRhythmPeakBridgeReport,
+} from './sniff-rhythm-peak-bridge-gate';
+import {
+  QualityOxazoleLinkEntrySchema,
+  QualityOxazoleEntrySchema,
+  evaluateQualityOxazoleLink,
+  type QualityOxazoleLinkReport,
+} from './quality-oxazole-link-gate';
+import {
+  QualityIsoxazoleLinkEntrySchema,
+  QualityIsoxazoleEntrySchema,
+  evaluateQualityIsoxazoleLink,
+  type QualityIsoxazoleLinkReport,
+} from './quality-isoxazole-link-gate';
+import {
+  QualityOxadiazoleLinkEntrySchema,
+  QualityOxadiazoleEntrySchema,
+  evaluateQualityOxadiazoleLink,
+  type QualityOxadiazoleLinkReport,
+} from './quality-oxadiazole-link-gate';
+import {
+  QualityTetrazoleLinkEntrySchema,
+  QualityTetrazoleEntrySchema,
+  evaluateQualityTetrazoleLink,
+  type QualityTetrazoleLinkReport,
+} from './quality-tetrazole-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -5083,6 +5137,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityPyridazineLink',
   'qualityTriazoleLink',
   'qualityThiazoleLink',
+  'arfRhythmPeakBridge',
+  'bowwowRhythmPeakBridge',
+  'snuffleRhythmPeakBridge',
+  'sniffRhythmPeakBridge',
+  'qualityOxazoleLink',
+  'qualityIsoxazoleLink',
+  'qualityOxadiazoleLink',
+  'qualityTetrazoleLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -9842,6 +9904,58 @@ const QualityThiazoleSectionSchemaB186 = z.object({
   links: z.array(QualityThiazoleLinkEntrySchema),
 });
 
+const ArfRhythmPeakBridgeSectionSchema = z.object({
+  arfs: z.array(ArfRhythmPeakArfEntrySchema),
+  rhythms: z.array(ArfRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ArfRhythmPeakBridgeLinkSchema),
+});
+
+const BowwowRhythmPeakBridgeSectionSchema = z.object({
+  bowwows: z.array(BowwowRhythmPeakBowwowEntrySchema),
+  rhythms: z.array(BowwowRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BowwowRhythmPeakBridgeLinkSchema),
+});
+
+const SnuffleRhythmPeakBridgeSectionSchema = z.object({
+  snuffles: z.array(SnuffleRhythmPeakSnuffleEntrySchema),
+  rhythms: z.array(SnuffleRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SnuffleRhythmPeakBridgeLinkSchema),
+});
+
+const SniffRhythmPeakBridgeSectionSchema = z.object({
+  sniffs: z.array(SniffRhythmPeakSniffEntrySchema),
+  rhythms: z.array(SniffRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SniffRhythmPeakBridgeLinkSchema),
+});
+
+const QualityOxazoleSectionSchemaB187 = z.object({
+  minOxazoleIntense: z.number().int().min(1).max(5).optional(),
+  oxazoles: z.array(QualityOxazoleEntrySchema),
+  links: z.array(QualityOxazoleLinkEntrySchema),
+});
+
+const QualityIsoxazoleSectionSchemaB187 = z.object({
+  minIsoxazoleIntense: z.number().int().min(1).max(5).optional(),
+  isoxazoles: z.array(QualityIsoxazoleEntrySchema),
+  links: z.array(QualityIsoxazoleLinkEntrySchema),
+});
+
+const QualityOxadiazoleSectionSchemaB187 = z.object({
+  minOxadiazoleIntense: z.number().int().min(1).max(5).optional(),
+  oxadiazoles: z.array(QualityOxadiazoleEntrySchema),
+  links: z.array(QualityOxadiazoleLinkEntrySchema),
+});
+
+const QualityTetrazoleSectionSchemaB187 = z.object({
+  minTetrazoleIntense: z.number().int().min(1).max(5).optional(),
+  tetrazoles: z.array(QualityTetrazoleEntrySchema),
+  links: z.array(QualityTetrazoleLinkEntrySchema),
+});
+
 
 
 
@@ -10569,6 +10683,14 @@ export const StoryLedgerSuiteSchema = z
     qualityPyridazineLink: QualityPyridazineSectionSchemaB186.optional(),
     qualityTriazoleLink: QualityTriazoleSectionSchemaB186.optional(),
     qualityThiazoleLink: QualityThiazoleSectionSchemaB186.optional(),
+    arfRhythmPeakBridge: ArfRhythmPeakBridgeSectionSchema.optional(),
+    bowwowRhythmPeakBridge: BowwowRhythmPeakBridgeSectionSchema.optional(),
+    snuffleRhythmPeakBridge: SnuffleRhythmPeakBridgeSectionSchema.optional(),
+    sniffRhythmPeakBridge: SniffRhythmPeakBridgeSectionSchema.optional(),
+    qualityOxazoleLink: QualityOxazoleSectionSchemaB187.optional(),
+    qualityIsoxazoleLink: QualityIsoxazoleSectionSchemaB187.optional(),
+    qualityOxadiazoleLink: QualityOxadiazoleSectionSchemaB187.optional(),
+    qualityTetrazoleLink: QualityTetrazoleSectionSchemaB187.optional(),
   })
   .strict();
 
@@ -11284,7 +11406,15 @@ export type StoryLedgerChildReport =
   | QualityPyrimidineLinkReport
   | QualityPyridazineLinkReport
   | QualityTriazoleLinkReport
-  | QualityThiazoleLinkReport;
+  | QualityThiazoleLinkReport
+  | ArfRhythmPeakBridgeReport
+  | BowwowRhythmPeakBridgeReport
+  | SnuffleRhythmPeakBridgeReport
+  | SniffRhythmPeakBridgeReport
+  | QualityOxazoleLinkReport
+  | QualityIsoxazoleLinkReport
+  | QualityOxadiazoleLinkReport
+  | QualityTetrazoleLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -12745,6 +12875,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityTriazoleLink({ series, latestEp, ...(section as object) }),
   qualityThiazoleLink: (series, latestEp, section) =>
     evaluateQualityThiazoleLink({ series, latestEp, ...(section as object) }),
+  arfRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateArfRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  bowwowRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBowwowRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  snuffleRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSnuffleRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  sniffRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSniffRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityOxazoleLink: (series, latestEp, section) =>
+    evaluateQualityOxazoleLink({ series, latestEp, ...(section as object) }),
+  qualityIsoxazoleLink: (series, latestEp, section) =>
+    evaluateQualityIsoxazoleLink({ series, latestEp, ...(section as object) }),
+  qualityOxadiazoleLink: (series, latestEp, section) =>
+    evaluateQualityOxadiazoleLink({ series, latestEp, ...(section as object) }),
+  qualityTetrazoleLink: (series, latestEp, section) =>
+    evaluateQualityTetrazoleLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
