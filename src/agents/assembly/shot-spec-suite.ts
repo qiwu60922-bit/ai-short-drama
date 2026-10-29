@@ -14,6 +14,7 @@
  *   · hookWindowHard · cliffTailTight · dialogueAfterHook
  *   · midHookEarly · setupAfterHookBan · reactionBeforeCliff
  *   · coldOpenMidHook · dialogueBeforeCliffBan · setupMidCap
+ *   · hookKindMixColdOpen · dialogueAfterReversalBan · midTurnSetupCap
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -172,6 +173,21 @@ import {
   type SetupMidCapOptions,
   type SetupMidCapReport,
 } from './setup-mid-cap-gate';
+import {
+  evaluateHookKindMixColdOpen,
+  type HookKindMixColdOpenOptions,
+  type HookKindMixColdOpenReport,
+} from './hook-kind-mix-cold-open-gate';
+import {
+  evaluateDialogueAfterReversalBan,
+  type DialogueAfterReversalBanOptions,
+  type DialogueAfterReversalBanReport,
+} from './dialogue-after-reversal-ban-gate';
+import {
+  evaluateMidTurnSetupCap,
+  type MidTurnSetupCapOptions,
+  type MidTurnSetupCapReport,
+} from './mid-turn-setup-cap-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -203,6 +219,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'coldOpenMidHook',
   'dialogueBeforeCliffBan',
   'setupMidCap',
+  'hookKindMixColdOpen',
+  'dialogueAfterReversalBan',
+  'midTurnSetupCap',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -520,6 +539,47 @@ const SetupMidCapOptsSchema = z
   })
   .strict();
 
+const HookKindMixColdOpenOptsSchema = z
+  .object({
+    coldOpenWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const DialogueAfterReversalBanOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    reversalOnly: z.boolean().optional(),
+    banDialogueAfterReversal: z.boolean().optional(),
+    lookforwardSec: z.number().positive().optional(),
+  })
+  .strict();
+
+const MidTurnSetupCapOptsSchema = z
+  .object({
+    minTurns: z.number().int().positive().optional(),
+    maxMidSetupRatio: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 
 
 export const ShotSpecSuiteSchema = z
@@ -554,6 +614,9 @@ export const ShotSpecSuiteSchema = z
     coldOpenMidHook: ShotSpecDocSchema.optional(),
     dialogueBeforeCliffBan: ShotSpecDocSchema.optional(),
     setupMidCap: ShotSpecDocSchema.optional(),
+    hookKindMixColdOpen: ShotSpecDocSchema.optional(),
+    dialogueAfterReversalBan: ShotSpecDocSchema.optional(),
+    midTurnSetupCap: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -581,6 +644,9 @@ export const ShotSpecSuiteSchema = z
     coldOpenMidHookOpts: ColdOpenMidHookOptsSchema.optional(),
     dialogueBeforeCliffBanOpts: DialogueBeforeCliffBanOptsSchema.optional(),
     setupMidCapOpts: SetupMidCapOptsSchema.optional(),
+    hookKindMixColdOpenOpts: HookKindMixColdOpenOptsSchema.optional(),
+    dialogueAfterReversalBanOpts: DialogueAfterReversalBanOptsSchema.optional(),
+    midTurnSetupCapOpts: MidTurnSetupCapOptsSchema.optional(),
   })
   .strict();
 
@@ -615,7 +681,10 @@ export type ShotSpecChildReport =
   | ReactionBeforeCliffReport
   | ColdOpenMidHookReport
   | DialogueBeforeCliffBanReport
-  | SetupMidCapReport;
+  | SetupMidCapReport
+  | HookKindMixColdOpenReport
+  | DialogueAfterReversalBanReport
+  | MidTurnSetupCapReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -710,6 +779,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     coldOpenMidHookOpts,
     dialogueBeforeCliffBanOpts,
     setupMidCapOpts,
+    hookKindMixColdOpenOpts,
+    dialogueAfterReversalBanOpts,
+    midTurnSetupCapOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -967,6 +1039,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateSetupMidCap(
         sections.setupMidCap,
         (setupMidCapOpts ?? {}) as SetupMidCapOptions,
+      ),
+    );
+  }
+  if (sections.hookKindMixColdOpen !== undefined) {
+    run(
+      'hookKindMixColdOpen',
+      evaluateHookKindMixColdOpen(
+        sections.hookKindMixColdOpen,
+        (hookKindMixColdOpenOpts ?? {}) as HookKindMixColdOpenOptions,
+      ),
+    );
+  }
+  if (sections.dialogueAfterReversalBan !== undefined) {
+    run(
+      'dialogueAfterReversalBan',
+      evaluateDialogueAfterReversalBan(
+        sections.dialogueAfterReversalBan,
+        (dialogueAfterReversalBanOpts ?? {}) as DialogueAfterReversalBanOptions,
+      ),
+    );
+  }
+  if (sections.midTurnSetupCap !== undefined) {
+    run(
+      'midTurnSetupCap',
+      evaluateMidTurnSetupCap(
+        sections.midTurnSetupCap,
+        (midTurnSetupCapOpts ?? {}) as MidTurnSetupCapOptions,
       ),
     );
   }

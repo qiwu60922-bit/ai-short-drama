@@ -938,5 +938,128 @@
         "beatRole": "cliffhanger"
       }
     ]
+  },
+  "hookKindMixColdOpen": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-HKC0",
+        "cast": [],
+        "durSec": 2,
+        "action": "冷开危机",
+        "beatRole": "hook",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-HKC1",
+        "cast": [],
+        "durSec": 2,
+        "action": "细节钩",
+        "beatRole": "hook",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-HKC2",
+        "cast": [],
+        "durSec": 4,
+        "action": "追问",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-HKC3",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-HKC4",
+        "cast": [],
+        "durSec": 4,
+        "action": "悬念",
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "dialogueAfterReversalBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-DAR0",
+        "cast": [],
+        "durSec": 2,
+        "action": "开场",
+        "beatRole": "hook"
+      },
+      {
+        "shotId": "EP01-DAR1",
+        "cast": [],
+        "durSec": 4,
+        "action": "追问",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-DAR2",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-DAR3",
+        "cast": [],
+        "durSec": 3,
+        "action": "脸色煞白",
+        "beatRole": "reaction"
+      },
+      {
+        "shotId": "EP01-DAR4",
+        "cast": [],
+        "durSec": 4,
+        "action": "门外脚步",
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "midTurnSetupCap": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MTS0",
+        "cast": [],
+        "durSec": 2,
+        "action": "危机",
+        "beatRole": "hook",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MTS1",
+        "cast": [],
+        "durSec": 2,
+        "action": "短铺垫",
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-MTS2",
+        "cast": [],
+        "durSec": 4,
+        "action": "增量",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-MTS3",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-MTS4",
+        "cast": [],
+        "durSec": 4,
+        "action": "悬念",
+        "beatRole": "cliffhanger"
+      }
+    ]
   }
 }
