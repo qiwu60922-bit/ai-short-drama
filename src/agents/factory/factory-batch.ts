@@ -1,5 +1,5 @@
 /** V14 multi-episode batch: each episode its own workDir/queue/ledger; blocked or failed episodes don't stop others. Never PASS; canPublish false.
- * Optional storyLedgerGate (symmetric with ep01-rehearsal): off|warn|enforce before episodes. $0; ≠G3.
+ * Optional storyLedgerGate + shotSpecGate (symmetric off|warn|enforce) before episodes. $0; ≠G3.
  */
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -9,6 +9,10 @@ import {
   evaluateStoryLedgerSuite,
   type StoryLedgerSuiteReport,
 } from '@/agents/assembly/story-ledger-suite';
+import {
+  evaluateShotSpecSuite,
+  type ShotSpecSuiteReport,
+} from '@/agents/assembly/shot-spec-suite';
 
 export interface BatchEpisode {
   episodeId: string;
@@ -22,6 +26,39 @@ export interface FactoryBatchOptions {
   storyLedger?: unknown;
   /** 'off' (default) · 'warn' (report only) · 'enforce' (FAIL → exit 36, skip episodes). */
   storyLedgerGate?: 'off' | 'warn' | 'enforce';
+  /** V12 Shot-Spec Suite 旁路 (hook / opening-cascade / cut-timeline). */
+  shotSpecSuite?: unknown;
+  /** 'off' (default) · 'warn' · 'enforce' (FAIL → exit 36, skip episodes). */
+  shotSpecGate?: 'off' | 'warn' | 'enforce';
+}
+
+type GateMode = 'off' | 'warn' | 'enforce';
+
+function blockedSummary(
+  rootDir: string,
+  stage: 'storyLedger' | 'shotSpec',
+  notes: string[],
+  extras: {
+    storyLedger?: StoryLedgerSuiteReport;
+    shotSpecSuite?: ShotSpecSuiteReport;
+  },
+) {
+  const out = {
+    schema: 'v14/FactoryBatch/v1' as const,
+    rootDir,
+    exitCode: 36,
+    stage,
+    episodes: [] as Array<Record<string, unknown>>,
+    ledger: summarizeLedger([]),
+    storyLedger: extras.storyLedger,
+    shotSpecSuite: extras.shotSpecSuite,
+    notes,
+    canPublish: false as const,
+    g3: 'NOT_EVALUATED' as const,
+    note: `canPublish requires per-episode G3 by human review receipt (V15); ${stage}Gate=enforce blocked batch`,
+  };
+  writeFileSync(join(rootDir, 'BATCH_SUMMARY.json'), JSON.stringify(out, null, 2));
+  return out;
 }
 
 export async function runFactoryBatch(
@@ -33,8 +70,10 @@ export async function runFactoryBatch(
   if (new Set(ids).size !== ids.length) throw new Error('duplicate episodeId in batch');
   mkdirSync(rootDir, { recursive: true });
 
-  const storyMode = opts.storyLedgerGate ?? 'off';
+  const storyMode: GateMode = opts.storyLedgerGate ?? 'off';
+  const shotMode: GateMode = opts.shotSpecGate ?? 'off';
   let storyLedger: StoryLedgerSuiteReport | undefined;
+  let shotSpec: ShotSpecSuiteReport | undefined;
   const notes: string[] = [];
 
   if (opts.storyLedger != null && storyMode !== 'off') {
@@ -47,21 +86,24 @@ export async function runFactoryBatch(
       `story-ledger-suite: ${storyLedger.verdict} (ran=${storyLedger.metrics.ran} failed=${storyLedger.metrics.failed} skipped=${storyLedger.metrics.skipped})`,
     );
     if (storyLedger.verdict === 'FAIL' && storyMode === 'enforce') {
-      const out = {
-        schema: 'v14/FactoryBatch/v1' as const,
-        rootDir,
-        exitCode: 36,
-        stage: 'storyLedger' as const,
-        episodes: [] as Array<Record<string, unknown>>,
-        ledger: summarizeLedger([]),
+      return blockedSummary(rootDir, 'storyLedger', notes, { storyLedger });
+    }
+  }
+
+  if (opts.shotSpecSuite != null && shotMode !== 'off') {
+    shotSpec = evaluateShotSpecSuite(opts.shotSpecSuite);
+    writeFileSync(
+      join(rootDir, 'shot-spec-suite-report.json'),
+      JSON.stringify(shotSpec, null, 2),
+    );
+    notes.push(
+      `shot-spec-suite: ${shotSpec.verdict} (ran=${shotSpec.metrics.ran} failed=${shotSpec.metrics.failed} skipped=${shotSpec.metrics.skipped})`,
+    );
+    if (shotSpec.verdict === 'FAIL' && shotMode === 'enforce') {
+      return blockedSummary(rootDir, 'shotSpec', notes, {
         storyLedger,
-        notes,
-        canPublish: false as const,
-        g3: 'NOT_EVALUATED' as const,
-        note: 'canPublish requires per-episode G3 by human review receipt (V15); storyLedgerGate=enforce blocked batch',
-      };
-      writeFileSync(join(rootDir, 'BATCH_SUMMARY.json'), JSON.stringify(out, null, 2));
-      return out;
+        shotSpecSuite: shotSpec,
+      });
     }
   }
 
@@ -96,6 +138,7 @@ export async function runFactoryBatch(
     episodes,
     ledger,
     storyLedger,
+    shotSpecSuite: shotSpec,
     notes,
     canPublish: false as const,
     g3: 'NOT_EVALUATED' as const,
