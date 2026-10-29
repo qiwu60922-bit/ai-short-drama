@@ -740,6 +740,14 @@ describe('STORY_LEDGER_GATE_IDS', () => {
       'qualityAsphaltLink',
       'qualityPitchLink',
       'qualityTarLink',
+      'twitterRhythmPeakBridge',
+      'chitterRhythmPeakBridge',
+      'droneRhythmPeakBridge',
+      'fizzRhythmPeakBridge',
+      'qualityResinLink',
+      'qualityWaxLink',
+      'qualityParaffinLink',
+      'qualityNaphthaLink',
     ]);
   });
 });
@@ -751,7 +759,7 @@ describe('evaluateStoryLedgerSuite', () => {
     );
     expect(r.verdict).toBe('PASS');
     expect(r.schema).toBe('v12/StoryLedgerSuite/v1');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 652 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 660 });
     expect(r.results.ensembleCast.status).toBe('PASS');
     expect(r.results.fakeLedgerReconcile.status).toBe('PASS');
     expect(r.results.bondFrequencyLink.status).toBe('SKIP');
@@ -818,7 +826,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 10),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 650 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 658 });
     expect(r.results.stageGoal.status).toBe('PASS');
     expect(r.results.conflictPayoff.status).toBe('PASS');
     expect(r.results.peakBeforePayoff.status).toBe('PASS');
@@ -985,7 +993,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 80),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 647 });
+    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 655 });
     for (const id of [
       'qualityLeap',
       'foreshadowLedger',
@@ -1093,7 +1101,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 80),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 5, passed: 5, failed: 0, skipped: 649 });
+    expect(r.metrics).toMatchObject({ ran: 5, passed: 5, failed: 0, skipped: 657 });
     for (const id of [
       'personaCard',
       'personaMask',
@@ -1151,7 +1159,7 @@ describe('evaluateStoryLedgerSuite', () => {
   it('only fakeLedger section runs; others SKIP', () => {
     const r = evaluateStoryLedgerSuite(bundle({ fakeLedgerReconcile: fakeOk }, 20));
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 653 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 661 });
     expect(r.results.fakeLedgerReconcile.report?.verdict).toBe('PASS');
   });
 });

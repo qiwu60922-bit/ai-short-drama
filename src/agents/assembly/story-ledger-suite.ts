@@ -217,6 +217,9 @@
  *   · cheepRhythmPeakBridge · chirrRhythmPeakBridge · pipeRhythmPeakBridge · whistleRhythmPeakBridge
  *   · qualityKerogenLink · qualityAsphaltLink · qualityPitchLink · qualityTarLink
  *
+ *   · twitterRhythmPeakBridge · chitterRhythmPeakBridge · droneRhythmPeakBridge · fizzRhythmPeakBridge
+ *   · qualityResinLink · qualityWaxLink · qualityParaffinLink · qualityNaphthaLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3985,6 +3988,58 @@ import {
   evaluateQualityTarLink,
   type QualityTarLinkReport,
 } from './quality-tar-link-gate';
+import {
+  TwitterRhythmPeakBridgeLinkSchema,
+  TwitterRhythmPeakTwitterEntrySchema,
+  TwitterRhythmPeakRhythmEntrySchema,
+  evaluateTwitterRhythmPeakBridge,
+  type TwitterRhythmPeakBridgeReport,
+} from './twitter-rhythm-peak-bridge-gate';
+import {
+  ChitterRhythmPeakBridgeLinkSchema,
+  ChitterRhythmPeakChitterEntrySchema,
+  ChitterRhythmPeakRhythmEntrySchema,
+  evaluateChitterRhythmPeakBridge,
+  type ChitterRhythmPeakBridgeReport,
+} from './chitter-rhythm-peak-bridge-gate';
+import {
+  DroneRhythmPeakBridgeLinkSchema,
+  DroneRhythmPeakDroneEntrySchema,
+  DroneRhythmPeakRhythmEntrySchema,
+  evaluateDroneRhythmPeakBridge,
+  type DroneRhythmPeakBridgeReport,
+} from './drone-rhythm-peak-bridge-gate';
+import {
+  FizzRhythmPeakBridgeLinkSchema,
+  FizzRhythmPeakFizzEntrySchema,
+  FizzRhythmPeakRhythmEntrySchema,
+  evaluateFizzRhythmPeakBridge,
+  type FizzRhythmPeakBridgeReport,
+} from './fizz-rhythm-peak-bridge-gate';
+import {
+  QualityResinLinkEntrySchema,
+  QualityResinEntrySchema,
+  evaluateQualityResinLink,
+  type QualityResinLinkReport,
+} from './quality-resin-link-gate';
+import {
+  QualityWaxLinkEntrySchema,
+  QualityWaxEntrySchema,
+  evaluateQualityWaxLink,
+  type QualityWaxLinkReport,
+} from './quality-wax-link-gate';
+import {
+  QualityParaffinLinkEntrySchema,
+  QualityParaffinEntrySchema,
+  evaluateQualityParaffinLink,
+  type QualityParaffinLinkReport,
+} from './quality-paraffin-link-gate';
+import {
+  QualityNaphthaLinkEntrySchema,
+  QualityNaphthaEntrySchema,
+  evaluateQualityNaphthaLink,
+  type QualityNaphthaLinkReport,
+} from './quality-naphtha-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4643,6 +4698,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityAsphaltLink',
   'qualityPitchLink',
   'qualityTarLink',
+  'twitterRhythmPeakBridge',
+  'chitterRhythmPeakBridge',
+  'droneRhythmPeakBridge',
+  'fizzRhythmPeakBridge',
+  'qualityResinLink',
+  'qualityWaxLink',
+  'qualityParaffinLink',
+  'qualityNaphthaLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -9037,6 +9100,58 @@ const QualityTarSectionSchemaB179 = z.object({
   links: z.array(QualityTarLinkEntrySchema),
 });
 
+const TwitterRhythmPeakBridgeSectionSchema = z.object({
+  twitters: z.array(TwitterRhythmPeakTwitterEntrySchema),
+  rhythms: z.array(TwitterRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(TwitterRhythmPeakBridgeLinkSchema),
+});
+
+const ChitterRhythmPeakBridgeSectionSchema = z.object({
+  chitters: z.array(ChitterRhythmPeakChitterEntrySchema),
+  rhythms: z.array(ChitterRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ChitterRhythmPeakBridgeLinkSchema),
+});
+
+const DroneRhythmPeakBridgeSectionSchema = z.object({
+  drones: z.array(DroneRhythmPeakDroneEntrySchema),
+  rhythms: z.array(DroneRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(DroneRhythmPeakBridgeLinkSchema),
+});
+
+const FizzRhythmPeakBridgeSectionSchema = z.object({
+  fizzes: z.array(FizzRhythmPeakFizzEntrySchema),
+  rhythms: z.array(FizzRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(FizzRhythmPeakBridgeLinkSchema),
+});
+
+const QualityResinSectionSchemaB180 = z.object({
+  minResinIntense: z.number().int().min(1).max(5).optional(),
+  resins: z.array(QualityResinEntrySchema),
+  links: z.array(QualityResinLinkEntrySchema),
+});
+
+const QualityWaxSectionSchemaB180 = z.object({
+  minWaxIntense: z.number().int().min(1).max(5).optional(),
+  waxes: z.array(QualityWaxEntrySchema),
+  links: z.array(QualityWaxLinkEntrySchema),
+});
+
+const QualityParaffinSectionSchemaB180 = z.object({
+  minParaffinIntense: z.number().int().min(1).max(5).optional(),
+  paraffins: z.array(QualityParaffinEntrySchema),
+  links: z.array(QualityParaffinLinkEntrySchema),
+});
+
+const QualityNaphthaSectionSchemaB180 = z.object({
+  minNaphthaIntense: z.number().int().min(1).max(5).optional(),
+  naphthas: z.array(QualityNaphthaEntrySchema),
+  links: z.array(QualityNaphthaLinkEntrySchema),
+});
+
 
 
 
@@ -9708,6 +9823,14 @@ export const StoryLedgerSuiteSchema = z
     qualityAsphaltLink: QualityAsphaltSectionSchemaB179.optional(),
     qualityPitchLink: QualityPitchSectionSchemaB179.optional(),
     qualityTarLink: QualityTarSectionSchemaB179.optional(),
+    twitterRhythmPeakBridge: TwitterRhythmPeakBridgeSectionSchema.optional(),
+    chitterRhythmPeakBridge: ChitterRhythmPeakBridgeSectionSchema.optional(),
+    droneRhythmPeakBridge: DroneRhythmPeakBridgeSectionSchema.optional(),
+    fizzRhythmPeakBridge: FizzRhythmPeakBridgeSectionSchema.optional(),
+    qualityResinLink: QualityResinSectionSchemaB180.optional(),
+    qualityWaxLink: QualityWaxSectionSchemaB180.optional(),
+    qualityParaffinLink: QualityParaffinSectionSchemaB180.optional(),
+    qualityNaphthaLink: QualityNaphthaSectionSchemaB180.optional(),
   })
   .strict();
 
@@ -10367,7 +10490,15 @@ export type StoryLedgerChildReport =
   | QualityKerogenLinkReport
   | QualityAsphaltLinkReport
   | QualityPitchLinkReport
-  | QualityTarLinkReport;
+  | QualityTarLinkReport
+  | TwitterRhythmPeakBridgeReport
+  | ChitterRhythmPeakBridgeReport
+  | DroneRhythmPeakBridgeReport
+  | FizzRhythmPeakBridgeReport
+  | QualityResinLinkReport
+  | QualityWaxLinkReport
+  | QualityParaffinLinkReport
+  | QualityNaphthaLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -11716,6 +11847,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityPitchLink({ series, latestEp, ...(section as object) }),
   qualityTarLink: (series, latestEp, section) =>
     evaluateQualityTarLink({ series, latestEp, ...(section as object) }),
+  twitterRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateTwitterRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  chitterRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateChitterRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  droneRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateDroneRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  fizzRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateFizzRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityResinLink: (series, latestEp, section) =>
+    evaluateQualityResinLink({ series, latestEp, ...(section as object) }),
+  qualityWaxLink: (series, latestEp, section) =>
+    evaluateQualityWaxLink({ series, latestEp, ...(section as object) }),
+  qualityParaffinLink: (series, latestEp, section) =>
+    evaluateQualityParaffinLink({ series, latestEp, ...(section as object) }),
+  qualityNaphthaLink: (series, latestEp, section) =>
+    evaluateQualityNaphthaLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
