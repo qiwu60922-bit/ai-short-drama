@@ -5,7 +5,7 @@
  * Bundles the 2026-10-29+ cross-ledger / ensemble gates into one
  * entry so EP01 rehearsal / factory can enforce them before fake generation:
  *   bondFrequencyLink · vestMaskPeakLink · frequencyPeakLink · amnesiaMotifLink
- *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink
+ *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink · foreshadowMotifLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -63,6 +63,12 @@ import {
   evaluateCliffCascadeLink,
   type CliffCascadeLinkReport,
 } from './cliff-cascade-link-gate';
+import {
+  ForeshadowMotifLinkEntrySchema,
+  evaluateForeshadowMotifLink,
+  type ForeshadowMotifLinkReport,
+} from './foreshadow-motif-link-gate';
+import { ForeshadowItemSchema } from './foreshadow-ledger-gate';
 
 const Ep = z.number().int().positive();
 
@@ -74,6 +80,7 @@ export const STORY_LEDGER_GATE_IDS = [
   'ensembleCast',
   'fakeLedgerReconcile',
   'cliffCascadeLink',
+  'foreshadowMotifLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -131,6 +138,13 @@ const CliffCascadeSectionSchema = z.object({
     .optional(),
 });
 
+const ForeshadowMotifSectionSchema = z.object({
+  foreshadows: z.array(ForeshadowItemSchema),
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(ForeshadowMotifLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -142,6 +156,7 @@ export const StoryLedgerSuiteSchema = z
     ensembleCast: EnsembleSectionSchema.optional(),
     fakeLedgerReconcile: FakeLedgerSectionSchema.optional(),
     cliffCascadeLink: CliffCascadeSectionSchema.optional(),
+    foreshadowMotifLink: ForeshadowMotifSectionSchema.optional(),
   })
   .strict();
 
@@ -154,7 +169,8 @@ export type StoryLedgerChildReport =
   | AmnesiaMotifLinkReport
   | EnsembleCastReport
   | FakeLedgerReconcileReport
-  | CliffCascadeLinkReport;
+  | CliffCascadeLinkReport
+  | ForeshadowMotifLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -209,6 +225,8 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateFakeLedgerReconcile({ series, latestEp, ...(section as object) }),
   cliffCascadeLink: (series, latestEp, section) =>
     evaluateCliffCascadeLink({ series, latestEp, ...(section as object) }),
+  foreshadowMotifLink: (series, latestEp, section) =>
+    evaluateForeshadowMotifLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
