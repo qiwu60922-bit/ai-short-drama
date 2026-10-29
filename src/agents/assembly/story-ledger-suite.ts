@@ -102,6 +102,8 @@
  *   · abilityQualityLink · cliffForeshadowLink · maskQualityLink · bondQualityLink
  *   · frequencyAmnesiaPeakBridge · motifAmnesiaPeakBridge · countdownAmnesiaPeakBridge · amnesiaHandoffPeakBridge
  *   · cliffQualityLink · personaQualityLink · frequencyQualityLink · handoffQualityLink
+ *   · personaQualityPeakBridge · qualityForeshadowPeakBridge · vestQualityPeakBridge · allianceQualityPeakBridge
+ *   · vestForeshadowLink · allianceQualityLink · qualityForeshadowLink · personaForeshadowLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -1647,6 +1649,47 @@ import {
   type HandoffQualityLinkReport,
 } from './handoff-quality-link-gate';
 
+import {
+  PersonaQualityPeakBridgeLinkSchema,
+  evaluatePersonaQualityPeakBridge,
+  type PersonaQualityPeakBridgeReport,
+} from './persona-quality-peak-bridge-gate';
+import {
+  QualityForeshadowPeakBridgeLinkSchema,
+  evaluateQualityForeshadowPeakBridge,
+  type QualityForeshadowPeakBridgeReport,
+} from './quality-foreshadow-peak-bridge-gate';
+import {
+  VestQualityPeakBridgeLinkSchema,
+  evaluateVestQualityPeakBridge,
+  type VestQualityPeakBridgeReport,
+} from './vest-quality-peak-bridge-gate';
+import {
+  AllianceQualityPeakBridgeLinkSchema,
+  evaluateAllianceQualityPeakBridge,
+  type AllianceQualityPeakBridgeReport,
+} from './alliance-quality-peak-bridge-gate';
+import {
+  VestForeshadowLinkEntrySchema,
+  evaluateVestForeshadowLink,
+  type VestForeshadowLinkReport,
+} from './vest-foreshadow-link-gate';
+import {
+  AllianceQualityLinkEntrySchema,
+  evaluateAllianceQualityLink,
+  type AllianceQualityLinkReport,
+} from './alliance-quality-link-gate';
+import {
+  QualityForeshadowLinkEntrySchema,
+  evaluateQualityForeshadowLink,
+  type QualityForeshadowLinkReport,
+} from './quality-foreshadow-link-gate';
+import {
+  PersonaForeshadowLinkEntrySchema,
+  evaluatePersonaForeshadowLink,
+  type PersonaForeshadowLinkReport,
+} from './persona-foreshadow-link-gate';
+
 
 
 
@@ -1947,6 +1990,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'personaQualityLink',
   'frequencyQualityLink',
   'handoffQualityLink',
+  'personaQualityPeakBridge',
+  'qualityForeshadowPeakBridge',
+  'vestQualityPeakBridge',
+  'allianceQualityPeakBridge',
+  'vestForeshadowLink',
+  'allianceQualityLink',
+  'qualityForeshadowLink',
+  'personaForeshadowLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -3931,6 +3982,61 @@ const HandoffQualitySectionSchema = z.object({
   links: z.array(HandoffQualityLinkEntrySchema),
 });
 
+const PersonaQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PersonaQualityPeakBridgeLinkSchema),
+});
+
+const QualityForeshadowPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  items: z.array(ForeshadowItemSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(QualityForeshadowPeakBridgeLinkSchema),
+});
+
+const VestQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  vests: z.array(IdentityVestEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(VestQualityPeakBridgeLinkSchema),
+});
+
+const AllianceQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AllianceQualityPeakBridgeLinkSchema),
+});
+
+const VestForeshadowSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(VestForeshadowLinkEntrySchema),
+});
+
+const AllianceQualitySectionSchema = z.object({
+  minPayoffIntense: z.number().int().min(1).max(5).optional(),
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  links: z.array(AllianceQualityLinkEntrySchema),
+});
+
+const QualityForeshadowSectionSchema = z.object({
+  minPayoffIntense: z.number().int().min(1).max(5).optional(),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(QualityForeshadowLinkEntrySchema),
+});
+
+const PersonaForeshadowSectionSchema = z.object({
+  cards: z.array(PersonaCardSchema).min(1),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(PersonaForeshadowLinkEntrySchema),
+});
+
+
 
 
 export const StoryLedgerSuiteSchema = z
@@ -4231,6 +4337,14 @@ export const StoryLedgerSuiteSchema = z
     personaQualityLink: PersonaQualitySectionSchema.optional(),
     frequencyQualityLink: FrequencyQualitySectionSchema.optional(),
     handoffQualityLink: HandoffQualitySectionSchema.optional(),
+    personaQualityPeakBridge: PersonaQualityPeakBridgeSectionSchema.optional(),
+    qualityForeshadowPeakBridge: QualityForeshadowPeakBridgeSectionSchema.optional(),
+    vestQualityPeakBridge: VestQualityPeakBridgeSectionSchema.optional(),
+    allianceQualityPeakBridge: AllianceQualityPeakBridgeSectionSchema.optional(),
+    vestForeshadowLink: VestForeshadowSectionSchema.optional(),
+    allianceQualityLink: AllianceQualitySectionSchema.optional(),
+    qualityForeshadowLink: QualityForeshadowSectionSchema.optional(),
+    personaForeshadowLink: PersonaForeshadowSectionSchema.optional(),
   })
   .strict();
 
@@ -4530,7 +4644,15 @@ export type StoryLedgerChildReport =
   | CliffQualityLinkReport
   | PersonaQualityLinkReport
   | FrequencyQualityLinkReport
-  | HandoffQualityLinkReport;
+  | HandoffQualityLinkReport
+  | PersonaQualityPeakBridgeReport
+  | QualityForeshadowPeakBridgeReport
+  | VestQualityPeakBridgeReport
+  | AllianceQualityPeakBridgeReport
+  | VestForeshadowLinkReport
+  | AllianceQualityLinkReport
+  | QualityForeshadowLinkReport
+  | PersonaForeshadowLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -5158,6 +5280,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateFrequencyQualityLink({ series, latestEp, ...(section as object) }),
   handoffQualityLink: (series, latestEp, section) =>
     evaluateHandoffQualityLink({ series, latestEp, ...(section as object) }),
+  personaQualityPeakBridge: (series, latestEp, section) =>
+    evaluatePersonaQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityForeshadowPeakBridge: (series, latestEp, section) =>
+    evaluateQualityForeshadowPeakBridge({ series, latestEp, ...(section as object) }),
+  vestQualityPeakBridge: (series, latestEp, section) =>
+    evaluateVestQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  allianceQualityPeakBridge: (series, latestEp, section) =>
+    evaluateAllianceQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  vestForeshadowLink: (series, latestEp, section) =>
+    evaluateVestForeshadowLink({ series, latestEp, ...(section as object) }),
+  allianceQualityLink: (series, latestEp, section) =>
+    evaluateAllianceQualityLink({ series, latestEp, ...(section as object) }),
+  qualityForeshadowLink: (series, latestEp, section) =>
+    evaluateQualityForeshadowLink({ series, latestEp, ...(section as object) }),
+  personaForeshadowLink: (series, latestEp, section) =>
+    evaluatePersonaForeshadowLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
