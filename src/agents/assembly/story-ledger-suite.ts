@@ -6,7 +6,7 @@
  * entry so EP01 rehearsal / factory can enforce them before fake generation:
  *   bondFrequencyLink · vestMaskPeakLink · frequencyPeakLink · amnesiaMotifLink
  *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink · foreshadowMotifLink
- *   · allianceBondLink · personaVestLink · stageGoalConflictLink
+ *   · allianceBondLink · personaVestLink · stageGoalConflictLink · reactionPeakLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -97,6 +97,13 @@ import {
   StageCountdownSchema,
 } from './stage-goal-gate';
 import { ConflictEntrySchema } from './conflict-payoff-gap-gate';
+import {
+  ReactionPeakLinkEntrySchema,
+  evaluateReactionPeakLink,
+  type ReactionPeakLinkReport,
+} from './reaction-peak-link-gate';
+import { PeakBeforePayoffEntrySchema } from './peak-before-payoff-gate';
+import { ShotSpecDocSchema } from './beatplan-to-multishot';
 
 const Ep = z.number().int().positive();
 
@@ -112,6 +119,7 @@ export const STORY_LEDGER_GATE_IDS = [
   'allianceBondLink',
   'personaVestLink',
   'stageGoalConflictLink',
+  'reactionPeakLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -198,6 +206,11 @@ const StageGoalConflictSectionSchema = z.object({
   links: z.array(StageGoalConflictLinkEntrySchema),
 });
 
+const ReactionPeakSectionSchema = z.object({
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ReactionPeakLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -213,6 +226,7 @@ export const StoryLedgerSuiteSchema = z
     allianceBondLink: AllianceBondSectionSchema.optional(),
     personaVestLink: PersonaVestSectionSchema.optional(),
     stageGoalConflictLink: StageGoalConflictSectionSchema.optional(),
+    reactionPeakLink: ReactionPeakSectionSchema.optional(),
   })
   .strict();
 
@@ -229,7 +243,8 @@ export type StoryLedgerChildReport =
   | ForeshadowMotifLinkReport
   | AllianceBondLinkReport
   | PersonaVestLinkReport
-  | StageGoalConflictLinkReport;
+  | StageGoalConflictLinkReport
+  | ReactionPeakLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -292,6 +307,8 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluatePersonaVestLink({ series, latestEp, ...(section as object) }),
   stageGoalConflictLink: (series, latestEp, section) =>
     evaluateStageGoalConflictLink({ series, latestEp, ...(section as object) }),
+  reactionPeakLink: (series, latestEp, section) =>
+    evaluateReactionPeakLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
