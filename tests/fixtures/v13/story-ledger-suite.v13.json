@@ -26298,5 +26298,613 @@
         }
       }
     ]
+  },
+  "bondColdOpenPeakBridge": {
+    "bonds": [
+      {
+        "id": "机长契约-b144-bcopb",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-bcopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b139c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b139c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-bcopb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bcopb",
+        "bondId": "机长契约-b144-bcopb",
+        "coldOpenId": "EP10-cold-bcopb",
+        "peakId": "对峙峰值-bcopb",
+        "ep": 10
+      }
+    ]
+  },
+  "rhythmBondPeakBridge": {
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-rbpb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142r-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机·抛钩",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142r-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转·加压"
+            },
+            {
+              "shotId": "EP10-b142r-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压·推进"
+            },
+            {
+              "shotId": "EP10-b142r-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念·收束"
+            }
+          ]
+        }
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-b144-rbpb",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-rbpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rbpb",
+        "rhythmId": "EP10-rhythm-rbpb",
+        "bondId": "机长契约-b144-rbpb",
+        "peakId": "对峙峰值-rbpb",
+        "ep": 10
+      }
+    ]
+  },
+  "ensembleAbilityPeakBridge": {
+    "members": [
+      {
+        "id": "太奶奶-b142",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b142",
+        "lookTag": "十八岁少女皮囊-b142",
+        "voiceTag": "科学院大佬口吻-b142",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b142",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b142",
+        "lookTag": "花甲老人-b142",
+        "voiceTag": "无奈絮叨-b142",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b142",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b142",
+        "lookTag": "痴呆傻笑-b142",
+        "voiceTag": "童声残留-b142",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-b142",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b142"
+        ],
+        "supportIds": [
+          "七十岁儿子-b142",
+          "老三-b142"
+        ],
+        "warmth": false
+      }
+    ],
+    "abilities": [
+      {
+        "id": "seer",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 8,
+        "day": 8,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-eapb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-eapb",
+        "unitId": "听证重整-b142",
+        "abilityId": "seer",
+        "peakId": "对峙峰值-eapb",
+        "ep": 10
+      }
+    ]
+  },
+  "countdownBondPeakBridge": {
+    "countdowns": [
+      {
+        "id": "直播终局-b144-cdbp",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-b144-cdbp",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cdbp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cdbp",
+        "countdownId": "直播终局-b144-cdbp",
+        "bondId": "机长契约-b144-cdbp",
+        "peakId": "对峙峰值-cdbp",
+        "ep": 10
+      }
+    ]
+  },
+  "bondColdOpenLink": {
+    "bonds": [
+      {
+        "id": "机长契约-b144-bcol",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-bcol",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b139c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b139c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bcol",
+        "bondId": "机长契约-b144-bcol",
+        "coldOpenId": "EP10-cold-bcol",
+        "ep": 10
+      }
+    ]
+  },
+  "rhythmQualityLink": {
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-rql",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142r-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机·抛钩",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142r-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转·加压"
+            },
+            {
+              "shotId": "EP10-b142r-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压·推进"
+            },
+            {
+              "shotId": "EP10-b142r-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念·收束"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rql",
+        "rhythmId": "EP10-rhythm-rql",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ensembleBondLink": {
+    "members": [
+      {
+        "id": "太奶奶-b142",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b142",
+        "lookTag": "十八岁少女皮囊-b142",
+        "voiceTag": "科学院大佬口吻-b142",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b142",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b142",
+        "lookTag": "花甲老人-b142",
+        "voiceTag": "无奈絮叨-b142",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b142",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b142",
+        "lookTag": "痴呆傻笑-b142",
+        "voiceTag": "童声残留-b142",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-b142",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b142"
+        ],
+        "supportIds": [
+          "七十岁儿子-b142",
+          "老三-b142"
+        ],
+        "warmth": false
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-b144-ebl",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ebl",
+        "unitId": "听证重整-b142",
+        "bondId": "机长契约-b144-ebl",
+        "ep": 10
+      }
+    ]
+  },
+  "countdownBondLink": {
+    "countdowns": [
+      {
+        "id": "直播终局-b144-cdbl",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-b144-cdbl",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cdbl",
+        "countdownId": "直播终局-b144-cdbl",
+        "bondId": "机长契约-b144-cdbl",
+        "ep": 10
+      }
+    ]
   }
 }
