@@ -1710,5 +1710,132 @@
   },
   "hookWindowBeforeCliffOpts": {
     "hardHookWindowSec": 2
+  },
+  "coldOpenReaction": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "脸色煞白"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "coldOpenReactionOpts": {
+    "coldOpenWindowSec": 2
+  },
+  "cliffTailHookHard": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "cliffTailHookHardOpts": {
+    "hardHookWindowSec": 2,
+    "hardTailToleranceSec": 1.5
+  },
+  "setupMidTurn": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "increment",
+        "action": "增量1"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reversal",
+        "action": "反转1"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "increment",
+        "action": "增量2"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "setupMidTurnOpts": {
+    "minTurns": 2,
+    "maxMidSetupRatio": 0.4
   }
 }

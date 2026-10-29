@@ -5040,5 +5040,650 @@
         "ep": 10
       }
     ]
+  },
+  "allianceVestPeakBridge": {
+    "alliances": [
+      {
+        "id": "oni-fang",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang",
+        "ep": 10,
+        "role": "payoff",
+        "note": "当众护短掉马"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-avp",
+        "allianceId": "oni-fang",
+        "vestId": "机长马甲",
+        "peakId": "对峙峰值",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaMaskPeakBridge": {
+    "amnesias": [
+      {
+        "id": "祁南失忆",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 8,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 8,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "告白巅峰",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "摩天轮对峙",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-amp",
+        "amnesiaId": "祁南失忆",
+        "maskId": "花心纨绔",
+        "peakId": "告白巅峰",
+        "ep": 8
+      }
+    ]
+  },
+  "foreshadowQualityRhythmBridge": {
+    "profile": "dense",
+    "items": [
+      {
+        "id": "伪人身份-fqr",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 8,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fqr",
+        "foreshadowId": "伪人身份-fqr",
+        "ep": 8,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        },
+        "shotSpec": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-BQR0",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR1",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR2",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR3",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR4",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR5",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR6",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR7",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR8",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR9",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR10",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR11",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR12",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR13",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR14",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR15",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR16",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            },
+            {
+              "shotId": "EP08-BQR17",
+              "cast": [],
+              "durSec": 2,
+              "action": "对峙·兑现"
+            }
+          ]
+        },
+        "profile": "dense"
+      }
+    ]
+  },
+  "allianceCliffLink": {
+    "alliances": [
+      {
+        "id": "oni-fang",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang",
+        "ep": 10,
+        "role": "payoff",
+        "note": "护短"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ac",
+        "allianceId": "oni-fang",
+        "cliffLinkId": "C9-10",
+        "ep": 10
+      }
+    ]
+  },
+  "bondVestLink": {
+    "bonds": [
+      {
+        "id": "江少契约-bv",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心与掉马同框"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bv",
+        "bondId": "江少契约-bv",
+        "vestId": "机长马甲"
+      }
+    ]
+  },
+  "personaPeakLink": {
+    "cards": [
+      {
+        "slug": "su-jianqing",
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-pp",
+        "cardSlug": "su-jianqing",
+        "peakId": "对峙峰值"
+      }
+    ]
+  },
+  "foreshadowCliffLink": {
+    "items": [
+      {
+        "id": "伪人身份-fc",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fc",
+        "foreshadowId": "伪人身份-fc",
+        "cliffLinkId": "C9-10",
+        "ep": 10
+      }
+    ]
   }
 }
