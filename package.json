@@ -139,6 +139,7 @@
     "bond-contract:check": "tsx scripts/bond-contract-check.ts",
     "bond-frequency-link:check": "tsx scripts/bond-frequency-link-check.ts",
     "vest-mask-peak-link:check": "tsx scripts/vest-mask-peak-link-check.ts",
+    "frequency-peak-link:check": "tsx scripts/frequency-peak-link-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
