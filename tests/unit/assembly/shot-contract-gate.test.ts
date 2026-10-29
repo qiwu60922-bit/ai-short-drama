@@ -9,6 +9,7 @@ import { describe, expect, it } from 'vitest';
 import {
   evaluateShotContract,
   SHOT_CONTRACT_DEFAULTS,
+  DEFAULT_SHOT_CONTRACT_RULESET,
   VAGUE_TERMS,
 } from '@/agents/assembly/shot-contract-gate';
 
@@ -79,6 +80,13 @@ function golden(overrides: Record<string, unknown> = {}) {
 }
 
 describe('evaluateShotContract', () => {
+  it('exposes DEFAULT_SHOT_CONTRACT_RULESET with core rule ids', () => {
+    const ids = DEFAULT_SHOT_CONTRACT_RULESET.rules.map((r) => r.id);
+    expect(ids).toEqual(expect.arrayContaining(['LOW-1', 'OTS-1', 'BLOCK-1', 'CU-1', 'FIX-1']));
+    const r = evaluateShotContract(golden(), { ruleset: DEFAULT_SHOT_CONTRACT_RULESET });
+    expect(r.verdict).toBe('PASS');
+  });
+
   it('exposes defaults: duration 3–15s, maxRulesPerShot=2', () => {
     expect(SHOT_CONTRACT_DEFAULTS).toEqual({
       minDurationSec: 3,

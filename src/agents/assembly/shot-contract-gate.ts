@@ -42,6 +42,19 @@ export const SHOT_CONTRACT_DEFAULTS = {
   maxRulesPerShot: 2,
 } as const;
 
+/** Default V12 ruleset mounted by shot-spec-suite when contractOpts.ruleset is omitted. */
+export const DEFAULT_SHOT_CONTRACT_RULESET = {
+  schemaVersion: '0.1',
+  source: { kind: 'v12-default', note: 'shot-spec-suite default ruleset' },
+  rules: [
+    { id: 'LOW-1', purpose: 'low angle power', conditions: 'confrontation', risk: 'distortion' },
+    { id: 'OTS-1', purpose: 'over shoulder', conditions: 'dialogue', risk: 'axis jump' },
+    { id: 'BLOCK-1', purpose: 'blocking', conditions: '3+ cast', risk: 'crowd mush' },
+    { id: 'CU-1', purpose: 'close-up emotion', conditions: 'reaction/reveal', risk: 'overcut' },
+    { id: 'FIX-1', purpose: 'locked frame', conditions: 'standoff', risk: 'static dull' },
+  ],
+} as const;
+
 /** Impression words — aligned with upstream VAGUE_TERMS (tongxigogo-crypto/shot-contract). */
 export const VAGUE_TERMS = [
   '电影感',

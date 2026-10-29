@@ -14,6 +14,7 @@
  *   · personaCard · personaMask · amnesiaArc · openingCascade · cliffhangerHandoff
  *   · maskVestLink · frequencyAbilityLink · motifQualityLink
  *   · personaMaskLink · handoffCountdownLink
+ *   · qualityReactionLink · foreshadowHandoffLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -209,6 +210,17 @@ import {
   evaluateHandoffCountdownLink,
   type HandoffCountdownLinkReport,
 } from './handoff-countdown-link-gate';
+import {
+  QualityReactionLinkEntrySchema,
+  evaluateQualityReactionLink,
+  type QualityReactionLinkReport,
+} from './quality-reaction-link-gate';
+import {
+  ForeshadowHandoffLinkEntrySchema,
+  ForeshadowHandoffEntrySchema,
+  evaluateForeshadowHandoffLink,
+  type ForeshadowHandoffLinkReport,
+} from './foreshadow-handoff-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -249,6 +261,8 @@ export const STORY_LEDGER_GATE_IDS = [
   'motifQualityLink',
   'personaMaskLink',
   'handoffCountdownLink',
+  'qualityReactionLink',
+  'foreshadowHandoffLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -416,6 +430,7 @@ const CountdownCliffSectionSchema = z.object({
 });
 
 const DialogueReactionSectionSchema = z.object({
+  requireLabeledExposition: z.boolean().optional(),
   links: z.array(DialogueReactionLinkEntrySchema),
 });
 
@@ -466,6 +481,17 @@ const HandoffCountdownSectionSchema = z.object({
   links: z.array(HandoffCountdownLinkEntrySchema),
 });
 
+const QualityReactionSectionSchema = z.object({
+  minIntense: z.number().int().min(1).max(5).optional(),
+  links: z.array(QualityReactionLinkEntrySchema),
+});
+
+const ForeshadowHandoffSectionSchema = z.object({
+  foreshadows: z.array(ForeshadowItemSchema),
+  handoffs: z.array(ForeshadowHandoffEntrySchema),
+  links: z.array(ForeshadowHandoffLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -506,6 +532,8 @@ export const StoryLedgerSuiteSchema = z
     motifQualityLink: MotifQualitySectionSchema.optional(),
     personaMaskLink: PersonaMaskLinkSectionSchema.optional(),
     handoffCountdownLink: HandoffCountdownSectionSchema.optional(),
+    qualityReactionLink: QualityReactionSectionSchema.optional(),
+    foreshadowHandoffLink: ForeshadowHandoffSectionSchema.optional(),
   })
   .strict();
 
@@ -547,7 +575,9 @@ export type StoryLedgerChildReport =
   | FrequencyAbilityLinkReport
   | MotifQualityLinkReport
   | PersonaMaskLinkReport
-  | HandoffCountdownLinkReport;
+  | HandoffCountdownLinkReport
+  | QualityReactionLinkReport
+  | ForeshadowHandoffLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -659,6 +689,10 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluatePersonaMaskLink({ series, latestEp, ...(section as object) }),
   handoffCountdownLink: (series, latestEp, section) =>
     evaluateHandoffCountdownLink({ series, latestEp, ...(section as object) }),
+  qualityReactionLink: (series, latestEp, section) =>
+    evaluateQualityReactionLink({ series, latestEp, ...(section as object) }),
+  foreshadowHandoffLink: (series, latestEp, section) =>
+    evaluateForeshadowHandoffLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {

@@ -1,5 +1,6 @@
 /**
  * V12 Dialogue×Reaction Link — 台词带过剧情 × 反应镜, offline, ≠Final ≠G3.
+ * Deepened: EXPOSITION_UNLABELED bubble (default FAIL on link).
  */
 import { describe, expect, it } from 'vitest';
 import { evaluateDialogueReactionLink } from '@/agents/assembly/dialogue-reaction-link-gate';
@@ -38,6 +39,16 @@ const noReaction = spec([
   { durSec: 6, beatRole: 'setup', action: '走廊空镜缓慢推进' },
 ]);
 
+const unlabeledMid = spec([
+  { durSec: 2, beatRole: 'hook', action: '门被撞开，黑影扑入' },
+  {
+    durSec: 8,
+    dialogue: '后来她穿越回十八岁，把一切都改写了，包括那场车祸',
+  },
+  { durSec: 6, beatRole: 'reversal', action: '齐耶抬腕刻印亮起格开一剑' },
+  { durSec: 2, beatRole: 'reaction', action: '齐耶瞳孔收缩' },
+]);
+
 const pack = (links: Array<Record<string, unknown>>, latestEp = 10) => ({
   series: '不候',
   latestEp,
@@ -54,6 +65,7 @@ describe('evaluateDialogueReactionLink', () => {
     );
     expect(r.verdict).toBe('PASS');
     expect(r.metrics.aligned).toBe(1);
+    expect(r.metrics.unlabeledExposition).toBe(0);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -90,5 +102,24 @@ describe('evaluateDialogueReactionLink', () => {
         evaluateDialogueReactionLink(pack([{ id: 'L1', ep: 1, shotSpec: noReaction }])),
       ),
     ).toContain('CHILD_REACTION_FAIL');
+  });
+
+  it('mid unlabeled exposition → EXPOSITION_UNLABELED FAIL by default', () => {
+    const r = evaluateDialogueReactionLink(pack([{ id: 'L1', ep: 1, shotSpec: unlabeledMid }]));
+    expect(failCodes(r)).toContain('EXPOSITION_UNLABELED');
+    expect(r.metrics.unlabeledExposition).toBeGreaterThan(0);
+  });
+
+  it('requireLabeledExposition=false → WARN then PASS when reaction ok', () => {
+    const r = evaluateDialogueReactionLink({
+      series: '不候',
+      latestEp: 10,
+      requireLabeledExposition: false,
+      links: [{ id: 'L1', ep: 1, shotSpec: unlabeledMid }],
+    });
+    expect(r.findings.filter((f) => f.code === 'EXPOSITION_UNLABELED').map((f) => f.severity)).toEqual([
+      'WARN',
+    ]);
+    expect(r.verdict).toBe('PASS');
   });
 });
