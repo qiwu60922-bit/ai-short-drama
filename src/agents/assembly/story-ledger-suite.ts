@@ -24,6 +24,7 @@
  *   · vestMaskRhythmBridge
  *   · amnesiaHandoffLink · bondMaskLink · foreshadowPeakLink
  *   · motifForeshadowRhythmBridge
+ *   · qualityMaskPeakBridge
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -352,6 +353,11 @@ import {
   evaluateMotifForeshadowRhythmBridge,
   type MotifForeshadowRhythmBridgeReport,
 } from './motif-foreshadow-rhythm-bridge-gate';
+import {
+  QualityMaskPeakBridgeLinkSchema,
+  evaluateQualityMaskPeakBridge,
+  type QualityMaskPeakBridgeReport,
+} from './quality-mask-peak-bridge-gate';
 
 const Ep = z.number().int().positive();
 
@@ -417,6 +423,7 @@ export const STORY_LEDGER_GATE_IDS = [
   'bondMaskLink',
   'foreshadowPeakLink',
   'motifForeshadowRhythmBridge',
+  'qualityMaskPeakBridge',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -794,6 +801,13 @@ const MotifForeshadowRhythmBridgeSectionSchema = z.object({
   links: z.array(MotifForeshadowRhythmBridgeLinkSchema),
 });
 
+const QualityMaskPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(QualityMaskPeakBridgeLinkSchema),
+});
+
 
 export const StoryLedgerSuiteSchema = z
   .object({
@@ -860,6 +874,7 @@ export const StoryLedgerSuiteSchema = z
     bondMaskLink: BondMaskSectionSchema.optional(),
     foreshadowPeakLink: ForeshadowPeakSectionSchema.optional(),
     motifForeshadowRhythmBridge: MotifForeshadowRhythmBridgeSectionSchema.optional(),
+    qualityMaskPeakBridge: QualityMaskPeakBridgeSectionSchema.optional(),
   })
   .strict();
 
@@ -926,7 +941,8 @@ export type StoryLedgerChildReport =
   | AmnesiaHandoffLinkReport
   | BondMaskLinkReport
   | ForeshadowPeakLinkReport
-  | MotifForeshadowRhythmBridgeReport;
+  | MotifForeshadowRhythmBridgeReport
+  | QualityMaskPeakBridgeReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -1088,6 +1104,8 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateForeshadowPeakLink({ series, latestEp, ...(section as object) }),
   motifForeshadowRhythmBridge: (series, latestEp, section) =>
     evaluateMotifForeshadowRhythmBridge({ series, latestEp, ...(section as object) }),
+  qualityMaskPeakBridge: (series, latestEp, section) =>
+    evaluateQualityMaskPeakBridge({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
