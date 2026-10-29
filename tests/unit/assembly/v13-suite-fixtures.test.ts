@@ -31,6 +31,17 @@ describe('v13 suite fixtures', () => {
     expect(r.metrics.ran).toBeGreaterThanOrEqual(8);
   });
 
+
+  it('dual-gate-enforce-fail.v13.json → both EMPTY_SUITE FAIL payloads', () => {
+    const dual = fx('dual-gate-enforce-fail.v13.json');
+    const story = evaluateStoryLedgerSuite(dual.storyLedger);
+    const shot = evaluateShotSpecSuite(dual.shotSpecSuite);
+    expect(story.verdict).toBe('FAIL');
+    expect(story.findings.some((f) => f.code === 'EMPTY_SUITE')).toBe(true);
+    expect(shot.verdict).toBe('FAIL');
+    expect(shot.findings.some((f) => f.code === 'EMPTY_SUITE')).toBe(true);
+  });
+
   it('enforce-fail fixture → EMPTY_SUITE FAIL (red path; CLI default still warn)', () => {
     const r = evaluateStoryLedgerSuite(fx('story-ledger-suite.enforce-fail.v13.json'));
     expect(r.verdict).toBe('FAIL');

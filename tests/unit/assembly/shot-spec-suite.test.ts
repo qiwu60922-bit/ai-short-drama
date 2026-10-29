@@ -247,7 +247,7 @@ const failCodes = (r: ReturnType<typeof evaluateShotSpecSuite>) =>
   r.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code);
 
 describe('shot-spec-suite', () => {
-  it('lists 20 gates incl. setupRatioHard/coldOpenCascade/reactionAfterReversal', () => {
+  it('lists 23 gates incl. hookWindowHard/cliffTailTight/dialogueAfterHook', () => {
     expect([...SHOT_SPEC_GATE_IDS]).toEqual([
       'hookStructure',
       'openingCascade',
@@ -269,6 +269,9 @@ describe('shot-spec-suite', () => {
       'setupRatioHard',
       'coldOpenCascade',
       'reactionAfterReversal',
+      'hookWindowHard',
+      'cliffTailTight',
+      'dialogueAfterHook',
     ]);
   });
 
@@ -276,7 +279,7 @@ describe('shot-spec-suite', () => {
     const r = evaluateShotSpecSuite({ episode: 'EP01' });
     expect(r.verdict).toBe('FAIL');
     expect(failCodes(r)).toContain('EMPTY_SUITE');
-    expect(r.metrics).toMatchObject({ ran: 0, skipped: 20 });
+    expect(r.metrics).toMatchObject({ ran: 0, skipped: 23 });
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -296,7 +299,7 @@ describe('shot-spec-suite', () => {
       hookStructure: shotSpec('EP01', hookGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 19 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 22 });
     expect(r.results.hookStructure.status).toBe('PASS');
     expect(r.results.shotContract.status).toBe('SKIP');
   });
@@ -310,13 +313,13 @@ describe('shot-spec-suite', () => {
       mvShotlist: mvGolden(),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 16 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 19 });
     for (const id of ['shotContract', 'shotPrompt', 'storyRhythm', 'mvShotlist'] as const) {
       expect(r.results[id].status).toBe('PASS');
     }
   });
 
-  it('all twenty gates PASS', () => {
+  it('all twenty-three gates PASS', () => {
     const r = evaluateShotSpecSuite({
       episode: 'EP01',
       hookStructure: shotSpec('EP01', hookGood()),
@@ -401,9 +404,39 @@ describe('shot-spec-suite', () => {
         { durSec: 6, beatRole: 'cliffhanger', action: '悬念' },
       ]),
       reactionAfterReversalOpts: { reactionWindowSec: 8 },
+      hookWindowHard: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '危机', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '增量' },
+        { durSec: 4, beatRole: 'reversal', action: '反转' },
+        { durSec: 4, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      hookWindowHardOpts: { hardHookWindowSec: 2 },
+      cliffTailTight: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '危机', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '增量' },
+        { durSec: 4, beatRole: 'reversal', action: '反转' },
+        { durSec: 4, beatRole: 'cliffhanger', action: '悬念收尾' },
+      ]),
+      cliffTailTightOpts: { hardTailToleranceSec: 1.5 },
+      dialogueAfterHook: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '黑羽使徒破窗闯入', hookKind: 'situation' },
+        {
+          durSec: 4,
+          beatRole: 'increment',
+          action: '剑尖指向齐耶，齐耶抬腕格开',
+          dialogue: '你归我带',
+        },
+        {
+          durSec: 5,
+          beatRole: 'reversal',
+          action: '齐耶抬腕，刻印亮起，反手格开一剑',
+          dialogue: '怎么会在你身上？',
+        },
+        { durSec: 4, beatRole: 'cliffhanger', action: '门外脚步未解' },
+      ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 20, passed: 20, failed: 0, skipped: 0 });
+    expect(r.metrics).toMatchObject({ ran: 23, passed: 23, failed: 0, skipped: 0 });
     for (const id of SHOT_SPEC_GATE_IDS) {
       expect(r.results[id].status).toBe('PASS');
     }
@@ -416,7 +449,7 @@ describe('shot-spec-suite', () => {
       reactionBeat: shotSpec('EP01', reactionGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 18 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 21 });
     expect(r.results.keyframePlate.status).toBe('PASS');
     expect(r.results.reactionBeat.status).toBe('PASS');
   });
@@ -429,7 +462,7 @@ describe('shot-spec-suite', () => {
       seriesRhythmOpts: { profile: 'dense' },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 18 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 21 });
     expect(r.results.dialogueExposition.status).toBe('PASS');
     expect(r.results.seriesRhythm.status).toBe('PASS');
   });
@@ -455,7 +488,7 @@ describe('shot-spec-suite', () => {
       },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 18 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 21 });
     expect(r.results.coldOpenHook.status).toBe('PASS');
     expect(r.results.mvBeatMap.status).toBe('PASS');
   });
@@ -477,7 +510,7 @@ describe('shot-spec-suite', () => {
       ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 18 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 21 });
     expect(r.results.detailHookKind.status).toBe('PASS');
     expect(r.results.tailColdClose.status).toBe('PASS');
   });
@@ -504,7 +537,7 @@ describe('shot-spec-suite', () => {
       hookKindMixOpts: { hookWindowSec: 8 },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 18 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 21 });
     expect(r.results.midTurnDensity.status).toBe('PASS');
     expect(r.results.hookKindMix.status).toBe('PASS');
   });
@@ -537,7 +570,7 @@ describe('shot-spec-suite', () => {
       ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 17 });
+    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 20 });
     expect(r.results.setupRatioHard.status).toBe('PASS');
     expect(r.results.coldOpenCascade.status).toBe('PASS');
     expect(r.results.reactionAfterReversal.status).toBe('PASS');
@@ -576,6 +609,48 @@ describe('shot-spec-suite', () => {
     expect(r.results.storyRhythm.status).toBe('FAIL');
   });
 });
+
+
+  it('hookWindowHard + cliffTailTight + dialogueAfterHook alone PASS', () => {
+    const r = evaluateShotSpecSuite({
+      episode: 'EP01',
+      hookWindowHard: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '危机', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '增量' },
+        { durSec: 4, beatRole: 'reversal', action: '反转' },
+        { durSec: 4, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      hookWindowHardOpts: { hardHookWindowSec: 2 },
+      cliffTailTight: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '危机', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '增量' },
+        { durSec: 4, beatRole: 'reversal', action: '反转' },
+        { durSec: 4, beatRole: 'cliffhanger', action: '悬念收尾' },
+      ]),
+      cliffTailTightOpts: { hardTailToleranceSec: 1.5 },
+      dialogueAfterHook: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '黑羽使徒破窗闯入', hookKind: 'situation' },
+        {
+          durSec: 4,
+          beatRole: 'increment',
+          action: '剑尖指向齐耶，齐耶抬腕格开',
+          dialogue: '你归我带',
+        },
+        {
+          durSec: 5,
+          beatRole: 'reversal',
+          action: '齐耶抬腕，刻印亮起，反手格开一剑',
+          dialogue: '怎么会在你身上？',
+        },
+        { durSec: 4, beatRole: 'cliffhanger', action: '门外脚步未解' },
+      ]),
+    });
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 20 });
+    expect(r.results.hookWindowHard.status).toBe('PASS');
+    expect(r.results.cliffTailTight.status).toBe('PASS');
+    expect(r.results.dialogueAfterHook.status).toBe('PASS');
+  });
 
 describe('ep01-rehearsal shotSpecGate wiring', () => {
   const SPEC = {

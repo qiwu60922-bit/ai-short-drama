@@ -20,6 +20,8 @@
  *   · motifRhythmBridge · qualityCliffLink
  *   · maskHandoffLink · abilityPeakLink
  *   · foreshadowRhythmBridge · amnesiaPeakLink · qualityHandoffLink · motifMaskLink
+ *   · bondPeakLink · countdownMaskLink · allianceHandoffLink · frequencyMaskLink
+ *   · vestMaskRhythmBridge
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -301,6 +303,33 @@ import {
   type MotifMaskLinkReport,
 } from './motif-mask-link-gate';
 
+import {
+  BondPeakLinkEntrySchema,
+  evaluateBondPeakLink,
+  type BondPeakLinkReport,
+} from './bond-peak-link-gate';
+import {
+  CountdownMaskLinkEntrySchema,
+  evaluateCountdownMaskLink,
+  type CountdownMaskLinkReport,
+} from './countdown-mask-link-gate';
+import {
+  AllianceHandoffLinkEntrySchema,
+  AllianceHandoffEntrySchema,
+  evaluateAllianceHandoffLink,
+  type AllianceHandoffLinkReport,
+} from './alliance-handoff-link-gate';
+import {
+  FrequencyMaskLinkEntrySchema,
+  evaluateFrequencyMaskLink,
+  type FrequencyMaskLinkReport,
+} from './frequency-mask-link-gate';
+import {
+  VestMaskRhythmBridgeLinkSchema,
+  evaluateVestMaskRhythmBridge,
+  type VestMaskRhythmBridgeReport,
+} from './vest-mask-rhythm-bridge-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -356,6 +385,11 @@ export const STORY_LEDGER_GATE_IDS = [
   'amnesiaPeakLink',
   'qualityHandoffLink',
   'motifMaskLink',
+  'bondPeakLink',
+  'countdownMaskLink',
+  'allianceHandoffLink',
+  'frequencyMaskLink',
+  'vestMaskRhythmBridge',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -674,6 +708,40 @@ const MotifMaskSectionSchema = z.object({
   links: z.array(MotifMaskLinkEntrySchema),
 });
 
+
+const BondPeakSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BondPeakLinkEntrySchema),
+});
+
+const CountdownMaskSectionSchema = z.object({
+  countdowns: z.array(StageCountdownSchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(CountdownMaskLinkEntrySchema),
+});
+
+const AllianceHandoffSectionSchema = z.object({
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  handoffs: z.array(AllianceHandoffEntrySchema),
+  links: z.array(AllianceHandoffLinkEntrySchema),
+});
+
+const FrequencyMaskSectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(FrequencyMaskLinkEntrySchema),
+});
+
+const VestMaskRhythmBridgeSectionSchema = z.object({
+  profile: z.enum(['dense', 'default', 'intrigue', 'slow_burn']).optional(),
+  vests: z.array(IdentityVestEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(VestMaskRhythmBridgeLinkSchema),
+});
+
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -730,6 +798,11 @@ export const StoryLedgerSuiteSchema = z
     amnesiaPeakLink: AmnesiaPeakSectionSchema.optional(),
     qualityHandoffLink: QualityHandoffSectionSchema.optional(),
     motifMaskLink: MotifMaskSectionSchema.optional(),
+    bondPeakLink: BondPeakSectionSchema.optional(),
+    countdownMaskLink: CountdownMaskSectionSchema.optional(),
+    allianceHandoffLink: AllianceHandoffSectionSchema.optional(),
+    frequencyMaskLink: FrequencyMaskSectionSchema.optional(),
+    vestMaskRhythmBridge: VestMaskRhythmBridgeSectionSchema.optional(),
   })
   .strict();
 
@@ -787,7 +860,12 @@ export type StoryLedgerChildReport =
   | ForeshadowRhythmBridgeReport
   | AmnesiaPeakLinkReport
   | QualityHandoffLinkReport
-  | MotifMaskLinkReport;
+  | MotifMaskLinkReport
+  | BondPeakLinkReport
+  | CountdownMaskLinkReport
+  | AllianceHandoffLinkReport
+  | FrequencyMaskLinkReport
+  | VestMaskRhythmBridgeReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -931,6 +1009,16 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityHandoffLink({ series, latestEp, ...(section as object) }),
   motifMaskLink: (series, latestEp, section) =>
     evaluateMotifMaskLink({ series, latestEp, ...(section as object) }),
+  bondPeakLink: (series, latestEp, section) =>
+    evaluateBondPeakLink({ series, latestEp, ...(section as object) }),
+  countdownMaskLink: (series, latestEp, section) =>
+    evaluateCountdownMaskLink({ series, latestEp, ...(section as object) }),
+  allianceHandoffLink: (series, latestEp, section) =>
+    evaluateAllianceHandoffLink({ series, latestEp, ...(section as object) }),
+  frequencyMaskLink: (series, latestEp, section) =>
+    evaluateFrequencyMaskLink({ series, latestEp, ...(section as object) }),
+  vestMaskRhythmBridge: (series, latestEp, section) =>
+    evaluateVestMaskRhythmBridge({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
