@@ -28594,5 +28594,709 @@
         }
       }
     ]
+  },
+  "personaCountdownPeakBridge": {
+    "countdowns": [
+      {
+        "id": "直播终局-pcpb",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "Batch148 personaCountdown",
+        "slug": "su-jianqing-pcpb"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-pcpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-pcpb",
+        "countdownId": "直播终局-pcpb",
+        "cardSlug": "su-jianqing-pcpb",
+        "peakId": "对峙峰值-pcpb",
+        "ep": 10
+      }
+    ]
+  },
+  "ensembleCountdownPeakBridge": {
+    "members": [
+      {
+        "id": "太奶奶",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整",
+        "lookTag": "十八岁少女皮囊",
+        "voiceTag": "科学院大佬口吻",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线",
+        "lookTag": "花甲老人",
+        "voiceTag": "无奈絮叨",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元",
+        "lookTag": "痴呆傻笑",
+        "voiceTag": "童声残留",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "unit-b148-ecpb",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶"
+        ],
+        "supportIds": [
+          "七十岁儿子",
+          "老三"
+        ],
+        "warmth": false
+      }
+    ],
+    "countdowns": [
+      {
+        "id": "cd-b148-ecpb",
+        "label": "终局",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "peak-b148-ecpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ecpb-b148",
+        "unitId": "unit-b148-ecpb",
+        "countdownId": "cd-b148-ecpb",
+        "peakId": "peak-b148-ecpb",
+        "ep": 10
+      }
+    ]
+  },
+  "countdownEnsemblePeakBridge": {
+    "countdowns": [
+      {
+        "id": "cd-b148-cepb",
+        "label": "终局",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "members": [
+      {
+        "id": "太奶奶",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整",
+        "lookTag": "十八岁少女皮囊",
+        "voiceTag": "科学院大佬口吻",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线",
+        "lookTag": "花甲老人",
+        "voiceTag": "无奈絮叨",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元",
+        "lookTag": "痴呆傻笑",
+        "voiceTag": "童声残留",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "unit-b148-cepb",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶"
+        ],
+        "supportIds": [
+          "七十岁儿子",
+          "老三"
+        ],
+        "warmth": false
+      }
+    ],
+    "peaks": [
+      {
+        "id": "peak-b148-cepb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cepb-b148",
+        "unitId": "unit-b148-cepb",
+        "countdownId": "cd-b148-cepb",
+        "peakId": "peak-b148-cepb",
+        "ep": 10
+      }
+    ]
+  },
+  "personaEnsemblePeakBridge": {
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "Batch148 personaEnsemble",
+        "slug": "su-jianqing-pepb"
+      }
+    ],
+    "members": [
+      {
+        "id": "太奶奶",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整",
+        "lookTag": "十八岁少女皮囊",
+        "voiceTag": "科学院大佬口吻",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线",
+        "lookTag": "花甲老人",
+        "voiceTag": "无奈絮叨",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元",
+        "lookTag": "痴呆傻笑",
+        "voiceTag": "童声残留",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "unit-b148-pepb",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶"
+        ],
+        "supportIds": [
+          "七十岁儿子",
+          "老三"
+        ],
+        "warmth": false
+      }
+    ],
+    "peaks": [
+      {
+        "id": "peak-b148-pepb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-pepb-b148",
+        "cardSlug": "su-jianqing-pepb",
+        "unitId": "unit-b148-pepb",
+        "peakId": "peak-b148-pepb",
+        "ep": 10
+      }
+    ]
+  },
+  "qualityRhythmLink": {
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-rql",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142r-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机·抛钩",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142r-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转·加压"
+            },
+            {
+              "shotId": "EP10-b142r-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压·推进"
+            },
+            {
+              "shotId": "EP10-b142r-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念·收束"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qrl-b148",
+        "rhythmId": "EP10-rhythm-rql",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityRevealLink": {
+    "minRevealIntense": 4,
+    "reveals": [
+      {
+        "id": "mask-b148-qrl",
+        "wearer": "苏见晴",
+        "plantEp": 1,
+        "maintainEps": [
+          3,
+          5
+        ],
+        "revealEp": 10,
+        "revealLabel": "当场抓包"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qreveal-b148",
+        "revealId": "mask-b148-qrl",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityAllianceLink": {
+    "minPayoffIntense": 4,
+    "alliances": [
+      {
+        "id": "oni-fang-afl",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-afl",
+        "ep": 1,
+        "role": "seed",
+        "note": "结义"
+      },
+      {
+        "allianceId": "oni-fang-afl",
+        "ep": 5,
+        "role": "echo",
+        "note": "试探"
+      },
+      {
+        "allianceId": "oni-fang-afl",
+        "ep": 10,
+        "role": "payoff",
+        "note": "护短"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qal-b148",
+        "allianceId": "oni-fang-afl",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityConflictLink": {
+    "minPayoffIntense": 4,
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cp",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qcl-b148",
+        "conflictId": "挑衅反噬-cp",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }
