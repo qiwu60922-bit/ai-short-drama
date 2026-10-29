@@ -1,0 +1,34 @@
+{
+  "series": "v12-fixture",
+  "latestEp": 20,
+  "fakeLedgerReconcile": {
+    "surfaceEntries": [
+      {
+        "id": "S1",
+        "ep": 1,
+        "claim": "家用全交公婆",
+        "amount": 5000,
+        "party": "儿媳"
+      }
+    ],
+    "trueEntries": [
+      {
+        "id": "T1",
+        "ep": 1,
+        "claim": "公婆截留家用转给小叔",
+        "amount": 5000,
+        "party": "公婆",
+        "evidenceLabel": "银行流水截图"
+      }
+    ],
+    "links": [
+      {
+        "id": "L1",
+        "surfaceId": "S1",
+        "trueId": "T1",
+        "reconcileEp": 8,
+        "reconcileLabel": "甩银行流水揭穿截留"
+      }
+    ]
+  }
+}

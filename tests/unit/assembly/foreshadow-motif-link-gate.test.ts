@@ -153,4 +153,16 @@ describe('evaluateForeshadowMotifLink', () => {
     expect(warnCodes(r)).toContain('PENDING_PAIR');
     expect(r.metrics.pending).toBe(1);
   });
+
+  it('S closed without mid echo → PRIORITY_S_REQUIRES_ECHO FAIL', () => {
+    const r = evaluateForeshadowMotifLink(
+      pack({
+        appearances: [
+          { motifId: 'white-rose', ep: 1, role: 'seed', visualState: '含苞' },
+          { motifId: 'white-rose', ep: 78, role: 'payoff', visualState: '盛放' },
+        ],
+      }),
+    );
+    expect(failCodes(r)).toContain('PRIORITY_S_REQUIRES_ECHO');
+  });
 });

@@ -15,6 +15,7 @@
  *   · maskVestLink · frequencyAbilityLink · motifQualityLink
  *   · personaMaskLink · handoffCountdownLink
  *   · qualityReactionLink · foreshadowHandoffLink
+ *   · peakQualityLink · abilityMaskLink · cliffHandoffLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -221,6 +222,22 @@ import {
   evaluateForeshadowHandoffLink,
   type ForeshadowHandoffLinkReport,
 } from './foreshadow-handoff-link-gate';
+import {
+  PeakQualityLinkEntrySchema,
+  evaluatePeakQualityLink,
+  type PeakQualityLinkReport,
+} from './peak-quality-link-gate';
+import {
+  AbilityMaskLinkEntrySchema,
+  evaluateAbilityMaskLink,
+  type AbilityMaskLinkReport,
+} from './ability-mask-link-gate';
+import {
+  CliffHandoffLinkEntrySchema,
+  CliffHandoffEntrySchema,
+  evaluateCliffHandoffLink,
+  type CliffHandoffLinkReport,
+} from './cliff-handoff-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -263,6 +280,9 @@ export const STORY_LEDGER_GATE_IDS = [
   'handoffCountdownLink',
   'qualityReactionLink',
   'foreshadowHandoffLink',
+  'peakQualityLink',
+  'abilityMaskLink',
+  'cliffHandoffLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -492,6 +512,25 @@ const ForeshadowHandoffSectionSchema = z.object({
   links: z.array(ForeshadowHandoffLinkEntrySchema),
 });
 
+const PeakQualitySectionSchema = z.object({
+  minPeakIntense: z.number().int().min(1).max(5).optional(),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PeakQualityLinkEntrySchema),
+});
+
+const AbilityMaskSectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(AbilityMaskLinkEntrySchema),
+});
+
+const CliffHandoffLinkSectionSchema = z.object({
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  handoffs: z.array(CliffHandoffEntrySchema),
+  links: z.array(CliffHandoffLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -534,6 +573,9 @@ export const StoryLedgerSuiteSchema = z
     handoffCountdownLink: HandoffCountdownSectionSchema.optional(),
     qualityReactionLink: QualityReactionSectionSchema.optional(),
     foreshadowHandoffLink: ForeshadowHandoffSectionSchema.optional(),
+    peakQualityLink: PeakQualitySectionSchema.optional(),
+    abilityMaskLink: AbilityMaskSectionSchema.optional(),
+    cliffHandoffLink: CliffHandoffLinkSectionSchema.optional(),
   })
   .strict();
 
@@ -577,7 +619,10 @@ export type StoryLedgerChildReport =
   | PersonaMaskLinkReport
   | HandoffCountdownLinkReport
   | QualityReactionLinkReport
-  | ForeshadowHandoffLinkReport;
+  | ForeshadowHandoffLinkReport
+  | PeakQualityLinkReport
+  | AbilityMaskLinkReport
+  | CliffHandoffLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -693,6 +738,12 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityReactionLink({ series, latestEp, ...(section as object) }),
   foreshadowHandoffLink: (series, latestEp, section) =>
     evaluateForeshadowHandoffLink({ series, latestEp, ...(section as object) }),
+  peakQualityLink: (series, latestEp, section) =>
+    evaluatePeakQualityLink({ series, latestEp, ...(section as object) }),
+  abilityMaskLink: (series, latestEp, section) =>
+    evaluateAbilityMaskLink({ series, latestEp, ...(section as object) }),
+  cliffHandoffLink: (series, latestEp, section) =>
+    evaluateCliffHandoffLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {

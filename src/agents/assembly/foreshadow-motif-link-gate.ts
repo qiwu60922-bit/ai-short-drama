@@ -15,6 +15,7 @@
  *  PAYOFF_WITHOUT_MOTIF_PAYOFF — 伏笔已 closed 但母题无 payoff
  *  MOTIF_PAYOFF_WITHOUT_CLOSE — 母题已 payoff 但伏笔仍 active
  *  EP_MISMATCH — payoffEp ≠ motif payoff.ep
+ *  PRIORITY_S_REQUIRES_ECHO — S 级已 closed 须在 plant..payoff 间有 motif echo
  *  PENDING_PAIR (WARN) — 双方都未收束
  * Engineering gate only: PASS ≠ Final ≠ G3.
  */
@@ -61,6 +62,7 @@ export type ForeshadowMotifLinkFinding = {
     | 'PAYOFF_WITHOUT_MOTIF_PAYOFF'
     | 'MOTIF_PAYOFF_WITHOUT_CLOSE'
     | 'EP_MISMATCH'
+    | 'PRIORITY_S_REQUIRES_ECHO'
     | 'PENDING_PAIR';
   severity: 'FAIL' | 'WARN';
   message: string;
@@ -239,6 +241,22 @@ export function evaluateForeshadowMotifLink(input: unknown): ForeshadowMotifLink
         fix: '伏笔回收与视觉母题 payoff 须同集',
       });
       continue;
+    }
+
+    if (fs.priority === 'S') {
+      const echoes = apps.filter(
+        (a) => a.role === 'echo' && a.ep > fs.plantEp && a.ep < (fs.payoffEp as number),
+      );
+      if (echoes.length === 0) {
+        push({
+          code: 'PRIORITY_S_REQUIRES_ECHO',
+          severity: 'FAIL',
+          ids: [l.id, l.foreshadowId, l.motifId],
+          message: `${l.id}: S 级伏笔 closed@E${fs.payoffEp}，但 plant..payoff 间无 motif echo`,
+          fix: 'S 线至少一次 echo 回扣，避免 seed 直跳 payoff',
+        });
+        continue;
+      }
     }
 
     aligned += 1;
