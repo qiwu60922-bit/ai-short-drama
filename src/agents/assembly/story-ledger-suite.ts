@@ -169,6 +169,9 @@
  *   · growlRhythmPeakBridge · howlRhythmPeakBridge · blastRhythmPeakBridge · slamRhythmPeakBridge
  *   · qualityFrostLink · qualityMirrorLink · qualityJadeLink · qualityPearlLink
  *
+ *   · snarlRhythmPeakBridge · yelpRhythmPeakBridge · thumpRhythmPeakBridge · raspRhythmPeakBridge
+ *   · qualityAmberLink · qualityIvoryLink · qualityOnyxLink · qualityRubyLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3085,6 +3088,59 @@ import {
   type QualityPearlLinkReport,
 } from './quality-pearl-link-gate';
 
+import {
+  SnarlRhythmPeakBridgeLinkSchema,
+  SnarlRhythmPeakSnarlEntrySchema,
+  SnarlRhythmPeakRhythmEntrySchema,
+  evaluateSnarlRhythmPeakBridge,
+  type SnarlRhythmPeakBridgeReport,
+} from './snarl-rhythm-peak-bridge-gate';
+import {
+  YelpRhythmPeakBridgeLinkSchema,
+  YelpRhythmPeakYelpEntrySchema,
+  YelpRhythmPeakRhythmEntrySchema,
+  evaluateYelpRhythmPeakBridge,
+  type YelpRhythmPeakBridgeReport,
+} from './yelp-rhythm-peak-bridge-gate';
+import {
+  ThumpRhythmPeakBridgeLinkSchema,
+  ThumpRhythmPeakThumpEntrySchema,
+  ThumpRhythmPeakRhythmEntrySchema,
+  evaluateThumpRhythmPeakBridge,
+  type ThumpRhythmPeakBridgeReport,
+} from './thump-rhythm-peak-bridge-gate';
+import {
+  RaspRhythmPeakBridgeLinkSchema,
+  RaspRhythmPeakRaspEntrySchema,
+  RaspRhythmPeakRhythmEntrySchema,
+  evaluateRaspRhythmPeakBridge,
+  type RaspRhythmPeakBridgeReport,
+} from './rasp-rhythm-peak-bridge-gate';
+import {
+  QualityAmberLinkEntrySchema,
+  QualityAmberEntrySchema,
+  evaluateQualityAmberLink,
+  type QualityAmberLinkReport,
+} from './quality-amber-link-gate';
+import {
+  QualityIvoryLinkEntrySchema,
+  QualityIvoryEntrySchema,
+  evaluateQualityIvoryLink,
+  type QualityIvoryLinkReport,
+} from './quality-ivory-link-gate';
+import {
+  QualityOnyxLinkEntrySchema,
+  QualityOnyxEntrySchema,
+  evaluateQualityOnyxLink,
+  type QualityOnyxLinkReport,
+} from './quality-onyx-link-gate';
+import {
+  QualityRubyLinkEntrySchema,
+  QualityRubyEntrySchema,
+  evaluateQualityRubyLink,
+  type QualityRubyLinkReport,
+} from './quality-ruby-link-gate';
+
 
 
 
@@ -3628,6 +3684,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityMirrorLink',
   'qualityJadeLink',
   'qualityPearlLink',
+  'snarlRhythmPeakBridge',
+  'yelpRhythmPeakBridge',
+  'thumpRhythmPeakBridge',
+  'raspRhythmPeakBridge',
+  'qualityAmberLink',
+  'qualityIvoryLink',
+  'qualityOnyxLink',
+  'qualityRubyLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -7190,6 +7254,58 @@ const QualityPearlSectionSchemaB163 = z.object({
   links: z.array(QualityPearlLinkEntrySchema),
 });
 
+const SnarlRhythmPeakBridgeSectionSchema = z.object({
+  snarls: z.array(SnarlRhythmPeakSnarlEntrySchema),
+  rhythms: z.array(SnarlRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SnarlRhythmPeakBridgeLinkSchema),
+});
+
+const YelpRhythmPeakBridgeSectionSchema = z.object({
+  yelps: z.array(YelpRhythmPeakYelpEntrySchema),
+  rhythms: z.array(YelpRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(YelpRhythmPeakBridgeLinkSchema),
+});
+
+const ThumpRhythmPeakBridgeSectionSchema = z.object({
+  thumps: z.array(ThumpRhythmPeakThumpEntrySchema),
+  rhythms: z.array(ThumpRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ThumpRhythmPeakBridgeLinkSchema),
+});
+
+const RaspRhythmPeakBridgeSectionSchema = z.object({
+  rasps: z.array(RaspRhythmPeakRaspEntrySchema),
+  rhythms: z.array(RaspRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(RaspRhythmPeakBridgeLinkSchema),
+});
+
+const QualityAmberSectionSchemaB164 = z.object({
+  minAmberIntense: z.number().int().min(1).max(5).optional(),
+  ambers: z.array(QualityAmberEntrySchema),
+  links: z.array(QualityAmberLinkEntrySchema),
+});
+
+const QualityIvorySectionSchemaB164 = z.object({
+  minIvoryIntense: z.number().int().min(1).max(5).optional(),
+  ivories: z.array(QualityIvoryEntrySchema),
+  links: z.array(QualityIvoryLinkEntrySchema),
+});
+
+const QualityOnyxSectionSchemaB164 = z.object({
+  minOnyxIntense: z.number().int().min(1).max(5).optional(),
+  onyxes: z.array(QualityOnyxEntrySchema),
+  links: z.array(QualityOnyxLinkEntrySchema),
+});
+
+const QualityRubySectionSchemaB164 = z.object({
+  minRubyIntense: z.number().int().min(1).max(5).optional(),
+  rubies: z.array(QualityRubyEntrySchema),
+  links: z.array(QualityRubyLinkEntrySchema),
+});
+
 
 
 
@@ -7732,6 +7848,14 @@ export const StoryLedgerSuiteSchema = z
     qualityMirrorLink: QualityMirrorSectionSchemaB163.optional(),
     qualityJadeLink: QualityJadeSectionSchemaB163.optional(),
     qualityPearlLink: QualityPearlSectionSchemaB163.optional(),
+    snarlRhythmPeakBridge: SnarlRhythmPeakBridgeSectionSchema.optional(),
+    yelpRhythmPeakBridge: YelpRhythmPeakBridgeSectionSchema.optional(),
+    thumpRhythmPeakBridge: ThumpRhythmPeakBridgeSectionSchema.optional(),
+    raspRhythmPeakBridge: RaspRhythmPeakBridgeSectionSchema.optional(),
+    qualityAmberLink: QualityAmberSectionSchemaB164.optional(),
+    qualityIvoryLink: QualityIvorySectionSchemaB164.optional(),
+    qualityOnyxLink: QualityOnyxSectionSchemaB164.optional(),
+    qualityRubyLink: QualityRubySectionSchemaB164.optional(),
   })
   .strict();
 
@@ -8263,7 +8387,15 @@ export type StoryLedgerChildReport =
   | QualityFrostLinkReport
   | QualityMirrorLinkReport
   | QualityJadeLinkReport
-  | QualityPearlLinkReport;
+  | QualityPearlLinkReport
+  | SnarlRhythmPeakBridgeReport
+  | YelpRhythmPeakBridgeReport
+  | ThumpRhythmPeakBridgeReport
+  | RaspRhythmPeakBridgeReport
+  | QualityAmberLinkReport
+  | QualityIvoryLinkReport
+  | QualityOnyxLinkReport
+  | QualityRubyLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -9356,6 +9488,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityJadeLink({ series, latestEp, ...(section as object) }),
   qualityPearlLink: (series, latestEp, section) =>
     evaluateQualityPearlLink({ series, latestEp, ...(section as object) }),
+  snarlRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSnarlRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  yelpRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateYelpRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  thumpRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateThumpRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  raspRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateRaspRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityAmberLink: (series, latestEp, section) =>
+    evaluateQualityAmberLink({ series, latestEp, ...(section as object) }),
+  qualityIvoryLink: (series, latestEp, section) =>
+    evaluateQualityIvoryLink({ series, latestEp, ...(section as object) }),
+  qualityOnyxLink: (series, latestEp, section) =>
+    evaluateQualityOnyxLink({ series, latestEp, ...(section as object) }),
+  qualityRubyLink: (series, latestEp, section) =>
+    evaluateQualityRubyLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
