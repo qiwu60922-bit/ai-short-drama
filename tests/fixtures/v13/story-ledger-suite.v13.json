@@ -16364,5 +16364,670 @@
         "motifId": "white-rose-hml"
       }
     ]
+  },
+  "motifCliffPeakBridge": {
+    "motifs": [
+      {
+        "id": "white-rose-mcpb",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mcpb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mcpb",
+        "ep": 10,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mcpb",
+        "ep": 20,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-cvpb",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cvpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mcpb",
+        "motifId": "white-rose-mcpb",
+        "cliffLinkId": "C9-10-cvpb",
+        "peakId": "对峙峰值-cvpb",
+        "ep": 10
+      }
+    ]
+  },
+  "motifVestPeakBridge": {
+    "motifs": [
+      {
+        "id": "white-rose-mvpb",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mvpb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mvpb",
+        "ep": 8,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mvpb",
+        "ep": 20,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-mvpb",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 8,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-mvpb",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mvpb",
+        "motifId": "white-rose-mvpb",
+        "vestId": "机长马甲-mvpb",
+        "peakId": "对峙峰值-mvpb",
+        "ep": 8
+      }
+    ]
+  },
+  "motifHandoffPeakBridge": {
+    "motifs": [
+      {
+        "id": "white-rose-mhp",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mhp",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mhp",
+        "ep": 8,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mhp",
+        "ep": 20,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9-mhp",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "开场"
+            },
+            {
+              "shotId": "EP08-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP08-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP08-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "承接"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "新证"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-mhp",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mhp",
+        "motifId": "white-rose-mhp",
+        "handoffId": "H8-9-mhp",
+        "peakId": "对峙峰值-mhp",
+        "ep": 8
+      }
+    ]
+  },
+  "vestCliffPeakBridge": {
+    "vests": [
+      {
+        "id": "机长马甲-vcpb",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-cvpb",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-vcpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vcpb",
+        "vestId": "机长马甲-vcpb",
+        "cliffLinkId": "C9-10-cvpb",
+        "peakId": "对峙峰值-vcpb",
+        "ep": 10
+      }
+    ]
+  },
+  "motifAbilityLink": {
+    "motifs": [
+      {
+        "id": "white-rose-mal",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mal",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mal",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mal",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "abilities": [
+      {
+        "id": "seer-mal",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-mal",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-mal",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-mal",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mal",
+        "motifId": "white-rose-mal",
+        "abilityId": "seer-mal",
+        "ep": 10
+      }
+    ]
+  },
+  "motifFrequencyLink": {
+    "motifs": [
+      {
+        "id": "white-rose-mfl",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mfl",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mfl",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mfl",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": "离婚要挟-mfl",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开",
+        "tipAtSec": 10,
+        "plantAtSec": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mfl",
+        "motifId": "white-rose-mfl",
+        "frequencyId": "离婚要挟-mfl",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyMotifLink": {
+    "frequencies": [
+      {
+        "id": "离婚要挟-fml",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开",
+        "tipAtSec": 10,
+        "plantAtSec": 0
+      }
+    ],
+    "motifs": [
+      {
+        "id": "white-rose-fml",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-fml",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-fml",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-fml",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fml",
+        "frequencyId": "离婚要挟-fml",
+        "motifId": "white-rose-fml",
+        "ep": 10
+      }
+    ]
+  },
+  "maskMotifLink": {
+    "masks": [
+      {
+        "id": "花心纨绔-mml2",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 8,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "motifs": [
+      {
+        "id": "white-rose-mml2",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mml2",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mml2",
+        "ep": 4,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mml2",
+        "ep": 8,
+        "role": "payoff",
+        "visualState": "盛放揭穿"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mml2",
+        "maskId": "花心纨绔-mml2",
+        "motifId": "white-rose-mml2"
+      }
+    ]
   }
 }
