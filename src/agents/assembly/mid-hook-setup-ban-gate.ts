@@ -22,7 +22,7 @@ import {
   type SetupAfterHookBanOptions,
 } from './setup-after-hook-ban-gate';
 
-export interface MidHookSetupBanOptions extends MidHookEarlyOptions {}
+export type MidHookSetupBanOptions = MidHookEarlyOptions;
 
 export type MidHookSetupBanFinding = {
   code: MidHookEarlyFinding['code'] | SetupAfterHookBanFinding['code'];

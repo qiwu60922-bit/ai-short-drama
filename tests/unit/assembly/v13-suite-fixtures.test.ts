@@ -36,7 +36,14 @@ describe('v13 suite fixtures', () => {
     expect(r.results.motifPeakLink.status).toBe('PASS');
     expect(r.results.amnesiaQualityLink.status).toBe('PASS');
     expect(r.results.cliffMaskLink.status).toBe('PASS');
-    expect(r.metrics.ran).toBeGreaterThanOrEqual(21);
+    expect(r.results.abilityQualityRhythmBridge.status).toBe('PASS');
+    expect(r.results.maskHandoffPeakBridge.status).toBe('PASS');
+    expect(r.results.vestMotifPeakBridge.status).toBe('PASS');
+    expect(r.results.foreshadowQualityLink.status).toBe('PASS');
+    expect(r.results.bondHandoffLink.status).toBe('PASS');
+    expect(r.results.personaCliffLink.status).toBe('PASS');
+    expect(r.results.motifHandoffLink.status).toBe('PASS');
+    expect(r.metrics.ran).toBeGreaterThanOrEqual(28);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -62,7 +69,10 @@ describe('v13 suite fixtures', () => {
     expect(r.results.coldOpenHookWindow.status).toBe('PASS');
     expect(r.results.reactionReversalCliff.status).toBe('PASS');
     expect(r.results.coldCloseCliffTail.status).toBe('PASS');
-    expect(r.metrics.ran).toBeGreaterThanOrEqual(17);
+    expect(r.results.midHookDialogueBan.status).toBe('PASS');
+    expect(r.results.setupDialogueCap.status).toBe('PASS');
+    expect(r.results.dialogueSetupBan.status).toBe('PASS');
+    expect(r.metrics.ran).toBeGreaterThanOrEqual(20);
   });
 
 
