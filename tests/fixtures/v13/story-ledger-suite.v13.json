@@ -6917,5 +6917,346 @@
         "ep": 10
       }
     ]
+  },
+  "conflictBondPeakBridge": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cbp",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-cbp",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cbp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cbp",
+        "conflictId": "挑衅反噬-cbp",
+        "bondId": "机长契约-cbp",
+        "peakId": "对峙峰值-cbp",
+        "ep": 10
+      }
+    ]
+  },
+  "foreshadowBondPeakBridge": {
+    "items": [
+      {
+        "id": "机长身份-fbp",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 5
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-fbp",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fbp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fbp",
+        "foreshadowId": "机长身份-fbp",
+        "bondId": "机长契约-fbp",
+        "peakId": "对峙峰值-fbp",
+        "ep": 10
+      }
+    ]
+  },
+  "abilityConflictPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer-acp",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-acp",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-acp",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-acp",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "挑衅反噬-acp",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-acp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-acp",
+        "abilityId": "seer-acp",
+        "conflictId": "挑衅反噬-acp",
+        "peakId": "对峙峰值-acp",
+        "ep": 10
+      }
+    ]
+  },
+  "conflictBondLink": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cb",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "bonds": [
+      {
+        "id": "江少契约-cb",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cb",
+        "conflictId": "挑衅反噬-cb",
+        "bondId": "江少契约-cb",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaMaskLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-am",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-am",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-am",
+        "amnesiaId": "祁南失忆-am",
+        "maskId": "花心纨绔-am"
+      }
+    ]
+  },
+  "motifVestLink": {
+    "motifs": [
+      {
+        "id": "white-rose-mv",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mv",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mv",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mv",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-mv",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mv",
+        "motifId": "white-rose-mv",
+        "vestId": "机长马甲-mv",
+        "ep": 10
+      }
+    ]
+  },
+  "abilityForeshadowLink": {
+    "abilities": [
+      {
+        "id": "seer-af",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-af",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-af",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-af",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "items": [
+      {
+        "id": "机长身份-af",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 5
+      }
+    ],
+    "links": [
+      {
+        "id": "L-af",
+        "abilityId": "seer-af",
+        "foreshadowId": "机长身份-af",
+        "ep": 10
+      }
+    ]
   }
 }
