@@ -10,6 +10,7 @@
  *   · stageGoal · conflictPayoff · peakBeforePayoff · abilityRule  (baseline singles)
  *   · qualityLeap · foreshadowLedger · motifCallback · allianceLedger
  *   · bondContract · identityVest · frequencyTipping  (more baselines)
+ *   · abilityStageLink · countdownCliffLink · dialogueReactionLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -144,6 +145,21 @@ import {
   evaluateQualityLeap,
   type QualityLeapReport,
 } from './quality-leap-gate';
+import {
+  AbilityStageLinkEntrySchema,
+  evaluateAbilityStageLink,
+  type AbilityStageLinkReport,
+} from './ability-stage-link-gate';
+import {
+  CountdownCliffLinkEntrySchema,
+  evaluateCountdownCliffLink,
+  type CountdownCliffLinkReport,
+} from './countdown-cliff-link-gate';
+import {
+  DialogueReactionLinkEntrySchema,
+  evaluateDialogueReactionLink,
+  type DialogueReactionLinkReport,
+} from './dialogue-reaction-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -171,6 +187,9 @@ export const STORY_LEDGER_GATE_IDS = [
   'bondContract',
   'identityVest',
   'frequencyTipping',
+  'abilityStageLink',
+  'countdownCliffLink',
+  'dialogueReactionLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -318,6 +337,29 @@ const FrequencyTippingSectionSchema = z.object({
   entries: z.array(FrequencyTippingEntrySchema),
 });
 
+const AbilityStageSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  countdowns: z.array(StageCountdownSchema).optional(),
+  links: z.array(AbilityStageLinkEntrySchema),
+});
+
+const CountdownCliffSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  countdowns: z.array(StageCountdownSchema).min(1),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  links: z.array(CountdownCliffLinkEntrySchema),
+});
+
+const DialogueReactionSectionSchema = z.object({
+  links: z.array(DialogueReactionLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -345,6 +387,9 @@ export const StoryLedgerSuiteSchema = z
     bondContract: BondContractSectionSchema.optional(),
     identityVest: IdentityVestSectionSchema.optional(),
     frequencyTipping: FrequencyTippingSectionSchema.optional(),
+    abilityStageLink: AbilityStageSectionSchema.optional(),
+    countdownCliffLink: CountdownCliffSectionSchema.optional(),
+    dialogueReactionLink: DialogueReactionSectionSchema.optional(),
   })
   .strict();
 
@@ -373,7 +418,10 @@ export type StoryLedgerChildReport =
   | AllianceLedgerReport
   | BondContractReport
   | IdentityVestReport
-  | FrequencyTippingReport;
+  | FrequencyTippingReport
+  | AbilityStageLinkReport
+  | CountdownCliffLinkReport
+  | DialogueReactionLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -459,6 +507,12 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateIdentityVest({ series, latestEp, ...(section as object) }),
   frequencyTipping: (series, latestEp, section) =>
     evaluateFrequencyTipping({ series, latestEp, ...(section as object) }),
+  abilityStageLink: (series, latestEp, section) =>
+    evaluateAbilityStageLink({ series, latestEp, ...(section as object) }),
+  countdownCliffLink: (series, latestEp, section) =>
+    evaluateCountdownCliffLink({ series, latestEp, ...(section as object) }),
+  dialogueReactionLink: (series, latestEp, section) =>
+    evaluateDialogueReactionLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
