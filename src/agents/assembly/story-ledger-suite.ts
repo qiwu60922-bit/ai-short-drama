@@ -6,7 +6,7 @@
  * entry so EP01 rehearsal / factory can enforce them before fake generation:
  *   bondFrequencyLink · vestMaskPeakLink · frequencyPeakLink · amnesiaMotifLink
  *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink · foreshadowMotifLink
- *   · allianceBondLink · personaVestLink
+ *   · allianceBondLink · personaVestLink · stageGoalConflictLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -86,6 +86,17 @@ import {
 } from './persona-vest-link-gate';
 import { PersonaCardSchema } from './persona-card-gate';
 import { IdentityVestEntrySchema } from './identity-vest-gate';
+import {
+  StageGoalConflictLinkEntrySchema,
+  evaluateStageGoalConflictLink,
+  type StageGoalConflictLinkReport,
+} from './stage-goal-conflict-link-gate';
+import {
+  StageGoalEntrySchema,
+  StageProgressSchema,
+  StageCountdownSchema,
+} from './stage-goal-gate';
+import { ConflictEntrySchema } from './conflict-payoff-gap-gate';
 
 const Ep = z.number().int().positive();
 
@@ -100,6 +111,7 @@ export const STORY_LEDGER_GATE_IDS = [
   'foreshadowMotifLink',
   'allianceBondLink',
   'personaVestLink',
+  'stageGoalConflictLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -177,6 +189,15 @@ const PersonaVestSectionSchema = z.object({
   links: z.array(PersonaVestLinkEntrySchema),
 });
 
+const StageGoalConflictSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  countdowns: z.array(StageCountdownSchema).optional(),
+  conflicts: z.array(ConflictEntrySchema),
+  links: z.array(StageGoalConflictLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -191,6 +212,7 @@ export const StoryLedgerSuiteSchema = z
     foreshadowMotifLink: ForeshadowMotifSectionSchema.optional(),
     allianceBondLink: AllianceBondSectionSchema.optional(),
     personaVestLink: PersonaVestSectionSchema.optional(),
+    stageGoalConflictLink: StageGoalConflictSectionSchema.optional(),
   })
   .strict();
 
@@ -206,7 +228,8 @@ export type StoryLedgerChildReport =
   | CliffCascadeLinkReport
   | ForeshadowMotifLinkReport
   | AllianceBondLinkReport
-  | PersonaVestLinkReport;
+  | PersonaVestLinkReport
+  | StageGoalConflictLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -267,6 +290,8 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateAllianceBondLink({ series, latestEp, ...(section as object) }),
   personaVestLink: (series, latestEp, section) =>
     evaluatePersonaVestLink({ series, latestEp, ...(section as object) }),
+  stageGoalConflictLink: (series, latestEp, section) =>
+    evaluateStageGoalConflictLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
