@@ -104,6 +104,8 @@
  *   · cliffQualityLink · personaQualityLink · frequencyQualityLink · handoffQualityLink
  *   · personaQualityPeakBridge · qualityForeshadowPeakBridge · vestQualityPeakBridge · allianceQualityPeakBridge
  *   · vestForeshadowLink · allianceQualityLink · qualityForeshadowLink · personaForeshadowLink
+ *   · handoffQualityPeakBridge · abilityQualityPeakBridge · motifForeshadowPeakBridge · frequencyQualityPeakBridge
+ *   · motifForeshadowLink · frequencyForeshadowLink · countdownForeshadowLink · handoffForeshadowLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -1690,6 +1692,50 @@ import {
   type PersonaForeshadowLinkReport,
 } from './persona-foreshadow-link-gate';
 
+import {
+  HandoffQualityPeakBridgeLinkSchema,
+  HandoffQualityPeakHandoffEntrySchema,
+  evaluateHandoffQualityPeakBridge,
+  type HandoffQualityPeakBridgeReport,
+} from './handoff-quality-peak-bridge-gate';
+import {
+  AbilityQualityPeakBridgeLinkSchema,
+  evaluateAbilityQualityPeakBridge,
+  type AbilityQualityPeakBridgeReport,
+} from './ability-quality-peak-bridge-gate';
+import {
+  MotifForeshadowPeakBridgeLinkSchema,
+  evaluateMotifForeshadowPeakBridge,
+  type MotifForeshadowPeakBridgeReport,
+} from './motif-foreshadow-peak-bridge-gate';
+import {
+  FrequencyQualityPeakBridgeLinkSchema,
+  evaluateFrequencyQualityPeakBridge,
+  type FrequencyQualityPeakBridgeReport,
+} from './frequency-quality-peak-bridge-gate';
+import {
+  MotifForeshadowLinkEntrySchema,
+  evaluateMotifForeshadowLink,
+  type MotifForeshadowLinkReport,
+} from './motif-foreshadow-link-gate';
+import {
+  FrequencyForeshadowLinkEntrySchema,
+  evaluateFrequencyForeshadowLink,
+  type FrequencyForeshadowLinkReport,
+} from './frequency-foreshadow-link-gate';
+import {
+  CountdownForeshadowLinkEntrySchema,
+  evaluateCountdownForeshadowLink,
+  type CountdownForeshadowLinkReport,
+} from './countdown-foreshadow-link-gate';
+import {
+  HandoffForeshadowLinkEntrySchema,
+  HandoffForeshadowHandoffEntrySchema,
+  evaluateHandoffForeshadowLink,
+  type HandoffForeshadowLinkReport,
+} from './handoff-foreshadow-link-gate';
+
+
 
 
 
@@ -1998,6 +2044,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'allianceQualityLink',
   'qualityForeshadowLink',
   'personaForeshadowLink',
+  'handoffQualityPeakBridge',
+  'abilityQualityPeakBridge',
+  'motifForeshadowPeakBridge',
+  'frequencyQualityPeakBridge',
+  'motifForeshadowLink',
+  'frequencyForeshadowLink',
+  'countdownForeshadowLink',
+  'handoffForeshadowLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -4036,6 +4090,62 @@ const PersonaForeshadowSectionSchema = z.object({
   links: z.array(PersonaForeshadowLinkEntrySchema),
 });
 
+const HandoffQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  handoffs: z.array(HandoffQualityPeakHandoffEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HandoffQualityPeakBridgeLinkSchema),
+});
+
+const AbilityQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AbilityQualityPeakBridgeLinkSchema),
+});
+
+const MotifForeshadowPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  items: z.array(ForeshadowItemSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifForeshadowPeakBridgeLinkSchema),
+});
+
+const FrequencyQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(FrequencyQualityPeakBridgeLinkSchema),
+});
+
+const MotifForeshadowSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(MotifForeshadowLinkEntrySchema),
+});
+
+const FrequencyForeshadowSectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(FrequencyForeshadowLinkEntrySchema),
+});
+
+const CountdownForeshadowSectionSchema = z.object({
+  countdowns: z.array(StageCountdownSchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(CountdownForeshadowLinkEntrySchema),
+});
+
+const HandoffForeshadowSectionSchema = z.object({
+  handoffs: z.array(HandoffForeshadowHandoffEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(HandoffForeshadowLinkEntrySchema),
+});
+
+
 
 
 
@@ -4345,6 +4455,14 @@ export const StoryLedgerSuiteSchema = z
     allianceQualityLink: AllianceQualitySectionSchema.optional(),
     qualityForeshadowLink: QualityForeshadowSectionSchema.optional(),
     personaForeshadowLink: PersonaForeshadowSectionSchema.optional(),
+    handoffQualityPeakBridge: HandoffQualityPeakBridgeSectionSchema.optional(),
+    abilityQualityPeakBridge: AbilityQualityPeakBridgeSectionSchema.optional(),
+    motifForeshadowPeakBridge: MotifForeshadowPeakBridgeSectionSchema.optional(),
+    frequencyQualityPeakBridge: FrequencyQualityPeakBridgeSectionSchema.optional(),
+    motifForeshadowLink: MotifForeshadowSectionSchema.optional(),
+    frequencyForeshadowLink: FrequencyForeshadowSectionSchema.optional(),
+    countdownForeshadowLink: CountdownForeshadowSectionSchema.optional(),
+    handoffForeshadowLink: HandoffForeshadowSectionSchema.optional(),
   })
   .strict();
 
@@ -4652,7 +4770,15 @@ export type StoryLedgerChildReport =
   | VestForeshadowLinkReport
   | AllianceQualityLinkReport
   | QualityForeshadowLinkReport
-  | PersonaForeshadowLinkReport;
+  | PersonaForeshadowLinkReport
+  | HandoffQualityPeakBridgeReport
+  | AbilityQualityPeakBridgeReport
+  | MotifForeshadowPeakBridgeReport
+  | FrequencyQualityPeakBridgeReport
+  | MotifForeshadowLinkReport
+  | FrequencyForeshadowLinkReport
+  | CountdownForeshadowLinkReport
+  | HandoffForeshadowLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -5296,6 +5422,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityForeshadowLink({ series, latestEp, ...(section as object) }),
   personaForeshadowLink: (series, latestEp, section) =>
     evaluatePersonaForeshadowLink({ series, latestEp, ...(section as object) }),
+  handoffQualityPeakBridge: (series, latestEp, section) =>
+    evaluateHandoffQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  abilityQualityPeakBridge: (series, latestEp, section) =>
+    evaluateAbilityQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  motifForeshadowPeakBridge: (series, latestEp, section) =>
+    evaluateMotifForeshadowPeakBridge({ series, latestEp, ...(section as object) }),
+  frequencyQualityPeakBridge: (series, latestEp, section) =>
+    evaluateFrequencyQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  motifForeshadowLink: (series, latestEp, section) =>
+    evaluateMotifForeshadowLink({ series, latestEp, ...(section as object) }),
+  frequencyForeshadowLink: (series, latestEp, section) =>
+    evaluateFrequencyForeshadowLink({ series, latestEp, ...(section as object) }),
+  countdownForeshadowLink: (series, latestEp, section) =>
+    evaluateCountdownForeshadowLink({ series, latestEp, ...(section as object) }),
+  handoffForeshadowLink: (series, latestEp, section) =>
+    evaluateHandoffForeshadowLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
