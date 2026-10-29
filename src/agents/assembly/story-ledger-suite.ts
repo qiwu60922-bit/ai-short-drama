@@ -223,6 +223,9 @@
  *   · screechRhythmPeakBridge · chatterRhythmPeakBridge · croonRhythmPeakBridge · chirrupRhythmPeakBridge
  *   · qualityBenzeneLink · qualityTolueneLink · qualityXyleneLink · qualityPhenolLink
  *
+ *   · keenRhythmPeakBridge · wailRhythmPeakBridge · moanRhythmPeakBridge · sobRhythmPeakBridge
+ *   · qualityAnilineLink · qualityStyreneLink · qualityCumeneLink · qualityCresolLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -4096,6 +4099,58 @@ import {
   evaluateQualityPhenolLink,
   type QualityPhenolLinkReport,
 } from './quality-phenol-link-gate';
+import {
+  KeenRhythmPeakBridgeLinkSchema,
+  KeenRhythmPeakKeenEntrySchema,
+  KeenRhythmPeakRhythmEntrySchema,
+  evaluateKeenRhythmPeakBridge,
+  type KeenRhythmPeakBridgeReport,
+} from './keen-rhythm-peak-bridge-gate';
+import {
+  WailRhythmPeakBridgeLinkSchema,
+  WailRhythmPeakWailEntrySchema,
+  WailRhythmPeakRhythmEntrySchema,
+  evaluateWailRhythmPeakBridge,
+  type WailRhythmPeakBridgeReport,
+} from './wail-rhythm-peak-bridge-gate';
+import {
+  MoanRhythmPeakBridgeLinkSchema,
+  MoanRhythmPeakMoanEntrySchema,
+  MoanRhythmPeakRhythmEntrySchema,
+  evaluateMoanRhythmPeakBridge,
+  type MoanRhythmPeakBridgeReport,
+} from './moan-rhythm-peak-bridge-gate';
+import {
+  SobRhythmPeakBridgeLinkSchema,
+  SobRhythmPeakSobEntrySchema,
+  SobRhythmPeakRhythmEntrySchema,
+  evaluateSobRhythmPeakBridge,
+  type SobRhythmPeakBridgeReport,
+} from './sob-rhythm-peak-bridge-gate';
+import {
+  QualityAnilineLinkEntrySchema,
+  QualityAnilineEntrySchema,
+  evaluateQualityAnilineLink,
+  type QualityAnilineLinkReport,
+} from './quality-aniline-link-gate';
+import {
+  QualityStyreneLinkEntrySchema,
+  QualityStyreneEntrySchema,
+  evaluateQualityStyreneLink,
+  type QualityStyreneLinkReport,
+} from './quality-styrene-link-gate';
+import {
+  QualityCumeneLinkEntrySchema,
+  QualityCumeneEntrySchema,
+  evaluateQualityCumeneLink,
+  type QualityCumeneLinkReport,
+} from './quality-cumene-link-gate';
+import {
+  QualityCresolLinkEntrySchema,
+  QualityCresolEntrySchema,
+  evaluateQualityCresolLink,
+  type QualityCresolLinkReport,
+} from './quality-cresol-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4770,6 +4825,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityTolueneLink',
   'qualityXyleneLink',
   'qualityPhenolLink',
+  'keenRhythmPeakBridge',
+  'wailRhythmPeakBridge',
+  'moanRhythmPeakBridge',
+  'sobRhythmPeakBridge',
+  'qualityAnilineLink',
+  'qualityStyreneLink',
+  'qualityCumeneLink',
+  'qualityCresolLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -9268,6 +9331,58 @@ const QualityPhenolSectionSchemaB181 = z.object({
   links: z.array(QualityPhenolLinkEntrySchema),
 });
 
+const KeenRhythmPeakBridgeSectionSchema = z.object({
+  keens: z.array(KeenRhythmPeakKeenEntrySchema),
+  rhythms: z.array(KeenRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(KeenRhythmPeakBridgeLinkSchema),
+});
+
+const WailRhythmPeakBridgeSectionSchema = z.object({
+  wails: z.array(WailRhythmPeakWailEntrySchema),
+  rhythms: z.array(WailRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(WailRhythmPeakBridgeLinkSchema),
+});
+
+const MoanRhythmPeakBridgeSectionSchema = z.object({
+  moans: z.array(MoanRhythmPeakMoanEntrySchema),
+  rhythms: z.array(MoanRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MoanRhythmPeakBridgeLinkSchema),
+});
+
+const SobRhythmPeakBridgeSectionSchema = z.object({
+  sobs: z.array(SobRhythmPeakSobEntrySchema),
+  rhythms: z.array(SobRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SobRhythmPeakBridgeLinkSchema),
+});
+
+const QualityAnilineSectionSchemaB182 = z.object({
+  minAnilineIntense: z.number().int().min(1).max(5).optional(),
+  anilines: z.array(QualityAnilineEntrySchema),
+  links: z.array(QualityAnilineLinkEntrySchema),
+});
+
+const QualityStyreneSectionSchemaB182 = z.object({
+  minStyreneIntense: z.number().int().min(1).max(5).optional(),
+  styrenes: z.array(QualityStyreneEntrySchema),
+  links: z.array(QualityStyreneLinkEntrySchema),
+});
+
+const QualityCumeneSectionSchemaB182 = z.object({
+  minCumeneIntense: z.number().int().min(1).max(5).optional(),
+  cumenes: z.array(QualityCumeneEntrySchema),
+  links: z.array(QualityCumeneLinkEntrySchema),
+});
+
+const QualityCresolSectionSchemaB182 = z.object({
+  minCresolIntense: z.number().int().min(1).max(5).optional(),
+  cresols: z.array(QualityCresolEntrySchema),
+  links: z.array(QualityCresolLinkEntrySchema),
+});
+
 
 
 
@@ -9955,6 +10070,14 @@ export const StoryLedgerSuiteSchema = z
     qualityTolueneLink: QualityTolueneSectionSchemaB181.optional(),
     qualityXyleneLink: QualityXyleneSectionSchemaB181.optional(),
     qualityPhenolLink: QualityPhenolSectionSchemaB181.optional(),
+    keenRhythmPeakBridge: KeenRhythmPeakBridgeSectionSchema.optional(),
+    wailRhythmPeakBridge: WailRhythmPeakBridgeSectionSchema.optional(),
+    moanRhythmPeakBridge: MoanRhythmPeakBridgeSectionSchema.optional(),
+    sobRhythmPeakBridge: SobRhythmPeakBridgeSectionSchema.optional(),
+    qualityAnilineLink: QualityAnilineSectionSchemaB182.optional(),
+    qualityStyreneLink: QualityStyreneSectionSchemaB182.optional(),
+    qualityCumeneLink: QualityCumeneSectionSchemaB182.optional(),
+    qualityCresolLink: QualityCresolSectionSchemaB182.optional(),
   })
   .strict();
 
@@ -10630,7 +10753,15 @@ export type StoryLedgerChildReport =
   | QualityBenzeneLinkReport
   | QualityTolueneLinkReport
   | QualityXyleneLinkReport
-  | QualityPhenolLinkReport;
+  | QualityPhenolLinkReport
+  | KeenRhythmPeakBridgeReport
+  | WailRhythmPeakBridgeReport
+  | MoanRhythmPeakBridgeReport
+  | SobRhythmPeakBridgeReport
+  | QualityAnilineLinkReport
+  | QualityStyreneLinkReport
+  | QualityCumeneLinkReport
+  | QualityCresolLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -12011,6 +12142,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityXyleneLink({ series, latestEp, ...(section as object) }),
   qualityPhenolLink: (series, latestEp, section) =>
     evaluateQualityPhenolLink({ series, latestEp, ...(section as object) }),
+  keenRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateKeenRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  wailRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateWailRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  moanRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateMoanRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  sobRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSobRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityAnilineLink: (series, latestEp, section) =>
+    evaluateQualityAnilineLink({ series, latestEp, ...(section as object) }),
+  qualityStyreneLink: (series, latestEp, section) =>
+    evaluateQualityStyreneLink({ series, latestEp, ...(section as object) }),
+  qualityCumeneLink: (series, latestEp, section) =>
+    evaluateQualityCumeneLink({ series, latestEp, ...(section as object) }),
+  qualityCresolLink: (series, latestEp, section) =>
+    evaluateQualityCresolLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
