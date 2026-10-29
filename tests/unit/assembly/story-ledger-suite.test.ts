@@ -84,7 +84,7 @@ const failCodes = (r: ReturnType<typeof evaluateStoryLedgerSuite>) =>
   r.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code);
 
 describe('STORY_LEDGER_GATE_IDS', () => {
-  it('lists story-ledger gates including reactionPeakLink', () => {
+  it('lists story-ledger gates including baseline singles', () => {
     expect([...STORY_LEDGER_GATE_IDS]).toEqual([
       'bondFrequencyLink',
       'vestMaskPeakLink',
@@ -98,6 +98,10 @@ describe('STORY_LEDGER_GATE_IDS', () => {
       'personaVestLink',
       'stageGoalConflictLink',
       'reactionPeakLink',
+      'stageGoal',
+      'conflictPayoff',
+      'peakBeforePayoff',
+      'abilityRule',
     ]);
   });
 });
@@ -109,12 +113,78 @@ describe('evaluateStoryLedgerSuite', () => {
     );
     expect(r.verdict).toBe('PASS');
     expect(r.schema).toBe('v12/StoryLedgerSuite/v1');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 10 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 14 });
     expect(r.results.ensembleCast.status).toBe('PASS');
     expect(r.results.fakeLedgerReconcile.status).toBe('PASS');
     expect(r.results.bondFrequencyLink.status).toBe('SKIP');
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
     expect(failCodes(r)).toEqual([]);
+  });
+
+  it('baseline singles stageGoal+conflictPayoff+peak+ability → PASS', () => {
+    const r = evaluateStoryLedgerSuite(
+      bundle({
+        stageGoal: {
+          seasonId: 'S1',
+          goals: [
+            {
+              id: 'road-end',
+              label: '走到公路尽头',
+              destination: '公路尽头',
+              startEp: 1,
+              dueEp: 20,
+              status: 'open',
+            },
+          ],
+          progress: [
+            { goalId: 'road-end', ep: 1, advances: true },
+            { goalId: 'road-end', ep: 3, advances: true },
+            { goalId: 'road-end', ep: 6, advances: true },
+          ],
+        },
+        conflictPayoff: {
+          conflicts: [
+            { id: 'C1', openEp: 1, openAtSec: 10, payoffEp: 1, payoffAtSec: 40 },
+          ],
+        },
+        peakBeforePayoff: {
+          entries: [
+            {
+              id: '清算',
+              openEp: 1,
+              peakEp: 8,
+              peakLabel: '订婚宴嫌弃',
+              payoffEp: 8,
+            },
+          ],
+        },
+        abilityRule: {
+          abilities: [
+            {
+              id: '查验',
+              holder: '预言家',
+              acquiredEp: 1,
+              exclusive: true,
+              rule: { cycle: 'day', maxUsesPerCycle: 1, options: ['查验身份', '生存情报'] },
+            },
+          ],
+          uses: [
+            { abilityId: '查验', by: '预言家', ep: 1, day: 1, option: '查验身份' },
+            { abilityId: '查验', by: '预言家', ep: 2, day: 2, option: '生存情报' },
+            { abilityId: '查验', by: '预言家', ep: 3, day: 3, option: '查验身份' },
+            { abilityId: '查验', by: '预言家', ep: 4, day: 4, option: '查验身份' },
+            { abilityId: '查验', by: '预言家', ep: 5, day: 5, option: '生存情报' },
+            { abilityId: '查验', by: '预言家', ep: 6, day: 6, option: '查验身份' },
+          ],
+        },
+      }, 10),
+    );
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 12 });
+    expect(r.results.stageGoal.status).toBe('PASS');
+    expect(r.results.conflictPayoff.status).toBe('PASS');
+    expect(r.results.peakBeforePayoff.status).toBe('PASS');
+    expect(r.results.abilityRule.status).toBe('PASS');
   });
 
   it('bad top-level schema → SCHEMA FAIL', () => {
@@ -163,7 +233,7 @@ describe('evaluateStoryLedgerSuite', () => {
   it('only fakeLedger section runs; others SKIP', () => {
     const r = evaluateStoryLedgerSuite(bundle({ fakeLedgerReconcile: fakeOk }, 20));
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 11 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 15 });
     expect(r.results.fakeLedgerReconcile.report?.verdict).toBe('PASS');
   });
 });
