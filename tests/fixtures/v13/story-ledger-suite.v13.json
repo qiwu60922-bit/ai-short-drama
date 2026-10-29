@@ -25034,5 +25034,620 @@
         "ep": 10
       }
     ]
+  },
+  "revealColdOpenPeakBridge": {
+    "reveals": [
+      {
+        "id": "R-b142-rcopb",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "主线揭穿"
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-rcopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b142c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b142c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-rcopb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rcopb",
+        "revealId": "R-b142-rcopb",
+        "coldOpenId": "EP10-cold-rcopb",
+        "peakId": "对峙峰值-rcopb",
+        "ep": 10
+      }
+    ]
+  },
+  "qualityColdOpenPeakBridge": {
+    "minTernaryIntense": 4,
+    "coldOpens": [
+      {
+        "id": "EP10-cold-qcopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b142c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b142c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-qcopb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qcopb",
+        "coldOpenId": "EP10-cold-qcopb",
+        "peakId": "对峙峰值-qcopb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "rhythmMaskPeakBridge": {
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-rmpb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142r-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机·抛钩",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142r-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转·加压"
+            },
+            {
+              "shotId": "EP10-b142r-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压·推进"
+            },
+            {
+              "shotId": "EP10-b142r-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念·收束"
+            }
+          ]
+        }
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b142-rmpb",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "并行伪装崩"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-rmpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rmpb",
+        "rhythmId": "EP10-rhythm-rmpb",
+        "maskId": "M-b142-rmpb",
+        "peakId": "对峙峰值-rmpb",
+        "ep": 10
+      }
+    ]
+  },
+  "ensembleColdOpenPeakBridge": {
+    "members": [
+      {
+        "id": "太奶奶-b142",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b142",
+        "lookTag": "十八岁少女皮囊-b142",
+        "voiceTag": "科学院大佬口吻-b142",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b142",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b142",
+        "lookTag": "花甲老人-b142",
+        "voiceTag": "无奈絮叨-b142",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b142",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b142",
+        "lookTag": "痴呆傻笑-b142",
+        "voiceTag": "童声残留-b142",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-b142",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b142"
+        ],
+        "supportIds": [
+          "七十岁儿子-b142",
+          "老三-b142"
+        ],
+        "warmth": false
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-ecopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b142c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b142c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-ecopb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ecopb",
+        "unitId": "听证重整-b142",
+        "coldOpenId": "EP10-cold-ecopb",
+        "peakId": "对峙峰值-ecopb",
+        "ep": 10
+      }
+    ]
+  },
+  "revealColdOpenLink": {
+    "reveals": [
+      {
+        "id": "R-b142-rcol",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "主线揭穿"
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-rcol",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b142c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b142c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rcol",
+        "revealId": "R-b142-rcol",
+        "coldOpenId": "EP10-cold-rcol",
+        "ep": 10
+      }
+    ]
+  },
+  "qualityColdOpenLink": {
+    "minColdIntense": 4,
+    "coldOpens": [
+      {
+        "id": "EP10-cold-qcol",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b142c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b142c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qcol",
+        "coldOpenId": "EP10-cold-qcol",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "rhythmBondLink": {
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-rbl",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b142r-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机·抛钩",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b142r-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转·加压"
+            },
+            {
+              "shotId": "EP10-b142r-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压·推进"
+            },
+            {
+              "shotId": "EP10-b142r-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念·收束"
+            }
+          ]
+        }
+      }
+    ],
+    "bonds": [
+      {
+        "id": "B-b142",
+        "partyA": "苏见晴",
+        "partyB": "江少",
+        "contractEp": 1,
+        "contractLabel": "一年契约女友",
+        "upgradeEp": 10,
+        "upgradeLabel": "受伤后真情求婚"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rbl142",
+        "rhythmId": "EP10-rhythm-rbl",
+        "bondId": "B-b142",
+        "ep": 10
+      }
+    ]
+  },
+  "ensembleMaskLink": {
+    "members": [
+      {
+        "id": "太奶奶-b142",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b142",
+        "lookTag": "十八岁少女皮囊-b142",
+        "voiceTag": "科学院大佬口吻-b142",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b142",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b142",
+        "lookTag": "花甲老人-b142",
+        "voiceTag": "无奈絮叨-b142",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b142",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b142",
+        "lookTag": "痴呆傻笑-b142",
+        "voiceTag": "童声残留-b142",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-b142",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b142"
+        ],
+        "supportIds": [
+          "七十岁儿子-b142",
+          "老三-b142"
+        ],
+        "warmth": false
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b142-eml",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "并行伪装崩"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-eml",
+        "unitId": "听证重整-b142",
+        "maskId": "M-b142-eml",
+        "ep": 10
+      }
+    ]
   }
 }
