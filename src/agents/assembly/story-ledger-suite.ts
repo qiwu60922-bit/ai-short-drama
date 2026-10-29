@@ -247,6 +247,8 @@
  *   · qualityFluoreneLink · qualityPyreneLink · qualityChryseneLink · qualityCoroneneLink
  *   · thumbsRhythmPeakBridge · crossRhythmPeakBridge · fistRhythmPeakBridge · palmRhythmPeakBridge
  *   · qualityTetraceneLink · qualityPeryleneLink · qualityOvaleneLink · qualityPentaceneLink
+ *   · pinchRhythmPeakBridge · swipeRhythmPeakBridge · pokeRhythmPeakBridge · jabRhythmPeakBridge
+ *   · qualityHexaceneLink · qualityRubreneLink · qualityPiceneLink · qualityHeliceneLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4754,6 +4756,59 @@ import {
   type QualityPentaceneLinkReport,
 } from './quality-pentacene-link-gate';
 
+import {
+  PinchRhythmPeakBridgeLinkSchema,
+  PinchRhythmPeakPinchEntrySchema,
+  PinchRhythmPeakRhythmEntrySchema,
+  evaluatePinchRhythmPeakBridge,
+  type PinchRhythmPeakBridgeReport,
+} from './pinch-rhythm-peak-bridge-gate';
+import {
+  SwipeRhythmPeakBridgeLinkSchema,
+  SwipeRhythmPeakSwipeEntrySchema,
+  SwipeRhythmPeakRhythmEntrySchema,
+  evaluateSwipeRhythmPeakBridge,
+  type SwipeRhythmPeakBridgeReport,
+} from './swipe-rhythm-peak-bridge-gate';
+import {
+  PokeRhythmPeakBridgeLinkSchema,
+  PokeRhythmPeakPokeEntrySchema,
+  PokeRhythmPeakRhythmEntrySchema,
+  evaluatePokeRhythmPeakBridge,
+  type PokeRhythmPeakBridgeReport,
+} from './poke-rhythm-peak-bridge-gate';
+import {
+  JabRhythmPeakBridgeLinkSchema,
+  JabRhythmPeakJabEntrySchema,
+  JabRhythmPeakRhythmEntrySchema,
+  evaluateJabRhythmPeakBridge,
+  type JabRhythmPeakBridgeReport,
+} from './jab-rhythm-peak-bridge-gate';
+import {
+  QualityHexaceneLinkEntrySchema,
+  QualityHexaceneEntrySchema,
+  evaluateQualityHexaceneLink,
+  type QualityHexaceneLinkReport,
+} from './quality-hexacene-link-gate';
+import {
+  QualityRubreneLinkEntrySchema,
+  QualityRubreneEntrySchema,
+  evaluateQualityRubreneLink,
+  type QualityRubreneLinkReport,
+} from './quality-rubrene-link-gate';
+import {
+  QualityPiceneLinkEntrySchema,
+  QualityPiceneEntrySchema,
+  evaluateQualityPiceneLink,
+  type QualityPiceneLinkReport,
+} from './quality-picene-link-gate';
+import {
+  QualityHeliceneLinkEntrySchema,
+  QualityHeliceneEntrySchema,
+  evaluateQualityHeliceneLink,
+  type QualityHeliceneLinkReport,
+} from './quality-helicene-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -5523,6 +5578,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityPeryleneLink',
   'qualityOvaleneLink',
   'qualityPentaceneLink',
+  'pinchRhythmPeakBridge',
+  'swipeRhythmPeakBridge',
+  'pokeRhythmPeakBridge',
+  'jabRhythmPeakBridge',
+  'qualityHexaceneLink',
+  'qualityRubreneLink',
+  'qualityPiceneLink',
+  'qualityHeliceneLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -10646,6 +10709,58 @@ const QualityPentaceneSectionSchemaB193 = z.object({
   links: z.array(QualityPentaceneLinkEntrySchema),
 });
 
+const PinchRhythmPeakBridgeSectionSchema = z.object({
+  pinches: z.array(PinchRhythmPeakPinchEntrySchema),
+  rhythms: z.array(PinchRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PinchRhythmPeakBridgeLinkSchema),
+});
+
+const SwipeRhythmPeakBridgeSectionSchema = z.object({
+  swipes: z.array(SwipeRhythmPeakSwipeEntrySchema),
+  rhythms: z.array(SwipeRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SwipeRhythmPeakBridgeLinkSchema),
+});
+
+const PokeRhythmPeakBridgeSectionSchema = z.object({
+  pokes: z.array(PokeRhythmPeakPokeEntrySchema),
+  rhythms: z.array(PokeRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PokeRhythmPeakBridgeLinkSchema),
+});
+
+const JabRhythmPeakBridgeSectionSchema = z.object({
+  jabs: z.array(JabRhythmPeakJabEntrySchema),
+  rhythms: z.array(JabRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(JabRhythmPeakBridgeLinkSchema),
+});
+
+const QualityHexaceneSectionSchemaB194 = z.object({
+  minHexaceneIntense: z.number().int().min(1).max(5).optional(),
+  hexacenes: z.array(QualityHexaceneEntrySchema),
+  links: z.array(QualityHexaceneLinkEntrySchema),
+});
+
+const QualityRubreneSectionSchemaB194 = z.object({
+  minRubreneIntense: z.number().int().min(1).max(5).optional(),
+  rubrenes: z.array(QualityRubreneEntrySchema),
+  links: z.array(QualityRubreneLinkEntrySchema),
+});
+
+const QualityPiceneSectionSchemaB194 = z.object({
+  minPiceneIntense: z.number().int().min(1).max(5).optional(),
+  picenes: z.array(QualityPiceneEntrySchema),
+  links: z.array(QualityPiceneLinkEntrySchema),
+});
+
+const QualityHeliceneSectionSchemaB194 = z.object({
+  minHeliceneIntense: z.number().int().min(1).max(5).optional(),
+  helicenes: z.array(QualityHeliceneEntrySchema),
+  links: z.array(QualityHeliceneLinkEntrySchema),
+});
+
 
 
 
@@ -11429,6 +11544,14 @@ export const StoryLedgerSuiteSchema = z
     qualityPeryleneLink: QualityPeryleneSectionSchemaB193.optional(),
     qualityOvaleneLink: QualityOvaleneSectionSchemaB193.optional(),
     qualityPentaceneLink: QualityPentaceneSectionSchemaB193.optional(),
+    pinchRhythmPeakBridge: PinchRhythmPeakBridgeSectionSchema.optional(),
+    swipeRhythmPeakBridge: SwipeRhythmPeakBridgeSectionSchema.optional(),
+    pokeRhythmPeakBridge: PokeRhythmPeakBridgeSectionSchema.optional(),
+    jabRhythmPeakBridge: JabRhythmPeakBridgeSectionSchema.optional(),
+    qualityHexaceneLink: QualityHexaceneSectionSchemaB194.optional(),
+    qualityRubreneLink: QualityRubreneSectionSchemaB194.optional(),
+    qualityPiceneLink: QualityPiceneSectionSchemaB194.optional(),
+    qualityHeliceneLink: QualityHeliceneSectionSchemaB194.optional(),
   })
   .strict();
 
@@ -12200,7 +12323,15 @@ export type StoryLedgerChildReport =
   | QualityTetraceneLinkReport
   | QualityPeryleneLinkReport
   | QualityOvaleneLinkReport
-  | QualityPentaceneLinkReport;
+  | QualityPentaceneLinkReport
+  | PinchRhythmPeakBridgeReport
+  | SwipeRhythmPeakBridgeReport
+  | PokeRhythmPeakBridgeReport
+  | JabRhythmPeakBridgeReport
+  | QualityHexaceneLinkReport
+  | QualityRubreneLinkReport
+  | QualityPiceneLinkReport
+  | QualityHeliceneLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -13773,6 +13904,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityOvaleneLink({ series, latestEp, ...(section as object) }),
   qualityPentaceneLink: (series, latestEp, section) =>
     evaluateQualityPentaceneLink({ series, latestEp, ...(section as object) }),
+  pinchRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePinchRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  swipeRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSwipeRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  pokeRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePokeRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  jabRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateJabRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityHexaceneLink: (series, latestEp, section) =>
+    evaluateQualityHexaceneLink({ series, latestEp, ...(section as object) }),
+  qualityRubreneLink: (series, latestEp, section) =>
+    evaluateQualityRubreneLink({ series, latestEp, ...(section as object) }),
+  qualityPiceneLink: (series, latestEp, section) =>
+    evaluateQualityPiceneLink({ series, latestEp, ...(section as object) }),
+  qualityHeliceneLink: (series, latestEp, section) =>
+    evaluateQualityHeliceneLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
