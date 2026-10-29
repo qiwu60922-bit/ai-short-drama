@@ -25,7 +25,9 @@ const warnCodes = (r: ReturnType<typeof evaluateAmnesiaMotifLink>) =>
 const ferris = { id: 'ferris', label: '圣诞摩天轮', kind: 'location' as const };
 const ferrisApps = [
   { motifId: 'ferris', ep: 200, role: 'seed', visualState: '初遇摩天轮' },
+  { motifId: 'ferris', ep: 280, role: 'echo', visualState: '陪伴回扣摩天轮剪影' },
   { motifId: 'ferris', ep: 320, role: 'echo', visualState: '失忆后同游' },
+  { motifId: 'ferris', ep: 360, role: 'echo', visualState: '再经摩天轮广场' },
   { motifId: 'ferris', ep: 398, role: 'payoff', visualState: '圣诞对视唤回' },
 ];
 
@@ -244,4 +246,38 @@ describe('evaluateAmnesiaMotifLink', () => {
     );
     expect(failCodes(r)).toContain('CHILD_MOTIF_FAIL');
   });
+  it('companionEp without motif echo → COMPANION_WITHOUT_ECHO WARN still PASS', () => {
+    const r = evaluateAmnesiaMotifLink(
+      pack(
+        [qiNan],
+        [ferris],
+        [
+          { motifId: 'ferris', ep: 200, role: 'seed', visualState: '初遇' },
+          { motifId: 'ferris', ep: 320, role: 'echo', visualState: '同游' },
+          { motifId: 'ferris', ep: 398, role: 'payoff', visualState: '唤回' },
+        ],
+        [{ id: '唤回×摩天轮', amnesiaId: '祁南失忆', motifId: 'ferris' }],
+        399,
+      ),
+    );
+    expect(r.verdict).toBe('PASS');
+    expect(warnCodes(r)).toContain('COMPANION_WITHOUT_ECHO');
+  });
+
+  it('echo after recover → ECHO_AFTER_RECOVER FAIL', () => {
+    const r = evaluateAmnesiaMotifLink(
+      pack(
+        [qiNan],
+        [ferris],
+        [
+          ...ferrisApps,
+          { motifId: 'ferris', ep: 399, role: 'echo', visualState: '唤回后又来一次' },
+        ],
+        [{ id: '唤回×摩天轮', amnesiaId: '祁南失忆', motifId: 'ferris' }],
+        400,
+      ),
+    );
+    expect(failCodes(r)).toContain('ECHO_AFTER_RECOVER');
+  });
+
 });
