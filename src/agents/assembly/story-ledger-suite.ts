@@ -205,6 +205,9 @@
  *   · yowlRhythmPeakBridge · honkRhythmPeakBridge · quackRhythmPeakBridge · oinkRhythmPeakBridge
  *   · qualityTuffLink · qualityTrachyteLink · qualitySyeniteLink · qualityPegmatiteLink
  *
+ *   · mewRhythmPeakBridge · mooRhythmPeakBridge · neighRhythmPeakBridge · baaRhythmPeakBridge
+ *   · qualityPhylliteLink · qualityAmphiboliteLink · qualityEclogiteLink · qualitySerpentiniteLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3765,6 +3768,58 @@ import {
   evaluateQualityPegmatiteLink,
   type QualityPegmatiteLinkReport,
 } from './quality-pegmatite-link-gate';
+import {
+  MewRhythmPeakBridgeLinkSchema,
+  MewRhythmPeakMewEntrySchema,
+  MewRhythmPeakRhythmEntrySchema,
+  evaluateMewRhythmPeakBridge,
+  type MewRhythmPeakBridgeReport,
+} from './mew-rhythm-peak-bridge-gate';
+import {
+  MooRhythmPeakBridgeLinkSchema,
+  MooRhythmPeakMooEntrySchema,
+  MooRhythmPeakRhythmEntrySchema,
+  evaluateMooRhythmPeakBridge,
+  type MooRhythmPeakBridgeReport,
+} from './moo-rhythm-peak-bridge-gate';
+import {
+  NeighRhythmPeakBridgeLinkSchema,
+  NeighRhythmPeakNeighEntrySchema,
+  NeighRhythmPeakRhythmEntrySchema,
+  evaluateNeighRhythmPeakBridge,
+  type NeighRhythmPeakBridgeReport,
+} from './neigh-rhythm-peak-bridge-gate';
+import {
+  BaaRhythmPeakBridgeLinkSchema,
+  BaaRhythmPeakBaaEntrySchema,
+  BaaRhythmPeakRhythmEntrySchema,
+  evaluateBaaRhythmPeakBridge,
+  type BaaRhythmPeakBridgeReport,
+} from './baa-rhythm-peak-bridge-gate';
+import {
+  QualityPhylliteLinkEntrySchema,
+  QualityPhylliteEntrySchema,
+  evaluateQualityPhylliteLink,
+  type QualityPhylliteLinkReport,
+} from './quality-phyllite-link-gate';
+import {
+  QualityAmphiboliteLinkEntrySchema,
+  QualityAmphiboliteEntrySchema,
+  evaluateQualityAmphiboliteLink,
+  type QualityAmphiboliteLinkReport,
+} from './quality-amphibolite-link-gate';
+import {
+  QualityEclogiteLinkEntrySchema,
+  QualityEclogiteEntrySchema,
+  evaluateQualityEclogiteLink,
+  type QualityEclogiteLinkReport,
+} from './quality-eclogite-link-gate';
+import {
+  QualitySerpentiniteLinkEntrySchema,
+  QualitySerpentiniteEntrySchema,
+  evaluateQualitySerpentiniteLink,
+  type QualitySerpentiniteLinkReport,
+} from './quality-serpentinite-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4391,6 +4446,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityTrachyteLink',
   'qualitySyeniteLink',
   'qualityPegmatiteLink',
+  'mewRhythmPeakBridge',
+  'mooRhythmPeakBridge',
+  'neighRhythmPeakBridge',
+  'baaRhythmPeakBridge',
+  'qualityPhylliteLink',
+  'qualityAmphiboliteLink',
+  'qualityEclogiteLink',
+  'qualitySerpentiniteLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -8577,6 +8640,58 @@ const QualityPegmatiteSectionSchemaB175 = z.object({
   links: z.array(QualityPegmatiteLinkEntrySchema),
 });
 
+const MewRhythmPeakBridgeSectionSchema = z.object({
+  mews: z.array(MewRhythmPeakMewEntrySchema),
+  rhythms: z.array(MewRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MewRhythmPeakBridgeLinkSchema),
+});
+
+const MooRhythmPeakBridgeSectionSchema = z.object({
+  moos: z.array(MooRhythmPeakMooEntrySchema),
+  rhythms: z.array(MooRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MooRhythmPeakBridgeLinkSchema),
+});
+
+const NeighRhythmPeakBridgeSectionSchema = z.object({
+  neighs: z.array(NeighRhythmPeakNeighEntrySchema),
+  rhythms: z.array(NeighRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(NeighRhythmPeakBridgeLinkSchema),
+});
+
+const BaaRhythmPeakBridgeSectionSchema = z.object({
+  baas: z.array(BaaRhythmPeakBaaEntrySchema),
+  rhythms: z.array(BaaRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BaaRhythmPeakBridgeLinkSchema),
+});
+
+const QualityPhylliteSectionSchemaB176 = z.object({
+  minPhylliteIntense: z.number().int().min(1).max(5).optional(),
+  phyllites: z.array(QualityPhylliteEntrySchema),
+  links: z.array(QualityPhylliteLinkEntrySchema),
+});
+
+const QualityAmphiboliteSectionSchemaB176 = z.object({
+  minAmphiboliteIntense: z.number().int().min(1).max(5).optional(),
+  amphibolites: z.array(QualityAmphiboliteEntrySchema),
+  links: z.array(QualityAmphiboliteLinkEntrySchema),
+});
+
+const QualityEclogiteSectionSchemaB176 = z.object({
+  minEclogiteIntense: z.number().int().min(1).max(5).optional(),
+  eclogites: z.array(QualityEclogiteEntrySchema),
+  links: z.array(QualityEclogiteLinkEntrySchema),
+});
+
+const QualitySerpentiniteSectionSchemaB176 = z.object({
+  minSerpentiniteIntense: z.number().int().min(1).max(5).optional(),
+  serpentinites: z.array(QualitySerpentiniteEntrySchema),
+  links: z.array(QualitySerpentiniteLinkEntrySchema),
+});
+
 
 
 
@@ -9216,6 +9331,14 @@ export const StoryLedgerSuiteSchema = z
     qualityTrachyteLink: QualityTrachyteSectionSchemaB175.optional(),
     qualitySyeniteLink: QualitySyeniteSectionSchemaB175.optional(),
     qualityPegmatiteLink: QualityPegmatiteSectionSchemaB175.optional(),
+    mewRhythmPeakBridge: MewRhythmPeakBridgeSectionSchema.optional(),
+    mooRhythmPeakBridge: MooRhythmPeakBridgeSectionSchema.optional(),
+    neighRhythmPeakBridge: NeighRhythmPeakBridgeSectionSchema.optional(),
+    baaRhythmPeakBridge: BaaRhythmPeakBridgeSectionSchema.optional(),
+    qualityPhylliteLink: QualityPhylliteSectionSchemaB176.optional(),
+    qualityAmphiboliteLink: QualityAmphiboliteSectionSchemaB176.optional(),
+    qualityEclogiteLink: QualityEclogiteSectionSchemaB176.optional(),
+    qualitySerpentiniteLink: QualitySerpentiniteSectionSchemaB176.optional(),
   })
   .strict();
 
@@ -9843,7 +9966,15 @@ export type StoryLedgerChildReport =
   | QualityTuffLinkReport
   | QualityTrachyteLinkReport
   | QualitySyeniteLinkReport
-  | QualityPegmatiteLinkReport;
+  | QualityPegmatiteLinkReport
+  | MewRhythmPeakBridgeReport
+  | MooRhythmPeakBridgeReport
+  | NeighRhythmPeakBridgeReport
+  | BaaRhythmPeakBridgeReport
+  | QualityPhylliteLinkReport
+  | QualityAmphiboliteLinkReport
+  | QualityEclogiteLinkReport
+  | QualitySerpentiniteLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -11128,6 +11259,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualitySyeniteLink({ series, latestEp, ...(section as object) }),
   qualityPegmatiteLink: (series, latestEp, section) =>
     evaluateQualityPegmatiteLink({ series, latestEp, ...(section as object) }),
+  mewRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateMewRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  mooRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateMooRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  neighRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateNeighRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  baaRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBaaRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityPhylliteLink: (series, latestEp, section) =>
+    evaluateQualityPhylliteLink({ series, latestEp, ...(section as object) }),
+  qualityAmphiboliteLink: (series, latestEp, section) =>
+    evaluateQualityAmphiboliteLink({ series, latestEp, ...(section as object) }),
+  qualityEclogiteLink: (series, latestEp, section) =>
+    evaluateQualityEclogiteLink({ series, latestEp, ...(section as object) }),
+  qualitySerpentiniteLink: (series, latestEp, section) =>
+    evaluateQualitySerpentiniteLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
