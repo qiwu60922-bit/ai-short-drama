@@ -142,6 +142,7 @@
     "frequency-peak-link:check": "tsx scripts/frequency-peak-link-check.ts",
     "amnesia-motif-link:check": "tsx scripts/amnesia-motif-link-check.ts",
     "ensemble-cast:check": "tsx scripts/ensemble-cast-check.ts",
+    "fake-ledger-reconcile:check": "tsx scripts/fake-ledger-reconcile-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
