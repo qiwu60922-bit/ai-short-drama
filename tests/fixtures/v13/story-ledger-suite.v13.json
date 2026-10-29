@@ -9633,5 +9633,718 @@
         "cardSlug": "su-jianqing-mpl"
       }
     ]
+  },
+  "abilityPersonaPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer-appb",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-appb",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-appb",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-appb"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-appb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-appb",
+        "abilityId": "seer-appb",
+        "cardSlug": "su-jianqing-appb",
+        "peakId": "对峙峰值-appb",
+        "ep": 10
+      }
+    ]
+  },
+  "vestPersonaPeakBridge": {
+    "vests": [
+      {
+        "id": "机长马甲-vppb",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-vppb"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-vppb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vppb",
+        "vestId": "机长马甲-vppb",
+        "cardSlug": "su-jianqing-vppb",
+        "peakId": "对峙峰值-vppb",
+        "ep": 10
+      }
+    ]
+  },
+  "maskPersonaPeakBridge": {
+    "masks": [
+      {
+        "id": "花心纨绔-mppb",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-mppb"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-mppb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mppb",
+        "maskId": "花心纨绔-mppb",
+        "cardSlug": "su-jianqing-mppb",
+        "peakId": "对峙峰值-mppb",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaPersonaLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-apl",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-ampl"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ampl",
+        "amnesiaId": "祁南失忆-apl",
+        "cardSlug": "su-jianqing-ampl"
+      }
+    ]
+  },
+  "motifPersonaLink": {
+    "motifs": [
+      {
+        "id": "white-rose-mpl2",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mpl2",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mpl2",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mpl2",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛开"
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-mpl2"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mpl2",
+        "motifId": "white-rose-mpl2",
+        "cardSlug": "su-jianqing-mpl2",
+        "ep": 10
+      }
+    ]
+  },
+  "countdownPersonaLink": {
+    "countdowns": [
+      {
+        "id": "直播终局-cpl",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-cpl"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cpl",
+        "countdownId": "直播终局-cpl",
+        "cardSlug": "su-jianqing-cpl"
+      }
+    ]
+  },
+  "qualityPersonaLink": {
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-qpl"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qpl",
+        "cardSlug": "su-jianqing-qpl",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }
