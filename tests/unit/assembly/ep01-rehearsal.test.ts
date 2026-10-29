@@ -185,3 +185,81 @@ describe('ep01 CLI story-ledger-gate enforce', () => {
     expect(warnReport.stage).not.toBe('storyLedger');
   }, 60_000);
 });
+
+describe('ep01 CLI shot-spec-gate enforce', () => {
+  it('--shot-spec-gate enforce + EMPTY_SUITE fixture → exit 36; default warn unchanged', () => {
+    const w = tmp();
+    const repoRoot = resolve(__dirname, '../../..');
+    const script = resolve(repoRoot, 'scripts/ep01-offline-rehearsal.ts');
+    const shot = resolve(repoRoot, 'tests/fixtures/wave14-ep01/SHOT_SPEC.json');
+    const ref = resolve(repoRoot, 'tests/fixtures/wave14-ep01/REF_INDEX.json');
+    const failSuite = resolve(
+      repoRoot,
+      'tests/fixtures/v13/shot-spec-suite.enforce-fail.v13.json',
+    );
+    const scene = sceneFile();
+    try {
+      execFileSync(
+        'npx',
+        [
+          'tsx',
+          script,
+          '--shot-spec',
+          shot,
+          '--ref-index',
+          ref,
+          '--work-dir',
+          w,
+          '--scene-ref',
+          scene,
+          '--allow-candidates-for-dry-run',
+          '--no-detectors',
+          '--story-ledger-gate',
+          'off',
+          '--shot-spec-gate',
+          'enforce',
+          '--shot-spec-suite',
+          failSuite,
+        ],
+        { cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+      );
+      expect.unreachable('expected exit 36');
+    } catch (e: unknown) {
+      const err = e as { status?: number; stdout?: string };
+      expect(err.status).toBe(36);
+      const out = JSON.parse(String(err.stdout || '{}'));
+      expect(out.stage).toBe('shotSpec');
+      expect(out.exitCode).toBe(36);
+      expect(out.shotSpecSuite?.verdict).toBe('FAIL');
+    }
+
+    const w2 = tmp();
+    const out2 = execFileSync(
+      'npx',
+      [
+        'tsx',
+        script,
+        '--shot-spec',
+        shot,
+        '--ref-index',
+        ref,
+        '--work-dir',
+        w2,
+        '--scene-ref',
+        scene,
+        '--allow-candidates-for-dry-run',
+        '--no-detectors',
+        '--story-ledger-gate',
+        'off',
+        '--shot-spec-suite',
+        failSuite,
+        // omit --shot-spec-gate → default warn
+      ],
+      { cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    const warnReport = JSON.parse(out2);
+    expect(warnReport.shotSpecSuite?.verdict).toBe('FAIL');
+    expect(warnReport.exitCode).not.toBe(36);
+    expect(warnReport.stage).not.toBe('shotSpec');
+  }, 60_000);
+});

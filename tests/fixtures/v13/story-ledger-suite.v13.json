@@ -579,5 +579,377 @@
         "peakId": "预言家对峙"
       }
     ]
+  },
+  "foreshadowRhythmBridge": {
+    "profile": "dense",
+    "items": [
+      {
+        "id": "伪人身份",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 8,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fs-rhythm",
+        "foreshadowId": "伪人身份",
+        "ep": 8,
+        "shotSpec": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S1",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S2",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S3",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S4",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S5",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S6",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S7",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S8",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S9",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S10",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S11",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S12",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S13",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S14",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S15",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S16",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S17",
+              "durSec": 2,
+              "cast": [],
+              "action": "x·y"
+            }
+          ]
+        },
+        "profile": "dense"
+      }
+    ]
+  },
+  "amnesiaPeakLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 8,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "告白巅峰",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "摩天轮对峙",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-amnesia-peak",
+        "amnesiaId": "祁南失忆",
+        "peakId": "告白巅峰"
+      }
+    ]
+  },
+  "qualityHandoffLink": {
+    "minHandoffIntense": 4,
+    "handoffs": [
+      {
+        "id": "H8-9",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-H0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP08-H1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对峙"
+            },
+            {
+              "shotId": "EP08-H2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "证据"
+            },
+            {
+              "shotId": "EP08-H3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外有人未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-H0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP09-H1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP09-H2",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "新证"
+            },
+            {
+              "shotId": "EP09-H3",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qh",
+        "handoffId": "H8-9",
+        "ep": 9,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "承接开场对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "承接可见表演",
+              "characterIntent": "咬住悬念",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "承接开场对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "承接可见表演",
+              "characterIntent": "咬住悬念",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "承接开场对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "承接可见表演",
+              "characterIntent": "咬住悬念",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "motifMaskLink": {
+    "motifs": [
+      {
+        "id": "white-rose",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 4,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 8,
+        "role": "payoff",
+        "visualState": "盛放揭穿"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 8,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-motif-mask",
+        "motifId": "white-rose",
+        "maskId": "花心纨绔"
+      }
+    ]
   }
 }
