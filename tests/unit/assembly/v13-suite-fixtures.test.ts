@@ -50,6 +50,13 @@ describe('v13 suite fixtures', () => {
     expect(r.results.qualityFrequencyLink.status).toBe('PASS');
     expect(r.results.amnesiaBondLink.status).toBe('PASS');
     expect(r.results.motifCliffLink.status).toBe('PASS');
+    expect(r.results.conflictVestPeakBridge.status).toBe('PASS');
+    expect(r.results.allianceAmnesiaBondBridge.status).toBe('PASS');
+    expect(r.results.qualityHandoffRhythmBridge.status).toBe('PASS');
+    expect(r.results.conflictCliffLink.status).toBe('PASS');
+    expect(r.results.personaHandoffLink.status).toBe('PASS');
+    expect(r.results.foreshadowVestLink.status).toBe('PASS');
+    expect(r.results.abilityVestLink.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(35);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
@@ -82,6 +89,9 @@ describe('v13 suite fixtures', () => {
     expect(r.results.midTurnHookWindow.status).toBe('PASS');
     expect(r.results.hookWindowReaction.status).toBe('PASS');
     expect(r.results.midTurnReaction.status).toBe('PASS');
+    expect(r.results.reactionHookHard.status).toBe('PASS');
+    expect(r.results.midTurnHookHard.status).toBe('PASS');
+    expect(r.results.hookWindowBeforeCliff.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(23);
   });
 

@@ -19,6 +19,7 @@
  *   · coldOpenHookWindow · reactionReversalCliff · coldCloseCliffTail
  *   · midHookDialogueBan · setupDialogueCap · dialogueSetupBan
  *   · midTurnHookWindow · hookWindowReaction · midTurnReaction
+ *   · reactionHookHard · midTurnHookHard · hookWindowBeforeCliff
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -255,6 +256,22 @@ import {
   type MidTurnReactionReport,
 } from './mid-turn-reaction-gate';
 
+import {
+  evaluateReactionHookHard,
+  type ReactionHookHardOptions,
+  type ReactionHookHardReport,
+} from './reaction-hook-hard-gate';
+import {
+  evaluateMidTurnHookHard,
+  type MidTurnHookHardOptions,
+  type MidTurnHookHardReport,
+} from './mid-turn-hook-hard-gate';
+import {
+  evaluateHookWindowBeforeCliff,
+  type HookWindowBeforeCliffOptions,
+  type HookWindowBeforeCliffReport,
+} from './hook-window-before-cliff-gate';
+
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
   'openingCascade',
@@ -300,6 +317,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'midTurnHookWindow',
   'hookWindowReaction',
   'midTurnReaction',
+  'reactionHookHard',
+  'midTurnHookHard',
+  'hookWindowBeforeCliff',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -839,6 +859,58 @@ const MidTurnReactionOptsSchema = z
   })
   .strict();
 
+const ReactionHookHardOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    reversalOnly: z.boolean().optional(),
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+  })
+  .strict();
+
+const MidTurnHookHardOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    minTurns: z.number().int().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+  })
+  .strict();
+
+const HookWindowBeforeCliffOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    banDialogueBeforeCliff: z.boolean().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    reactionWindowSec: z.number().positive().optional(),
+  })
+  .strict();
+
+
 
 
 
@@ -889,6 +961,9 @@ export const ShotSpecSuiteSchema = z
     midTurnHookWindow: ShotSpecDocSchema.optional(),
     hookWindowReaction: ShotSpecDocSchema.optional(),
     midTurnReaction: ShotSpecDocSchema.optional(),
+    reactionHookHard: ShotSpecDocSchema.optional(),
+    midTurnHookHard: ShotSpecDocSchema.optional(),
+    hookWindowBeforeCliff: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -931,6 +1006,9 @@ export const ShotSpecSuiteSchema = z
     midTurnHookWindowOpts: MidTurnHookWindowOptsSchema.optional(),
     hookWindowReactionOpts: HookWindowReactionOptsSchema.optional(),
     midTurnReactionOpts: MidTurnReactionOptsSchema.optional(),
+    reactionHookHardOpts: ReactionHookHardOptsSchema.optional(),
+    midTurnHookHardOpts: MidTurnHookHardOptsSchema.optional(),
+    hookWindowBeforeCliffOpts: HookWindowBeforeCliffOptsSchema.optional(),
   })
   .strict();
 
@@ -980,7 +1058,10 @@ export type ShotSpecChildReport =
   | DialogueSetupBanReport
   | MidTurnHookWindowReport
   | HookWindowReactionReport
-  | MidTurnReactionReport;
+  | MidTurnReactionReport
+  | ReactionHookHardReport
+  | MidTurnHookHardReport
+  | HookWindowBeforeCliffReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -1090,6 +1171,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     midTurnHookWindowOpts,
     hookWindowReactionOpts,
     midTurnReactionOpts,
+    reactionHookHardOpts,
+    midTurnHookHardOpts,
+    hookWindowBeforeCliffOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -1482,6 +1566,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateMidTurnReaction(
         sections.midTurnReaction,
         (midTurnReactionOpts ?? {}) as MidTurnReactionOptions,
+      ),
+    );
+  }
+  if (sections.reactionHookHard !== undefined) {
+    run(
+      'reactionHookHard',
+      evaluateReactionHookHard(
+        sections.reactionHookHard,
+        (reactionHookHardOpts ?? {}) as ReactionHookHardOptions,
+      ),
+    );
+  }
+  if (sections.midTurnHookHard !== undefined) {
+    run(
+      'midTurnHookHard',
+      evaluateMidTurnHookHard(
+        sections.midTurnHookHard,
+        (midTurnHookHardOpts ?? {}) as MidTurnHookHardOptions,
+      ),
+    );
+  }
+  if (sections.hookWindowBeforeCliff !== undefined) {
+    run(
+      'hookWindowBeforeCliff',
+      evaluateHookWindowBeforeCliff(
+        sections.hookWindowBeforeCliff,
+        (hookWindowBeforeCliffOpts ?? {}) as HookWindowBeforeCliffOptions,
       ),
     );
   }
