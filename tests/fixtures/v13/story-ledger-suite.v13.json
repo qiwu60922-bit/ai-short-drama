@@ -26906,5 +26906,584 @@
         "ep": 10
       }
     ]
+  },
+  "qualityBondPeakBridge": {
+    "minTernaryIntense": 4,
+    "bonds": [
+      {
+        "id": "机长契约-b145-qbpb",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-qbpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qbpb",
+        "bondId": "机长契约-b145-qbpb",
+        "peakId": "对峙峰值-qbpb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "countdownMaskPeakBridge": {
+    "countdowns": [
+      {
+        "id": "直播终局-b145",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b145",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "并行伪装崩"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cmpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cmpb",
+        "countdownId": "直播终局-b145",
+        "maskId": "M-b145",
+        "peakId": "对峙峰值-cmpb",
+        "ep": 10
+      }
+    ]
+  },
+  "ensembleMaskPeakBridge": {
+    "members": [
+      {
+        "id": "太奶奶-b145",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b145",
+        "lookTag": "十八岁少女皮囊-b145",
+        "voiceTag": "科学院大佬口吻-b145",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b145",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b145",
+        "lookTag": "花甲老人-b145",
+        "voiceTag": "无奈絮叨-b145",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b145",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b145",
+        "lookTag": "痴呆傻笑-b145",
+        "voiceTag": "童声残留-b145",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-b145",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b145"
+        ],
+        "supportIds": [
+          "七十岁儿子-b145",
+          "老三-b145"
+        ],
+        "warmth": false
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b145-empb",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "并行伪装崩"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-empb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-empb",
+        "unitId": "听证重整-b145",
+        "maskId": "M-b145-empb",
+        "peakId": "对峙峰值-empb",
+        "ep": 10
+      }
+    ]
+  },
+  "rhythmColdOpenPeakBridge": {
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-rcopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b145r-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机·抛钩",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b145r-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转·加压"
+            },
+            {
+              "shotId": "EP10-b145r-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压·推进"
+            },
+            {
+              "shotId": "EP10-b145r-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念·收束"
+            }
+          ]
+        }
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-rcopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b145c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b145c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b145c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b145c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-rcopb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rcopb",
+        "rhythmId": "EP10-rhythm-rcopb",
+        "coldOpenId": "EP10-cold-rcopb",
+        "peakId": "对峙峰值-rcopb",
+        "ep": 10
+      }
+    ]
+  },
+  "foreshadowEnsembleLink": {
+    "members": [
+      {
+        "id": "太奶奶-b145-fel",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b145-fel",
+        "lookTag": "十八岁少女皮囊-b145-fel",
+        "voiceTag": "科学院大佬口吻-b145-fel",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b145-fel",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b145-fel",
+        "lookTag": "花甲老人-b145-fel",
+        "voiceTag": "无奈絮叨-b145-fel",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b145-fel",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b145-fel",
+        "lookTag": "痴呆傻笑-b145-fel",
+        "voiceTag": "童声残留-b145-fel",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-fel",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b145-fel"
+        ],
+        "supportIds": [
+          "七十岁儿子-b145-fel",
+          "老三-b145-fel"
+        ],
+        "warmth": false
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-fel",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fel",
+        "unitId": "听证重整-fel",
+        "foreshadowId": "伪人身份-fel",
+        "ep": 10
+      }
+    ]
+  },
+  "abilityEnsembleLink": {
+    "abilities": [
+      {
+        "id": "seer-ael",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-ael",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-ael",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "members": [
+      {
+        "id": "太奶奶-b145-ael",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b145-ael",
+        "lookTag": "十八岁少女皮囊-b145-ael",
+        "voiceTag": "科学院大佬口吻-b145-ael",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b145-ael",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b145-ael",
+        "lookTag": "花甲老人-b145-ael",
+        "voiceTag": "无奈絮叨-b145-ael",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b145-ael",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b145-ael",
+        "lookTag": "痴呆傻笑-b145-ael",
+        "voiceTag": "童声残留-b145-ael",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-ael",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b145-ael"
+        ],
+        "supportIds": [
+          "七十岁儿子-b145-ael",
+          "老三-b145-ael"
+        ],
+        "warmth": false
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ael",
+        "abilityId": "seer-ael",
+        "unitId": "听证重整-ael",
+        "ep": 10
+      }
+    ]
+  },
+  "motifCountdownLink": {
+    "motifs": [
+      {
+        "id": "white-rose-mcl",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mcl",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mcl",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mcl",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "countdowns": [
+      {
+        "id": "直播终局-mcl",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mcl",
+        "motifId": "white-rose-mcl",
+        "countdownId": "直播终局-mcl"
+      }
+    ]
+  },
+  "qualityEnsembleLink": {
+    "minUnitIntense": 4,
+    "members": [
+      {
+        "id": "太奶奶-b145-qel",
+        "name": "顾晚晴",
+        "roleSlot": "matriarch",
+        "functionTag": "穿越太奶奶温情重整-b145-qel",
+        "lookTag": "十八岁少女皮囊-b145-qel",
+        "voiceTag": "科学院大佬口吻-b145-qel",
+        "spotlightEps": [
+          10
+        ]
+      },
+      {
+        "id": "七十岁儿子-b145-qel",
+        "name": "顾成",
+        "roleSlot": "heir",
+        "functionTag": "老年儿子赡养线-b145-qel",
+        "lookTag": "花甲老人-b145-qel",
+        "voiceTag": "无奈絮叨-b145-qel",
+        "spotlightEps": [
+          5
+        ]
+      },
+      {
+        "id": "老三-b145-qel",
+        "name": "顾老三",
+        "roleSlot": "grandchild",
+        "functionTag": "创伤后失智恢复单元-b145-qel",
+        "lookTag": "痴呆傻笑-b145-qel",
+        "voiceTag": "童声残留-b145-qel",
+        "spotlightEps": [
+          10
+        ]
+      }
+    ],
+    "units": [
+      {
+        "id": "听证重整-qel",
+        "ep": 10,
+        "leadIds": [
+          "太奶奶-b145-qel"
+        ],
+        "supportIds": [
+          "七十岁儿子-b145-qel",
+          "老三-b145-qel"
+        ],
+        "warmth": false
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qel",
+        "unitId": "听证重整-qel",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }
