@@ -553,5 +553,145 @@
   "hookKindMixOpts": {
     "hookWindowSec": 8,
     "minDistinctKinds": 2
+  },
+  "setupRatioHard": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-SR0",
+        "durSec": 2,
+        "cast": [],
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-SR1",
+        "durSec": 3,
+        "cast": [],
+        "beatRole": "setup",
+        "action": "短铺垫"
+      },
+      {
+        "shotId": "EP01-SR2",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "增量"
+      },
+      {
+        "shotId": "EP01-SR3",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-SR4",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "再增量"
+      },
+      {
+        "shotId": "EP01-SR5",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "setupRatioHardOpts": {
+    "hardMaxSetupRatio": 0.35
+  },
+  "coldOpenCascade": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-CC0",
+        "durSec": 2,
+        "cast": [],
+        "beatRole": "hook",
+        "action": "危机冷开",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-CC1",
+        "durSec": 2,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "身份扭转"
+      },
+      {
+        "shotId": "EP01-CC2",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-CC3",
+        "durSec": 6,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-CC4",
+        "durSec": 6,
+        "cast": [],
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "coldOpenCascadeOpts": {
+    "coldOpenWindowSec": 2,
+    "cascadeWindowSec": 8,
+    "minCascadeBeats": 2
+  },
+  "reactionAfterReversal": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-RR0",
+        "durSec": 2,
+        "cast": [],
+        "beatRole": "hook",
+        "action": "开场"
+      },
+      {
+        "shotId": "EP01-RR1",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "增量"
+      },
+      {
+        "shotId": "EP01-RR2",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-RR3",
+        "durSec": 3,
+        "cast": [],
+        "beatRole": "reaction",
+        "action": "脸部冻结"
+      },
+      {
+        "shotId": "EP01-RR4",
+        "durSec": 6,
+        "cast": [],
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "reactionAfterReversalOpts": {
+    "reactionWindowSec": 8
   }
 }

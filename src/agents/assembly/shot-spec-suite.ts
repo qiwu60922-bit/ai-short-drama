@@ -10,6 +10,7 @@
  *   · coldOpenHook · mvBeatMap
  *   · detailHookKind · tailColdClose
  *   · midTurnDensity · hookKindMix
+ *   · setupRatioHard · coldOpenCascade · reactionAfterReversal
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -107,6 +108,21 @@ import {
   type HookKindMixOptions,
   type HookKindMixReport,
 } from './hook-kind-mix-gate';
+import {
+  evaluateSetupRatioHard,
+  type SetupRatioHardOptions,
+  type SetupRatioHardReport,
+} from './setup-ratio-hard-gate';
+import {
+  evaluateColdOpenCascade,
+  type ColdOpenCascadeOptions,
+  type ColdOpenCascadeReport,
+} from './cold-open-cascade-gate';
+import {
+  evaluateReactionAfterReversal,
+  type ReactionAfterReversalOptions,
+  type ReactionAfterReversalReport,
+} from './reaction-after-reversal-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -126,6 +142,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'tailColdClose',
   'midTurnDensity',
   'hookKindMix',
+  'setupRatioHard',
+  'coldOpenCascade',
+  'reactionAfterReversal',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -294,6 +313,44 @@ const HookKindMixOptsSchema = z
   })
   .strict();
 
+
+const SetupRatioHardOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    hardMaxSetupRatio: z.number().positive().optional(),
+  })
+  .strict();
+
+const ColdOpenCascadeOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    coldOpenWindowSec: z.number().positive().optional(),
+    cascadeWindowSec: z.number().positive().optional(),
+    minCascadeBeats: z.number().int().positive().optional(),
+  })
+  .strict();
+
+const ReactionAfterReversalOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    reversalOnly: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -314,6 +371,9 @@ export const ShotSpecSuiteSchema = z
     tailColdClose: ShotSpecDocSchema.optional(),
     midTurnDensity: ShotSpecDocSchema.optional(),
     hookKindMix: ShotSpecDocSchema.optional(),
+    setupRatioHard: ShotSpecDocSchema.optional(),
+    coldOpenCascade: ShotSpecDocSchema.optional(),
+    reactionAfterReversal: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -329,6 +389,9 @@ export const ShotSpecSuiteSchema = z
     tailColdOpts: TailColdOptsSchema.optional(),
     midTurnOpts: MidTurnOptsSchema.optional(),
     hookKindMixOpts: HookKindMixOptsSchema.optional(),
+    setupRatioHardOpts: SetupRatioHardOptsSchema.optional(),
+    coldOpenCascadeOpts: ColdOpenCascadeOptsSchema.optional(),
+    reactionAfterReversalOpts: ReactionAfterReversalOptsSchema.optional(),
   })
   .strict();
 
@@ -351,7 +414,10 @@ export type ShotSpecChildReport =
   | DetailHookKindReport
   | TailColdCloseReport
   | MidTurnDensityReport
-  | HookKindMixReport;
+  | HookKindMixReport
+  | SetupRatioHardReport
+  | ColdOpenCascadeReport
+  | ReactionAfterReversalReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -434,6 +500,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     tailColdOpts,
     midTurnOpts,
     hookKindMixOpts,
+    setupRatioHardOpts,
+    coldOpenCascadeOpts,
+    reactionAfterReversalOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -583,6 +652,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateHookKindMix(
         sections.hookKindMix,
         (hookKindMixOpts ?? {}) as HookKindMixOptions,
+      ),
+    );
+  }
+  if (sections.setupRatioHard !== undefined) {
+    run(
+      'setupRatioHard',
+      evaluateSetupRatioHard(
+        sections.setupRatioHard,
+        (setupRatioHardOpts ?? {}) as SetupRatioHardOptions,
+      ),
+    );
+  }
+  if (sections.coldOpenCascade !== undefined) {
+    run(
+      'coldOpenCascade',
+      evaluateColdOpenCascade(
+        sections.coldOpenCascade,
+        (coldOpenCascadeOpts ?? {}) as ColdOpenCascadeOptions,
+      ),
+    );
+  }
+  if (sections.reactionAfterReversal !== undefined) {
+    run(
+      'reactionAfterReversal',
+      evaluateReactionAfterReversal(
+        sections.reactionAfterReversal,
+        (reactionAfterReversalOpts ?? {}) as ReactionAfterReversalOptions,
       ),
     );
   }
