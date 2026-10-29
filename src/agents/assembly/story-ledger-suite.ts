@@ -202,6 +202,9 @@
  *   · hootRhythmPeakBridge · cawRhythmPeakBridge · squawkRhythmPeakBridge · bleatRhythmPeakBridge
  *   · qualityDaciteLink · qualityPeridotiteLink · qualityLimestoneLink · qualityDolomiteLink
  *
+ *   · yowlRhythmPeakBridge · honkRhythmPeakBridge · quackRhythmPeakBridge · oinkRhythmPeakBridge
+ *   · qualityTuffLink · qualityTrachyteLink · qualitySyeniteLink · qualityPegmatiteLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3710,6 +3713,58 @@ import {
   evaluateQualityDolomiteLink,
   type QualityDolomiteLinkReport,
 } from './quality-dolomite-link-gate';
+import {
+  YowlRhythmPeakBridgeLinkSchema,
+  YowlRhythmPeakYowlEntrySchema,
+  YowlRhythmPeakRhythmEntrySchema,
+  evaluateYowlRhythmPeakBridge,
+  type YowlRhythmPeakBridgeReport,
+} from './yowl-rhythm-peak-bridge-gate';
+import {
+  HonkRhythmPeakBridgeLinkSchema,
+  HonkRhythmPeakHonkEntrySchema,
+  HonkRhythmPeakRhythmEntrySchema,
+  evaluateHonkRhythmPeakBridge,
+  type HonkRhythmPeakBridgeReport,
+} from './honk-rhythm-peak-bridge-gate';
+import {
+  QuackRhythmPeakBridgeLinkSchema,
+  QuackRhythmPeakQuackEntrySchema,
+  QuackRhythmPeakRhythmEntrySchema,
+  evaluateQuackRhythmPeakBridge,
+  type QuackRhythmPeakBridgeReport,
+} from './quack-rhythm-peak-bridge-gate';
+import {
+  OinkRhythmPeakBridgeLinkSchema,
+  OinkRhythmPeakOinkEntrySchema,
+  OinkRhythmPeakRhythmEntrySchema,
+  evaluateOinkRhythmPeakBridge,
+  type OinkRhythmPeakBridgeReport,
+} from './oink-rhythm-peak-bridge-gate';
+import {
+  QualityTuffLinkEntrySchema,
+  QualityTuffEntrySchema,
+  evaluateQualityTuffLink,
+  type QualityTuffLinkReport,
+} from './quality-tuff-link-gate';
+import {
+  QualityTrachyteLinkEntrySchema,
+  QualityTrachyteEntrySchema,
+  evaluateQualityTrachyteLink,
+  type QualityTrachyteLinkReport,
+} from './quality-trachyte-link-gate';
+import {
+  QualitySyeniteLinkEntrySchema,
+  QualitySyeniteEntrySchema,
+  evaluateQualitySyeniteLink,
+  type QualitySyeniteLinkReport,
+} from './quality-syenite-link-gate';
+import {
+  QualityPegmatiteLinkEntrySchema,
+  QualityPegmatiteEntrySchema,
+  evaluateQualityPegmatiteLink,
+  type QualityPegmatiteLinkReport,
+} from './quality-pegmatite-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4328,6 +4383,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityPeridotiteLink',
   'qualityLimestoneLink',
   'qualityDolomiteLink',
+  'yowlRhythmPeakBridge',
+  'honkRhythmPeakBridge',
+  'quackRhythmPeakBridge',
+  'oinkRhythmPeakBridge',
+  'qualityTuffLink',
+  'qualityTrachyteLink',
+  'qualitySyeniteLink',
+  'qualityPegmatiteLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -8462,6 +8525,58 @@ const QualityDolomiteSectionSchemaB174 = z.object({
   links: z.array(QualityDolomiteLinkEntrySchema),
 });
 
+const YowlRhythmPeakBridgeSectionSchema = z.object({
+  yowls: z.array(YowlRhythmPeakYowlEntrySchema),
+  rhythms: z.array(YowlRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(YowlRhythmPeakBridgeLinkSchema),
+});
+
+const HonkRhythmPeakBridgeSectionSchema = z.object({
+  honks: z.array(HonkRhythmPeakHonkEntrySchema),
+  rhythms: z.array(HonkRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HonkRhythmPeakBridgeLinkSchema),
+});
+
+const QuackRhythmPeakBridgeSectionSchema = z.object({
+  quacks: z.array(QuackRhythmPeakQuackEntrySchema),
+  rhythms: z.array(QuackRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(QuackRhythmPeakBridgeLinkSchema),
+});
+
+const OinkRhythmPeakBridgeSectionSchema = z.object({
+  oinks: z.array(OinkRhythmPeakOinkEntrySchema),
+  rhythms: z.array(OinkRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(OinkRhythmPeakBridgeLinkSchema),
+});
+
+const QualityTuffSectionSchemaB175 = z.object({
+  minTuffIntense: z.number().int().min(1).max(5).optional(),
+  tuffs: z.array(QualityTuffEntrySchema),
+  links: z.array(QualityTuffLinkEntrySchema),
+});
+
+const QualityTrachyteSectionSchemaB175 = z.object({
+  minTrachyteIntense: z.number().int().min(1).max(5).optional(),
+  trachytes: z.array(QualityTrachyteEntrySchema),
+  links: z.array(QualityTrachyteLinkEntrySchema),
+});
+
+const QualitySyeniteSectionSchemaB175 = z.object({
+  minSyeniteIntense: z.number().int().min(1).max(5).optional(),
+  syenites: z.array(QualitySyeniteEntrySchema),
+  links: z.array(QualitySyeniteLinkEntrySchema),
+});
+
+const QualityPegmatiteSectionSchemaB175 = z.object({
+  minPegmatiteIntense: z.number().int().min(1).max(5).optional(),
+  pegmatites: z.array(QualityPegmatiteEntrySchema),
+  links: z.array(QualityPegmatiteLinkEntrySchema),
+});
+
 
 
 
@@ -9093,6 +9208,14 @@ export const StoryLedgerSuiteSchema = z
     qualityPeridotiteLink: QualityPeridotiteSectionSchemaB174.optional(),
     qualityLimestoneLink: QualityLimestoneSectionSchemaB174.optional(),
     qualityDolomiteLink: QualityDolomiteSectionSchemaB174.optional(),
+    yowlRhythmPeakBridge: YowlRhythmPeakBridgeSectionSchema.optional(),
+    honkRhythmPeakBridge: HonkRhythmPeakBridgeSectionSchema.optional(),
+    quackRhythmPeakBridge: QuackRhythmPeakBridgeSectionSchema.optional(),
+    oinkRhythmPeakBridge: OinkRhythmPeakBridgeSectionSchema.optional(),
+    qualityTuffLink: QualityTuffSectionSchemaB175.optional(),
+    qualityTrachyteLink: QualityTrachyteSectionSchemaB175.optional(),
+    qualitySyeniteLink: QualitySyeniteSectionSchemaB175.optional(),
+    qualityPegmatiteLink: QualityPegmatiteSectionSchemaB175.optional(),
   })
   .strict();
 
@@ -9712,7 +9835,15 @@ export type StoryLedgerChildReport =
   | QualityDaciteLinkReport
   | QualityPeridotiteLinkReport
   | QualityLimestoneLinkReport
-  | QualityDolomiteLinkReport;
+  | QualityDolomiteLinkReport
+  | YowlRhythmPeakBridgeReport
+  | HonkRhythmPeakBridgeReport
+  | QuackRhythmPeakBridgeReport
+  | OinkRhythmPeakBridgeReport
+  | QualityTuffLinkReport
+  | QualityTrachyteLinkReport
+  | QualitySyeniteLinkReport
+  | QualityPegmatiteLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -10981,6 +11112,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityLimestoneLink({ series, latestEp, ...(section as object) }),
   qualityDolomiteLink: (series, latestEp, section) =>
     evaluateQualityDolomiteLink({ series, latestEp, ...(section as object) }),
+  yowlRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateYowlRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  honkRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateHonkRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  quackRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateQuackRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  oinkRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateOinkRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityTuffLink: (series, latestEp, section) =>
+    evaluateQualityTuffLink({ series, latestEp, ...(section as object) }),
+  qualityTrachyteLink: (series, latestEp, section) =>
+    evaluateQualityTrachyteLink({ series, latestEp, ...(section as object) }),
+  qualitySyeniteLink: (series, latestEp, section) =>
+    evaluateQualitySyeniteLink({ series, latestEp, ...(section as object) }),
+  qualityPegmatiteLink: (series, latestEp, section) =>
+    evaluateQualityPegmatiteLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
