@@ -2,8 +2,9 @@
  * V12 · Shot-Spec Suite (pre-gen visual/structure 旁路总入口),
  * offline, deterministic.
  *
- * Bundles ShotSpec / CutTimeline gates that sit beside story-ledger-suite:
+ * Bundles ShotSpec / CutTimeline / contract gates beside story-ledger-suite:
  *   hookStructure · openingCascade · cutTimeline
+ *   · shotContract · shotPrompt · storyRhythm · mvShotlist
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -27,11 +28,36 @@ import {
   type CutTimelineOptions,
   type CutTimelineReport,
 } from './cut-timeline-gate';
+import {
+  ShotContractDocSchema,
+  evaluateShotContract,
+  type ShotContractOptions,
+  type ShotContractReport,
+} from './shot-contract-gate';
+import {
+  evaluateShotPrompts,
+  type ShotPromptGateOptions,
+  type ShotPromptReport,
+} from './shot-prompt-gate';
+import {
+  evaluateStoryRhythm,
+  type RhythmOptions,
+  type RhythmReport,
+} from './story-rhythm-gate';
+import {
+  MvShotlistDocSchema,
+  evaluateMvShotlist,
+  type MvShotlistReport,
+} from './mv-shotlist-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
   'openingCascade',
   'cutTimeline',
+  'shotContract',
+  'shotPrompt',
+  'storyRhythm',
+  'mvShotlist',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -62,15 +88,59 @@ const CutOptsSchema = z
   })
   .strict();
 
+const ContractOptsSchema = z
+  .object({
+    minDurationSec: z.number().positive().optional(),
+    maxDurationSec: z.number().positive().optional(),
+    maxRulesPerShot: z.number().int().positive().optional(),
+    ruleset: z
+      .object({
+        rules: z.array(z.object({ id: z.string().optional() }).passthrough()).optional(),
+      })
+      .passthrough()
+      .nullable()
+      .optional(),
+  })
+  .strict();
+
+const PromptOptsSchema = z
+  .object({
+    safeChars: z.number().positive().optional(),
+    hardChars: z.number().positive().optional(),
+    maxUnitsPerSec: z.number().positive().optional(),
+    estUnitsPerSec: z.number().positive().optional(),
+    pauseSec: z.number().nonnegative().optional(),
+    strictFiveLines: z.boolean().optional(),
+    hardBans: z.array(z.string()).optional(),
+    processTerms: z.array(z.string()).optional(),
+  })
+  .strict();
+
+const RhythmOptsSchema = z
+  .object({
+    minEventsPer90s: z.number().positive().optional(),
+    maxShotSeconds: z.number().positive().optional(),
+    maxSecondsPerEvent: z.number().positive().optional(),
+    requireCutMotive: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
     hookStructure: ShotSpecDocSchema.optional(),
     openingCascade: ShotSpecDocSchema.optional(),
     cutTimeline: CutTimelineSchema.optional(),
+    shotContract: ShotContractDocSchema.optional(),
+    shotPrompt: ShotSpecDocSchema.optional(),
+    storyRhythm: ShotSpecDocSchema.optional(),
+    mvShotlist: MvShotlistDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
+    contractOpts: ContractOptsSchema.optional(),
+    promptOpts: PromptOptsSchema.optional(),
+    rhythmOpts: RhythmOptsSchema.optional(),
   })
   .strict();
 
@@ -79,7 +149,11 @@ export type ShotSpecSuiteInput = z.infer<typeof ShotSpecSuiteSchema>;
 export type ShotSpecChildReport =
   | HookStructureReport
   | OpeningCascadeReport
-  | CutTimelineReport;
+  | CutTimelineReport
+  | ShotContractReport
+  | ShotPromptReport
+  | RhythmReport
+  | MvShotlistReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -127,7 +201,7 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       code: 'SCHEMA',
       severity: 'FAIL',
       message: `ShotSpecSuite schema: ${parsed.error.issues[0]?.message ?? 'invalid'}`,
-      fix: '提供 episode，以及 0+ 已知 section（hookStructure | openingCascade | cutTimeline）',
+      fix: `提供 episode，以及 0+ 已知 section（${SHOT_SPEC_GATE_IDS.join(' | ')}）`,
     });
     return {
       schema: 'v12/ShotSpecSuite/v1',
@@ -145,7 +219,16 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     };
   }
 
-  const { episode, hookOpts, cascadeOpts, cutOpts, ...sections } = parsed.data;
+  const {
+    episode,
+    hookOpts,
+    cascadeOpts,
+    cutOpts,
+    contractOpts,
+    promptOpts,
+    rhythmOpts,
+    ...sections
+  } = parsed.data;
   let ran = 0;
   let passed = 0;
   let failed = 0;
@@ -171,10 +254,7 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
   if (sections.hookStructure !== undefined) {
     run(
       'hookStructure',
-      evaluateHookStructure(
-        sections.hookStructure,
-        (hookOpts ?? {}) as HookStructureOptions,
-      ),
+      evaluateHookStructure(sections.hookStructure, (hookOpts ?? {}) as HookStructureOptions),
     );
   }
   if (sections.openingCascade !== undefined) {
@@ -191,6 +271,31 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       'cutTimeline',
       evaluateCutTimeline(sections.cutTimeline, (cutOpts ?? {}) as CutTimelineOptions),
     );
+  }
+  if (sections.shotContract !== undefined) {
+    run(
+      'shotContract',
+      evaluateShotContract(sections.shotContract, (contractOpts ?? {}) as ShotContractOptions),
+    );
+  }
+  if (sections.shotPrompt !== undefined) {
+    const po = promptOpts ?? {};
+    run(
+      'shotPrompt',
+      evaluateShotPrompts(sections.shotPrompt, {
+        ...po,
+        processTerms: po.processTerms,
+      } as ShotPromptGateOptions),
+    );
+  }
+  if (sections.storyRhythm !== undefined) {
+    run(
+      'storyRhythm',
+      evaluateStoryRhythm(sections.storyRhythm, (rhythmOpts ?? {}) as RhythmOptions),
+    );
+  }
+  if (sections.mvShotlist !== undefined) {
+    run('mvShotlist', evaluateMvShotlist(sections.mvShotlist));
   }
 
   const skipped = SHOT_SPEC_GATE_IDS.length - ran;
