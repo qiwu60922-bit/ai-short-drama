@@ -253,6 +253,8 @@
  *   · qualityTerryleneLink · qualityQuaterryleneLink · qualityAnthanthreneLink · qualityZethreneLink
  *   · squeezeRhythmPeakBridge · kneadRhythmPeakBridge · pressRhythmPeakBridge · rubRhythmPeakBridge
  *   · qualityKekuleneLink · qualityOlympiceneLink · qualityCirculeneLink · qualityTriphenyleneLink
+ *   · rollRhythmPeakBridge · flingRhythmPeakBridge · spinRhythmPeakBridge · swirlRhythmPeakBridge
+ *   · qualityCorannuleneLink · qualitySumaneneLink · qualityFullereneLink · qualityGrapheneLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4919,6 +4921,59 @@ import {
   type QualityTriphenyleneLinkReport,
 } from './quality-triphenylene-link-gate';
 
+import {
+  RollRhythmPeakBridgeLinkSchema,
+  RollRhythmPeakRollEntrySchema,
+  RollRhythmPeakRhythmEntrySchema,
+  evaluateRollRhythmPeakBridge,
+  type RollRhythmPeakBridgeReport,
+} from './roll-rhythm-peak-bridge-gate';
+import {
+  FlingRhythmPeakBridgeLinkSchema,
+  FlingRhythmPeakFlingEntrySchema,
+  FlingRhythmPeakRhythmEntrySchema,
+  evaluateFlingRhythmPeakBridge,
+  type FlingRhythmPeakBridgeReport,
+} from './fling-rhythm-peak-bridge-gate';
+import {
+  SpinRhythmPeakBridgeLinkSchema,
+  SpinRhythmPeakSpinEntrySchema,
+  SpinRhythmPeakRhythmEntrySchema,
+  evaluateSpinRhythmPeakBridge,
+  type SpinRhythmPeakBridgeReport,
+} from './spin-rhythm-peak-bridge-gate';
+import {
+  SwirlRhythmPeakBridgeLinkSchema,
+  SwirlRhythmPeakSwirlEntrySchema,
+  SwirlRhythmPeakRhythmEntrySchema,
+  evaluateSwirlRhythmPeakBridge,
+  type SwirlRhythmPeakBridgeReport,
+} from './swirl-rhythm-peak-bridge-gate';
+import {
+  QualityCorannuleneLinkEntrySchema,
+  QualityCorannuleneEntrySchema,
+  evaluateQualityCorannuleneLink,
+  type QualityCorannuleneLinkReport,
+} from './quality-corannulene-link-gate';
+import {
+  QualitySumaneneLinkEntrySchema,
+  QualitySumaneneEntrySchema,
+  evaluateQualitySumaneneLink,
+  type QualitySumaneneLinkReport,
+} from './quality-sumanene-link-gate';
+import {
+  QualityFullereneLinkEntrySchema,
+  QualityFullereneEntrySchema,
+  evaluateQualityFullereneLink,
+  type QualityFullereneLinkReport,
+} from './quality-fullerene-link-gate';
+import {
+  QualityGrapheneLinkEntrySchema,
+  QualityGrapheneEntrySchema,
+  evaluateQualityGrapheneLink,
+  type QualityGrapheneLinkReport,
+} from './quality-graphene-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -5712,6 +5767,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityOlympiceneLink',
   'qualityCirculeneLink',
   'qualityTriphenyleneLink',
+  'rollRhythmPeakBridge',
+  'flingRhythmPeakBridge',
+  'spinRhythmPeakBridge',
+  'swirlRhythmPeakBridge',
+  'qualityCorannuleneLink',
+  'qualitySumaneneLink',
+  'qualityFullereneLink',
+  'qualityGrapheneLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -10991,6 +11054,58 @@ const QualityTriphenyleneSectionSchemaB196 = z.object({
   links: z.array(QualityTriphenyleneLinkEntrySchema),
 });
 
+const RollRhythmPeakBridgeSectionSchema = z.object({
+  rolls: z.array(RollRhythmPeakRollEntrySchema),
+  rhythms: z.array(RollRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(RollRhythmPeakBridgeLinkSchema),
+});
+
+const FlingRhythmPeakBridgeSectionSchema = z.object({
+  flings: z.array(FlingRhythmPeakFlingEntrySchema),
+  rhythms: z.array(FlingRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(FlingRhythmPeakBridgeLinkSchema),
+});
+
+const SpinRhythmPeakBridgeSectionSchema = z.object({
+  spins: z.array(SpinRhythmPeakSpinEntrySchema),
+  rhythms: z.array(SpinRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SpinRhythmPeakBridgeLinkSchema),
+});
+
+const SwirlRhythmPeakBridgeSectionSchema = z.object({
+  swirls: z.array(SwirlRhythmPeakSwirlEntrySchema),
+  rhythms: z.array(SwirlRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SwirlRhythmPeakBridgeLinkSchema),
+});
+
+const QualityCorannuleneSectionSchemaB197 = z.object({
+  minCorannuleneIntense: z.number().int().min(1).max(5).optional(),
+  corannulenes: z.array(QualityCorannuleneEntrySchema),
+  links: z.array(QualityCorannuleneLinkEntrySchema),
+});
+
+const QualitySumaneneSectionSchemaB197 = z.object({
+  minSumaneneIntense: z.number().int().min(1).max(5).optional(),
+  sumanenes: z.array(QualitySumaneneEntrySchema),
+  links: z.array(QualitySumaneneLinkEntrySchema),
+});
+
+const QualityFullereneSectionSchemaB197 = z.object({
+  minFullereneIntense: z.number().int().min(1).max(5).optional(),
+  fullerenes: z.array(QualityFullereneEntrySchema),
+  links: z.array(QualityFullereneLinkEntrySchema),
+});
+
+const QualityGrapheneSectionSchemaB197 = z.object({
+  minGrapheneIntense: z.number().int().min(1).max(5).optional(),
+  graphenes: z.array(QualityGrapheneEntrySchema),
+  links: z.array(QualityGrapheneLinkEntrySchema),
+});
+
 
 
 
@@ -11798,6 +11913,14 @@ export const StoryLedgerSuiteSchema = z
     qualityOlympiceneLink: QualityOlympiceneSectionSchemaB196.optional(),
     qualityCirculeneLink: QualityCirculeneSectionSchemaB196.optional(),
     qualityTriphenyleneLink: QualityTriphenyleneSectionSchemaB196.optional(),
+    rollRhythmPeakBridge: RollRhythmPeakBridgeSectionSchema.optional(),
+    flingRhythmPeakBridge: FlingRhythmPeakBridgeSectionSchema.optional(),
+    spinRhythmPeakBridge: SpinRhythmPeakBridgeSectionSchema.optional(),
+    swirlRhythmPeakBridge: SwirlRhythmPeakBridgeSectionSchema.optional(),
+    qualityCorannuleneLink: QualityCorannuleneSectionSchemaB197.optional(),
+    qualitySumaneneLink: QualitySumaneneSectionSchemaB197.optional(),
+    qualityFullereneLink: QualityFullereneSectionSchemaB197.optional(),
+    qualityGrapheneLink: QualityGrapheneSectionSchemaB197.optional(),
   })
   .strict();
 
@@ -12593,7 +12716,15 @@ export type StoryLedgerChildReport =
   | QualityKekuleneLinkReport
   | QualityOlympiceneLinkReport
   | QualityCirculeneLinkReport
-  | QualityTriphenyleneLinkReport;
+  | QualityTriphenyleneLinkReport
+  | RollRhythmPeakBridgeReport
+  | FlingRhythmPeakBridgeReport
+  | SpinRhythmPeakBridgeReport
+  | SwirlRhythmPeakBridgeReport
+  | QualityCorannuleneLinkReport
+  | QualitySumaneneLinkReport
+  | QualityFullereneLinkReport
+  | QualityGrapheneLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -14214,6 +14345,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityCirculeneLink({ series, latestEp, ...(section as object) }),
   qualityTriphenyleneLink: (series, latestEp, section) =>
     evaluateQualityTriphenyleneLink({ series, latestEp, ...(section as object) }),
+  rollRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateRollRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  flingRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateFlingRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  spinRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSpinRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  swirlRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSwirlRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityCorannuleneLink: (series, latestEp, section) =>
+    evaluateQualityCorannuleneLink({ series, latestEp, ...(section as object) }),
+  qualitySumaneneLink: (series, latestEp, section) =>
+    evaluateQualitySumaneneLink({ series, latestEp, ...(section as object) }),
+  qualityFullereneLink: (series, latestEp, section) =>
+    evaluateQualityFullereneLink({ series, latestEp, ...(section as object) }),
+  qualityGrapheneLink: (series, latestEp, section) =>
+    evaluateQualityGrapheneLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
