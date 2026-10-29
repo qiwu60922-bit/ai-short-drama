@@ -23,7 +23,13 @@ describe('v13 suite fixtures', () => {
     expect(r.results.motifForeshadowRhythmBridge.status).toBe('PASS');
     expect(r.results.qualityMaskPeakBridge.status).toBe('PASS');
     expect(r.results.abilityMaskPeakBridge.status).toBe('PASS');
-    expect(r.metrics.ran).toBeGreaterThanOrEqual(8);
+    expect(r.results.bondMaskPeakBridge.status).toBe('PASS');
+    expect(r.results.motifQualityRhythmBridge.status).toBe('PASS');
+    expect(r.results.abilityHandoffLink.status).toBe('PASS');
+    expect(r.results.alliancePeakLink.status).toBe('PASS');
+    expect(r.results.vestQualityLink.status).toBe('PASS');
+    expect(r.results.countdownPeakLink.status).toBe('PASS');
+    expect(r.metrics.ran).toBeGreaterThanOrEqual(14);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -43,7 +49,10 @@ describe('v13 suite fixtures', () => {
     expect(r.results.hookKindMixColdOpen.status).toBe('PASS');
     expect(r.results.dialogueAfterReversalBan.status).toBe('PASS');
     expect(r.results.midTurnSetupCap.status).toBe('PASS');
-    expect(r.metrics.ran).toBeGreaterThanOrEqual(11);
+    expect(r.results.coldOpenDetailHook.status).toBe('PASS');
+    expect(r.results.cliffTailDialogueBan.status).toBe('PASS');
+    expect(r.results.midHookSetupBan.status).toBe('PASS');
+    expect(r.metrics.ran).toBeGreaterThanOrEqual(14);
   });
 
 

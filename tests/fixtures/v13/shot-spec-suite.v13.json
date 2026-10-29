@@ -1061,5 +1061,121 @@
         "beatRole": "cliffhanger"
       }
     ]
+  },
+  "coldOpenDetailHook": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-COD0",
+        "cast": [],
+        "durSec": 2,
+        "action": "细节冷开",
+        "beatRole": "hook",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-COD1",
+        "cast": [],
+        "durSec": 4,
+        "action": "追问",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-COD2",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-COD3",
+        "cast": [],
+        "durSec": 4,
+        "action": "悬念",
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "cliffTailDialogueBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-CTD0",
+        "cast": [],
+        "durSec": 2,
+        "action": "开场",
+        "beatRole": "hook"
+      },
+      {
+        "shotId": "EP01-CTD1",
+        "cast": [],
+        "durSec": 4,
+        "action": "追问",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-CTD2",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-CTD3",
+        "cast": [],
+        "durSec": 3,
+        "action": "脸色煞白",
+        "beatRole": "reaction"
+      },
+      {
+        "shotId": "EP01-CTD4",
+        "cast": [],
+        "durSec": 1,
+        "action": "门外脚步",
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "midHookSetupBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MHS0",
+        "cast": [],
+        "durSec": 2,
+        "action": "危机",
+        "beatRole": "hook",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MHS1",
+        "cast": [],
+        "durSec": 3,
+        "action": "追问",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-MHS2",
+        "cast": [],
+        "durSec": 2,
+        "action": "中段再钩",
+        "beatRole": "hook",
+        "hookKind": "action"
+      },
+      {
+        "shotId": "EP01-MHS3",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-MHS4",
+        "cast": [],
+        "durSec": 4,
+        "action": "悬念",
+        "beatRole": "cliffhanger"
+      }
+    ]
   }
 }

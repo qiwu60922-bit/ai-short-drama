@@ -1454,5 +1454,568 @@
         "ep": 8
       }
     ]
+  },
+  "bondMaskPeakBridge": {
+    "bonds": [
+      {
+        "id": "江少契约",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 8,
+        "upgradeLabel": "真心崩塌后真情"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 8,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "订婚宴嫌弃",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "订婚宴嫌弃峰值",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bmp",
+        "bondId": "江少契约",
+        "maskId": "花心纨绔",
+        "peakId": "订婚宴嫌弃",
+        "ep": 8
+      }
+    ]
+  },
+  "motifQualityRhythmBridge": {
+    "profile": "dense",
+    "motifs": [
+      {
+        "id": "white-rose",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 8,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 20,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mqr",
+        "motifId": "white-rose",
+        "ep": 8,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        },
+        "shotSpec": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S1",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S2",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S3",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S4",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S5",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S6",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S7",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S8",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S9",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S10",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S11",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S12",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S13",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S14",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S15",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S16",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-S17",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            }
+          ]
+        },
+        "profile": "dense"
+      }
+    ]
+  },
+  "abilityHandoffLink": {
+    "abilities": [
+      {
+        "id": "seer",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 8,
+        "day": 8,
+        "option": "查验身份"
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "开场"
+            },
+            {
+              "shotId": "EP08-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP08-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP08-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "承接"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "新证"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ah",
+        "abilityId": "seer",
+        "handoffId": "H8-9"
+      }
+    ]
+  },
+  "alliancePeakLink": {
+    "alliances": [
+      {
+        "id": "oni-fang",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang",
+        "ep": 8,
+        "role": "payoff",
+        "note": "当众护短"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "护短对峙",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "当众护短峰值",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ap",
+        "allianceId": "oni-fang",
+        "peakId": "护短对峙"
+      }
+    ]
+  },
+  "vestQualityLink": {
+    "vests": [
+      {
+        "id": "机长马甲",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 8,
+        "dropLabel": "公开机长身份反击",
+        "peakEp": 8,
+        "peakLabel": "对峙峰值"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vq",
+        "vestId": "机长马甲",
+        "ep": 8,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "countdownPeakLink": {
+    "countdowns": [
+      {
+        "id": "直播时限",
+        "label": "天幕直播截止",
+        "startEp": 1,
+        "deadlineEp": 8,
+        "status": "met"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "揭穿对峙",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "直播揭穿峰值",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cp",
+        "countdownId": "直播时限",
+        "peakId": "揭穿对峙"
+      }
+    ]
   }
 }
