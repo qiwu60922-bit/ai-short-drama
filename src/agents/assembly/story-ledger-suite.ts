@@ -111,6 +111,8 @@
  *
  *   · rhythmQualityPeakBridge · ensembleQualityPeakBridge · revealQualityPeakBridge · amnesiaQualityPeakBridge
  *   · rhythmForeshadowLink · ensembleForeshadowLink · revealForeshadowLink · coldOpenForeshadowLink
+ *   · motifQualityPeakBridge · cliffQualityPeakBridge · bondQualityPeakBridge · coldOpenQualityPeakBridge
+ *   · motifRhythmForeshadowLink · coldOpenQualityLink · maskRevealLink · maskQualityForeshadowLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -1826,6 +1828,49 @@ import {
   evaluateColdOpenForeshadowLink,
   type ColdOpenForeshadowLinkReport,
 } from './cold-open-foreshadow-link-gate';
+import {
+  MotifQualityPeakBridgeLinkSchema,
+  evaluateMotifQualityPeakBridge,
+  type MotifQualityPeakBridgeReport,
+} from './motif-quality-peak-bridge-gate';
+import {
+  CliffQualityPeakBridgeLinkSchema,
+  evaluateCliffQualityPeakBridge,
+  type CliffQualityPeakBridgeReport,
+} from './cliff-quality-peak-bridge-gate';
+import {
+  BondQualityPeakBridgeLinkSchema,
+  evaluateBondQualityPeakBridge,
+  type BondQualityPeakBridgeReport,
+} from './bond-quality-peak-bridge-gate';
+import {
+  ColdOpenQualityPeakBridgeLinkSchema,
+  ColdOpenQualityPeakColdOpenEntrySchema,
+  evaluateColdOpenQualityPeakBridge,
+  type ColdOpenQualityPeakBridgeReport,
+} from './cold-open-quality-peak-bridge-gate';
+import {
+  MotifRhythmForeshadowLinkEntrySchema,
+  MotifRhythmForeshadowRhythmEntrySchema,
+  evaluateMotifRhythmForeshadowLink,
+  type MotifRhythmForeshadowLinkReport,
+} from './motif-rhythm-foreshadow-link-gate';
+import {
+  ColdOpenQualityLinkEntrySchema,
+  ColdOpenQualityColdOpenEntrySchema,
+  evaluateColdOpenQualityLink,
+  type ColdOpenQualityLinkReport,
+} from './cold-open-quality-link-gate';
+import {
+  MaskRevealLinkEntrySchema,
+  evaluateMaskRevealLink,
+  type MaskRevealLinkReport,
+} from './mask-reveal-link-gate';
+import {
+  MaskQualityForeshadowLinkEntrySchema,
+  evaluateMaskQualityForeshadowLink,
+  type MaskQualityForeshadowLinkReport,
+} from './mask-quality-foreshadow-link-gate';
 
 
 
@@ -2160,6 +2205,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'ensembleForeshadowLink',
   'revealForeshadowLink',
   'coldOpenForeshadowLink',
+  'motifQualityPeakBridge',
+  'cliffQualityPeakBridge',
+  'bondQualityPeakBridge',
+  'coldOpenQualityPeakBridge',
+  'motifRhythmForeshadowLink',
+  'coldOpenQualityLink',
+  'maskRevealLink',
+  'maskQualityForeshadowLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -4366,6 +4419,62 @@ const ColdOpenForeshadowSectionSchema = z.object({
   links: z.array(ColdOpenForeshadowLinkEntrySchema),
 });
 
+const MotifQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifQualityPeakBridgeLinkSchema),
+});
+
+const CliffQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CliffQualityPeakBridgeLinkSchema),
+});
+
+const BondQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  bonds: z.array(BondContractEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BondQualityPeakBridgeLinkSchema),
+});
+
+const ColdOpenQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  coldOpens: z.array(ColdOpenQualityPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ColdOpenQualityPeakBridgeLinkSchema),
+});
+
+const MotifRhythmForeshadowSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  rhythms: z.array(MotifRhythmForeshadowRhythmEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(MotifRhythmForeshadowLinkEntrySchema),
+});
+
+const ColdOpenQualitySectionSchema = z.object({
+  minColdIntense: z.number().int().min(1).max(5).optional(),
+  coldOpens: z.array(ColdOpenQualityColdOpenEntrySchema),
+  links: z.array(ColdOpenQualityLinkEntrySchema),
+});
+
+const MaskRevealSectionSchema = z.object({
+  minRevealIntense: z.number().int().min(1).max(5).optional(),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(MaskRevealLinkEntrySchema),
+});
+
+const MaskQualityForeshadowSectionSchema = z.object({
+  minPayoffIntense: z.number().int().min(1).max(5).optional(),
+  masks: z.array(PersonaMaskEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(MaskQualityForeshadowLinkEntrySchema),
+});
+
 
 
 
@@ -4700,6 +4809,14 @@ export const StoryLedgerSuiteSchema = z
     ensembleForeshadowLink: EnsembleForeshadowSectionSchema.optional(),
     revealForeshadowLink: RevealForeshadowSectionSchema.optional(),
     coldOpenForeshadowLink: ColdOpenForeshadowSectionSchema.optional(),
+    motifQualityPeakBridge: MotifQualityPeakBridgeSectionSchema.optional(),
+    cliffQualityPeakBridge: CliffQualityPeakBridgeSectionSchema.optional(),
+    bondQualityPeakBridge: BondQualityPeakBridgeSectionSchema.optional(),
+    coldOpenQualityPeakBridge: ColdOpenQualityPeakBridgeSectionSchema.optional(),
+    motifRhythmForeshadowLink: MotifRhythmForeshadowSectionSchema.optional(),
+    coldOpenQualityLink: ColdOpenQualitySectionSchema.optional(),
+    maskRevealLink: MaskRevealSectionSchema.optional(),
+    maskQualityForeshadowLink: MaskQualityForeshadowSectionSchema.optional(),
   })
   .strict();
 
@@ -5031,7 +5148,15 @@ export type StoryLedgerChildReport =
   | RhythmForeshadowLinkReport
   | EnsembleForeshadowLinkReport
   | RevealForeshadowLinkReport
-  | ColdOpenForeshadowLinkReport;
+  | ColdOpenForeshadowLinkReport
+  | MotifQualityPeakBridgeReport
+  | CliffQualityPeakBridgeReport
+  | BondQualityPeakBridgeReport
+  | ColdOpenQualityPeakBridgeReport
+  | MotifRhythmForeshadowLinkReport
+  | ColdOpenQualityLinkReport
+  | MaskRevealLinkReport
+  | MaskQualityForeshadowLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -5723,6 +5848,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateRevealForeshadowLink({ series, latestEp, ...(section as object) }),
   coldOpenForeshadowLink: (series, latestEp, section) =>
     evaluateColdOpenForeshadowLink({ series, latestEp, ...(section as object) }),
+  motifQualityPeakBridge: (series, latestEp, section) =>
+    evaluateMotifQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  cliffQualityPeakBridge: (series, latestEp, section) =>
+    evaluateCliffQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  bondQualityPeakBridge: (series, latestEp, section) =>
+    evaluateBondQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  coldOpenQualityPeakBridge: (series, latestEp, section) =>
+    evaluateColdOpenQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  motifRhythmForeshadowLink: (series, latestEp, section) =>
+    evaluateMotifRhythmForeshadowLink({ series, latestEp, ...(section as object) }),
+  coldOpenQualityLink: (series, latestEp, section) =>
+    evaluateColdOpenQualityLink({ series, latestEp, ...(section as object) }),
+  maskRevealLink: (series, latestEp, section) =>
+    evaluateMaskRevealLink({ series, latestEp, ...(section as object) }),
+  maskQualityForeshadowLink: (series, latestEp, section) =>
+    evaluateMaskQualityForeshadowLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {

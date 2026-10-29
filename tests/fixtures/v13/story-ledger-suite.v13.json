@@ -23331,5 +23331,627 @@
         "ep": 10
       }
     ]
+  },
+  "motifQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "motifs": [
+      {
+        "id": "white-rose-mqpb",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mqpb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mqpb",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mqpb",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-mqpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mqpb",
+        "motifId": "white-rose-mqpb",
+        "peakId": "对峙峰值-mqpb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "cliffQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "cliffLinks": [
+      {
+        "id": "C8-9-cqpb",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-b139-0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP08-b139-1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP08-b139-2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP08-b139-3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-b139-0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "被围承接"
+            },
+            {
+              "shotId": "EP09-b139-1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP09-b139-2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "新证"
+            },
+            {
+              "shotId": "EP09-b139-3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cqpb",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "持械对峙",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cqpb",
+        "cliffLinkId": "C8-9-cqpb",
+        "peakId": "对峙峰值-cqpb",
+        "ep": 8,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "bondQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "bonds": [
+      {
+        "id": "契约女友-bqpb",
+        "partyA": "邱秘书",
+        "partyB": "江少",
+        "contractEp": 1,
+        "contractLabel": "一年契约女友",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "受伤后真情求婚"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-bqpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bqpb",
+        "bondId": "契约女友-bqpb",
+        "peakId": "对峙峰值-bqpb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "coldOpenQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "coldOpens": [
+      {
+        "id": "EP10-cold-coqpb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b139c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b139c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-coqpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-coqpb",
+        "coldOpenId": "EP10-cold-coqpb",
+        "peakId": "对峙峰值-coqpb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "motifRhythmForeshadowLink": {
+    "motifs": [
+      {
+        "id": "white-rose-mrfl",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mrfl",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mrfl",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mrfl",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-mrfl",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机·抛钩",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转·加压"
+            },
+            {
+              "shotId": "EP10-b139-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压·推进"
+            },
+            {
+              "shotId": "EP10-b139-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念·收束"
+            }
+          ]
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-mrfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mrfl",
+        "motifId": "white-rose-mrfl",
+        "rhythmId": "EP10-rhythm-mrfl",
+        "foreshadowId": "伪人身份-mrfl",
+        "ep": 10
+      }
+    ]
+  },
+  "coldOpenQualityLink": {
+    "minColdIntense": 4,
+    "coldOpens": [
+      {
+        "id": "EP10-cold-coql",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-coql-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-coql-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-coql-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-coql-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-coql",
+        "coldOpenId": "EP10-cold-coql",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "maskRevealLink": {
+    "minRevealIntense": 4,
+    "masks": [
+      {
+        "id": "花心纨绔-mrl",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mrl",
+        "maskId": "花心纨绔-mrl",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "maskQualityForeshadowLink": {
+    "minPayoffIntense": 4,
+    "masks": [
+      {
+        "id": "花心纨绔-mqfl",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-mqfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mqfl",
+        "maskId": "花心纨绔-mqfl",
+        "foreshadowId": "伪人身份-mqfl",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }
