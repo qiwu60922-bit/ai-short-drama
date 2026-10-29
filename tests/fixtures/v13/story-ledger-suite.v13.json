@@ -8499,5 +8499,471 @@
         "ep": 10
       }
     ]
+  },
+  "allianceMotifPeakBridge": {
+    "alliances": [
+      {
+        "id": "oni-fang-ampb",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-ampb",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang-ampb",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang-ampb",
+        "ep": 10,
+        "role": "payoff",
+        "note": "护短"
+      }
+    ],
+    "motifs": [
+      {
+        "id": "white-rose-ampb",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-ampb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-ampb",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-ampb",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-ampb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ampb",
+        "allianceId": "oni-fang-ampb",
+        "motifId": "white-rose-ampb",
+        "peakId": "对峙峰值-ampb",
+        "ep": 10
+      }
+    ]
+  },
+  "conflictMotifPeakBridge": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cmpb",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "motifs": [
+      {
+        "id": "white-rose-cmpb",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-cmpb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-cmpb",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-cmpb",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cmpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cmpb",
+        "conflictId": "挑衅反噬-cmpb",
+        "motifId": "white-rose-cmpb",
+        "peakId": "对峙峰值-cmpb",
+        "ep": 10
+      }
+    ]
+  },
+  "foreshadowMotifPeakBridge": {
+    "items": [
+      {
+        "id": "机长身份-fmpb",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 5
+      }
+    ],
+    "motifs": [
+      {
+        "id": "white-rose-fmpb",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-fmpb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-fmpb",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-fmpb",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fmpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fmpb",
+        "foreshadowId": "机长身份-fmpb",
+        "motifId": "white-rose-fmpb",
+        "peakId": "对峙峰值-fmpb",
+        "ep": 10
+      }
+    ]
+  },
+  "conflictMotifLink": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cml",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "motifs": [
+      {
+        "id": "white-rose-cml",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-cml",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-cml",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-cml",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cml",
+        "conflictId": "挑衅反噬-cml",
+        "motifId": "white-rose-cml",
+        "ep": 10
+      }
+    ]
+  },
+  "foreshadowAllianceLink": {
+    "items": [
+      {
+        "id": "机长身份-falnk",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 5
+      }
+    ],
+    "alliances": [
+      {
+        "id": "oni-fang-falnk",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-falnk",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang-falnk",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang-falnk",
+        "ep": 10,
+        "role": "payoff",
+        "note": "护短"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-falnk",
+        "foreshadowId": "机长身份-falnk",
+        "allianceId": "oni-fang-falnk",
+        "ep": 10
+      }
+    ]
+  },
+  "conflictPersonaLink": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cpl",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "cards": [
+      {
+        "slug": "su-jianqing-cpl",
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cpl",
+        "conflictId": "挑衅反噬-cpl",
+        "cardSlug": "su-jianqing-cpl"
+      }
+    ]
+  },
+  "alliancePersonaLink": {
+    "alliances": [
+      {
+        "id": "oni-fang-apl",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-apl",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang-apl",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang-apl",
+        "ep": 10,
+        "role": "payoff",
+        "note": "护短"
+      }
+    ],
+    "cards": [
+      {
+        "slug": "su-jianqing-apl",
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-apl",
+        "allianceId": "oni-fang-apl",
+        "cardSlug": "su-jianqing-apl"
+      }
+    ]
   }
 }
