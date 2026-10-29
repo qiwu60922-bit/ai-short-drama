@@ -1837,5 +1837,143 @@
   "setupMidTurnOpts": {
     "minTurns": 2,
     "maxMidSetupRatio": 0.4
-  }
+  },
+  "coldOpenMidTurn": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "脸色煞白"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "coldOpenMidTurnOpts": {
+    "coldOpenWindowSec": 2,
+    "minTurns": 1
+  },
+  "cliffTailReaction": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-RBC0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "开场"
+      },
+      {
+        "shotId": "EP01-RBC1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-RBC2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-RBC3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "脸色煞白"
+      },
+      {
+        "shotId": "EP01-RBC4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "门外脚步"
+      }
+    ]
+  },
+  "cliffTailReactionOpts": {
+    "hardTailToleranceSec": 3
+  },
+  "midHookReaction": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MHR0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "开场钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MHR1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-MHR2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MHR3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-MHR4",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-MHR5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "midHookReactionOpts": {}
 }
