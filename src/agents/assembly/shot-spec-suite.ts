@@ -39,6 +39,7 @@
  *   · midHookMidTurn · detailHookMidTurn · detailHookHookWindow
  *   · midHookHookHard · detailHookHookHard · hookWindowHookHard
  *   · coldOpenHookHard · coldCloseHookHard · hookHardMidHook
+ *   · hookHardColdOpen · hookHardColdClose · hookHardDetailHook
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -583,6 +584,21 @@ import {
   type HookHardMidHookOptions,
   type HookHardMidHookReport,
 } from './hook-hard-mid-hook-gate';
+import {
+  evaluateHookHardColdOpen,
+  type HookHardColdOpenOptions,
+  type HookHardColdOpenReport,
+} from './hook-hard-cold-open-gate';
+import {
+  evaluateHookHardColdClose,
+  type HookHardColdCloseOptions,
+  type HookHardColdCloseReport,
+} from './hook-hard-cold-close-gate';
+import {
+  evaluateHookHardDetailHook,
+  type HookHardDetailHookOptions,
+  type HookHardDetailHookReport,
+} from './hook-hard-detail-hook-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -689,6 +705,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'coldOpenHookHard',
   'coldCloseHookHard',
   'hookHardMidHook',
+  'hookHardColdOpen',
+  'hookHardColdClose',
+  'hookHardDetailHook',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -2174,6 +2193,57 @@ const HookHardMidHookOptsSchema = z
   })
   .strict();
 
+const HookHardColdOpenOptsSchema = z
+  .object({
+    coldOpenWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const HookHardColdCloseOptsSchema = z
+  .object({
+    coldTailSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const HookHardDetailHookOptsSchema = z
+  .object({
+    requireDetailCu: z.boolean().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -2281,6 +2351,9 @@ export const ShotSpecSuiteSchema = z
     coldOpenHookHard: ShotSpecDocSchema.optional(),
     coldCloseHookHard: ShotSpecDocSchema.optional(),
     hookHardMidHook: ShotSpecDocSchema.optional(),
+    hookHardColdOpen: ShotSpecDocSchema.optional(),
+    hookHardColdClose: ShotSpecDocSchema.optional(),
+    hookHardDetailHook: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -2383,6 +2456,9 @@ export const ShotSpecSuiteSchema = z
     coldOpenHookHardOpts: ColdOpenHookHardOptsSchema.optional(),
     coldCloseHookHardOpts: ColdCloseHookHardOptsSchema.optional(),
     hookHardMidHookOpts: HookHardMidHookOptsSchema.optional(),
+    hookHardColdOpenOpts: HookHardColdOpenOptsSchema.optional(),
+    hookHardColdCloseOpts: HookHardColdCloseOptsSchema.optional(),
+    hookHardDetailHookOpts: HookHardDetailHookOptsSchema.optional(),
   })
   .strict();
 
@@ -2492,7 +2568,10 @@ export type ShotSpecChildReport =
   | HookWindowHookHardReport
   | ColdOpenHookHardReport
   | ColdCloseHookHardReport
-  | HookHardMidHookReport;
+  | HookHardMidHookReport
+  | HookHardColdOpenReport
+  | HookHardColdCloseReport
+  | HookHardDetailHookReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -2662,6 +2741,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     coldOpenHookHardOpts,
     coldCloseHookHardOpts,
     hookHardMidHookOpts,
+    hookHardColdOpenOpts,
+    hookHardColdCloseOpts,
+    hookHardDetailHookOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -3597,6 +3679,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateHookHardMidHook(
         sections.hookHardMidHook,
         (hookHardMidHookOpts ?? {}) as HookHardMidHookOptions,
+      ),
+    );
+  }
+  if (sections.hookHardColdOpen !== undefined) {
+    run(
+      'hookHardColdOpen',
+      evaluateHookHardColdOpen(
+        sections.hookHardColdOpen,
+        (hookHardColdOpenOpts ?? {}) as HookHardColdOpenOptions,
+      ),
+    );
+  }
+  if (sections.hookHardColdClose !== undefined) {
+    run(
+      'hookHardColdClose',
+      evaluateHookHardColdClose(
+        sections.hookHardColdClose,
+        (hookHardColdCloseOpts ?? {}) as HookHardColdCloseOptions,
+      ),
+    );
+  }
+  if (sections.hookHardDetailHook !== undefined) {
+    run(
+      'hookHardDetailHook',
+      evaluateHookHardDetailHook(
+        sections.hookHardDetailHook,
+        (hookHardDetailHookOpts ?? {}) as HookHardDetailHookOptions,
       ),
     );
   }

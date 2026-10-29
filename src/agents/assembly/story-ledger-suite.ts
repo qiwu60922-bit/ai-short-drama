@@ -88,6 +88,8 @@
  *   · cliffVestLink · frequencyVestLink · vestMaskLink · personaFrequencyLink
  *   · cliffVestPeakBridge · frequencyVestPeakBridge · vestMaskPeakBridge · personaFrequencyPeakBridge
  *   · personaAbilityLink · cliffMotifLink · vestMotifLink · handoffMotifLink
+ *   · motifCliffPeakBridge · motifVestPeakBridge · motifHandoffPeakBridge · vestCliffPeakBridge
+ *   · motifAbilityLink · motifFrequencyLink · frequencyMotifLink · maskMotifLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -1340,6 +1342,46 @@ import {
   evaluateHandoffMotifLink,
   type HandoffMotifLinkReport,
 } from './handoff-motif-link-gate';
+import {
+  MotifCliffPeakBridgeLinkSchema,
+  evaluateMotifCliffPeakBridge,
+  type MotifCliffPeakBridgeReport,
+} from './motif-cliff-peak-bridge-gate';
+import {
+  MotifVestPeakBridgeLinkSchema,
+  evaluateMotifVestPeakBridge,
+  type MotifVestPeakBridgeReport,
+} from './motif-vest-peak-bridge-gate';
+import {
+  MotifHandoffPeakBridgeLinkSchema,
+  evaluateMotifHandoffPeakBridge,
+  type MotifHandoffPeakBridgeReport,
+} from './motif-handoff-peak-bridge-gate';
+import {
+  VestCliffPeakBridgeLinkSchema,
+  evaluateVestCliffPeakBridge,
+  type VestCliffPeakBridgeReport,
+} from './vest-cliff-peak-bridge-gate';
+import {
+  MotifAbilityLinkEntrySchema,
+  evaluateMotifAbilityLink,
+  type MotifAbilityLinkReport,
+} from './motif-ability-link-gate';
+import {
+  MotifFrequencyLinkEntrySchema,
+  evaluateMotifFrequencyLink,
+  type MotifFrequencyLinkReport,
+} from './motif-frequency-link-gate';
+import {
+  FrequencyMotifLinkEntrySchema,
+  evaluateFrequencyMotifLink,
+  type FrequencyMotifLinkReport,
+} from './frequency-motif-link-gate';
+import {
+  MaskMotifLinkEntrySchema,
+  evaluateMaskMotifLink,
+  type MaskMotifLinkReport,
+} from './mask-motif-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -1582,6 +1624,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'cliffMotifLink',
   'vestMotifLink',
   'handoffMotifLink',
+  'motifCliffPeakBridge',
+  'motifVestPeakBridge',
+  'motifHandoffPeakBridge',
+  'vestCliffPeakBridge',
+  'motifAbilityLink',
+  'motifFrequencyLink',
+  'frequencyMotifLink',
+  'maskMotifLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -3171,6 +3221,66 @@ const HandoffMotifSectionSchema = z.object({
   links: z.array(HandoffMotifLinkEntrySchema),
 });
 
+const MotifCliffPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifCliffPeakBridgeLinkSchema),
+});
+
+const MotifVestPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  vests: z.array(IdentityVestEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifVestPeakBridgeLinkSchema),
+});
+
+const MotifHandoffPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  handoffs: z.array(MotifHandoffEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifHandoffPeakBridgeLinkSchema),
+});
+
+const VestCliffPeakBridgeSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(VestCliffPeakBridgeLinkSchema),
+});
+
+const MotifAbilitySectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  links: z.array(MotifAbilityLinkEntrySchema),
+});
+
+const MotifFrequencySectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  links: z.array(MotifFrequencyLinkEntrySchema),
+});
+
+const FrequencyMotifSectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(FrequencyMotifLinkEntrySchema),
+});
+
+const MaskMotifSectionSchema = z.object({
+  masks: z.array(PersonaMaskEntrySchema),
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(MaskMotifLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -3413,6 +3523,14 @@ export const StoryLedgerSuiteSchema = z
     cliffMotifLink: CliffMotifSectionSchema.optional(),
     vestMotifLink: VestMotifSectionSchema.optional(),
     handoffMotifLink: HandoffMotifSectionSchema.optional(),
+    motifCliffPeakBridge: MotifCliffPeakBridgeSectionSchema.optional(),
+    motifVestPeakBridge: MotifVestPeakBridgeSectionSchema.optional(),
+    motifHandoffPeakBridge: MotifHandoffPeakBridgeSectionSchema.optional(),
+    vestCliffPeakBridge: VestCliffPeakBridgeSectionSchema.optional(),
+    motifAbilityLink: MotifAbilitySectionSchema.optional(),
+    motifFrequencyLink: MotifFrequencySectionSchema.optional(),
+    frequencyMotifLink: FrequencyMotifSectionSchema.optional(),
+    maskMotifLink: MaskMotifSectionSchema.optional(),
   })
   .strict();
 
@@ -3656,7 +3774,15 @@ export type StoryLedgerChildReport =
   | PersonaAbilityLinkReport
   | CliffMotifLinkReport
   | VestMotifLinkReport
-  | HandoffMotifLinkReport;
+  | HandoffMotifLinkReport
+  | MotifCliffPeakBridgeReport
+  | MotifVestPeakBridgeReport
+  | MotifHandoffPeakBridgeReport
+  | VestCliffPeakBridgeReport
+  | MotifAbilityLinkReport
+  | MotifFrequencyLinkReport
+  | FrequencyMotifLinkReport
+  | MaskMotifLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -4172,6 +4298,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateVestMotifLink({ series, latestEp, ...(section as object) }),
   handoffMotifLink: (series, latestEp, section) =>
     evaluateHandoffMotifLink({ series, latestEp, ...(section as object) }),
+  motifCliffPeakBridge: (series, latestEp, section) =>
+    evaluateMotifCliffPeakBridge({ series, latestEp, ...(section as object) }),
+  motifVestPeakBridge: (series, latestEp, section) =>
+    evaluateMotifVestPeakBridge({ series, latestEp, ...(section as object) }),
+  motifHandoffPeakBridge: (series, latestEp, section) =>
+    evaluateMotifHandoffPeakBridge({ series, latestEp, ...(section as object) }),
+  vestCliffPeakBridge: (series, latestEp, section) =>
+    evaluateVestCliffPeakBridge({ series, latestEp, ...(section as object) }),
+  motifAbilityLink: (series, latestEp, section) =>
+    evaluateMotifAbilityLink({ series, latestEp, ...(section as object) }),
+  motifFrequencyLink: (series, latestEp, section) =>
+    evaluateMotifFrequencyLink({ series, latestEp, ...(section as object) }),
+  frequencyMotifLink: (series, latestEp, section) =>
+    evaluateFrequencyMotifLink({ series, latestEp, ...(section as object) }),
+  maskMotifLink: (series, latestEp, section) =>
+    evaluateMaskMotifLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
