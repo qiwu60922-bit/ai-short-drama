@@ -154,6 +154,9 @@
  *   · flashRhythmPeakBridge · snapRhythmPeakBridge · turnRhythmPeakBridge · twistRhythmPeakBridge
  *   · qualityShardLink · qualityGleamLink · qualityMistLink · qualityLumenLink
  *
+ *   · stingRhythmPeakBridge · punchRhythmPeakBridge · slashRhythmPeakBridge · crackRhythmPeakBridge
+ *   · qualityBeamLink · qualityRayLink · qualityGlowLink · qualitySheenLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -2805,6 +2808,59 @@ import {
   type QualityLumenLinkReport,
 } from './quality-lumen-link-gate';
 
+import {
+  StingRhythmPeakBridgeLinkSchema,
+  StingRhythmPeakStingEntrySchema,
+  StingRhythmPeakRhythmEntrySchema,
+  evaluateStingRhythmPeakBridge,
+  type StingRhythmPeakBridgeReport,
+} from './sting-rhythm-peak-bridge-gate';
+import {
+  PunchRhythmPeakBridgeLinkSchema,
+  PunchRhythmPeakPunchEntrySchema,
+  PunchRhythmPeakRhythmEntrySchema,
+  evaluatePunchRhythmPeakBridge,
+  type PunchRhythmPeakBridgeReport,
+} from './punch-rhythm-peak-bridge-gate';
+import {
+  SlashRhythmPeakBridgeLinkSchema,
+  SlashRhythmPeakSlashEntrySchema,
+  SlashRhythmPeakRhythmEntrySchema,
+  evaluateSlashRhythmPeakBridge,
+  type SlashRhythmPeakBridgeReport,
+} from './slash-rhythm-peak-bridge-gate';
+import {
+  CrackRhythmPeakBridgeLinkSchema,
+  CrackRhythmPeakCrackEntrySchema,
+  CrackRhythmPeakRhythmEntrySchema,
+  evaluateCrackRhythmPeakBridge,
+  type CrackRhythmPeakBridgeReport,
+} from './crack-rhythm-peak-bridge-gate';
+import {
+  QualityBeamLinkEntrySchema,
+  QualityBeamEntrySchema,
+  evaluateQualityBeamLink,
+  type QualityBeamLinkReport,
+} from './quality-beam-link-gate';
+import {
+  QualityRayLinkEntrySchema,
+  QualityRayEntrySchema,
+  evaluateQualityRayLink,
+  type QualityRayLinkReport,
+} from './quality-ray-link-gate';
+import {
+  QualityGlowLinkEntrySchema,
+  QualityGlowEntrySchema,
+  evaluateQualityGlowLink,
+  type QualityGlowLinkReport,
+} from './quality-glow-link-gate';
+import {
+  QualitySheenLinkEntrySchema,
+  QualitySheenEntrySchema,
+  evaluateQualitySheenLink,
+  type QualitySheenLinkReport,
+} from './quality-sheen-link-gate';
+
 
 
 
@@ -3308,6 +3364,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityGleamLink',
   'qualityMistLink',
   'qualityLumenLink',
+  'stingRhythmPeakBridge',
+  'punchRhythmPeakBridge',
+  'slashRhythmPeakBridge',
+  'crackRhythmPeakBridge',
+  'qualityBeamLink',
+  'qualityRayLink',
+  'qualityGlowLink',
+  'qualitySheenLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -6608,6 +6672,58 @@ const QualityLumenSectionSchemaB158 = z.object({
   links: z.array(QualityLumenLinkEntrySchema),
 });
 
+const StingRhythmPeakBridgeSectionSchema = z.object({
+  stings: z.array(StingRhythmPeakStingEntrySchema),
+  rhythms: z.array(StingRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(StingRhythmPeakBridgeLinkSchema),
+});
+
+const PunchRhythmPeakBridgeSectionSchema = z.object({
+  punches: z.array(PunchRhythmPeakPunchEntrySchema),
+  rhythms: z.array(PunchRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PunchRhythmPeakBridgeLinkSchema),
+});
+
+const SlashRhythmPeakBridgeSectionSchema = z.object({
+  slashes: z.array(SlashRhythmPeakSlashEntrySchema),
+  rhythms: z.array(SlashRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SlashRhythmPeakBridgeLinkSchema),
+});
+
+const CrackRhythmPeakBridgeSectionSchema = z.object({
+  cracks: z.array(CrackRhythmPeakCrackEntrySchema),
+  rhythms: z.array(CrackRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CrackRhythmPeakBridgeLinkSchema),
+});
+
+const QualityBeamSectionSchemaB159 = z.object({
+  minBeamIntense: z.number().int().min(1).max(5).optional(),
+  beams: z.array(QualityBeamEntrySchema),
+  links: z.array(QualityBeamLinkEntrySchema),
+});
+
+const QualityRaySectionSchemaB159 = z.object({
+  minRayIntense: z.number().int().min(1).max(5).optional(),
+  rays: z.array(QualityRayEntrySchema),
+  links: z.array(QualityRayLinkEntrySchema),
+});
+
+const QualityGlowSectionSchemaB159 = z.object({
+  minGlowIntense: z.number().int().min(1).max(5).optional(),
+  glows: z.array(QualityGlowEntrySchema),
+  links: z.array(QualityGlowLinkEntrySchema),
+});
+
+const QualitySheenSectionSchemaB159 = z.object({
+  minSheenIntense: z.number().int().min(1).max(5).optional(),
+  sheens: z.array(QualitySheenEntrySchema),
+  links: z.array(QualitySheenLinkEntrySchema),
+});
+
 
 
 
@@ -7110,6 +7226,14 @@ export const StoryLedgerSuiteSchema = z
     qualityGleamLink: QualityGleamSectionSchemaB158.optional(),
     qualityMistLink: QualityMistSectionSchemaB158.optional(),
     qualityLumenLink: QualityLumenSectionSchemaB158.optional(),
+    stingRhythmPeakBridge: StingRhythmPeakBridgeSectionSchema.optional(),
+    punchRhythmPeakBridge: PunchRhythmPeakBridgeSectionSchema.optional(),
+    slashRhythmPeakBridge: SlashRhythmPeakBridgeSectionSchema.optional(),
+    crackRhythmPeakBridge: CrackRhythmPeakBridgeSectionSchema.optional(),
+    qualityBeamLink: QualityBeamSectionSchemaB159.optional(),
+    qualityRayLink: QualityRaySectionSchemaB159.optional(),
+    qualityGlowLink: QualityGlowSectionSchemaB159.optional(),
+    qualitySheenLink: QualitySheenSectionSchemaB159.optional(),
   })
   .strict();
 
@@ -7601,7 +7725,15 @@ export type StoryLedgerChildReport =
   | QualityShardLinkReport
   | QualityGleamLinkReport
   | QualityMistLinkReport
-  | QualityLumenLinkReport;
+  | QualityLumenLinkReport
+  | StingRhythmPeakBridgeReport
+  | PunchRhythmPeakBridgeReport
+  | SlashRhythmPeakBridgeReport
+  | CrackRhythmPeakBridgeReport
+  | QualityBeamLinkReport
+  | QualityRayLinkReport
+  | QualityGlowLinkReport
+  | QualitySheenLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -8614,6 +8746,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityMistLink({ series, latestEp, ...(section as object) }),
   qualityLumenLink: (series, latestEp, section) =>
     evaluateQualityLumenLink({ series, latestEp, ...(section as object) }),
+  stingRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateStingRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  punchRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePunchRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  slashRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSlashRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  crackRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateCrackRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityBeamLink: (series, latestEp, section) =>
+    evaluateQualityBeamLink({ series, latestEp, ...(section as object) }),
+  qualityRayLink: (series, latestEp, section) =>
+    evaluateQualityRayLink({ series, latestEp, ...(section as object) }),
+  qualityGlowLink: (series, latestEp, section) =>
+    evaluateQualityGlowLink({ series, latestEp, ...(section as object) }),
+  qualitySheenLink: (series, latestEp, section) =>
+    evaluateQualitySheenLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
