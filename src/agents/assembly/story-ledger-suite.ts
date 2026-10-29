@@ -239,6 +239,8 @@
  *   · qualityThiadiazoleLink · qualityTriazineLink · qualityPurineLink · qualityPteridineLink
  *   · hiccupRhythmPeakBridge · gulpRhythmPeakBridge · slurpRhythmPeakBridge · sipRhythmPeakBridge
  *   · qualityQuinolineLink · qualityIsoquinolineLink · qualityIndoleLink · qualityCarbazoleLink
+ *   · yawnRhythmPeakBridge · stretchRhythmPeakBridge · blinkRhythmPeakBridge · shrugRhythmPeakBridge
+ *   · qualityAcridineLink · qualityPhenazineLink · qualityPhenanthrolineLink · qualityBenzofuranLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4534,6 +4536,59 @@ import {
   type QualityCarbazoleLinkReport,
 } from './quality-carbazole-link-gate';
 
+import {
+  YawnRhythmPeakBridgeLinkSchema,
+  YawnRhythmPeakYawnEntrySchema,
+  YawnRhythmPeakRhythmEntrySchema,
+  evaluateYawnRhythmPeakBridge,
+  type YawnRhythmPeakBridgeReport,
+} from './yawn-rhythm-peak-bridge-gate';
+import {
+  StretchRhythmPeakBridgeLinkSchema,
+  StretchRhythmPeakStretchEntrySchema,
+  StretchRhythmPeakRhythmEntrySchema,
+  evaluateStretchRhythmPeakBridge,
+  type StretchRhythmPeakBridgeReport,
+} from './stretch-rhythm-peak-bridge-gate';
+import {
+  BlinkRhythmPeakBridgeLinkSchema,
+  BlinkRhythmPeakBlinkEntrySchema,
+  BlinkRhythmPeakRhythmEntrySchema,
+  evaluateBlinkRhythmPeakBridge,
+  type BlinkRhythmPeakBridgeReport,
+} from './blink-rhythm-peak-bridge-gate';
+import {
+  ShrugRhythmPeakBridgeLinkSchema,
+  ShrugRhythmPeakShrugEntrySchema,
+  ShrugRhythmPeakRhythmEntrySchema,
+  evaluateShrugRhythmPeakBridge,
+  type ShrugRhythmPeakBridgeReport,
+} from './shrug-rhythm-peak-bridge-gate';
+import {
+  QualityAcridineLinkEntrySchema,
+  QualityAcridineEntrySchema,
+  evaluateQualityAcridineLink,
+  type QualityAcridineLinkReport,
+} from './quality-acridine-link-gate';
+import {
+  QualityPhenazineLinkEntrySchema,
+  QualityPhenazineEntrySchema,
+  evaluateQualityPhenazineLink,
+  type QualityPhenazineLinkReport,
+} from './quality-phenazine-link-gate';
+import {
+  QualityPhenanthrolineLinkEntrySchema,
+  QualityPhenanthrolineEntrySchema,
+  evaluateQualityPhenanthrolineLink,
+  type QualityPhenanthrolineLinkReport,
+} from './quality-phenanthroline-link-gate';
+import {
+  QualityBenzofuranLinkEntrySchema,
+  QualityBenzofuranEntrySchema,
+  evaluateQualityBenzofuranLink,
+  type QualityBenzofuranLinkReport,
+} from './quality-benzofuran-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -5271,6 +5326,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityIsoquinolineLink',
   'qualityIndoleLink',
   'qualityCarbazoleLink',
+  'yawnRhythmPeakBridge',
+  'stretchRhythmPeakBridge',
+  'blinkRhythmPeakBridge',
+  'shrugRhythmPeakBridge',
+  'qualityAcridineLink',
+  'qualityPhenazineLink',
+  'qualityPhenanthrolineLink',
+  'qualityBenzofuranLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -10186,6 +10249,58 @@ const QualityCarbazoleSectionSchemaB189 = z.object({
   links: z.array(QualityCarbazoleLinkEntrySchema),
 });
 
+const YawnRhythmPeakBridgeSectionSchema = z.object({
+  yawns: z.array(YawnRhythmPeakYawnEntrySchema),
+  rhythms: z.array(YawnRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(YawnRhythmPeakBridgeLinkSchema),
+});
+
+const StretchRhythmPeakBridgeSectionSchema = z.object({
+  stretches: z.array(StretchRhythmPeakStretchEntrySchema),
+  rhythms: z.array(StretchRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(StretchRhythmPeakBridgeLinkSchema),
+});
+
+const BlinkRhythmPeakBridgeSectionSchema = z.object({
+  blinks: z.array(BlinkRhythmPeakBlinkEntrySchema),
+  rhythms: z.array(BlinkRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BlinkRhythmPeakBridgeLinkSchema),
+});
+
+const ShrugRhythmPeakBridgeSectionSchema = z.object({
+  shrugs: z.array(ShrugRhythmPeakShrugEntrySchema),
+  rhythms: z.array(ShrugRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ShrugRhythmPeakBridgeLinkSchema),
+});
+
+const QualityAcridineSectionSchemaB190 = z.object({
+  minAcridineIntense: z.number().int().min(1).max(5).optional(),
+  acridines: z.array(QualityAcridineEntrySchema),
+  links: z.array(QualityAcridineLinkEntrySchema),
+});
+
+const QualityPhenazineSectionSchemaB190 = z.object({
+  minPhenazineIntense: z.number().int().min(1).max(5).optional(),
+  phenazines: z.array(QualityPhenazineEntrySchema),
+  links: z.array(QualityPhenazineLinkEntrySchema),
+});
+
+const QualityPhenanthrolineSectionSchemaB190 = z.object({
+  minPhenanthrolineIntense: z.number().int().min(1).max(5).optional(),
+  phenanthrolines: z.array(QualityPhenanthrolineEntrySchema),
+  links: z.array(QualityPhenanthrolineLinkEntrySchema),
+});
+
+const QualityBenzofuranSectionSchemaB190 = z.object({
+  minBenzofuranIntense: z.number().int().min(1).max(5).optional(),
+  benzofurans: z.array(QualityBenzofuranEntrySchema),
+  links: z.array(QualityBenzofuranLinkEntrySchema),
+});
+
 
 
 
@@ -10937,6 +11052,14 @@ export const StoryLedgerSuiteSchema = z
     qualityIsoquinolineLink: QualityIsoquinolineSectionSchemaB189.optional(),
     qualityIndoleLink: QualityIndoleSectionSchemaB189.optional(),
     qualityCarbazoleLink: QualityCarbazoleSectionSchemaB189.optional(),
+    yawnRhythmPeakBridge: YawnRhythmPeakBridgeSectionSchema.optional(),
+    stretchRhythmPeakBridge: StretchRhythmPeakBridgeSectionSchema.optional(),
+    blinkRhythmPeakBridge: BlinkRhythmPeakBridgeSectionSchema.optional(),
+    shrugRhythmPeakBridge: ShrugRhythmPeakBridgeSectionSchema.optional(),
+    qualityAcridineLink: QualityAcridineSectionSchemaB190.optional(),
+    qualityPhenazineLink: QualityPhenazineSectionSchemaB190.optional(),
+    qualityPhenanthrolineLink: QualityPhenanthrolineSectionSchemaB190.optional(),
+    qualityBenzofuranLink: QualityBenzofuranSectionSchemaB190.optional(),
   })
   .strict();
 
@@ -11676,7 +11799,15 @@ export type StoryLedgerChildReport =
   | QualityQuinolineLinkReport
   | QualityIsoquinolineLinkReport
   | QualityIndoleLinkReport
-  | QualityCarbazoleLinkReport;
+  | QualityCarbazoleLinkReport
+  | YawnRhythmPeakBridgeReport
+  | StretchRhythmPeakBridgeReport
+  | BlinkRhythmPeakBridgeReport
+  | ShrugRhythmPeakBridgeReport
+  | QualityAcridineLinkReport
+  | QualityPhenazineLinkReport
+  | QualityPhenanthrolineLinkReport
+  | QualityBenzofuranLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -13185,6 +13316,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityIndoleLink({ series, latestEp, ...(section as object) }),
   qualityCarbazoleLink: (series, latestEp, section) =>
     evaluateQualityCarbazoleLink({ series, latestEp, ...(section as object) }),
+  yawnRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateYawnRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  stretchRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateStretchRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  blinkRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBlinkRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  shrugRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateShrugRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityAcridineLink: (series, latestEp, section) =>
+    evaluateQualityAcridineLink({ series, latestEp, ...(section as object) }),
+  qualityPhenazineLink: (series, latestEp, section) =>
+    evaluateQualityPhenazineLink({ series, latestEp, ...(section as object) }),
+  qualityPhenanthrolineLink: (series, latestEp, section) =>
+    evaluateQualityPhenanthrolineLink({ series, latestEp, ...(section as object) }),
+  qualityBenzofuranLink: (series, latestEp, section) =>
+    evaluateQualityBenzofuranLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
