@@ -119,6 +119,8 @@
  *   · coldOpenMaskLink · stageGoalMaskLink · revealBondLink · vestColdOpenLink
  *   · revealColdOpenPeakBridge · qualityColdOpenPeakBridge · rhythmMaskPeakBridge · ensembleColdOpenPeakBridge
  *   · revealColdOpenLink · qualityColdOpenLink · rhythmBondLink · ensembleMaskLink
+ *   · foreshadowColdOpenPeakBridge · abilityColdOpenPeakBridge · motifColdOpenPeakBridge · countdownColdOpenPeakBridge
+ *   · foreshadowColdOpenLink · abilityColdOpenLink · motifColdOpenLink · qualityBondLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -2012,6 +2014,54 @@ import {
   type EnsembleMaskLinkReport,
 } from './ensemble-mask-link-gate';
 
+import {
+  ForeshadowColdOpenPeakBridgeLinkSchema,
+  ForeshadowColdOpenPeakColdOpenEntrySchema,
+  evaluateForeshadowColdOpenPeakBridge,
+  type ForeshadowColdOpenPeakBridgeReport,
+} from './foreshadow-cold-open-peak-bridge-gate';
+import {
+  AbilityColdOpenPeakBridgeLinkSchema,
+  AbilityColdOpenPeakColdOpenEntrySchema,
+  evaluateAbilityColdOpenPeakBridge,
+  type AbilityColdOpenPeakBridgeReport,
+} from './ability-cold-open-peak-bridge-gate';
+import {
+  MotifColdOpenPeakBridgeLinkSchema,
+  MotifColdOpenPeakColdOpenEntrySchema,
+  evaluateMotifColdOpenPeakBridge,
+  type MotifColdOpenPeakBridgeReport,
+} from './motif-cold-open-peak-bridge-gate';
+import {
+  CountdownColdOpenPeakBridgeLinkSchema,
+  CountdownColdOpenPeakColdOpenEntrySchema,
+  evaluateCountdownColdOpenPeakBridge,
+  type CountdownColdOpenPeakBridgeReport,
+} from './countdown-cold-open-peak-bridge-gate';
+import {
+  ForeshadowColdOpenLinkEntrySchema,
+  ForeshadowColdOpenColdOpenEntrySchema,
+  evaluateForeshadowColdOpenLink,
+  type ForeshadowColdOpenLinkReport,
+} from './foreshadow-cold-open-link-gate';
+import {
+  AbilityColdOpenLinkEntrySchema,
+  AbilityColdOpenColdOpenEntrySchema,
+  evaluateAbilityColdOpenLink,
+  type AbilityColdOpenLinkReport,
+} from './ability-cold-open-link-gate';
+import {
+  MotifColdOpenLinkEntrySchema,
+  MotifColdOpenColdOpenEntrySchema,
+  evaluateMotifColdOpenLink,
+  type MotifColdOpenLinkReport,
+} from './motif-cold-open-link-gate';
+import {
+  QualityBondLinkEntrySchema,
+  evaluateQualityBondLink,
+  type QualityBondLinkReport,
+} from './quality-bond-link-gate';
+
 
 
 
@@ -2377,6 +2427,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityColdOpenLink',
   'rhythmBondLink',
   'ensembleMaskLink',
+  'foreshadowColdOpenPeakBridge',
+  'abilityColdOpenPeakBridge',
+  'motifColdOpenPeakBridge',
+  'countdownColdOpenPeakBridge',
+  'foreshadowColdOpenLink',
+  'abilityColdOpenLink',
+  'motifColdOpenLink',
+  'qualityBondLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -4807,6 +4865,62 @@ const EnsembleMaskSectionSchema = z.object({
   links: z.array(EnsembleMaskLinkEntrySchema),
 });
 
+const ForeshadowColdOpenPeakBridgeSectionSchema = z.object({
+  items: z.array(ForeshadowItemSchema),
+  coldOpens: z.array(ForeshadowColdOpenPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ForeshadowColdOpenPeakBridgeLinkSchema),
+});
+
+const AbilityColdOpenPeakBridgeSectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  coldOpens: z.array(AbilityColdOpenPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AbilityColdOpenPeakBridgeLinkSchema),
+});
+
+const MotifColdOpenPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  coldOpens: z.array(MotifColdOpenPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifColdOpenPeakBridgeLinkSchema),
+});
+
+const CountdownColdOpenPeakBridgeSectionSchema = z.object({
+  countdowns: z.array(StageCountdownSchema),
+  coldOpens: z.array(CountdownColdOpenPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CountdownColdOpenPeakBridgeLinkSchema),
+});
+
+const ForeshadowColdOpenSectionSchema = z.object({
+  items: z.array(ForeshadowItemSchema),
+  coldOpens: z.array(ForeshadowColdOpenColdOpenEntrySchema),
+  links: z.array(ForeshadowColdOpenLinkEntrySchema),
+});
+
+const AbilityColdOpenSectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  coldOpens: z.array(AbilityColdOpenColdOpenEntrySchema),
+  links: z.array(AbilityColdOpenLinkEntrySchema),
+});
+
+const MotifColdOpenSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  coldOpens: z.array(MotifColdOpenColdOpenEntrySchema),
+  links: z.array(MotifColdOpenLinkEntrySchema),
+});
+
+const QualityBondSectionSchema = z.object({
+  minTerminalIntense: z.number().int().min(1).max(5).optional(),
+  bonds: z.array(BondContractEntrySchema),
+  links: z.array(QualityBondLinkEntrySchema),
+});
+
 
 
 
@@ -5173,6 +5287,14 @@ export const StoryLedgerSuiteSchema = z
     qualityColdOpenLink: QualityColdOpenSectionSchema.optional(),
     rhythmBondLink: RhythmBondSectionSchema.optional(),
     ensembleMaskLink: EnsembleMaskSectionSchema.optional(),
+    foreshadowColdOpenPeakBridge: ForeshadowColdOpenPeakBridgeSectionSchema.optional(),
+    abilityColdOpenPeakBridge: AbilityColdOpenPeakBridgeSectionSchema.optional(),
+    motifColdOpenPeakBridge: MotifColdOpenPeakBridgeSectionSchema.optional(),
+    countdownColdOpenPeakBridge: CountdownColdOpenPeakBridgeSectionSchema.optional(),
+    foreshadowColdOpenLink: ForeshadowColdOpenSectionSchema.optional(),
+    abilityColdOpenLink: AbilityColdOpenSectionSchema.optional(),
+    motifColdOpenLink: MotifColdOpenSectionSchema.optional(),
+    qualityBondLink: QualityBondSectionSchema.optional(),
   })
   .strict();
 
@@ -5536,7 +5658,15 @@ export type StoryLedgerChildReport =
   | RevealColdOpenLinkReport
   | QualityColdOpenLinkReport
   | RhythmBondLinkReport
-  | EnsembleMaskLinkReport;
+  | EnsembleMaskLinkReport
+  | ForeshadowColdOpenPeakBridgeReport
+  | AbilityColdOpenPeakBridgeReport
+  | MotifColdOpenPeakBridgeReport
+  | CountdownColdOpenPeakBridgeReport
+  | ForeshadowColdOpenLinkReport
+  | AbilityColdOpenLinkReport
+  | MotifColdOpenLinkReport
+  | QualityBondLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -6292,6 +6422,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateRhythmBondLink({ series, latestEp, ...(section as object) }),
   ensembleMaskLink: (series, latestEp, section) =>
     evaluateEnsembleMaskLink({ series, latestEp, ...(section as object) }),
+  foreshadowColdOpenPeakBridge: (series, latestEp, section) =>
+    evaluateForeshadowColdOpenPeakBridge({ series, latestEp, ...(section as object) }),
+  abilityColdOpenPeakBridge: (series, latestEp, section) =>
+    evaluateAbilityColdOpenPeakBridge({ series, latestEp, ...(section as object) }),
+  motifColdOpenPeakBridge: (series, latestEp, section) =>
+    evaluateMotifColdOpenPeakBridge({ series, latestEp, ...(section as object) }),
+  countdownColdOpenPeakBridge: (series, latestEp, section) =>
+    evaluateCountdownColdOpenPeakBridge({ series, latestEp, ...(section as object) }),
+  foreshadowColdOpenLink: (series, latestEp, section) =>
+    evaluateForeshadowColdOpenLink({ series, latestEp, ...(section as object) }),
+  abilityColdOpenLink: (series, latestEp, section) =>
+    evaluateAbilityColdOpenLink({ series, latestEp, ...(section as object) }),
+  motifColdOpenLink: (series, latestEp, section) =>
+    evaluateMotifColdOpenLink({ series, latestEp, ...(section as object) }),
+  qualityBondLink: (series, latestEp, section) =>
+    evaluateQualityBondLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {

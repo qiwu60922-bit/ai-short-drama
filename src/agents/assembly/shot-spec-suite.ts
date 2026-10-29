@@ -54,6 +54,7 @@
  *   · hookHardWindowTailCap · hookHardFaceTailCap · hookHardColdFaceCap
  *   · hookHardMidFaceCap · hookHardSetupFaceCap · hookHardReactionFaceCap
  *   · hookHardMidTailCap · hookHardSetupTailCap · hookHardReactionTailCap
+ *   · hookHardMidColdCap · hookHardSetupColdCap · hookHardReactionColdCap
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -836,6 +837,22 @@ import {
   type HookHardReactionTailCapReport,
 } from './hook-hard-reaction-tail-cap-gate';
 
+import {
+  evaluateHookHardMidColdCap,
+  type HookHardMidColdCapOptions,
+  type HookHardMidColdCapReport,
+} from './hook-hard-mid-cold-cap-gate';
+import {
+  evaluateHookHardSetupColdCap,
+  type HookHardSetupColdCapOptions,
+  type HookHardSetupColdCapReport,
+} from './hook-hard-setup-cold-cap-gate';
+import {
+  evaluateHookHardReactionColdCap,
+  type HookHardReactionColdCapOptions,
+  type HookHardReactionColdCapReport,
+} from './hook-hard-reaction-cold-cap-gate';
+
 
 
 
@@ -990,6 +1007,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'hookHardMidTailCap',
   'hookHardSetupTailCap',
   'hookHardReactionTailCap',
+  'hookHardMidColdCap',
+  'hookHardSetupColdCap',
+  'hookHardReactionColdCap',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -3285,6 +3305,63 @@ const HookHardReactionTailCapOptsSchema = z
   })
   .strict();
 
+const HookHardMidColdCapOptsSchema = z
+  .object({
+    maxMidSetupRatio: z.number().positive().optional(),
+    coldOpenWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const HookHardSetupColdCapOptsSchema = z
+  .object({
+    maxMidSetupRatio: z.number().positive().optional(),
+    coldOpenWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const HookHardReactionColdCapOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    coldOpenWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+
 
 
 
@@ -3443,6 +3520,9 @@ export const ShotSpecSuiteSchema = z
     hookHardMidTailCap: ShotSpecDocSchema.optional(),
     hookHardSetupTailCap: ShotSpecDocSchema.optional(),
     hookHardReactionTailCap: ShotSpecDocSchema.optional(),
+    hookHardMidColdCap: ShotSpecDocSchema.optional(),
+    hookHardSetupColdCap: ShotSpecDocSchema.optional(),
+    hookHardReactionColdCap: ShotSpecDocSchema.optional(),
 hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -3590,6 +3670,9 @@ hookOpts: HookOptsSchema.optional(),
     hookHardMidTailCapOpts: HookHardMidTailCapOptsSchema.optional(),
     hookHardSetupTailCapOpts: HookHardSetupTailCapOptsSchema.optional(),
     hookHardReactionTailCapOpts: HookHardReactionTailCapOptsSchema.optional(),
+    hookHardMidColdCapOpts: HookHardMidColdCapOptsSchema.optional(),
+    hookHardSetupColdCapOpts: HookHardSetupColdCapOptsSchema.optional(),
+    hookHardReactionColdCapOpts: HookHardReactionColdCapOptsSchema.optional(),
   })
   .strict();
 
@@ -3742,7 +3825,10 @@ export type ShotSpecChildReport =
   | HookHardReactionFaceCapReport
   | HookHardMidTailCapReport
   | HookHardSetupTailCapReport
-  | HookHardReactionTailCapReport;
+  | HookHardReactionTailCapReport
+  | HookHardMidColdCapReport
+  | HookHardSetupColdCapReport
+  | HookHardReactionColdCapReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -3957,6 +4043,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     hookHardMidTailCapOpts,
     hookHardSetupTailCapOpts,
     hookHardReactionTailCapOpts,
+    hookHardMidColdCapOpts,
+    hookHardSetupColdCapOpts,
+    hookHardReactionColdCapOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -5308,6 +5397,34 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateHookHardReactionTailCap(
         sections.hookHardReactionTailCap,
         (hookHardReactionTailCapOpts ?? {}) as HookHardReactionTailCapOptions,
+      ),
+    );
+  }
+
+  if (sections.hookHardMidColdCap !== undefined) {
+    run(
+      'hookHardMidColdCap',
+      evaluateHookHardMidColdCap(
+        sections.hookHardMidColdCap,
+        (hookHardMidColdCapOpts ?? {}) as HookHardMidColdCapOptions,
+      ),
+    );
+  }
+  if (sections.hookHardSetupColdCap !== undefined) {
+    run(
+      'hookHardSetupColdCap',
+      evaluateHookHardSetupColdCap(
+        sections.hookHardSetupColdCap,
+        (hookHardSetupColdCapOpts ?? {}) as HookHardSetupColdCapOptions,
+      ),
+    );
+  }
+  if (sections.hookHardReactionColdCap !== undefined) {
+    run(
+      'hookHardReactionColdCap',
+      evaluateHookHardReactionColdCap(
+        sections.hookHardReactionColdCap,
+        (hookHardReactionColdCapOpts ?? {}) as HookHardReactionColdCapOptions,
       ),
     );
   }
