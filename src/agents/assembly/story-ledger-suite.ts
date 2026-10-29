@@ -127,6 +127,8 @@
  *   · foreshadowEnsembleLink · abilityEnsembleLink · motifCountdownLink · qualityEnsembleLink
  *   · foreshadowCountdownPeakBridge · abilityCountdownPeakBridge · motifEnsemblePeakBridge · bondCountdownPeakBridge
  *   · foreshadowCountdownLink · abilityCountdownLink · motifEnsembleLink · qualityCountdownLink
+ *   · foreshadowEnsemblePeakBridge · abilityEnsemblePeakBridge · bondEnsemblePeakBridge · qualityEnsemblePeakBridge
+ *   · qualityMotifLink · bondEnsembleLink · qualityAbilityLink · qualityVestLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -2197,6 +2199,47 @@ import {
   type QualityCountdownLinkReport,
 } from './quality-countdown-link-gate';
 
+import {
+  ForeshadowEnsemblePeakBridgeLinkSchema,
+  evaluateForeshadowEnsemblePeakBridge,
+  type ForeshadowEnsemblePeakBridgeReport,
+} from './foreshadow-ensemble-peak-bridge-gate';
+import {
+  AbilityEnsemblePeakBridgeLinkSchema,
+  evaluateAbilityEnsemblePeakBridge,
+  type AbilityEnsemblePeakBridgeReport,
+} from './ability-ensemble-peak-bridge-gate';
+import {
+  BondEnsemblePeakBridgeLinkSchema,
+  evaluateBondEnsemblePeakBridge,
+  type BondEnsemblePeakBridgeReport,
+} from './bond-ensemble-peak-bridge-gate';
+import {
+  QualityEnsemblePeakBridgeLinkSchema,
+  evaluateQualityEnsemblePeakBridge,
+  type QualityEnsemblePeakBridgeReport,
+} from './quality-ensemble-peak-bridge-gate';
+import {
+  QualityMotifLinkEntrySchema,
+  evaluateQualityMotifLink,
+  type QualityMotifLinkReport,
+} from './quality-motif-link-gate';
+import {
+  BondEnsembleLinkEntrySchema,
+  evaluateBondEnsembleLink,
+  type BondEnsembleLinkReport,
+} from './bond-ensemble-link-gate';
+import {
+  QualityAbilityLinkEntrySchema,
+  evaluateQualityAbilityLink,
+  type QualityAbilityLinkReport,
+} from './quality-ability-link-gate';
+import {
+  QualityVestLinkEntrySchema,
+  evaluateQualityVestLink,
+  type QualityVestLinkReport,
+} from './quality-vest-link-gate';
+
 
 
 
@@ -2597,6 +2640,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'abilityCountdownLink',
   'motifEnsembleLink',
   'qualityCountdownLink',
+  'foreshadowEnsemblePeakBridge',
+  'abilityEnsemblePeakBridge',
+  'bondEnsemblePeakBridge',
+  'qualityEnsemblePeakBridge',
+  'qualityMotifLink',
+  'bondEnsembleLink',
+  'qualityAbilityLink',
+  'qualityVestLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -5254,6 +5305,65 @@ const QualityCountdownSectionSchema = z.object({
   links: z.array(QualityCountdownLinkEntrySchema),
 });
 
+const ForeshadowEnsemblePeakBridgeSectionSchema = z.object({
+  items: z.array(ForeshadowItemSchema),
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ForeshadowEnsemblePeakBridgeLinkSchema),
+});
+
+const AbilityEnsemblePeakBridgeSectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AbilityEnsemblePeakBridgeLinkSchema),
+});
+
+const BondEnsemblePeakBridgeSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BondEnsemblePeakBridgeLinkSchema),
+});
+
+const QualityEnsemblePeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(QualityEnsemblePeakBridgeLinkSchema),
+});
+
+const QualityMotifSectionSchemaB147 = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(QualityMotifLinkEntrySchema),
+});
+
+const BondEnsembleSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  links: z.array(BondEnsembleLinkEntrySchema),
+});
+
+const QualityAbilitySectionSchema = z.object({
+  minUseIntense: z.number().int().min(1).max(5).optional(),
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  links: z.array(QualityAbilityLinkEntrySchema),
+});
+
+const QualityVestSectionSchema = z.object({
+  minDropIntense: z.number().int().min(1).max(5).optional(),
+  vests: z.array(IdentityVestEntrySchema),
+  links: z.array(QualityVestLinkEntrySchema),
+});
+
 
 
 
@@ -5654,6 +5764,14 @@ export const StoryLedgerSuiteSchema = z
     abilityCountdownLink: AbilityCountdownSectionSchema.optional(),
     motifEnsembleLink: MotifEnsembleSectionSchema.optional(),
     qualityCountdownLink: QualityCountdownSectionSchema.optional(),
+    foreshadowEnsemblePeakBridge: ForeshadowEnsemblePeakBridgeSectionSchema.optional(),
+    abilityEnsemblePeakBridge: AbilityEnsemblePeakBridgeSectionSchema.optional(),
+    bondEnsemblePeakBridge: BondEnsemblePeakBridgeSectionSchema.optional(),
+    qualityEnsemblePeakBridge: QualityEnsemblePeakBridgeSectionSchema.optional(),
+    qualityMotifLink: QualityMotifSectionSchemaB147.optional(),
+    bondEnsembleLink: BondEnsembleSectionSchema.optional(),
+    qualityAbilityLink: QualityAbilitySectionSchema.optional(),
+    qualityVestLink: QualityVestSectionSchema.optional(),
   })
   .strict();
 
@@ -6049,7 +6167,15 @@ export type StoryLedgerChildReport =
   | ForeshadowCountdownLinkReport
   | AbilityCountdownLinkReport
   | MotifEnsembleLinkReport
-  | QualityCountdownLinkReport;
+  | QualityCountdownLinkReport
+  | ForeshadowEnsemblePeakBridgeReport
+  | AbilityEnsemblePeakBridgeReport
+  | BondEnsemblePeakBridgeReport
+  | QualityEnsemblePeakBridgeReport
+  | QualityMotifLinkReport
+  | BondEnsembleLinkReport
+  | QualityAbilityLinkReport
+  | QualityVestLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -6869,6 +6995,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateMotifEnsembleLink({ series, latestEp, ...(section as object) }),
   qualityCountdownLink: (series, latestEp, section) =>
     evaluateQualityCountdownLink({ series, latestEp, ...(section as object) }),
+  foreshadowEnsemblePeakBridge: (series, latestEp, section) =>
+    evaluateForeshadowEnsemblePeakBridge({ series, latestEp, ...(section as object) }),
+  abilityEnsemblePeakBridge: (series, latestEp, section) =>
+    evaluateAbilityEnsemblePeakBridge({ series, latestEp, ...(section as object) }),
+  bondEnsemblePeakBridge: (series, latestEp, section) =>
+    evaluateBondEnsemblePeakBridge({ series, latestEp, ...(section as object) }),
+  qualityEnsemblePeakBridge: (series, latestEp, section) =>
+    evaluateQualityEnsemblePeakBridge({ series, latestEp, ...(section as object) }),
+  qualityMotifLink: (series, latestEp, section) =>
+    evaluateQualityMotifLink({ series, latestEp, ...(section as object) }),
+  bondEnsembleLink: (series, latestEp, section) =>
+    evaluateBondEnsembleLink({ series, latestEp, ...(section as object) }),
+  qualityAbilityLink: (series, latestEp, section) =>
+    evaluateQualityAbilityLink({ series, latestEp, ...(section as object) }),
+  qualityVestLink: (series, latestEp, section) =>
+    evaluateQualityVestLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
