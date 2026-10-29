@@ -70,6 +70,9 @@
  *   · abilityPersonaPeakBridge · vestPersonaPeakBridge · maskPersonaPeakBridge
  *   · amnesiaPersonaLink · motifPersonaLink · countdownPersonaLink · qualityPersonaLink
  *
+ *   · amnesiaPersonaPeakBridge · motifPersonaPeakBridge · countdownPersonaPeakBridge · qualityPersonaPeakBridge
+ *   · frequencyPersonaLink · handoffPersonaLink · cliffPersonaLink · bondPersonaLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -978,6 +981,48 @@ import {
   type QualityPersonaLinkReport,
 } from './quality-persona-link-gate';
 
+import {
+  AmnesiaPersonaPeakBridgeLinkSchema,
+  evaluateAmnesiaPersonaPeakBridge,
+  type AmnesiaPersonaPeakBridgeReport,
+} from './amnesia-persona-peak-bridge-gate';
+import {
+  MotifPersonaPeakBridgeLinkSchema,
+  evaluateMotifPersonaPeakBridge,
+  type MotifPersonaPeakBridgeReport,
+} from './motif-persona-peak-bridge-gate';
+import {
+  CountdownPersonaPeakBridgeLinkSchema,
+  evaluateCountdownPersonaPeakBridge,
+  type CountdownPersonaPeakBridgeReport,
+} from './countdown-persona-peak-bridge-gate';
+import {
+  QualityPersonaPeakBridgeLinkSchema,
+  evaluateQualityPersonaPeakBridge,
+  type QualityPersonaPeakBridgeReport,
+} from './quality-persona-peak-bridge-gate';
+import {
+  FrequencyPersonaLinkEntrySchema,
+  evaluateFrequencyPersonaLink,
+  type FrequencyPersonaLinkReport,
+} from './frequency-persona-link-gate';
+import {
+  HandoffPersonaLinkEntrySchema,
+  HandoffPersonaEntrySchema,
+  evaluateHandoffPersonaLink,
+  type HandoffPersonaLinkReport,
+} from './handoff-persona-link-gate';
+import {
+  CliffPersonaLinkEntrySchema,
+  evaluateCliffPersonaLink,
+  type CliffPersonaLinkReport,
+} from './cliff-persona-link-gate';
+import {
+  BondPersonaLinkEntrySchema,
+  evaluateBondPersonaLink,
+  type BondPersonaLinkReport,
+} from './bond-persona-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -1155,6 +1200,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'motifPersonaLink',
   'countdownPersonaLink',
   'qualityPersonaLink',
+  'amnesiaPersonaPeakBridge',
+  'motifPersonaPeakBridge',
+  'countdownPersonaPeakBridge',
+  'qualityPersonaPeakBridge',
+  'frequencyPersonaLink',
+  'handoffPersonaLink',
+  'cliffPersonaLink',
+  'bondPersonaLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -2309,6 +2362,59 @@ const QualityPersonaSectionSchema = z.object({
   links: z.array(QualityPersonaLinkEntrySchema),
 });
 
+const AmnesiaPersonaPeakBridgeSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AmnesiaPersonaPeakBridgeLinkSchema),
+});
+
+const MotifPersonaPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifPersonaPeakBridgeLinkSchema),
+});
+
+const CountdownPersonaPeakBridgeSectionSchema = z.object({
+  countdowns: z.array(StageCountdownSchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CountdownPersonaPeakBridgeLinkSchema),
+});
+
+const QualityPersonaPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(QualityPersonaPeakBridgeLinkSchema),
+});
+
+const FrequencyPersonaSectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  links: z.array(FrequencyPersonaLinkEntrySchema),
+});
+
+const HandoffPersonaSectionSchema = z.object({
+  handoffs: z.array(HandoffPersonaEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  links: z.array(HandoffPersonaLinkEntrySchema),
+});
+
+const CliffPersonaSectionSchema = z.object({
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  links: z.array(CliffPersonaLinkEntrySchema),
+});
+
+const BondPersonaSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  links: z.array(BondPersonaLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -2487,6 +2593,14 @@ export const StoryLedgerSuiteSchema = z
     motifPersonaLink: MotifPersonaSectionSchema.optional(),
     countdownPersonaLink: CountdownPersonaSectionSchema.optional(),
     qualityPersonaLink: QualityPersonaSectionSchema.optional(),
+    amnesiaPersonaPeakBridge: AmnesiaPersonaPeakBridgeSectionSchema.optional(),
+    motifPersonaPeakBridge: MotifPersonaPeakBridgeSectionSchema.optional(),
+    countdownPersonaPeakBridge: CountdownPersonaPeakBridgeSectionSchema.optional(),
+    qualityPersonaPeakBridge: QualityPersonaPeakBridgeSectionSchema.optional(),
+    frequencyPersonaLink: FrequencyPersonaSectionSchema.optional(),
+    handoffPersonaLink: HandoffPersonaSectionSchema.optional(),
+    cliffPersonaLink: CliffPersonaSectionSchema.optional(),
+    bondPersonaLink: BondPersonaSectionSchema.optional(),
   })
   .strict();
 
@@ -2666,7 +2780,15 @@ export type StoryLedgerChildReport =
   | AmnesiaPersonaLinkReport
   | MotifPersonaLinkReport
   | CountdownPersonaLinkReport
-  | QualityPersonaLinkReport;
+  | QualityPersonaLinkReport
+  | AmnesiaPersonaPeakBridgeReport
+  | MotifPersonaPeakBridgeReport
+  | CountdownPersonaPeakBridgeReport
+  | QualityPersonaPeakBridgeReport
+  | FrequencyPersonaLinkReport
+  | HandoffPersonaLinkReport
+  | CliffPersonaLinkReport
+  | BondPersonaLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -3054,6 +3176,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateCountdownPersonaLink({ series, latestEp, ...(section as object) }),
   qualityPersonaLink: (series, latestEp, section) =>
     evaluateQualityPersonaLink({ series, latestEp, ...(section as object) }),
+  amnesiaPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateAmnesiaPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  motifPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateMotifPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  countdownPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateCountdownPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateQualityPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  frequencyPersonaLink: (series, latestEp, section) =>
+    evaluateFrequencyPersonaLink({ series, latestEp, ...(section as object) }),
+  handoffPersonaLink: (series, latestEp, section) =>
+    evaluateHandoffPersonaLink({ series, latestEp, ...(section as object) }),
+  cliffPersonaLink: (series, latestEp, section) =>
+    evaluateCliffPersonaLink({ series, latestEp, ...(section as object) }),
+  bondPersonaLink: (series, latestEp, section) =>
+    evaluateBondPersonaLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
