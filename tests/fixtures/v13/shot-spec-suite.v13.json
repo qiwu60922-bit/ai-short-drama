@@ -4275,5 +4275,180 @@
       }
     ]
   },
-  "midHookHookWindowOpts": {}
+  "midHookHookWindowOpts": {},
+  "midHookMidTurn": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MTCO0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机开场",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MTCO1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-MTCO2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MTCO3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-MTCO4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-MTCO5",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-MTCO6",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "midHookMidTurnOpts": {},
+  "detailHookMidTurn": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "特写钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "特写钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-S6",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "detailHookMidTurnOpts": {
+    "requireDetailCu": true
+  },
+  "detailHookHookWindow": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "特写钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "特写钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-S6",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "detailHookHookWindowOpts": {
+    "requireDetailCu": true
+  }
 }

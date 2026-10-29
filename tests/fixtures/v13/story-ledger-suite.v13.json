@@ -14253,5 +14253,762 @@
         "handoffId": "H8-9-ha"
       }
     ]
+  },
+  "maskAbilityPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer-ma-mapb",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-ma-mapb",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-ma-mapb",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-ma-mapb",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-mbl-ma-mapb",
+        "wearer": "linyang",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mapb",
+        "abilityId": "seer-ma-mapb",
+        "maskId": "花心纨绔-mbl-ma-mapb",
+        "peakId": "对峙峰值-mapb",
+        "ep": 10
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-mapb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "揭穿对峙",
+        "payoffEp": 10
+      }
+    ]
+  },
+  "cliffAbilityPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer-ca-capb",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-ca-capb",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-ca-capb",
+        "by": "linyang",
+        "ep": 9,
+        "day": 9,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-ca-capb",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "生存情报"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-cb-ca-capb",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-capb",
+        "cliffLinkId": "C9-10-cb-ca-capb",
+        "abilityId": "seer-ca-capb",
+        "peakId": "对峙峰值-capb",
+        "ep": 9
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-capb",
+        "openEp": 1,
+        "peakEp": 9,
+        "peakLabel": "cliff峰值",
+        "payoffEp": 9
+      }
+    ]
+  },
+  "handoffBondPeakBridge": {
+    "bonds": [
+      {
+        "id": "江少契约-hb-hbpb",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 8,
+        "upgradeLabel": "真心崩塌后真情"
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9-bh-hb-hbpb",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "开场"
+            },
+            {
+              "shotId": "EP08-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP08-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP08-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "承接"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "新证"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-hbpb",
+        "bondId": "江少契约-hb-hbpb",
+        "handoffId": "H8-9-bh-hb-hbpb",
+        "peakId": "对峙峰值-hbpb",
+        "ep": 8
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-hbpb",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "契约峰值",
+        "payoffEp": 9
+      }
+    ]
+  },
+  "handoffAbilityPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer-ha-hapb",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-ha-hapb",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-ha-hapb",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-ha-hapb",
+        "by": "linyang",
+        "ep": 8,
+        "day": 8,
+        "option": "查验身份"
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9-ha-hapb",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "开场"
+            },
+            {
+              "shotId": "EP08-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP08-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP08-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "承接"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "新证"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-hapb",
+        "abilityId": "seer-ha-hapb",
+        "handoffId": "H8-9-ha-hapb",
+        "peakId": "对峙峰值-hapb",
+        "ep": 8
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-hapb",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "handoff峰值",
+        "payoffEp": 9
+      }
+    ]
+  },
+  "bondAbilityLink": {
+    "abilities": [
+      {
+        "id": "seer-abl-ba",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-abl-ba",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-abl-ba",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-abl-ba",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "江少契约-abl-ba",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-abl-ba",
+        "abilityId": "seer-abl-ba",
+        "bondId": "江少契约-abl-ba",
+        "ep": 10
+      }
+    ]
+  },
+  "handoffCliffLink": {
+    "cliffLinks": [
+      {
+        "id": "C9-10-cb-ca-hc",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9-bh-hb-hc",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-hc",
+        "cliffLinkId": "C9-10-cb-ca-hc",
+        "handoffId": "H8-9-bh-hb-hc"
+      }
+    ]
+  },
+  "vestBondLink": {
+    "bonds": [
+      {
+        "id": "江少契约-hb-vb",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心崩塌后真情"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-vapb-vb",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vb",
+        "bondId": "江少契约-hb-vb",
+        "vestId": "机长马甲-vapb-vb"
+      }
+    ]
+  },
+  "frequencyBondLink": {
+    "bonds": [
+      {
+        "id": "江少契约-hb-fb",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 9,
+        "upgradeLabel": "真心崩塌后真情"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": "离婚99次-fc-cf-cfpb-fb",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 9,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 9,
+        "tipLabel": "接受第99次离婚彻底离开"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fb",
+        "bondId": "江少契约-hb-fb",
+        "frequencyId": "离婚99次-fc-cf-cfpb-fb",
+        "terminal": "upgrade"
+      }
+    ]
   }
 }
