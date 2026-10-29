@@ -1284,5 +1284,129 @@
         "action": "门外脚步"
       }
     ]
+  },
+  "midHookDialogueBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MHD0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MHD1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-MHD2",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "中段再钩",
+        "hookKind": "action"
+      },
+      {
+        "shotId": "EP01-MHD3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-MHD4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "setupDialogueCap": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-SDC0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "黑衣人破窗闯入举枪",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-SDC1",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "setup",
+        "action": "走廊空镜缓慢推进"
+      },
+      {
+        "shotId": "EP01-SDC2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "齐耶抬腕刻印亮起格开一剑"
+      },
+      {
+        "shotId": "EP01-SDC3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "齐耶瞳孔收缩后退闪避"
+      },
+      {
+        "shotId": "EP01-SDC4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "门外更多脚步逼近"
+      }
+    ]
+  },
+  "dialogueSetupBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-DSB0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "setup",
+        "action": "环境一瞥"
+      },
+      {
+        "shotId": "EP01-DSB1",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机开场",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-DSB2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问推进"
+      },
+      {
+        "shotId": "EP01-DSB3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-DSB4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
   }
 }

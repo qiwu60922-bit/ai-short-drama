@@ -17,6 +17,7 @@
  *   · hookKindMixColdOpen · dialogueAfterReversalBan · midTurnSetupCap
  *   · coldOpenDetailHook · cliffTailDialogueBan · midHookSetupBan
  *   · coldOpenHookWindow · reactionReversalCliff · coldCloseCliffTail
+ *   · midHookDialogueBan · setupDialogueCap · dialogueSetupBan
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -221,6 +222,22 @@ import {
   type ColdCloseCliffTailReport,
 } from './cold-close-cliff-tail-gate';
 
+import {
+  evaluateMidHookDialogueBan,
+  type MidHookDialogueBanOptions,
+  type MidHookDialogueBanReport,
+} from './mid-hook-dialogue-ban-gate';
+import {
+  evaluateSetupDialogueCap,
+  type SetupDialogueCapOptions,
+  type SetupDialogueCapReport,
+} from './setup-dialogue-cap-gate';
+import {
+  evaluateDialogueSetupBan,
+  type DialogueSetupBanOptions,
+  type DialogueSetupBanReport,
+} from './dialogue-setup-ban-gate';
+
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
   'openingCascade',
@@ -260,6 +277,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'coldOpenHookWindow',
   'reactionReversalCliff',
   'coldCloseCliffTail',
+  'midHookDialogueBan',
+  'setupDialogueCap',
+  'dialogueSetupBan',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -700,6 +720,54 @@ const ColdCloseCliffTailOptsSchema = z
   })
   .strict();
 
+const MidHookDialogueBanOptsSchema = z
+  .object({
+    midHookByRatio: z.number().positive().optional(),
+    minActionChars: z.number().int().positive().optional(),
+    unlabeledSpeechMin: z.number().int().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const SetupDialogueCapOptsSchema = z
+  .object({
+    maxMidSetupRatio: z.number().positive().optional(),
+    minActionChars: z.number().int().positive().optional(),
+    unlabeledSpeechMin: z.number().int().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const DialogueSetupBanOptsSchema = z
+  .object({
+    minActionChars: z.number().int().positive().optional(),
+    unlabeledSpeechMin: z.number().int().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+
 
 
 export const ShotSpecSuiteSchema = z
@@ -743,6 +811,9 @@ export const ShotSpecSuiteSchema = z
     coldOpenHookWindow: ShotSpecDocSchema.optional(),
     reactionReversalCliff: ShotSpecDocSchema.optional(),
     coldCloseCliffTail: ShotSpecDocSchema.optional(),
+    midHookDialogueBan: ShotSpecDocSchema.optional(),
+    setupDialogueCap: ShotSpecDocSchema.optional(),
+    dialogueSetupBan: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -779,6 +850,9 @@ export const ShotSpecSuiteSchema = z
     coldOpenHookWindowOpts: ColdOpenHookWindowOptsSchema.optional(),
     reactionReversalCliffOpts: ReactionReversalCliffOptsSchema.optional(),
     coldCloseCliffTailOpts: ColdCloseCliffTailOptsSchema.optional(),
+    midHookDialogueBanOpts: MidHookDialogueBanOptsSchema.optional(),
+    setupDialogueCapOpts: SetupDialogueCapOptsSchema.optional(),
+    dialogueSetupBanOpts: DialogueSetupBanOptsSchema.optional(),
   })
   .strict();
 
@@ -822,7 +896,10 @@ export type ShotSpecChildReport =
   | MidHookSetupBanReport
   | ColdOpenHookWindowReport
   | ReactionReversalCliffReport
-  | ColdCloseCliffTailReport;
+  | ColdCloseCliffTailReport
+  | MidHookDialogueBanReport
+  | SetupDialogueCapReport
+  | DialogueSetupBanReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -926,6 +1003,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     coldOpenHookWindowOpts,
     reactionReversalCliffOpts,
     coldCloseCliffTailOpts,
+    midHookDialogueBanOpts,
+    setupDialogueCapOpts,
+    dialogueSetupBanOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -1264,6 +1344,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateColdCloseCliffTail(
         sections.coldCloseCliffTail,
         (coldCloseCliffTailOpts ?? {}) as ColdCloseCliffTailOptions,
+      ),
+    );
+  }
+  if (sections.midHookDialogueBan !== undefined) {
+    run(
+      'midHookDialogueBan',
+      evaluateMidHookDialogueBan(
+        sections.midHookDialogueBan,
+        (midHookDialogueBanOpts ?? {}) as MidHookDialogueBanOptions,
+      ),
+    );
+  }
+  if (sections.setupDialogueCap !== undefined) {
+    run(
+      'setupDialogueCap',
+      evaluateSetupDialogueCap(
+        sections.setupDialogueCap,
+        (setupDialogueCapOpts ?? {}) as SetupDialogueCapOptions,
+      ),
+    );
+  }
+  if (sections.dialogueSetupBan !== undefined) {
+    run(
+      'dialogueSetupBan',
+      evaluateDialogueSetupBan(
+        sections.dialogueSetupBan,
+        (dialogueSetupBanOpts ?? {}) as DialogueSetupBanOptions,
       ),
     );
   }
