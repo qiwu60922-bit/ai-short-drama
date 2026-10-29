@@ -17627,5 +17627,542 @@
         "amnesiaId": "祁南失忆-mam"
       }
     ]
+  },
+  "frequencyAbilityPeakBridge": {
+    "frequencies": [
+      {
+        "id": "离婚要挟-fapb",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开"
+      }
+    ],
+    "abilities": [
+      {
+        "id": "seer-fapb",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-fapb",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-fapb",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fapb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fapb",
+        "frequencyId": "离婚要挟-fapb",
+        "abilityId": "seer-fapb",
+        "peakId": "对峙峰值-fapb",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyCliffPeakBridge": {
+    "frequencies": [
+      {
+        "id": "离婚99次-fcpb",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 9,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 9,
+        "tipLabel": "接受第99次离婚彻底离开"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-fcpb",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fcpb",
+        "openEp": 1,
+        "peakEp": 9,
+        "peakLabel": "公开对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fcpb",
+        "frequencyId": "离婚99次-fcpb",
+        "cliffLinkId": "C9-10-fcpb",
+        "peakId": "对峙峰值-fcpb",
+        "ep": 9
+      }
+    ]
+  },
+  "frequencyMaskPeakBridge": {
+    "frequencies": [
+      {
+        "id": "离婚要挟-fmpb2",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-fmpb2",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fmpb2",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fmpb2",
+        "frequencyId": "离婚要挟-fmpb2",
+        "maskId": "花心纨绔-fmpb2",
+        "peakId": "对峙峰值-fmpb2",
+        "ep": 10
+      }
+    ]
+  },
+  "motifMaskPeakBridge": {
+    "motifs": [
+      {
+        "id": "white-rose-mmpb",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mmpb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mmpb",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mmpb",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-mmpb",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-mmpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mmpb",
+        "motifId": "white-rose-mmpb",
+        "maskId": "花心纨绔-mmpb",
+        "peakId": "对峙峰值-mmpb",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyAmnesiaLink": {
+    "frequencies": [
+      {
+        "id": "离婚要挟-fal",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开"
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-fal",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "圣诞摩天轮对视唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fal",
+        "frequencyId": "离婚要挟-fal",
+        "amnesiaId": "祁南失忆-fal"
+      }
+    ]
+  },
+  "amnesiaFrequencyLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-afl",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "圣诞摩天轮对视唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": "离婚要挟-afl",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-afl",
+        "amnesiaId": "祁南失忆-afl",
+        "frequencyId": "离婚要挟-afl"
+      }
+    ]
+  },
+  "abilityAmnesiaLink": {
+    "abilities": [
+      {
+        "id": "seer-aal",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-aal",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-aal",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-aal",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "圣诞摩天轮对视唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-aal",
+        "abilityId": "seer-aal",
+        "amnesiaId": "祁南失忆-aal"
+      }
+    ]
+  },
+  "amnesiaAbilityLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-ama",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "圣诞摩天轮对视唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "abilities": [
+      {
+        "id": "seer-ama",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-ama",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-ama",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ama",
+        "amnesiaId": "祁南失忆-ama",
+        "abilityId": "seer-ama"
+      }
+    ]
   }
 }
