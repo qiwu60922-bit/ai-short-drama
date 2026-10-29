@@ -21784,5 +21784,558 @@
         "ep": 10
       }
     ]
+  },
+  "handoffQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "handoffs": [
+      {
+        "id": "H10-11-b136",
+        "prevEp": 10,
+        "nextEp": 11,
+        "prev": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B136-0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "唤回开场"
+            },
+            {
+              "shotId": "EP10-B136-1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对视蓄势"
+            },
+            {
+              "shotId": "EP10-B136-2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "记忆闪回"
+            },
+            {
+              "shotId": "EP10-B136-3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外脚步未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP11",
+          "shots": [
+            {
+              "shotId": "EP11-B136-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP11-B136-1",
+              "durSec": 6,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问来人"
+            },
+            {
+              "shotId": "EP11-B136-2",
+              "durSec": 5,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份揭开"
+            },
+            {
+              "shotId": "EP11-B136-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "新悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b136",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-hqpb",
+        "handoffId": "H10-11-b136",
+        "peakId": "对峙峰值-b136",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "abilityQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "abilities": [
+      {
+        "id": "seer-b136",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-b136",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-b136",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b136",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-aqpb",
+        "abilityId": "seer-b136",
+        "peakId": "对峙峰值-b136",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "motifForeshadowPeakBridge": {
+    "motifs": [
+      {
+        "id": "white-rose-b136",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-b136",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-b136",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-b136",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "items": [
+      {
+        "id": "机长身份-mfpb",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b136",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mfpb",
+        "motifId": "white-rose-b136",
+        "foreshadowId": "机长身份-mfpb",
+        "peakId": "对峙峰值-b136",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "frequencies": [
+      {
+        "id": "离婚99-b136",
+        "actor": "叶楚",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 3,
+        "plantEp": 1,
+        "plantAtSec": 0,
+        "tipEp": 10,
+        "tipAtSec": 10,
+        "tipLabel": "第3次离婚签字",
+        "ticks": [
+          {
+            "ep": 2,
+            "n": 1
+          },
+          {
+            "ep": 5,
+            "n": 2
+          },
+          {
+            "ep": 10,
+            "n": 3
+          }
+        ]
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b136",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fqpb",
+        "frequencyId": "离婚99-b136",
+        "peakId": "对峙峰值-b136",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "motifForeshadowLink": {
+    "motifs": [
+      {
+        "id": "white-rose-mfl",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-mfl",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-mfl",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-mfl",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "items": [
+      {
+        "id": "机长身份-mfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mfl",
+        "motifId": "white-rose-mfl",
+        "foreshadowId": "机长身份-mfl",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyForeshadowLink": {
+    "frequencies": [
+      {
+        "id": "离婚99-ffl",
+        "actor": "叶楚",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 3,
+        "plantEp": 1,
+        "plantAtSec": 0,
+        "tipEp": 10,
+        "tipAtSec": 10,
+        "tipLabel": "第3次离婚签字",
+        "ticks": [
+          {
+            "ep": 2,
+            "n": 1
+          },
+          {
+            "ep": 5,
+            "n": 2
+          },
+          {
+            "ep": 10,
+            "n": 3
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-ffl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ffl",
+        "frequencyId": "离婚99-ffl",
+        "foreshadowId": "伪人身份-ffl",
+        "ep": 10
+      }
+    ]
+  },
+  "countdownForeshadowLink": {
+    "countdowns": [
+      {
+        "id": "直播终局-b136",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-cfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cfl",
+        "countdownId": "直播终局-b136",
+        "foreshadowId": "伪人身份-cfl",
+        "ep": 10
+      }
+    ]
+  },
+  "handoffForeshadowLink": {
+    "handoffs": [
+      {
+        "id": "H10-11-hfl",
+        "prevEp": 10,
+        "nextEp": 11,
+        "prev": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B136-0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "唤回开场"
+            },
+            {
+              "shotId": "EP10-B136-1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对视蓄势"
+            },
+            {
+              "shotId": "EP10-B136-2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "记忆闪回"
+            },
+            {
+              "shotId": "EP10-B136-3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外脚步未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP11",
+          "shots": [
+            {
+              "shotId": "EP11-B136-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP11-B136-1",
+              "durSec": 6,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问来人"
+            },
+            {
+              "shotId": "EP11-B136-2",
+              "durSec": 5,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份揭开"
+            },
+            {
+              "shotId": "EP11-B136-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "新悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-hfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-hfl",
+        "handoffId": "H10-11-hfl",
+        "foreshadowId": "伪人身份-hfl",
+        "ep": 10
+      }
+    ]
   }
 }
