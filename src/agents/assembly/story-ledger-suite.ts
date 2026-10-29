@@ -11,6 +11,7 @@
  *   · qualityLeap · foreshadowLedger · motifCallback · allianceLedger
  *   · bondContract · identityVest · frequencyTipping  (more baselines)
  *   · abilityStageLink · countdownCliffLink · dialogueReactionLink
+ *   · personaCard · personaMask · amnesiaArc · openingCascade · cliffhangerHandoff
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -54,7 +55,11 @@ import {
   evaluateIdentityVest,
   type IdentityVestReport,
 } from './identity-vest-gate';
-import { PersonaMaskEntrySchema } from './persona-mask-gate';
+import {
+  PersonaMaskEntrySchema,
+  evaluatePersonaMask,
+  type PersonaMaskReport,
+} from './persona-mask-gate';
 import {
   FrequencyPeakLinkEntrySchema,
   evaluateFrequencyPeakLink,
@@ -65,7 +70,11 @@ import {
   evaluateAmnesiaMotifLink,
   type AmnesiaMotifLinkReport,
 } from './amnesia-motif-link-gate';
-import { AmnesiaArcEntrySchema } from './amnesia-arc-gate';
+import {
+  AmnesiaArcEntrySchema,
+  evaluateAmnesiaArc,
+  type AmnesiaArcReport,
+} from './amnesia-arc-gate';
 import {
   MotifEntrySchema,
   MotifAppearanceSchema,
@@ -103,7 +112,11 @@ import {
   evaluatePersonaVestLink,
   type PersonaVestLinkReport,
 } from './persona-vest-link-gate';
-import { PersonaCardSchema } from './persona-card-gate';
+import {
+  PersonaCardSchema,
+  evaluatePersonaCard,
+  type PersonaCardReport,
+} from './persona-card-gate';
 import {
   StageGoalConflictLinkEntrySchema,
   evaluateStageGoalConflictLink,
@@ -160,6 +173,14 @@ import {
   evaluateDialogueReactionLink,
   type DialogueReactionLinkReport,
 } from './dialogue-reaction-link-gate';
+import {
+  evaluateOpeningCascade,
+  type OpeningCascadeReport,
+} from './opening-cascade-gate';
+import {
+  evaluateCliffhangerHandoff,
+  type CliffhangerHandoffReport,
+} from './cliffhanger-handoff-gate';
 
 const Ep = z.number().int().positive();
 
@@ -190,6 +211,11 @@ export const STORY_LEDGER_GATE_IDS = [
   'abilityStageLink',
   'countdownCliffLink',
   'dialogueReactionLink',
+  'personaCard',
+  'personaMask',
+  'amnesiaArc',
+  'openingCascade',
+  'cliffhangerHandoff',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -360,6 +386,19 @@ const DialogueReactionSectionSchema = z.object({
   links: z.array(DialogueReactionLinkEntrySchema),
 });
 
+const PersonaMaskSectionSchema = z.object({
+  entries: z.array(PersonaMaskEntrySchema),
+});
+
+const AmnesiaArcSectionSchema = z.object({
+  entries: z.array(AmnesiaArcEntrySchema),
+});
+
+const CliffhangerHandoffSectionSchema = z.object({
+  prev: ShotSpecDocSchema,
+  next: ShotSpecDocSchema,
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -390,6 +429,11 @@ export const StoryLedgerSuiteSchema = z
     abilityStageLink: AbilityStageSectionSchema.optional(),
     countdownCliffLink: CountdownCliffSectionSchema.optional(),
     dialogueReactionLink: DialogueReactionSectionSchema.optional(),
+    personaCard: PersonaCardSchema.optional(),
+    personaMask: PersonaMaskSectionSchema.optional(),
+    amnesiaArc: AmnesiaArcSectionSchema.optional(),
+    openingCascade: ShotSpecDocSchema.optional(),
+    cliffhangerHandoff: CliffhangerHandoffSectionSchema.optional(),
   })
   .strict();
 
@@ -421,7 +465,12 @@ export type StoryLedgerChildReport =
   | FrequencyTippingReport
   | AbilityStageLinkReport
   | CountdownCliffLinkReport
-  | DialogueReactionLinkReport;
+  | DialogueReactionLinkReport
+  | PersonaCardReport
+  | PersonaMaskReport
+  | AmnesiaArcReport
+  | OpeningCascadeReport
+  | CliffhangerHandoffReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -513,6 +562,16 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateCountdownCliffLink({ series, latestEp, ...(section as object) }),
   dialogueReactionLink: (series, latestEp, section) =>
     evaluateDialogueReactionLink({ series, latestEp, ...(section as object) }),
+  personaCard: (_series, _latestEp, section) => evaluatePersonaCard(section),
+  personaMask: (series, latestEp, section) =>
+    evaluatePersonaMask({ series, latestEp, ...(section as object) }),
+  amnesiaArc: (series, latestEp, section) =>
+    evaluateAmnesiaArc({ series, latestEp, ...(section as object) }),
+  openingCascade: (_series, _latestEp, section) => evaluateOpeningCascade(section),
+  cliffhangerHandoff: (_series, _latestEp, section) => {
+    const s = section as { prev: unknown; next: unknown };
+    return evaluateCliffhangerHandoff(s.prev, s.next);
+  },
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
