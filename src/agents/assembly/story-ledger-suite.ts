@@ -196,6 +196,9 @@
  *   · rattleRhythmPeakBridge · splashRhythmPeakBridge · rustleRhythmPeakBridge · gurgleRhythmPeakBridge
  *   · qualityChalkLink · qualityGneissLink · qualitySchistLink · qualityPumiceLink
  *
+ *   · croakRhythmPeakBridge · trillRhythmPeakBridge · warbleRhythmPeakBridge · cooRhythmPeakBridge
+ *   · qualityGabbroLink · qualityAndesiteLink · qualityRhyoliteLink · qualityDioriteLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3600,6 +3603,59 @@ import {
   type QualityPumiceLinkReport,
 } from './quality-pumice-link-gate';
 
+import {
+  CroakRhythmPeakBridgeLinkSchema,
+  CroakRhythmPeakCroakEntrySchema,
+  CroakRhythmPeakRhythmEntrySchema,
+  evaluateCroakRhythmPeakBridge,
+  type CroakRhythmPeakBridgeReport,
+} from './croak-rhythm-peak-bridge-gate';
+import {
+  TrillRhythmPeakBridgeLinkSchema,
+  TrillRhythmPeakTrillEntrySchema,
+  TrillRhythmPeakRhythmEntrySchema,
+  evaluateTrillRhythmPeakBridge,
+  type TrillRhythmPeakBridgeReport,
+} from './trill-rhythm-peak-bridge-gate';
+import {
+  WarbleRhythmPeakBridgeLinkSchema,
+  WarbleRhythmPeakWarbleEntrySchema,
+  WarbleRhythmPeakRhythmEntrySchema,
+  evaluateWarbleRhythmPeakBridge,
+  type WarbleRhythmPeakBridgeReport,
+} from './warble-rhythm-peak-bridge-gate';
+import {
+  CooRhythmPeakBridgeLinkSchema,
+  CooRhythmPeakCooEntrySchema,
+  CooRhythmPeakRhythmEntrySchema,
+  evaluateCooRhythmPeakBridge,
+  type CooRhythmPeakBridgeReport,
+} from './coo-rhythm-peak-bridge-gate';
+import {
+  QualityGabbroLinkEntrySchema,
+  QualityGabbroEntrySchema,
+  evaluateQualityGabbroLink,
+  type QualityGabbroLinkReport,
+} from './quality-gabbro-link-gate';
+import {
+  QualityAndesiteLinkEntrySchema,
+  QualityAndesiteEntrySchema,
+  evaluateQualityAndesiteLink,
+  type QualityAndesiteLinkReport,
+} from './quality-andesite-link-gate';
+import {
+  QualityRhyoliteLinkEntrySchema,
+  QualityRhyoliteEntrySchema,
+  evaluateQualityRhyoliteLink,
+  type QualityRhyoliteLinkReport,
+} from './quality-rhyolite-link-gate';
+import {
+  QualityDioriteLinkEntrySchema,
+  QualityDioriteEntrySchema,
+  evaluateQualityDioriteLink,
+  type QualityDioriteLinkReport,
+} from './quality-diorite-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -4201,6 +4257,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityGneissLink',
   'qualitySchistLink',
   'qualityPumiceLink',
+  'croakRhythmPeakBridge',
+  'trillRhythmPeakBridge',
+  'warbleRhythmPeakBridge',
+  'cooRhythmPeakBridge',
+  'qualityGabbroLink',
+  'qualityAndesiteLink',
+  'qualityRhyoliteLink',
+  'qualityDioriteLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -8231,6 +8295,58 @@ const QualityPumiceSectionSchemaB172 = z.object({
   links: z.array(QualityPumiceLinkEntrySchema),
 });
 
+const CroakRhythmPeakBridgeSectionSchema = z.object({
+  croaks: z.array(CroakRhythmPeakCroakEntrySchema),
+  rhythms: z.array(CroakRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CroakRhythmPeakBridgeLinkSchema),
+});
+
+const TrillRhythmPeakBridgeSectionSchema = z.object({
+  trills: z.array(TrillRhythmPeakTrillEntrySchema),
+  rhythms: z.array(TrillRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(TrillRhythmPeakBridgeLinkSchema),
+});
+
+const WarbleRhythmPeakBridgeSectionSchema = z.object({
+  warbles: z.array(WarbleRhythmPeakWarbleEntrySchema),
+  rhythms: z.array(WarbleRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(WarbleRhythmPeakBridgeLinkSchema),
+});
+
+const CooRhythmPeakBridgeSectionSchema = z.object({
+  coos: z.array(CooRhythmPeakCooEntrySchema),
+  rhythms: z.array(CooRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CooRhythmPeakBridgeLinkSchema),
+});
+
+const QualityGabbroSectionSchemaB173 = z.object({
+  minGabbroIntense: z.number().int().min(1).max(5).optional(),
+  gabbros: z.array(QualityGabbroEntrySchema),
+  links: z.array(QualityGabbroLinkEntrySchema),
+});
+
+const QualityAndesiteSectionSchemaB173 = z.object({
+  minAndesiteIntense: z.number().int().min(1).max(5).optional(),
+  andesites: z.array(QualityAndesiteEntrySchema),
+  links: z.array(QualityAndesiteLinkEntrySchema),
+});
+
+const QualityRhyoliteSectionSchemaB173 = z.object({
+  minRhyoliteIntense: z.number().int().min(1).max(5).optional(),
+  rhyolites: z.array(QualityRhyoliteEntrySchema),
+  links: z.array(QualityRhyoliteLinkEntrySchema),
+});
+
+const QualityDioriteSectionSchemaB173 = z.object({
+  minDioriteIntense: z.number().int().min(1).max(5).optional(),
+  diorites: z.array(QualityDioriteEntrySchema),
+  links: z.array(QualityDioriteLinkEntrySchema),
+});
+
 
 
 
@@ -8846,6 +8962,14 @@ export const StoryLedgerSuiteSchema = z
     qualityGneissLink: QualityGneissSectionSchemaB172.optional(),
     qualitySchistLink: QualitySchistSectionSchemaB172.optional(),
     qualityPumiceLink: QualityPumiceSectionSchemaB172.optional(),
+    croakRhythmPeakBridge: CroakRhythmPeakBridgeSectionSchema.optional(),
+    trillRhythmPeakBridge: TrillRhythmPeakBridgeSectionSchema.optional(),
+    warbleRhythmPeakBridge: WarbleRhythmPeakBridgeSectionSchema.optional(),
+    cooRhythmPeakBridge: CooRhythmPeakBridgeSectionSchema.optional(),
+    qualityGabbroLink: QualityGabbroSectionSchemaB173.optional(),
+    qualityAndesiteLink: QualityAndesiteSectionSchemaB173.optional(),
+    qualityRhyoliteLink: QualityRhyoliteSectionSchemaB173.optional(),
+    qualityDioriteLink: QualityDioriteSectionSchemaB173.optional(),
   })
   .strict();
 
@@ -9449,7 +9573,15 @@ export type StoryLedgerChildReport =
   | QualityChalkLinkReport
   | QualityGneissLinkReport
   | QualitySchistLinkReport
-  | QualityPumiceLinkReport;
+  | QualityPumiceLinkReport
+  | CroakRhythmPeakBridgeReport
+  | TrillRhythmPeakBridgeReport
+  | WarbleRhythmPeakBridgeReport
+  | CooRhythmPeakBridgeReport
+  | QualityGabbroLinkReport
+  | QualityAndesiteLinkReport
+  | QualityRhyoliteLinkReport
+  | QualityDioriteLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -10686,6 +10818,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualitySchistLink({ series, latestEp, ...(section as object) }),
   qualityPumiceLink: (series, latestEp, section) =>
     evaluateQualityPumiceLink({ series, latestEp, ...(section as object) }),
+  croakRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateCroakRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  trillRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateTrillRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  warbleRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateWarbleRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  cooRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateCooRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityGabbroLink: (series, latestEp, section) =>
+    evaluateQualityGabbroLink({ series, latestEp, ...(section as object) }),
+  qualityAndesiteLink: (series, latestEp, section) =>
+    evaluateQualityAndesiteLink({ series, latestEp, ...(section as object) }),
+  qualityRhyoliteLink: (series, latestEp, section) =>
+    evaluateQualityRhyoliteLink({ series, latestEp, ...(section as object) }),
+  qualityDioriteLink: (series, latestEp, section) =>
+    evaluateQualityDioriteLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
