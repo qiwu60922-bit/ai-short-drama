@@ -8,6 +8,7 @@
  *   · keyframePlate · reactionBeat
  *   · dialogueExposition · seriesRhythm
  *   · coldOpenHook · mvBeatMap
+ *   · detailHookKind · tailColdClose
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -85,6 +86,16 @@ import {
   evaluateMvBeatMap,
   type MvBeatMapReport,
 } from './mv-beat-map-gate';
+import {
+  evaluateDetailHookKind,
+  type DetailHookKindOptions,
+  type DetailHookKindReport,
+} from './detail-hook-kind-gate';
+import {
+  evaluateTailColdClose,
+  type TailColdCloseOptions,
+  type TailColdCloseReport,
+} from './tail-cold-close-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -100,6 +111,8 @@ export const SHOT_SPEC_GATE_IDS = [
   'seriesRhythm',
   'coldOpenHook',
   'mvBeatMap',
+  'detailHookKind',
+  'tailColdClose',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -213,6 +226,32 @@ const ColdOpenOptsSchema = z
   })
   .strict();
 
+const DetailHookOptsSchema = z
+  .object({
+    requireDetailCu: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const TailColdOptsSchema = z
+  .object({
+    coldTailSec: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -229,6 +268,8 @@ export const ShotSpecSuiteSchema = z
     seriesRhythm: ShotSpecDocSchema.optional(),
     coldOpenHook: ShotSpecDocSchema.optional(),
     mvBeatMap: MvBeatMapDocSchema.optional(),
+    detailHookKind: ShotSpecDocSchema.optional(),
+    tailColdClose: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -240,6 +281,8 @@ export const ShotSpecSuiteSchema = z
     dialogueOpts: DialogueOptsSchema.optional(),
     seriesRhythmOpts: SeriesRhythmOptsSchema.optional(),
     coldOpenOpts: ColdOpenOptsSchema.optional(),
+    detailHookOpts: DetailHookOptsSchema.optional(),
+    tailColdOpts: TailColdOptsSchema.optional(),
   })
   .strict();
 
@@ -258,7 +301,9 @@ export type ShotSpecChildReport =
   | DialogueExpositionReport
   | SeriesRhythmReport
   | ColdOpenHookReport
-  | MvBeatMapReport;
+  | MvBeatMapReport
+  | DetailHookKindReport
+  | TailColdCloseReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -337,6 +382,8 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     dialogueOpts,
     seriesRhythmOpts,
     coldOpenOpts,
+    detailHookOpts,
+    tailColdOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -452,6 +499,24 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
   }
   if (sections.mvBeatMap !== undefined) {
     run('mvBeatMap', evaluateMvBeatMap(sections.mvBeatMap));
+  }
+  if (sections.detailHookKind !== undefined) {
+    run(
+      'detailHookKind',
+      evaluateDetailHookKind(
+        sections.detailHookKind,
+        (detailHookOpts ?? {}) as DetailHookKindOptions,
+      ),
+    );
+  }
+  if (sections.tailColdClose !== undefined) {
+    run(
+      'tailColdClose',
+      evaluateTailColdClose(
+        sections.tailColdClose,
+        (tailColdOpts ?? {}) as TailColdCloseOptions,
+      ),
+    );
   }
 
   const skipped = SHOT_SPEC_GATE_IDS.length - ran;

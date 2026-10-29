@@ -388,5 +388,73 @@
         "asset": "A1"
       }
     ]
+  },
+  "detailHookKind": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-D0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "双手交叠特写",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-D1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-D2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-D3",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "tailColdClose": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-T0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "crisis",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-T1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-T2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-T3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "冷收尾"
+      }
+    ]
   }
 }
