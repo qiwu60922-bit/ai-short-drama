@@ -5685,5 +5685,457 @@
         "ep": 10
       }
     ]
+  },
+  "personaBondPeakBridge": {
+    "cards": [
+      {
+        "slug": "su-jianqing",
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-pbp",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心与峰值同框"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-pbp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-pbp",
+        "cardSlug": "su-jianqing",
+        "bondId": "机长契约-pbp",
+        "peakId": "对峙峰值-pbp",
+        "ep": 10
+      }
+    ]
+  },
+  "abilityVestPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-avp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-avp",
+        "abilityId": "seer",
+        "vestId": "机长马甲",
+        "peakId": "对峙峰值-avp",
+        "ep": 10
+      }
+    ]
+  },
+  "allianceMaskPeakBridge": {
+    "alliances": [
+      {
+        "id": "oni-fang-amp",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-amp",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang-amp",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang-amp",
+        "ep": 10,
+        "role": "payoff",
+        "note": "护短揭穿"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-amp",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-amp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-amp2",
+        "allianceId": "oni-fang-amp",
+        "maskId": "花心纨绔-amp",
+        "peakId": "对峙峰值-amp",
+        "ep": 10
+      }
+    ]
+  },
+  "bondCliffLink": {
+    "bonds": [
+      {
+        "id": "江少契约-bc",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级踩钩"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bc",
+        "bondId": "江少契约-bc",
+        "cliffLinkId": "C9-10",
+        "ep": 10
+      }
+    ]
+  },
+  "allianceMaskLink": {
+    "alliances": [
+      {
+        "id": "oni-fang-am",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-am",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang-am",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang-am",
+        "ep": 10,
+        "role": "payoff",
+        "note": "护短揭穿"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-am",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-am",
+        "allianceId": "oni-fang-am",
+        "maskId": "花心纨绔-am",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaVestLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-av",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-av",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-av",
+        "amnesiaId": "祁南失忆-av",
+        "vestId": "机长马甲-av"
+      }
+    ]
+  },
+  "conflictPeakLink": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cp",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cp",
+        "conflictId": "挑衅反噬-cp",
+        "peakId": "对峙峰值-cp",
+        "ep": 10
+      }
+    ]
   }
 }
