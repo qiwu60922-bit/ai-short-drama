@@ -148,6 +148,9 @@
  *   · revealRhythmPeakBridge · dialogueRhythmPeakBridge · cascadeRhythmPeakBridge · reactionRhythmPeakBridge
  *   · qualityTideLink · qualityWaveLink · qualityEmberLink · qualityFlareLink
  *
+ *   · hookRhythmPeakBridge · cutRhythmPeakBridge · beatRhythmPeakBridge · pivotRhythmPeakBridge
+ *   · qualityGlintLink · qualityPrismLink · qualityAuraLink · qualityHaloLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -2693,6 +2696,59 @@ import {
   type QualityFlareLinkReport,
 } from './quality-flare-link-gate';
 
+import {
+  HookRhythmPeakBridgeLinkSchema,
+  HookRhythmPeakHookEntrySchema,
+  HookRhythmPeakRhythmEntrySchema,
+  evaluateHookRhythmPeakBridge,
+  type HookRhythmPeakBridgeReport,
+} from './hook-rhythm-peak-bridge-gate';
+import {
+  CutRhythmPeakBridgeLinkSchema,
+  CutRhythmPeakCutEntrySchema,
+  CutRhythmPeakRhythmEntrySchema,
+  evaluateCutRhythmPeakBridge,
+  type CutRhythmPeakBridgeReport,
+} from './cut-rhythm-peak-bridge-gate';
+import {
+  BeatRhythmPeakBridgeLinkSchema,
+  BeatRhythmPeakBeatEntrySchema,
+  BeatRhythmPeakRhythmEntrySchema,
+  evaluateBeatRhythmPeakBridge,
+  type BeatRhythmPeakBridgeReport,
+} from './beat-rhythm-peak-bridge-gate';
+import {
+  PivotRhythmPeakBridgeLinkSchema,
+  PivotRhythmPeakPivotEntrySchema,
+  PivotRhythmPeakRhythmEntrySchema,
+  evaluatePivotRhythmPeakBridge,
+  type PivotRhythmPeakBridgeReport,
+} from './pivot-rhythm-peak-bridge-gate';
+import {
+  QualityGlintLinkEntrySchema,
+  QualityGlintEntrySchema,
+  evaluateQualityGlintLink,
+  type QualityGlintLinkReport,
+} from './quality-glint-link-gate';
+import {
+  QualityPrismLinkEntrySchema,
+  QualityPrismEntrySchema,
+  evaluateQualityPrismLink,
+  type QualityPrismLinkReport,
+} from './quality-prism-link-gate';
+import {
+  QualityAuraLinkEntrySchema,
+  QualityAuraEntrySchema,
+  evaluateQualityAuraLink,
+  type QualityAuraLinkReport,
+} from './quality-aura-link-gate';
+import {
+  QualityHaloLinkEntrySchema,
+  QualityHaloEntrySchema,
+  evaluateQualityHaloLink,
+  type QualityHaloLinkReport,
+} from './quality-halo-link-gate';
+
 
 
 
@@ -3179,6 +3235,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityWaveLink',
   'qualityEmberLink',
   'qualityFlareLink',
+  'hookRhythmPeakBridge',
+  'cutRhythmPeakBridge',
+  'beatRhythmPeakBridge',
+  'pivotRhythmPeakBridge',
+  'qualityGlintLink',
+  'qualityPrismLink',
+  'qualityAuraLink',
+  'qualityHaloLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -6375,6 +6439,58 @@ const QualityFlareSectionSchemaB156 = z.object({
   links: z.array(QualityFlareLinkEntrySchema),
 });
 
+const HookRhythmPeakBridgeSectionSchema = z.object({
+  hooks: z.array(HookRhythmPeakHookEntrySchema),
+  rhythms: z.array(HookRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HookRhythmPeakBridgeLinkSchema),
+});
+
+const CutRhythmPeakBridgeSectionSchema = z.object({
+  cuts: z.array(CutRhythmPeakCutEntrySchema),
+  rhythms: z.array(CutRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CutRhythmPeakBridgeLinkSchema),
+});
+
+const BeatRhythmPeakBridgeSectionSchema = z.object({
+  beats: z.array(BeatRhythmPeakBeatEntrySchema),
+  rhythms: z.array(BeatRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BeatRhythmPeakBridgeLinkSchema),
+});
+
+const PivotRhythmPeakBridgeSectionSchema = z.object({
+  pivots: z.array(PivotRhythmPeakPivotEntrySchema),
+  rhythms: z.array(PivotRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PivotRhythmPeakBridgeLinkSchema),
+});
+
+const QualityGlintSectionSchemaB157 = z.object({
+  minGlintIntense: z.number().int().min(1).max(5).optional(),
+  glints: z.array(QualityGlintEntrySchema),
+  links: z.array(QualityGlintLinkEntrySchema),
+});
+
+const QualityPrismSectionSchemaB157 = z.object({
+  minPrismIntense: z.number().int().min(1).max(5).optional(),
+  prisms: z.array(QualityPrismEntrySchema),
+  links: z.array(QualityPrismLinkEntrySchema),
+});
+
+const QualityAuraSectionSchemaB157 = z.object({
+  minAuraIntense: z.number().int().min(1).max(5).optional(),
+  auras: z.array(QualityAuraEntrySchema),
+  links: z.array(QualityAuraLinkEntrySchema),
+});
+
+const QualityHaloSectionSchemaB157 = z.object({
+  minHaloIntense: z.number().int().min(1).max(5).optional(),
+  halos: z.array(QualityHaloEntrySchema),
+  links: z.array(QualityHaloLinkEntrySchema),
+});
+
 
 
 
@@ -6861,6 +6977,14 @@ export const StoryLedgerSuiteSchema = z
     qualityWaveLink: QualityWaveSectionSchemaB156.optional(),
     qualityEmberLink: QualityEmberSectionSchemaB156.optional(),
     qualityFlareLink: QualityFlareSectionSchemaB156.optional(),
+    hookRhythmPeakBridge: HookRhythmPeakBridgeSectionSchema.optional(),
+    cutRhythmPeakBridge: CutRhythmPeakBridgeSectionSchema.optional(),
+    beatRhythmPeakBridge: BeatRhythmPeakBridgeSectionSchema.optional(),
+    pivotRhythmPeakBridge: PivotRhythmPeakBridgeSectionSchema.optional(),
+    qualityGlintLink: QualityGlintSectionSchemaB157.optional(),
+    qualityPrismLink: QualityPrismSectionSchemaB157.optional(),
+    qualityAuraLink: QualityAuraSectionSchemaB157.optional(),
+    qualityHaloLink: QualityHaloSectionSchemaB157.optional(),
   })
   .strict();
 
@@ -7336,7 +7460,15 @@ export type StoryLedgerChildReport =
   | QualityTideLinkReport
   | QualityWaveLinkReport
   | QualityEmberLinkReport
-  | QualityFlareLinkReport;
+  | QualityFlareLinkReport
+  | HookRhythmPeakBridgeReport
+  | CutRhythmPeakBridgeReport
+  | BeatRhythmPeakBridgeReport
+  | PivotRhythmPeakBridgeReport
+  | QualityGlintLinkReport
+  | QualityPrismLinkReport
+  | QualityAuraLinkReport
+  | QualityHaloLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -8316,6 +8448,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityEmberLink({ series, latestEp, ...(section as object) }),
   qualityFlareLink: (series, latestEp, section) =>
     evaluateQualityFlareLink({ series, latestEp, ...(section as object) }),
+  hookRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateHookRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  cutRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateCutRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  beatRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBeatRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  pivotRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePivotRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityGlintLink: (series, latestEp, section) =>
+    evaluateQualityGlintLink({ series, latestEp, ...(section as object) }),
+  qualityPrismLink: (series, latestEp, section) =>
+    evaluateQualityPrismLink({ series, latestEp, ...(section as object) }),
+  qualityAuraLink: (series, latestEp, section) =>
+    evaluateQualityAuraLink({ series, latestEp, ...(section as object) }),
+  qualityHaloLink: (series, latestEp, section) =>
+    evaluateQualityHaloLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
