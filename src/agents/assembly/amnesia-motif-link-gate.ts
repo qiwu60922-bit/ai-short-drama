@@ -16,6 +16,8 @@
  *  CHILD_AMNESIA_FAIL / CHILD_MOTIF_FAIL
  *  TRIGGER_MISSING / TRIGGER_LABEL_MISMATCH
  *  NO_SEED_BEFORE_RECOVER / EP_MISMATCH / PAYOFF_WITHOUT_RECOVER
+ *  COMPANION_WITHOUT_ECHO (WARN) — companionEp 建议有 motif echo
+ *  ECHO_AFTER_RECOVER (FAIL) — recover 后不应再 echo（应已 payoff）
  *  PENDING_PAIR (WARN)
  * Engineering gate only: PASS ≠ Final ≠ G3.
  */
@@ -63,6 +65,8 @@ export type AmnesiaMotifLinkFinding = {
     | 'NO_SEED_BEFORE_RECOVER'
     | 'EP_MISMATCH'
     | 'PAYOFF_WITHOUT_RECOVER'
+    | 'COMPANION_WITHOUT_ECHO'
+    | 'ECHO_AFTER_RECOVER'
     | 'PENDING_PAIR';
   severity: 'FAIL' | 'WARN';
   message: string;
@@ -258,6 +262,33 @@ export function evaluateAmnesiaMotifLink(input: unknown): AmnesiaMotifLinkReport
         fix: '在 recoverEp 同集写 role=payoff 的 appearance（唤回即母题回扣）',
       });
       continue;
+    }
+
+    const echoes = motifApps.filter((a) => a.role === 'echo');
+    const echoAfter = echoes.filter((e) => e.ep > (arc.recoverEp as number));
+    if (echoAfter.length > 0) {
+      push({
+        code: 'ECHO_AFTER_RECOVER',
+        severity: 'FAIL',
+        ids: [l.id, l.amnesiaId, l.motifId],
+        message: `${l.id} recover@E${arc.recoverEp} 后仍有 motif echo@E${echoAfter.map((e) => e.ep).join(',')}（唤回后应 payoff 收束，勿再 echo）`,
+        fix: '删掉 recoverEp 之后的 echo，或改成 payoff 以外的新母题弧',
+      });
+      continue;
+    }
+
+    const companions = arc.companionEps ?? [];
+    const missingEchoCompanions = companions.filter(
+      (ep) => ep < (arc.recoverEp as number) && !echoes.some((e) => e.ep === ep),
+    );
+    if (missingEchoCompanions.length > 0) {
+      push({
+        code: 'COMPANION_WITHOUT_ECHO',
+        severity: 'WARN',
+        ids: [l.id, l.amnesiaId, l.motifId],
+        message: `${l.id} companionEps E${missingEchoCompanions.join(',')} 无对应 motif echo（陪伴集建议回扣视觉母题）`,
+        fix: '在 companion 同集加 role=echo 的 appearance，加深失忆×母题纠缠',
+      });
     }
 
     aligned += 1;
