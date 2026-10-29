@@ -184,6 +184,9 @@
  *   · pingRhythmPeakBridge · purrRhythmPeakBridge · clapRhythmPeakBridge · rakeRhythmPeakBridge
  *   · qualityObsidianLink · qualityCoralLink · qualityTurquoiseLink · qualityLapisLink
  *
+ *   · dingRhythmPeakBridge · buzzRhythmPeakBridge · humRhythmPeakBridge · flickRhythmPeakBridge
+ *   · qualityQuartzLink · qualityBerylLink · qualityAgateLink · qualityJasperLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3378,6 +3381,58 @@ import {
   evaluateQualityLapisLink,
   type QualityLapisLinkReport,
 } from './quality-lapis-link-gate';
+import {
+  DingRhythmPeakBridgeLinkSchema,
+  DingRhythmPeakDingEntrySchema,
+  DingRhythmPeakRhythmEntrySchema,
+  evaluateDingRhythmPeakBridge,
+  type DingRhythmPeakBridgeReport,
+} from './ding-rhythm-peak-bridge-gate';
+import {
+  BuzzRhythmPeakBridgeLinkSchema,
+  BuzzRhythmPeakBuzzEntrySchema,
+  BuzzRhythmPeakRhythmEntrySchema,
+  evaluateBuzzRhythmPeakBridge,
+  type BuzzRhythmPeakBridgeReport,
+} from './buzz-rhythm-peak-bridge-gate';
+import {
+  HumRhythmPeakBridgeLinkSchema,
+  HumRhythmPeakHumEntrySchema,
+  HumRhythmPeakRhythmEntrySchema,
+  evaluateHumRhythmPeakBridge,
+  type HumRhythmPeakBridgeReport,
+} from './hum-rhythm-peak-bridge-gate';
+import {
+  FlickRhythmPeakBridgeLinkSchema,
+  FlickRhythmPeakFlickEntrySchema,
+  FlickRhythmPeakRhythmEntrySchema,
+  evaluateFlickRhythmPeakBridge,
+  type FlickRhythmPeakBridgeReport,
+} from './flick-rhythm-peak-bridge-gate';
+import {
+  QualityQuartzLinkEntrySchema,
+  QualityQuartzEntrySchema,
+  evaluateQualityQuartzLink,
+  type QualityQuartzLinkReport,
+} from './quality-quartz-link-gate';
+import {
+  QualityBerylLinkEntrySchema,
+  QualityBerylEntrySchema,
+  evaluateQualityBerylLink,
+  type QualityBerylLinkReport,
+} from './quality-beryl-link-gate';
+import {
+  QualityAgateLinkEntrySchema,
+  QualityAgateEntrySchema,
+  evaluateQualityAgateLink,
+  type QualityAgateLinkReport,
+} from './quality-agate-link-gate';
+import {
+  QualityJasperLinkEntrySchema,
+  QualityJasperEntrySchema,
+  evaluateQualityJasperLink,
+  type QualityJasperLinkReport,
+} from './quality-jasper-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -3948,6 +4003,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityCoralLink',
   'qualityTurquoiseLink',
   'qualityLapisLink',
+  'dingRhythmPeakBridge',
+  'buzzRhythmPeakBridge',
+  'humRhythmPeakBridge',
+  'flickRhythmPeakBridge',
+  'qualityQuartzLink',
+  'qualityBerylLink',
+  'qualityAgateLink',
+  'qualityJasperLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -7770,6 +7833,58 @@ const QualityLapisSectionSchemaB168 = z.object({
   links: z.array(QualityLapisLinkEntrySchema),
 });
 
+const DingRhythmPeakBridgeSectionSchema = z.object({
+  dings: z.array(DingRhythmPeakDingEntrySchema),
+  rhythms: z.array(DingRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(DingRhythmPeakBridgeLinkSchema),
+});
+
+const BuzzRhythmPeakBridgeSectionSchema = z.object({
+  buzzes: z.array(BuzzRhythmPeakBuzzEntrySchema),
+  rhythms: z.array(BuzzRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BuzzRhythmPeakBridgeLinkSchema),
+});
+
+const HumRhythmPeakBridgeSectionSchema = z.object({
+  hums: z.array(HumRhythmPeakHumEntrySchema),
+  rhythms: z.array(HumRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HumRhythmPeakBridgeLinkSchema),
+});
+
+const FlickRhythmPeakBridgeSectionSchema = z.object({
+  flicks: z.array(FlickRhythmPeakFlickEntrySchema),
+  rhythms: z.array(FlickRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(FlickRhythmPeakBridgeLinkSchema),
+});
+
+const QualityQuartzSectionSchemaB169 = z.object({
+  minQuartzIntense: z.number().int().min(1).max(5).optional(),
+  quartzes: z.array(QualityQuartzEntrySchema),
+  links: z.array(QualityQuartzLinkEntrySchema),
+});
+
+const QualityBerylSectionSchemaB169 = z.object({
+  minBerylIntense: z.number().int().min(1).max(5).optional(),
+  beryls: z.array(QualityBerylEntrySchema),
+  links: z.array(QualityBerylLinkEntrySchema),
+});
+
+const QualityAgateSectionSchemaB169 = z.object({
+  minAgateIntense: z.number().int().min(1).max(5).optional(),
+  agates: z.array(QualityAgateEntrySchema),
+  links: z.array(QualityAgateLinkEntrySchema),
+});
+
+const QualityJasperSectionSchemaB169 = z.object({
+  minJasperIntense: z.number().int().min(1).max(5).optional(),
+  jaspers: z.array(QualityJasperEntrySchema),
+  links: z.array(QualityJasperLinkEntrySchema),
+});
+
 
 
 
@@ -8353,6 +8468,14 @@ export const StoryLedgerSuiteSchema = z
     qualityCoralLink: QualityCoralSectionSchemaB168.optional(),
     qualityTurquoiseLink: QualityTurquoiseSectionSchemaB168.optional(),
     qualityLapisLink: QualityLapisSectionSchemaB168.optional(),
+    dingRhythmPeakBridge: DingRhythmPeakBridgeSectionSchema.optional(),
+    buzzRhythmPeakBridge: BuzzRhythmPeakBridgeSectionSchema.optional(),
+    humRhythmPeakBridge: HumRhythmPeakBridgeSectionSchema.optional(),
+    flickRhythmPeakBridge: FlickRhythmPeakBridgeSectionSchema.optional(),
+    qualityQuartzLink: QualityQuartzSectionSchemaB169.optional(),
+    qualityBerylLink: QualityBerylSectionSchemaB169.optional(),
+    qualityAgateLink: QualityAgateSectionSchemaB169.optional(),
+    qualityJasperLink: QualityJasperSectionSchemaB169.optional(),
   })
   .strict();
 
@@ -8924,7 +9047,15 @@ export type StoryLedgerChildReport =
   | QualityObsidianLinkReport
   | QualityCoralLinkReport
   | QualityTurquoiseLinkReport
-  | QualityLapisLinkReport;
+  | QualityLapisLinkReport
+  | DingRhythmPeakBridgeReport
+  | BuzzRhythmPeakBridgeReport
+  | HumRhythmPeakBridgeReport
+  | FlickRhythmPeakBridgeReport
+  | QualityQuartzLinkReport
+  | QualityBerylLinkReport
+  | QualityAgateLinkReport
+  | QualityJasperLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -10097,6 +10228,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityTurquoiseLink({ series, latestEp, ...(section as object) }),
   qualityLapisLink: (series, latestEp, section) =>
     evaluateQualityLapisLink({ series, latestEp, ...(section as object) }),
+  dingRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateDingRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  buzzRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBuzzRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  humRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateHumRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  flickRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateFlickRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityQuartzLink: (series, latestEp, section) =>
+    evaluateQualityQuartzLink({ series, latestEp, ...(section as object) }),
+  qualityBerylLink: (series, latestEp, section) =>
+    evaluateQualityBerylLink({ series, latestEp, ...(section as object) }),
+  qualityAgateLink: (series, latestEp, section) =>
+    evaluateQualityAgateLink({ series, latestEp, ...(section as object) }),
+  qualityJasperLink: (series, latestEp, section) =>
+    evaluateQualityJasperLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
