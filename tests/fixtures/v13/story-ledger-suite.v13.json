@@ -6137,5 +6137,435 @@
         "ep": 10
       }
     ]
+  },
+  "conflictMaskPeakBridge": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cmp",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-cmp",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cmp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cmp",
+        "conflictId": "挑衅反噬-cmp",
+        "maskId": "花心纨绔-cmp",
+        "peakId": "对峙峰值-cmp",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaBondPeakBridge": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-abp",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-abp",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-abp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-abp",
+        "amnesiaId": "祁南失忆-abp",
+        "bondId": "机长契约-abp",
+        "peakId": "对峙峰值-abp",
+        "ep": 10
+      }
+    ]
+  },
+  "foreshadowVestPeakBridge": {
+    "items": [
+      {
+        "id": "机长身份-fvp",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 5
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-fvp",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fvp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fvp",
+        "foreshadowId": "机长身份-fvp",
+        "vestId": "机长马甲-fvp",
+        "peakId": "对峙峰值-fvp",
+        "ep": 10
+      }
+    ]
+  },
+  "conflictMaskLink": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cm",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-cm",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cm",
+        "conflictId": "挑衅反噬-cm",
+        "maskId": "花心纨绔-cm",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaCliffLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-ac",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-ac",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ac",
+        "amnesiaId": "祁南失忆-ac",
+        "cliffLinkId": "C9-10-ac",
+        "ep": 10
+      }
+    ]
+  },
+  "bondMotifLink": {
+    "bonds": [
+      {
+        "id": "江少契约-bm",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "motifs": [
+      {
+        "id": "white-rose-bm",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-bm",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-bm",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-bm",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bm",
+        "bondId": "江少契约-bm",
+        "motifId": "white-rose-bm"
+      }
+    ]
+  },
+  "frequencyCliffLink": {
+    "frequencies": [
+      {
+        "id": "离婚99次-fc",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-fc",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fc",
+        "frequencyId": "离婚99次-fc",
+        "cliffLinkId": "C9-10-fc",
+        "ep": 10
+      }
+    ]
   }
 }
