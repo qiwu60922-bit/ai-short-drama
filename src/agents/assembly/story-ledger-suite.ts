@@ -8,6 +8,8 @@
  *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink · foreshadowMotifLink
  *   · allianceBondLink · personaVestLink · stageGoalConflictLink · reactionPeakLink
  *   · stageGoal · conflictPayoff · peakBeforePayoff · abilityRule  (baseline singles)
+ *   · qualityLeap · foreshadowLedger · motifCallback · allianceLedger
+ *   · bondContract · identityVest · frequencyTipping  (more baselines)
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -28,9 +30,13 @@ import {
 } from './fake-ledger-reconcile-gate';
 import {
   BondContractEntrySchema,
+  evaluateBondContract,
+  type BondContractReport,
 } from './bond-contract-gate';
 import {
   FrequencyTippingEntrySchema,
+  evaluateFrequencyTipping,
+  type FrequencyTippingReport,
 } from './frequency-tipping-gate';
 import {
   BondFrequencyLinkEntrySchema,
@@ -42,9 +48,12 @@ import {
   VestMaskPeakLinkEntrySchema,
   type VestMaskPeakLinkReport,
 } from './vest-mask-peak-link-gate';
-import { IdentityVestEntrySchema } from './identity-vest-gate';
+import {
+  IdentityVestEntrySchema,
+  evaluateIdentityVest,
+  type IdentityVestReport,
+} from './identity-vest-gate';
 import { PersonaMaskEntrySchema } from './persona-mask-gate';
-import { PeakBeforePayoffEntrySchema } from './peak-before-payoff-gate';
 import {
   FrequencyPeakLinkEntrySchema,
   evaluateFrequencyPeakLink,
@@ -59,6 +68,8 @@ import { AmnesiaArcEntrySchema } from './amnesia-arc-gate';
 import {
   MotifEntrySchema,
   MotifAppearanceSchema,
+  evaluateMotifCallbacks,
+  type MotifCallbackReport,
 } from './motif-callback-gate';
 import {
   CliffCascadeLinkEntrySchema,
@@ -70,7 +81,11 @@ import {
   evaluateForeshadowMotifLink,
   type ForeshadowMotifLinkReport,
 } from './foreshadow-motif-link-gate';
-import { ForeshadowItemSchema } from './foreshadow-ledger-gate';
+import {
+  ForeshadowItemSchema,
+  evaluateForeshadowLedger,
+  type ForeshadowLedgerReport,
+} from './foreshadow-ledger-gate';
 import {
   AllianceBondLinkEntrySchema,
   evaluateAllianceBondLink,
@@ -79,6 +94,8 @@ import {
 import {
   AllianceEntrySchema,
   AllianceEventSchema,
+  evaluateAllianceLedger,
+  type AllianceLedgerReport,
 } from './alliance-ledger-gate';
 import {
   PersonaVestLinkEntrySchema,
@@ -86,7 +103,6 @@ import {
   type PersonaVestLinkReport,
 } from './persona-vest-link-gate';
 import { PersonaCardSchema } from './persona-card-gate';
-import { IdentityVestEntrySchema } from './identity-vest-gate';
 import {
   StageGoalConflictLinkEntrySchema,
   evaluateStageGoalConflictLink,
@@ -123,6 +139,11 @@ import {
   evaluateAbilityRules,
   type AbilityRuleReport,
 } from './ability-rule-gate';
+import {
+  QualityLeapDocSchema,
+  evaluateQualityLeap,
+  type QualityLeapReport,
+} from './quality-leap-gate';
 
 const Ep = z.number().int().positive();
 
@@ -143,6 +164,13 @@ export const STORY_LEDGER_GATE_IDS = [
   'conflictPayoff',
   'peakBeforePayoff',
   'abilityRule',
+  'qualityLeap',
+  'foreshadowLedger',
+  'motifCallback',
+  'allianceLedger',
+  'bondContract',
+  'identityVest',
+  'frequencyTipping',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -254,6 +282,42 @@ const AbilityRuleSectionSchema = z.object({
   uses: z.array(AbilityUseSchema),
 });
 
+const ForeshadowLedgerSectionSchema = z.object({
+  items: z.array(ForeshadowItemSchema),
+  episodes: z
+    .array(
+      z.object({
+        ep: Ep,
+        plants: z.array(z.string()).optional(),
+        advances: z.array(z.string()).optional(),
+        payoffs: z.array(z.string()).optional(),
+      }),
+    )
+    .optional(),
+});
+
+const MotifCallbackSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+});
+
+const AllianceLedgerSectionSchema = z.object({
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+});
+
+const BondContractSectionSchema = z.object({
+  entries: z.array(BondContractEntrySchema),
+});
+
+const IdentityVestSectionSchema = z.object({
+  entries: z.array(IdentityVestEntrySchema),
+});
+
+const FrequencyTippingSectionSchema = z.object({
+  entries: z.array(FrequencyTippingEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -274,6 +338,13 @@ export const StoryLedgerSuiteSchema = z
     conflictPayoff: ConflictPayoffSectionSchema.optional(),
     peakBeforePayoff: PeakBeforePayoffSectionSchema.optional(),
     abilityRule: AbilityRuleSectionSchema.optional(),
+    qualityLeap: QualityLeapDocSchema.optional(),
+    foreshadowLedger: ForeshadowLedgerSectionSchema.optional(),
+    motifCallback: MotifCallbackSectionSchema.optional(),
+    allianceLedger: AllianceLedgerSectionSchema.optional(),
+    bondContract: BondContractSectionSchema.optional(),
+    identityVest: IdentityVestSectionSchema.optional(),
+    frequencyTipping: FrequencyTippingSectionSchema.optional(),
   })
   .strict();
 
@@ -295,7 +366,14 @@ export type StoryLedgerChildReport =
   | StageGoalReport
   | ConflictPayoffReport
   | PeakBeforePayoffReport
-  | AbilityRuleReport;
+  | AbilityRuleReport
+  | QualityLeapReport
+  | ForeshadowLedgerReport
+  | MotifCallbackReport
+  | AllianceLedgerReport
+  | BondContractReport
+  | IdentityVestReport
+  | FrequencyTippingReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -368,6 +446,19 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluatePeakBeforePayoff({ series, latestEp, ...(section as object) }),
   abilityRule: (series, latestEp, section) =>
     evaluateAbilityRules({ series, latestEp, ...(section as object) }),
+  qualityLeap: (_series, _latestEp, section) => evaluateQualityLeap(section),
+  foreshadowLedger: (series, latestEp, section) =>
+    evaluateForeshadowLedger({ series, latestEp, ...(section as object) }),
+  motifCallback: (series, latestEp, section) =>
+    evaluateMotifCallbacks({ series, latestEp, ...(section as object) }),
+  allianceLedger: (series, latestEp, section) =>
+    evaluateAllianceLedger({ series, latestEp, ...(section as object) }),
+  bondContract: (series, latestEp, section) =>
+    evaluateBondContract({ series, latestEp, ...(section as object) }),
+  identityVest: (series, latestEp, section) =>
+    evaluateIdentityVest({ series, latestEp, ...(section as object) }),
+  frequencyTipping: (series, latestEp, section) =>
+    evaluateFrequencyTipping({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
