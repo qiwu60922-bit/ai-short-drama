@@ -43,6 +43,9 @@
  *   · personaBondPeakBridge · abilityVestPeakBridge · allianceMaskPeakBridge
  *   · bondCliffLink · allianceMaskLink · amnesiaVestLink · conflictPeakLink
  *
+ *   · conflictMaskPeakBridge · amnesiaBondPeakBridge · foreshadowVestPeakBridge
+ *   · conflictMaskLink · amnesiaCliffLink · bondMotifLink · frequencyCliffLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -631,6 +634,41 @@ import {
   evaluateConflictPeakLink,
   type ConflictPeakLinkReport,
 } from './conflict-peak-link-gate';
+import {
+  ConflictMaskPeakBridgeLinkSchema,
+  evaluateConflictMaskPeakBridge,
+  type ConflictMaskPeakBridgeReport,
+} from './conflict-mask-peak-bridge-gate';
+import {
+  AmnesiaBondPeakBridgeLinkSchema,
+  evaluateAmnesiaBondPeakBridge,
+  type AmnesiaBondPeakBridgeReport,
+} from './amnesia-bond-peak-bridge-gate';
+import {
+  ForeshadowVestPeakBridgeLinkSchema,
+  evaluateForeshadowVestPeakBridge,
+  type ForeshadowVestPeakBridgeReport,
+} from './foreshadow-vest-peak-bridge-gate';
+import {
+  ConflictMaskLinkEntrySchema,
+  evaluateConflictMaskLink,
+  type ConflictMaskLinkReport,
+} from './conflict-mask-link-gate';
+import {
+  AmnesiaCliffLinkEntrySchema,
+  evaluateAmnesiaCliffLink,
+  type AmnesiaCliffLinkReport,
+} from './amnesia-cliff-link-gate';
+import {
+  BondMotifLinkEntrySchema,
+  evaluateBondMotifLink,
+  type BondMotifLinkReport,
+} from './bond-motif-link-gate';
+import {
+  FrequencyCliffLinkEntrySchema,
+  evaluateFrequencyCliffLink,
+  type FrequencyCliffLinkReport,
+} from './frequency-cliff-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -746,6 +784,13 @@ export const STORY_LEDGER_GATE_IDS = [
   'allianceMaskLink',
   'amnesiaVestLink',
   'conflictPeakLink',
+  'conflictMaskPeakBridge',
+  'amnesiaBondPeakBridge',
+  'foreshadowVestPeakBridge',
+  'conflictMaskLink',
+  'amnesiaCliffLink',
+  'bondMotifLink',
+  'frequencyCliffLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -1460,6 +1505,53 @@ const ConflictPeakSectionSchema = z.object({
   links: z.array(ConflictPeakLinkEntrySchema),
 });
 
+
+const ConflictMaskPeakBridgeSectionSchema = z.object({
+  conflicts: z.array(ConflictEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ConflictMaskPeakBridgeLinkSchema),
+});
+
+const AmnesiaBondPeakBridgeSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  bonds: z.array(BondContractEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AmnesiaBondPeakBridgeLinkSchema),
+});
+
+const ForeshadowVestPeakBridgeSectionSchema = z.object({
+  items: z.array(ForeshadowItemSchema),
+  vests: z.array(IdentityVestEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ForeshadowVestPeakBridgeLinkSchema),
+});
+
+const ConflictMaskSectionSchema = z.object({
+  conflicts: z.array(ConflictEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  links: z.array(ConflictMaskLinkEntrySchema),
+});
+
+const AmnesiaCliffSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  links: z.array(AmnesiaCliffLinkEntrySchema),
+});
+
+const BondMotifSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(BondMotifLinkEntrySchema),
+});
+
+const FrequencyCliffSectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  links: z.array(FrequencyCliffLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -1575,6 +1667,13 @@ export const StoryLedgerSuiteSchema = z
     allianceMaskLink: AllianceMaskSectionSchema.optional(),
     amnesiaVestLink: AmnesiaVestSectionSchema.optional(),
     conflictPeakLink: ConflictPeakSectionSchema.optional(),
+    conflictMaskPeakBridge: ConflictMaskPeakBridgeSectionSchema.optional(),
+    amnesiaBondPeakBridge: AmnesiaBondPeakBridgeSectionSchema.optional(),
+    foreshadowVestPeakBridge: ForeshadowVestPeakBridgeSectionSchema.optional(),
+    conflictMaskLink: ConflictMaskSectionSchema.optional(),
+    amnesiaCliffLink: AmnesiaCliffSectionSchema.optional(),
+    bondMotifLink: BondMotifSectionSchema.optional(),
+    frequencyCliffLink: FrequencyCliffSectionSchema.optional(),
   })
   .strict();
 
@@ -1691,7 +1790,14 @@ export type StoryLedgerChildReport =
   | BondCliffLinkReport
   | AllianceMaskLinkReport
   | AmnesiaVestLinkReport
-  | ConflictPeakLinkReport;
+  | ConflictPeakLinkReport
+  | ConflictMaskPeakBridgeReport
+  | AmnesiaBondPeakBridgeReport
+  | ForeshadowVestPeakBridgeReport
+  | ConflictMaskLinkReport
+  | AmnesiaCliffLinkReport
+  | BondMotifLinkReport
+  | FrequencyCliffLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -1953,6 +2059,20 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateAmnesiaVestLink({ series, latestEp, ...(section as object) }),
   conflictPeakLink: (series, latestEp, section) =>
     evaluateConflictPeakLink({ series, latestEp, ...(section as object) }),
+  conflictMaskPeakBridge: (series, latestEp, section) =>
+    evaluateConflictMaskPeakBridge({ series, latestEp, ...(section as object) }),
+  amnesiaBondPeakBridge: (series, latestEp, section) =>
+    evaluateAmnesiaBondPeakBridge({ series, latestEp, ...(section as object) }),
+  foreshadowVestPeakBridge: (series, latestEp, section) =>
+    evaluateForeshadowVestPeakBridge({ series, latestEp, ...(section as object) }),
+  conflictMaskLink: (series, latestEp, section) =>
+    evaluateConflictMaskLink({ series, latestEp, ...(section as object) }),
+  amnesiaCliffLink: (series, latestEp, section) =>
+    evaluateAmnesiaCliffLink({ series, latestEp, ...(section as object) }),
+  bondMotifLink: (series, latestEp, section) =>
+    evaluateBondMotifLink({ series, latestEp, ...(section as object) }),
+  frequencyCliffLink: (series, latestEp, section) =>
+    evaluateFrequencyCliffLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
