@@ -187,6 +187,9 @@
  *   · dingRhythmPeakBridge · buzzRhythmPeakBridge · humRhythmPeakBridge · flickRhythmPeakBridge
  *   · qualityQuartzLink · qualityBerylLink · qualityAgateLink · qualityJasperLink
  *
+ *   · tickRhythmPeakBridge · whirRhythmPeakBridge · popRhythmPeakBridge · clickRhythmPeakBridge
+ *   · qualityFlintLink · qualityGraniteLink · qualityMarbleLink · qualitySlateLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3433,6 +3436,58 @@ import {
   evaluateQualityJasperLink,
   type QualityJasperLinkReport,
 } from './quality-jasper-link-gate';
+import {
+  TickRhythmPeakBridgeLinkSchema,
+  TickRhythmPeakTickEntrySchema,
+  TickRhythmPeakRhythmEntrySchema,
+  evaluateTickRhythmPeakBridge,
+  type TickRhythmPeakBridgeReport,
+} from './tick-rhythm-peak-bridge-gate';
+import {
+  WhirRhythmPeakBridgeLinkSchema,
+  WhirRhythmPeakWhirEntrySchema,
+  WhirRhythmPeakRhythmEntrySchema,
+  evaluateWhirRhythmPeakBridge,
+  type WhirRhythmPeakBridgeReport,
+} from './whir-rhythm-peak-bridge-gate';
+import {
+  PopRhythmPeakBridgeLinkSchema,
+  PopRhythmPeakPopEntrySchema,
+  PopRhythmPeakRhythmEntrySchema,
+  evaluatePopRhythmPeakBridge,
+  type PopRhythmPeakBridgeReport,
+} from './pop-rhythm-peak-bridge-gate';
+import {
+  ClickRhythmPeakBridgeLinkSchema,
+  ClickRhythmPeakClickEntrySchema,
+  ClickRhythmPeakRhythmEntrySchema,
+  evaluateClickRhythmPeakBridge,
+  type ClickRhythmPeakBridgeReport,
+} from './click-rhythm-peak-bridge-gate';
+import {
+  QualityFlintLinkEntrySchema,
+  QualityFlintEntrySchema,
+  evaluateQualityFlintLink,
+  type QualityFlintLinkReport,
+} from './quality-flint-link-gate';
+import {
+  QualityGraniteLinkEntrySchema,
+  QualityGraniteEntrySchema,
+  evaluateQualityGraniteLink,
+  type QualityGraniteLinkReport,
+} from './quality-granite-link-gate';
+import {
+  QualityMarbleLinkEntrySchema,
+  QualityMarbleEntrySchema,
+  evaluateQualityMarbleLink,
+  type QualityMarbleLinkReport,
+} from './quality-marble-link-gate';
+import {
+  QualitySlateLinkEntrySchema,
+  QualitySlateEntrySchema,
+  evaluateQualitySlateLink,
+  type QualitySlateLinkReport,
+} from './quality-slate-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4011,6 +4066,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityBerylLink',
   'qualityAgateLink',
   'qualityJasperLink',
+  'tickRhythmPeakBridge',
+  'whirRhythmPeakBridge',
+  'popRhythmPeakBridge',
+  'clickRhythmPeakBridge',
+  'qualityFlintLink',
+  'qualityGraniteLink',
+  'qualityMarbleLink',
+  'qualitySlateLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -7885,6 +7948,58 @@ const QualityJasperSectionSchemaB169 = z.object({
   links: z.array(QualityJasperLinkEntrySchema),
 });
 
+const TickRhythmPeakBridgeSectionSchema = z.object({
+  ticks: z.array(TickRhythmPeakTickEntrySchema),
+  rhythms: z.array(TickRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(TickRhythmPeakBridgeLinkSchema),
+});
+
+const WhirRhythmPeakBridgeSectionSchema = z.object({
+  whirs: z.array(WhirRhythmPeakWhirEntrySchema),
+  rhythms: z.array(WhirRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(WhirRhythmPeakBridgeLinkSchema),
+});
+
+const PopRhythmPeakBridgeSectionSchema = z.object({
+  pops: z.array(PopRhythmPeakPopEntrySchema),
+  rhythms: z.array(PopRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PopRhythmPeakBridgeLinkSchema),
+});
+
+const ClickRhythmPeakBridgeSectionSchema = z.object({
+  clicks: z.array(ClickRhythmPeakClickEntrySchema),
+  rhythms: z.array(ClickRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ClickRhythmPeakBridgeLinkSchema),
+});
+
+const QualityFlintSectionSchemaB170 = z.object({
+  minFlintIntense: z.number().int().min(1).max(5).optional(),
+  flints: z.array(QualityFlintEntrySchema),
+  links: z.array(QualityFlintLinkEntrySchema),
+});
+
+const QualityGraniteSectionSchemaB170 = z.object({
+  minGraniteIntense: z.number().int().min(1).max(5).optional(),
+  granites: z.array(QualityGraniteEntrySchema),
+  links: z.array(QualityGraniteLinkEntrySchema),
+});
+
+const QualityMarbleSectionSchemaB170 = z.object({
+  minMarbleIntense: z.number().int().min(1).max(5).optional(),
+  marbles: z.array(QualityMarbleEntrySchema),
+  links: z.array(QualityMarbleLinkEntrySchema),
+});
+
+const QualitySlateSectionSchemaB170 = z.object({
+  minSlateIntense: z.number().int().min(1).max(5).optional(),
+  slates: z.array(QualitySlateEntrySchema),
+  links: z.array(QualitySlateLinkEntrySchema),
+});
+
 
 
 
@@ -8476,6 +8591,14 @@ export const StoryLedgerSuiteSchema = z
     qualityBerylLink: QualityBerylSectionSchemaB169.optional(),
     qualityAgateLink: QualityAgateSectionSchemaB169.optional(),
     qualityJasperLink: QualityJasperSectionSchemaB169.optional(),
+    tickRhythmPeakBridge: TickRhythmPeakBridgeSectionSchema.optional(),
+    whirRhythmPeakBridge: WhirRhythmPeakBridgeSectionSchema.optional(),
+    popRhythmPeakBridge: PopRhythmPeakBridgeSectionSchema.optional(),
+    clickRhythmPeakBridge: ClickRhythmPeakBridgeSectionSchema.optional(),
+    qualityFlintLink: QualityFlintSectionSchemaB170.optional(),
+    qualityGraniteLink: QualityGraniteSectionSchemaB170.optional(),
+    qualityMarbleLink: QualityMarbleSectionSchemaB170.optional(),
+    qualitySlateLink: QualitySlateSectionSchemaB170.optional(),
   })
   .strict();
 
@@ -9055,7 +9178,15 @@ export type StoryLedgerChildReport =
   | QualityQuartzLinkReport
   | QualityBerylLinkReport
   | QualityAgateLinkReport
-  | QualityJasperLinkReport;
+  | QualityJasperLinkReport
+  | TickRhythmPeakBridgeReport
+  | WhirRhythmPeakBridgeReport
+  | PopRhythmPeakBridgeReport
+  | ClickRhythmPeakBridgeReport
+  | QualityFlintLinkReport
+  | QualityGraniteLinkReport
+  | QualityMarbleLinkReport
+  | QualitySlateLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -10244,6 +10375,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityAgateLink({ series, latestEp, ...(section as object) }),
   qualityJasperLink: (series, latestEp, section) =>
     evaluateQualityJasperLink({ series, latestEp, ...(section as object) }),
+  tickRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateTickRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  whirRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateWhirRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  popRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePopRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  clickRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateClickRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityFlintLink: (series, latestEp, section) =>
+    evaluateQualityFlintLink({ series, latestEp, ...(section as object) }),
+  qualityGraniteLink: (series, latestEp, section) =>
+    evaluateQualityGraniteLink({ series, latestEp, ...(section as object) }),
+  qualityMarbleLink: (series, latestEp, section) =>
+    evaluateQualityMarbleLink({ series, latestEp, ...(section as object) }),
+  qualitySlateLink: (series, latestEp, section) =>
+    evaluateQualitySlateLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {

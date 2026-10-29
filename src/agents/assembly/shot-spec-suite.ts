@@ -81,6 +81,7 @@
  *   · hookHardMidWinStrap · hookHardSetupWinStrap · hookHardReactionWinStrap
  *   · hookHardMidWinTie · hookHardSetupWinTie · hookHardReactionWinTie
  *   · hookHardMidWinPin · hookHardSetupWinPin · hookHardReactionWinPin
+ *   · hookHardMidWinClip · hookHardSetupWinClip · hookHardReactionWinClip
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -1305,6 +1306,21 @@ import {
   type HookHardReactionWinPinOptions,
   type HookHardReactionWinPinReport,
 } from './hook-hard-reaction-win-pin-gate';
+import {
+  evaluateHookHardMidWinClip,
+  type HookHardMidWinClipOptions,
+  type HookHardMidWinClipReport,
+} from './hook-hard-mid-win-clip-gate';
+import {
+  evaluateHookHardSetupWinClip,
+  type HookHardSetupWinClipOptions,
+  type HookHardSetupWinClipReport,
+} from './hook-hard-setup-win-clip-gate';
+import {
+  evaluateHookHardReactionWinClip,
+  type HookHardReactionWinClipOptions,
+  type HookHardReactionWinClipReport,
+} from './hook-hard-reaction-win-clip-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -1537,6 +1553,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'hookHardMidWinPin',
   'hookHardSetupWinPin',
   'hookHardReactionWinPin',
+  'hookHardMidWinClip',
+  'hookHardSetupWinClip',
+  'hookHardReactionWinClip',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -5308,6 +5327,60 @@ const HookHardReactionWinPinOptsSchema = z
   })
   .strict();
 
+const HookHardMidWinClipOptsSchema = z
+  .object({
+    maxMidSetupRatio: z.number().positive().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+const HookHardSetupWinClipOptsSchema = z
+  .object({
+    maxMidSetupRatio: z.number().positive().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+const HookHardReactionWinClipOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requirePriorReaction: z.boolean().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 
 
 const HookHardReactionWinEdgeOptsSchema = z
@@ -5575,6 +5648,9 @@ export const ShotSpecSuiteSchema = z
     hookHardMidWinPin: ShotSpecDocSchema.optional(),
     hookHardSetupWinPin: ShotSpecDocSchema.optional(),
     hookHardReactionWinPin: ShotSpecDocSchema.optional(),
+    hookHardMidWinClip: ShotSpecDocSchema.optional(),
+    hookHardSetupWinClip: ShotSpecDocSchema.optional(),
+    hookHardReactionWinClip: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -5803,6 +5879,9 @@ export const ShotSpecSuiteSchema = z
     hookHardMidWinPinOpts: HookHardMidWinPinOptsSchema.optional(),
     hookHardSetupWinPinOpts: HookHardSetupWinPinOptsSchema.optional(),
     hookHardReactionWinPinOpts: HookHardReactionWinPinOptsSchema.optional(),
+    hookHardMidWinClipOpts: HookHardMidWinClipOptsSchema.optional(),
+    hookHardSetupWinClipOpts: HookHardSetupWinClipOptsSchema.optional(),
+    hookHardReactionWinClipOpts: HookHardReactionWinClipOptsSchema.optional(),
   })
   .strict();
 
@@ -6036,7 +6115,10 @@ export type ShotSpecChildReport =
   | HookHardReactionWinTieReport
   | HookHardMidWinPinReport
   | HookHardSetupWinPinReport
-  | HookHardReactionWinPinReport;
+  | HookHardReactionWinPinReport
+  | HookHardMidWinClipReport
+  | HookHardSetupWinClipReport
+  | HookHardReactionWinClipReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -6332,6 +6414,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     hookHardMidWinPinOpts,
     hookHardSetupWinPinOpts,
     hookHardReactionWinPinOpts,
+    hookHardMidWinClipOpts,
+    hookHardSetupWinClipOpts,
+    hookHardReactionWinClipOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -8434,6 +8519,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateHookHardReactionWinPin(
         sections.hookHardReactionWinPin,
         (hookHardReactionWinPinOpts ?? {}) as HookHardReactionWinPinOptions,
+      ),
+    );
+  }
+  if (sections.hookHardMidWinClip !== undefined) {
+    run(
+      'hookHardMidWinClip',
+      evaluateHookHardMidWinClip(
+        sections.hookHardMidWinClip,
+        (hookHardMidWinClipOpts ?? {}) as HookHardMidWinClipOptions,
+      ),
+    );
+  }
+  if (sections.hookHardSetupWinClip !== undefined) {
+    run(
+      'hookHardSetupWinClip',
+      evaluateHookHardSetupWinClip(
+        sections.hookHardSetupWinClip,
+        (hookHardSetupWinClipOpts ?? {}) as HookHardSetupWinClipOptions,
+      ),
+    );
+  }
+  if (sections.hookHardReactionWinClip !== undefined) {
+    run(
+      'hookHardReactionWinClip',
+      evaluateHookHardReactionWinClip(
+        sections.hookHardReactionWinClip,
+        (hookHardReactionWinClipOpts ?? {}) as HookHardReactionWinClipOptions,
       ),
     );
   }
