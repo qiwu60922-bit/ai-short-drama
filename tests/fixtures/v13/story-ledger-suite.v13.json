@@ -18761,5 +18761,602 @@
         "amnesiaId": "祁南失忆-pal"
       }
     ]
+  },
+  "amnesiaAbilityPeakBridge": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-aapb",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "圣诞摩天轮对视唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "abilities": [
+      {
+        "id": "seer-aapb",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-aapb",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-aapb",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-aapb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-aapb-aap2",
+        "amnesiaId": "祁南失忆-aapb",
+        "abilityId": "seer-aapb",
+        "peakId": "对峙峰值-aapb",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaCliffPeakBridge": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-capb",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-capb",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追问"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "反转"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-capb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-capb-acp2",
+        "amnesiaId": "祁南失忆-capb",
+        "cliffLinkId": "C9-10-capb",
+        "peakId": "对峙峰值-capb",
+        "ep": 10
+      }
+    ]
+  },
+  "bondAmnesiaPeakBridge": {
+    "bonds": [
+      {
+        "id": "机长契约-abp",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-abp",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-abp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-abp-bap2",
+        "bondId": "机长契约-abp",
+        "amnesiaId": "祁南失忆-abp",
+        "peakId": "对峙峰值-abp",
+        "ep": 10
+      }
+    ]
+  },
+  "personaAmnesiaPeakBridge": {
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-appb"
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-appb",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-appb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-appb2-pap2",
+        "cardSlug": "su-jianqing-appb",
+        "amnesiaId": "祁南失忆-appb",
+        "peakId": "对峙峰值-appb",
+        "ep": 10
+      }
+    ]
+  },
+  "handoffAmnesiaLink": {
+    "handoffs": [
+      {
+        "id": "H8-9-am",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-AH0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "唤回开场"
+            },
+            {
+              "shotId": "EP08-AH1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对视蓄势"
+            },
+            {
+              "shotId": "EP08-AH2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "记忆闪回"
+            },
+            {
+              "shotId": "EP08-AH3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外脚步未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-AH0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP09-AH1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问延续"
+            },
+            {
+              "shotId": "EP09-AH2",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "新证人"
+            },
+            {
+              "shotId": "EP09-AH3",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 8,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-amnesia-handoff-hal2",
+        "handoffId": "H8-9-am",
+        "amnesiaId": "祁南失忆"
+      }
+    ]
+  },
+  "vestAmnesiaLink": {
+    "vests": [
+      {
+        "id": "机长马甲-av",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-av",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-av-val2",
+        "vestId": "机长马甲-av",
+        "amnesiaId": "祁南失忆-av"
+      }
+    ]
+  },
+  "qualityAmnesiaLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 8,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-aq-qal2",
+        "amnesiaId": "祁南失忆",
+        "ep": 8,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "amnesiaForeshadowLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-fal",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "items": [
+      {
+        "id": "机长身份-fal",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 5
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fal-afl2",
+        "amnesiaId": "祁南失忆-fal",
+        "foreshadowId": "机长身份-fal",
+        "ep": 10
+      }
+    ]
   }
 }
