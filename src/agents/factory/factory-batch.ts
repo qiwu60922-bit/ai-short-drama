@@ -83,7 +83,7 @@ export async function runFactoryBatch(
       JSON.stringify(storyLedger, null, 2),
     );
     notes.push(
-      `story-ledger-suite: ${storyLedger.verdict} (ran=${storyLedger.metrics.ran} failed=${storyLedger.metrics.failed} skipped=${storyLedger.metrics.skipped})`,
+      `story-ledger-suite: ${storyLedger.verdict} (ran=${storyLedger.metrics.ran} passed=${storyLedger.metrics.passed} failed=${storyLedger.metrics.failed} skipped=${storyLedger.metrics.skipped})`,
     );
     if (storyLedger.verdict === 'FAIL' && storyMode === 'enforce') {
       return blockedSummary(rootDir, 'storyLedger', notes, { storyLedger });
@@ -97,7 +97,7 @@ export async function runFactoryBatch(
       JSON.stringify(shotSpec, null, 2),
     );
     notes.push(
-      `shot-spec-suite: ${shotSpec.verdict} (ran=${shotSpec.metrics.ran} failed=${shotSpec.metrics.failed} skipped=${shotSpec.metrics.skipped})`,
+      `shot-spec-suite: ${shotSpec.verdict} (ran=${shotSpec.metrics.ran} passed=${shotSpec.metrics.passed} failed=${shotSpec.metrics.failed} skipped=${shotSpec.metrics.skipped})`,
     );
     if (shotSpec.verdict === 'FAIL' && shotMode === 'enforce') {
       return blockedSummary(rootDir, 'shotSpec', notes, {
