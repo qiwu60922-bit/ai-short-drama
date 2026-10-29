@@ -94,6 +94,7 @@
  *   · hookHardMidWinToggle · hookHardSetupWinToggle · hookHardReactionWinToggle
  *   · hookHardMidWinBuckle · hookHardSetupWinBuckle · hookHardReactionWinBuckle
  *   · hookHardMidWinCotter · hookHardSetupWinCotter · hookHardReactionWinCotter
+ *   · hookHardMidWinPeg · hookHardSetupWinPeg · hookHardReactionWinPeg
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -1514,6 +1515,21 @@ import {
   type HookHardReactionWinCotterOptions,
   type HookHardReactionWinCotterReport,
 } from './hook-hard-reaction-win-cotter-gate';
+import {
+  evaluateHookHardMidWinPeg,
+  type HookHardMidWinPegOptions,
+  type HookHardMidWinPegReport,
+} from './hook-hard-mid-win-peg-gate';
+import {
+  evaluateHookHardSetupWinPeg,
+  type HookHardSetupWinPegOptions,
+  type HookHardSetupWinPegReport,
+} from './hook-hard-setup-win-peg-gate';
+import {
+  evaluateHookHardReactionWinPeg,
+  type HookHardReactionWinPegOptions,
+  type HookHardReactionWinPegReport,
+} from './hook-hard-reaction-win-peg-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -1785,6 +1801,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'hookHardMidWinCotter',
   'hookHardSetupWinCotter',
   'hookHardReactionWinCotter',
+  'hookHardMidWinPeg',
+  'hookHardSetupWinPeg',
+  'hookHardReactionWinPeg',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -6258,6 +6277,60 @@ const HookHardReactionWinCotterOptsSchema = z
   })
   .strict();
 
+const HookHardMidWinPegOptsSchema = z
+  .object({
+    maxMidSetupRatio: z.number().positive().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+const HookHardSetupWinPegOptsSchema = z
+  .object({
+    maxSetupSetupRatio: z.number().positive().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+const HookHardReactionWinPegOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requirePriorReaction: z.boolean().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 
 
 
@@ -6565,6 +6638,9 @@ export const ShotSpecSuiteSchema = z
     hookHardMidWinCotter: ShotSpecDocSchema.optional(),
     hookHardSetupWinCotter: ShotSpecDocSchema.optional(),
     hookHardReactionWinCotter: ShotSpecDocSchema.optional(),
+    hookHardMidWinPeg: ShotSpecDocSchema.optional(),
+    hookHardSetupWinPeg: ShotSpecDocSchema.optional(),
+    hookHardReactionWinPeg: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -6832,6 +6908,9 @@ export const ShotSpecSuiteSchema = z
     hookHardMidWinCotterOpts: HookHardMidWinCotterOptsSchema.optional(),
     hookHardSetupWinCotterOpts: HookHardSetupWinCotterOptsSchema.optional(),
     hookHardReactionWinCotterOpts: HookHardReactionWinCotterOptsSchema.optional(),
+    hookHardMidWinPegOpts: HookHardMidWinPegOptsSchema.optional(),
+    hookHardSetupWinPegOpts: HookHardSetupWinPegOptsSchema.optional(),
+    hookHardReactionWinPegOpts: HookHardReactionWinPegOptsSchema.optional(),
   })
   .strict();
 
@@ -7104,7 +7183,10 @@ export type ShotSpecChildReport =
   | HookHardReactionWinBuckleReport
   | HookHardMidWinCotterReport
   | HookHardSetupWinCotterReport
-  | HookHardReactionWinCotterReport;
+  | HookHardReactionWinCotterReport
+  | HookHardMidWinPegReport
+  | HookHardSetupWinPegReport
+  | HookHardReactionWinPegReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -7439,6 +7521,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     hookHardMidWinCotterOpts,
     hookHardSetupWinCotterOpts,
     hookHardReactionWinCotterOpts,
+    hookHardMidWinPegOpts,
+    hookHardSetupWinPegOpts,
+    hookHardReactionWinPegOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -9892,6 +9977,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateHookHardReactionWinCotter(
         sections.hookHardReactionWinCotter,
         (hookHardReactionWinCotterOpts ?? {}) as HookHardReactionWinCotterOptions,
+      ),
+    );
+  }
+  if (sections.hookHardMidWinPeg !== undefined) {
+    run(
+      'hookHardMidWinPeg',
+      evaluateHookHardMidWinPeg(
+        sections.hookHardMidWinPeg,
+        (hookHardMidWinPegOpts ?? {}) as HookHardMidWinPegOptions,
+      ),
+    );
+  }
+  if (sections.hookHardSetupWinPeg !== undefined) {
+    run(
+      'hookHardSetupWinPeg',
+      evaluateHookHardSetupWinPeg(
+        sections.hookHardSetupWinPeg,
+        (hookHardSetupWinPegOpts ?? {}) as HookHardSetupWinPegOptions,
+      ),
+    );
+  }
+  if (sections.hookHardReactionWinPeg !== undefined) {
+    run(
+      'hookHardReactionWinPeg',
+      evaluateHookHardReactionWinPeg(
+        sections.hookHardReactionWinPeg,
+        (hookHardReactionWinPegOpts ?? {}) as HookHardReactionWinPegOptions,
       ),
     );
   }

@@ -225,6 +225,8 @@
  *
  *   · keenRhythmPeakBridge · wailRhythmPeakBridge · moanRhythmPeakBridge · sobRhythmPeakBridge
  *   · qualityAnilineLink · qualityStyreneLink · qualityCumeneLink · qualityCresolLink
+ *   · whimperRhythmPeakBridge · gaspRhythmPeakBridge · pantRhythmPeakBridge · sighRhythmPeakBridge
+ *   · qualityCatecholLink · qualityResorcinolLink · qualityHydroquinoneLink · qualityQuinoneLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4151,6 +4153,58 @@ import {
   evaluateQualityCresolLink,
   type QualityCresolLinkReport,
 } from './quality-cresol-link-gate';
+import {
+  WhimperRhythmPeakBridgeLinkSchema,
+  WhimperRhythmPeakWhimperEntrySchema,
+  WhimperRhythmPeakRhythmEntrySchema,
+  evaluateWhimperRhythmPeakBridge,
+  type WhimperRhythmPeakBridgeReport,
+} from './whimper-rhythm-peak-bridge-gate';
+import {
+  GaspRhythmPeakBridgeLinkSchema,
+  GaspRhythmPeakGaspEntrySchema,
+  GaspRhythmPeakRhythmEntrySchema,
+  evaluateGaspRhythmPeakBridge,
+  type GaspRhythmPeakBridgeReport,
+} from './gasp-rhythm-peak-bridge-gate';
+import {
+  PantRhythmPeakBridgeLinkSchema,
+  PantRhythmPeakPantEntrySchema,
+  PantRhythmPeakRhythmEntrySchema,
+  evaluatePantRhythmPeakBridge,
+  type PantRhythmPeakBridgeReport,
+} from './pant-rhythm-peak-bridge-gate';
+import {
+  SighRhythmPeakBridgeLinkSchema,
+  SighRhythmPeakSighEntrySchema,
+  SighRhythmPeakRhythmEntrySchema,
+  evaluateSighRhythmPeakBridge,
+  type SighRhythmPeakBridgeReport,
+} from './sigh-rhythm-peak-bridge-gate';
+import {
+  QualityCatecholLinkEntrySchema,
+  QualityCatecholEntrySchema,
+  evaluateQualityCatecholLink,
+  type QualityCatecholLinkReport,
+} from './quality-catechol-link-gate';
+import {
+  QualityResorcinolLinkEntrySchema,
+  QualityResorcinolEntrySchema,
+  evaluateQualityResorcinolLink,
+  type QualityResorcinolLinkReport,
+} from './quality-resorcinol-link-gate';
+import {
+  QualityHydroquinoneLinkEntrySchema,
+  QualityHydroquinoneEntrySchema,
+  evaluateQualityHydroquinoneLink,
+  type QualityHydroquinoneLinkReport,
+} from './quality-hydroquinone-link-gate';
+import {
+  QualityQuinoneLinkEntrySchema,
+  QualityQuinoneEntrySchema,
+  evaluateQualityQuinoneLink,
+  type QualityQuinoneLinkReport,
+} from './quality-quinone-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4833,6 +4887,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityStyreneLink',
   'qualityCumeneLink',
   'qualityCresolLink',
+  'whimperRhythmPeakBridge',
+  'gaspRhythmPeakBridge',
+  'pantRhythmPeakBridge',
+  'sighRhythmPeakBridge',
+  'qualityCatecholLink',
+  'qualityResorcinolLink',
+  'qualityHydroquinoneLink',
+  'qualityQuinoneLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -9383,6 +9445,58 @@ const QualityCresolSectionSchemaB182 = z.object({
   links: z.array(QualityCresolLinkEntrySchema),
 });
 
+const WhimperRhythmPeakBridgeSectionSchema = z.object({
+  whimpers: z.array(WhimperRhythmPeakWhimperEntrySchema),
+  rhythms: z.array(WhimperRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(WhimperRhythmPeakBridgeLinkSchema),
+});
+
+const GaspRhythmPeakBridgeSectionSchema = z.object({
+  gasps: z.array(GaspRhythmPeakGaspEntrySchema),
+  rhythms: z.array(GaspRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(GaspRhythmPeakBridgeLinkSchema),
+});
+
+const PantRhythmPeakBridgeSectionSchema = z.object({
+  pants: z.array(PantRhythmPeakPantEntrySchema),
+  rhythms: z.array(PantRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PantRhythmPeakBridgeLinkSchema),
+});
+
+const SighRhythmPeakBridgeSectionSchema = z.object({
+  sighs: z.array(SighRhythmPeakSighEntrySchema),
+  rhythms: z.array(SighRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SighRhythmPeakBridgeLinkSchema),
+});
+
+const QualityCatecholSectionSchemaB183 = z.object({
+  minCatecholIntense: z.number().int().min(1).max(5).optional(),
+  catechols: z.array(QualityCatecholEntrySchema),
+  links: z.array(QualityCatecholLinkEntrySchema),
+});
+
+const QualityResorcinolSectionSchemaB183 = z.object({
+  minResorcinolIntense: z.number().int().min(1).max(5).optional(),
+  resorcinols: z.array(QualityResorcinolEntrySchema),
+  links: z.array(QualityResorcinolLinkEntrySchema),
+});
+
+const QualityHydroquinoneSectionSchemaB183 = z.object({
+  minHydroquinoneIntense: z.number().int().min(1).max(5).optional(),
+  hydroquinones: z.array(QualityHydroquinoneEntrySchema),
+  links: z.array(QualityHydroquinoneLinkEntrySchema),
+});
+
+const QualityQuinoneSectionSchemaB183 = z.object({
+  minQuinoneIntense: z.number().int().min(1).max(5).optional(),
+  quinones: z.array(QualityQuinoneEntrySchema),
+  links: z.array(QualityQuinoneLinkEntrySchema),
+});
+
 
 
 
@@ -10078,6 +10192,14 @@ export const StoryLedgerSuiteSchema = z
     qualityStyreneLink: QualityStyreneSectionSchemaB182.optional(),
     qualityCumeneLink: QualityCumeneSectionSchemaB182.optional(),
     qualityCresolLink: QualityCresolSectionSchemaB182.optional(),
+    whimperRhythmPeakBridge: WhimperRhythmPeakBridgeSectionSchema.optional(),
+    gaspRhythmPeakBridge: GaspRhythmPeakBridgeSectionSchema.optional(),
+    pantRhythmPeakBridge: PantRhythmPeakBridgeSectionSchema.optional(),
+    sighRhythmPeakBridge: SighRhythmPeakBridgeSectionSchema.optional(),
+    qualityCatecholLink: QualityCatecholSectionSchemaB183.optional(),
+    qualityResorcinolLink: QualityResorcinolSectionSchemaB183.optional(),
+    qualityHydroquinoneLink: QualityHydroquinoneSectionSchemaB183.optional(),
+    qualityQuinoneLink: QualityQuinoneSectionSchemaB183.optional(),
   })
   .strict();
 
@@ -10761,7 +10883,15 @@ export type StoryLedgerChildReport =
   | QualityAnilineLinkReport
   | QualityStyreneLinkReport
   | QualityCumeneLinkReport
-  | QualityCresolLinkReport;
+  | QualityCresolLinkReport
+  | WhimperRhythmPeakBridgeReport
+  | GaspRhythmPeakBridgeReport
+  | PantRhythmPeakBridgeReport
+  | SighRhythmPeakBridgeReport
+  | QualityCatecholLinkReport
+  | QualityResorcinolLinkReport
+  | QualityHydroquinoneLinkReport
+  | QualityQuinoneLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -12158,6 +12288,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityCumeneLink({ series, latestEp, ...(section as object) }),
   qualityCresolLink: (series, latestEp, section) =>
     evaluateQualityCresolLink({ series, latestEp, ...(section as object) }),
+  whimperRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateWhimperRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  gaspRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateGaspRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  pantRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePantRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  sighRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSighRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityCatecholLink: (series, latestEp, section) =>
+    evaluateQualityCatecholLink({ series, latestEp, ...(section as object) }),
+  qualityResorcinolLink: (series, latestEp, section) =>
+    evaluateQualityResorcinolLink({ series, latestEp, ...(section as object) }),
+  qualityHydroquinoneLink: (series, latestEp, section) =>
+    evaluateQualityHydroquinoneLink({ series, latestEp, ...(section as object) }),
+  qualityQuinoneLink: (series, latestEp, section) =>
+    evaluateQualityQuinoneLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
