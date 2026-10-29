@@ -77,3 +77,64 @@ describe('factory batch storyLedgerGate', () => {
     expect(r.exitCode).toBe(0);
   });
 });
+
+describe('factory batch shotSpecGate', () => {
+  it('enforce + EMPTY_SUITE FAIL → exit 36, no episodes, report dumped', async () => {
+    const w = tmp();
+    const r = await runFactoryBatch(
+      w,
+      [{ episodeId: 'ep01', providers: { h3: 'fake', dub: 'fake' }, handlers: fakeHandlers() }],
+      { shotSpecSuite: { episode: 'EP01' }, shotSpecGate: 'enforce' },
+    );
+    expect(r.exitCode).toBe(36);
+    expect((r as { stage?: string }).stage).toBe('shotSpec');
+    expect(r.shotSpecSuite?.verdict).toBe('FAIL');
+    expect(r.episodes).toEqual([]);
+    expect(existsSync(join(w, 'shot-spec-suite-report.json'))).toBe(true);
+    expect(existsSync(join(w, 'ep01', 'FACTORY_QUEUE.json'))).toBe(false);
+    expect(r.canPublish).toBe(false);
+    expect(r.g3).toBe('NOT_EVALUATED');
+  });
+
+  it('warn + FAIL still runs episodes', async () => {
+    const w = tmp();
+    const r = await runFactoryBatch(
+      w,
+      [{ episodeId: 'ep01', providers: { h3: 'fake', dub: 'fake' }, handlers: fakeHandlers() }],
+      { shotSpecSuite: { episode: 'EP01' }, shotSpecGate: 'warn' },
+    );
+    expect(r.exitCode).toBe(0);
+    expect(r.episodes).toHaveLength(1);
+    expect(r.shotSpecSuite?.verdict).toBe('FAIL');
+    expect(r.notes.some((n) => n.includes('shot-spec-suite'))).toBe(true);
+  });
+
+  it('off (default) ignores shotSpecSuite payload', async () => {
+    const w = tmp();
+    const r = await runFactoryBatch(
+      w,
+      [{ episodeId: 'ep01', providers: { h3: 'fake', dub: 'fake' }, handlers: fakeHandlers() }],
+      { shotSpecSuite: { episode: 'EP01' } },
+    );
+    expect(r.shotSpecSuite).toBeUndefined();
+    expect(existsSync(join(w, 'shot-spec-suite-report.json'))).toBe(false);
+    expect(r.exitCode).toBe(0);
+  });
+
+  it('storyLedger enforce blocks before shotSpec even when shotSpec would PASS', async () => {
+    const w = tmp();
+    const r = await runFactoryBatch(
+      w,
+      [{ episodeId: 'ep01', providers: { h3: 'fake', dub: 'fake' }, handlers: fakeHandlers() }],
+      {
+        storyLedger: { series: 'T', latestEp: 1 },
+        storyLedgerGate: 'enforce',
+        shotSpecSuite: { episode: 'EP01' },
+        shotSpecGate: 'enforce',
+      },
+    );
+    expect(r.exitCode).toBe(36);
+    expect((r as { stage?: string }).stage).toBe('storyLedger');
+    expect(existsSync(join(w, 'shot-spec-suite-report.json'))).toBe(false);
+  });
+});

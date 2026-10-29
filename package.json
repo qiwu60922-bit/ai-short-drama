@@ -144,6 +144,7 @@
     "ensemble-cast:check": "tsx scripts/ensemble-cast-check.ts",
     "fake-ledger-reconcile:check": "tsx scripts/fake-ledger-reconcile-check.ts",
     "story-ledger-suite:check": "tsx scripts/story-ledger-suite-check.ts",
+    "shot-spec-suite:check": "tsx scripts/shot-spec-suite-check.ts",
     "cliff-cascade-link:check": "tsx scripts/cliff-cascade-link-check.ts",
     "foreshadow-motif-link:check": "tsx scripts/foreshadow-motif-link-check.ts",
     "alliance-bond-link:check": "tsx scripts/alliance-bond-link-check.ts",
