@@ -30411,5 +30411,730 @@
         }
       }
     ]
+  },
+  "personaColdOpenPeakBridge": {
+    "cards": [
+      {
+        "slug": "su-jianqing-b151",
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服、细跟鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ]
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-b151-pcopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "peak-b151-pcopb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-pcopb-b151",
+        "cardSlug": "su-jianqing-b151",
+        "coldOpenId": "EP10-cold-b151-pcopb",
+        "peakId": "peak-b151-pcopb",
+        "ep": 10
+      }
+    ]
+  },
+  "motifRhythmPeakBridge": {
+    "motifs": [
+      {
+        "id": "white-rose-b151",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose-b151",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose-b151",
+        "ep": 5,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose-b151",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-b151-mrpb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "peak-b151-mrpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mrpb-b151",
+        "motifId": "white-rose-b151",
+        "rhythmId": "EP10-rhythm-b151-mrpb",
+        "peakId": "peak-b151-mrpb",
+        "ep": 10
+      }
+    ]
+  },
+  "personaRhythmPeakBridge": {
+    "cards": [
+      {
+        "slug": "su-jianqing-b151-prpb",
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服、细跟鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ]
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-b151-prpb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "peak-b151-prpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-prpb-b151",
+        "cardSlug": "su-jianqing-b151-prpb",
+        "rhythmId": "EP10-rhythm-b151-prpb",
+        "peakId": "peak-b151-prpb",
+        "ep": 10
+      }
+    ]
+  },
+  "coldOpenRhythmPeakBridge": {
+    "coldOpens": [
+      {
+        "id": "EP10-cold-b151-corpb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-b151-corpb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "peak-b151-corpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-corpb-b151",
+        "coldOpenId": "EP10-cold-b151-corpb",
+        "rhythmId": "EP10-rhythm-b151-corpb",
+        "peakId": "peak-b151-corpb",
+        "ep": 10
+      }
+    ]
+  },
+  "qualityArcLink": {
+    "minArcIntense": 4,
+    "arcs": [
+      {
+        "id": "EP10-arc-b151",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-arc-b151",
+        "arcId": "EP10-arc-b151",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityBeatLink": {
+    "minBeatIntense": 4,
+    "beats": [
+      {
+        "id": "EP10-beat-b151",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-beat-b151",
+        "beatId": "EP10-beat-b151",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityTensionLink": {
+    "minTensionIntense": 4,
+    "tensions": [
+      {
+        "id": "EP10-tension-b151",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-tension-b151",
+        "tensionId": "EP10-tension-b151",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityPulseLink": {
+    "minPulseIntense": 4,
+    "pulses": [
+      {
+        "id": "EP10-pulse-b151",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B151-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B151-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B151-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B151-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-pulse-b151",
+        "pulseId": "EP10-pulse-b151",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }

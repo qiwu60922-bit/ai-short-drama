@@ -135,6 +135,8 @@
  *   · qualityPeakLink · qualityOpeningLink · qualityDialogueLink · qualityHookLink
  *   · vestCountdownPeakBridge · amnesiaCountdownPeakBridge · motifCountdownPeakBridge · countdownRhythmPeakBridge
  *   · qualityStageLink · qualityCascadeLink · qualityCutLink · qualityPayoffLink
+ *   · personaColdOpenPeakBridge · motifRhythmPeakBridge · personaRhythmPeakBridge · coldOpenRhythmPeakBridge
+ *   · qualityArcLink · qualityBeatLink · qualityTensionLink · qualityPulseLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -2378,6 +2380,58 @@ import {
   type QualityPayoffLinkReport,
 } from './quality-payoff-link-gate';
 
+import {
+  PersonaColdOpenPeakBridgeLinkSchema,
+  PersonaColdOpenPeakColdOpenEntrySchema,
+  evaluatePersonaColdOpenPeakBridge,
+  type PersonaColdOpenPeakBridgeReport,
+} from './persona-cold-open-peak-bridge-gate';
+import {
+  MotifRhythmPeakBridgeLinkSchema,
+  MotifRhythmPeakRhythmEntrySchema,
+  evaluateMotifRhythmPeakBridge,
+  type MotifRhythmPeakBridgeReport,
+} from './motif-rhythm-peak-bridge-gate';
+import {
+  PersonaRhythmPeakBridgeLinkSchema,
+  PersonaRhythmPeakRhythmEntrySchema,
+  evaluatePersonaRhythmPeakBridge,
+  type PersonaRhythmPeakBridgeReport,
+} from './persona-rhythm-peak-bridge-gate';
+import {
+  ColdOpenRhythmPeakBridgeLinkSchema,
+  ColdOpenRhythmPeakColdOpenEntrySchema,
+  ColdOpenRhythmPeakRhythmEntrySchema,
+  evaluateColdOpenRhythmPeakBridge,
+  type ColdOpenRhythmPeakBridgeReport,
+} from './cold-open-rhythm-peak-bridge-gate';
+import {
+  QualityArcLinkEntrySchema,
+  QualityArcEntrySchema,
+  evaluateQualityArcLink,
+  type QualityArcLinkReport,
+} from './quality-arc-link-gate';
+import {
+  QualityBeatLinkEntrySchema,
+  QualityBeatEntrySchema,
+  evaluateQualityBeatLink,
+  type QualityBeatLinkReport,
+} from './quality-beat-link-gate';
+import {
+  QualityTensionLinkEntrySchema,
+  QualityTensionEntrySchema,
+  evaluateQualityTensionLink,
+  type QualityTensionLinkReport,
+} from './quality-tension-link-gate';
+import {
+  QualityPulseLinkEntrySchema,
+  QualityPulseEntrySchema,
+  evaluateQualityPulseLink,
+  type QualityPulseLinkReport,
+} from './quality-pulse-link-gate';
+
+
+
 
 
 
@@ -2812,6 +2866,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityCascadeLink',
   'qualityCutLink',
   'qualityPayoffLink',
+  'personaColdOpenPeakBridge',
+  'motifRhythmPeakBridge',
+  'personaRhythmPeakBridge',
+  'coldOpenRhythmPeakBridge',
+  'qualityArcLink',
+  'qualityBeatLink',
+  'qualityTensionLink',
+  'qualityPulseLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -5690,6 +5752,61 @@ const QualityPayoffSectionSchemaB150 = z.object({
   links: z.array(QualityPayoffLinkEntrySchema),
 });
 
+const PersonaColdOpenPeakBridgeSectionSchema = z.object({
+  cards: z.array(PersonaCardSchema).min(1),
+  coldOpens: z.array(PersonaColdOpenPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PersonaColdOpenPeakBridgeLinkSchema),
+});
+
+const MotifRhythmPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  rhythms: z.array(MotifRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifRhythmPeakBridgeLinkSchema),
+});
+
+const PersonaRhythmPeakBridgeSectionSchema = z.object({
+  cards: z.array(PersonaCardSchema).min(1),
+  rhythms: z.array(PersonaRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PersonaRhythmPeakBridgeLinkSchema),
+});
+
+const ColdOpenRhythmPeakBridgeSectionSchema = z.object({
+  coldOpens: z.array(ColdOpenRhythmPeakColdOpenEntrySchema),
+  rhythms: z.array(ColdOpenRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ColdOpenRhythmPeakBridgeLinkSchema),
+});
+
+const QualityArcSectionSchemaB151 = z.object({
+  minArcIntense: z.number().int().min(1).max(5).optional(),
+  arcs: z.array(QualityArcEntrySchema),
+  links: z.array(QualityArcLinkEntrySchema),
+});
+
+const QualityBeatSectionSchemaB151 = z.object({
+  minBeatIntense: z.number().int().min(1).max(5).optional(),
+  beats: z.array(QualityBeatEntrySchema),
+  links: z.array(QualityBeatLinkEntrySchema),
+});
+
+const QualityTensionSectionSchemaB151 = z.object({
+  minTensionIntense: z.number().int().min(1).max(5).optional(),
+  tensions: z.array(QualityTensionEntrySchema),
+  links: z.array(QualityTensionLinkEntrySchema),
+});
+
+const QualityPulseSectionSchemaB151 = z.object({
+  minPulseIntense: z.number().int().min(1).max(5).optional(),
+  pulses: z.array(QualityPulseEntrySchema),
+  links: z.array(QualityPulseLinkEntrySchema),
+});
+
+
+
 
 
 
@@ -6126,6 +6243,14 @@ export const StoryLedgerSuiteSchema = z
     qualityCascadeLink: QualityCascadeSectionSchemaB150.optional(),
     qualityCutLink: QualityCutSectionSchemaB150.optional(),
     qualityPayoffLink: QualityPayoffSectionSchemaB150.optional(),
+    personaColdOpenPeakBridge: PersonaColdOpenPeakBridgeSectionSchema.optional(),
+    motifRhythmPeakBridge: MotifRhythmPeakBridgeSectionSchema.optional(),
+    personaRhythmPeakBridge: PersonaRhythmPeakBridgeSectionSchema.optional(),
+    coldOpenRhythmPeakBridge: ColdOpenRhythmPeakBridgeSectionSchema.optional(),
+    qualityArcLink: QualityArcSectionSchemaB151.optional(),
+    qualityBeatLink: QualityBeatSectionSchemaB151.optional(),
+    qualityTensionLink: QualityTensionSectionSchemaB151.optional(),
+    qualityPulseLink: QualityPulseSectionSchemaB151.optional(),
   })
   .strict();
 
@@ -6553,7 +6678,15 @@ export type StoryLedgerChildReport =
   | QualityStageLinkReport
   | QualityCascadeLinkReport
   | QualityCutLinkReport
-  | QualityPayoffLinkReport;
+  | QualityPayoffLinkReport
+  | PersonaColdOpenPeakBridgeReport
+  | MotifRhythmPeakBridgeReport
+  | PersonaRhythmPeakBridgeReport
+  | ColdOpenRhythmPeakBridgeReport
+  | QualityArcLinkReport
+  | QualityBeatLinkReport
+  | QualityTensionLinkReport
+  | QualityPulseLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -7437,6 +7570,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityCutLink({ series, latestEp, ...(section as object) }),
   qualityPayoffLink: (series, latestEp, section) =>
     evaluateQualityPayoffLink({ series, latestEp, ...(section as object) }),
+  personaColdOpenPeakBridge: (series, latestEp, section) =>
+    evaluatePersonaColdOpenPeakBridge({ series, latestEp, ...(section as object) }),
+  motifRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateMotifRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  personaRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePersonaRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  coldOpenRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateColdOpenRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityArcLink: (series, latestEp, section) =>
+    evaluateQualityArcLink({ series, latestEp, ...(section as object) }),
+  qualityBeatLink: (series, latestEp, section) =>
+    evaluateQualityBeatLink({ series, latestEp, ...(section as object) }),
+  qualityTensionLink: (series, latestEp, section) =>
+    evaluateQualityTensionLink({ series, latestEp, ...(section as object) }),
+  qualityPulseLink: (series, latestEp, section) =>
+    evaluateQualityPulseLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
