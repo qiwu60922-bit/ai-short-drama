@@ -6533,5 +6533,200 @@
         "action": "悬念"
       }
     ]
-  }
+  },
+  "hookHardColdDialogueBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B137-dDialogueBan-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B137-dDialogueBan-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B137-dDialogueBan-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "increment",
+        "action": "加压推进"
+      },
+      {
+        "shotId": "EP01-B137-dDialogueBan-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B137-dDialogueBan-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B137-dDialogueBan-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B137-dDialogueBan-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B137-dDialogueBan-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardColdDialogueBanOpts": {},
+  "hookHardTailDialogueBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B137-lDialogueBan-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B137-lDialogueBan-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B137-lDialogueBan-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "increment",
+        "action": "加压推进"
+      },
+      {
+        "shotId": "EP01-B137-lDialogueBan-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B137-lDialogueBan-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B137-lDialogueBan-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B137-lDialogueBan-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B137-lDialogueBan-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardTailDialogueBanOpts": {},
+  "hookHardWindowDialogueBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B137-wDialogueBan-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B137-wDialogueBan-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B137-wDialogueBan-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "increment",
+        "action": "加压推进"
+      },
+      {
+        "shotId": "EP01-B137-wDialogueBan-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B137-wDialogueBan-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B137-wDialogueBan-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B137-wDialogueBan-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B137-wDialogueBan-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardWindowDialogueBanOpts": {}
 }

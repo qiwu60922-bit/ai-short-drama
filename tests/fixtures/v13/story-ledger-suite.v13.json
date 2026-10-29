@@ -22337,5 +22337,467 @@
         "ep": 10
       }
     ]
+  },
+  "countdownQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "countdowns": [
+      {
+        "id": "直播终局-b137",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b137",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cqpb",
+        "countdownId": "直播终局-b137",
+        "peakId": "对峙峰值-b137",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "stageGoalQualityPeakBridge": {
+    "seasonId": "S1",
+    "minTernaryIntense": 4,
+    "goals": [
+      {
+        "id": "夺回机长席-b137",
+        "label": "夺回机长席",
+        "destination": "公开身份对峙胜利",
+        "startEp": 1,
+        "dueEp": 10,
+        "status": "met"
+      },
+      {
+        "id": "下一关-b137",
+        "label": "下一关",
+        "destination": "晋级",
+        "startEp": 10,
+        "dueEp": 25,
+        "status": "open"
+      }
+    ],
+    "progress": [
+      {
+        "goalId": "夺回机长席-b137",
+        "ep": 10,
+        "advances": true,
+        "note": "终局推进"
+      },
+      {
+        "goalId": "下一关-b137",
+        "ep": 18,
+        "advances": true,
+        "note": "开局"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-sgqpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-sgqpb",
+        "goalId": "夺回机长席-b137",
+        "peakId": "对峙峰值-sgqpb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "conflictPayoffPeakBridge": {
+    "minTernaryIntense": 4,
+    "conflicts": [
+      {
+        "id": "挑衅反噬-b137",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-cppb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cppb",
+        "conflictId": "挑衅反噬-b137",
+        "peakId": "对峙峰值-cppb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "openingCascadeQualityPeakBridge": {
+    "minTernaryIntense": 4,
+    "cascades": [
+      {
+        "id": "EP10-cascade-b137",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B137-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B137-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B137-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B137-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-ocqpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ocqpb",
+        "cascadeId": "EP10-cascade-b137",
+        "peakId": "对峙峰值-ocqpb",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "对峙兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "stageGoalForeshadowLink": {
+    "seasonId": "S1",
+    "goals": [
+      {
+        "id": "夺回机长席-sgfl",
+        "label": "夺回机长席",
+        "destination": "公开身份对峙胜利",
+        "startEp": 1,
+        "dueEp": 10,
+        "status": "met"
+      },
+      {
+        "id": "下一关-sgfl",
+        "label": "下一关",
+        "destination": "晋级",
+        "startEp": 10,
+        "dueEp": 25,
+        "status": "open"
+      }
+    ],
+    "progress": [
+      {
+        "goalId": "夺回机长席-sgfl",
+        "ep": 10,
+        "advances": true
+      },
+      {
+        "goalId": "下一关-sgfl",
+        "ep": 18,
+        "advances": true
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-sgfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-sgfl",
+        "goalId": "夺回机长席-sgfl",
+        "foreshadowId": "伪人身份-sgfl",
+        "ep": 10
+      }
+    ]
+  },
+  "openingCascadeForeshadowLink": {
+    "cascades": [
+      {
+        "id": "EP10-cascade-ocfl",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B137-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B137-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B137-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B137-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-ocfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ocfl",
+        "cascadeId": "EP10-cascade-ocfl",
+        "foreshadowId": "伪人身份-ocfl",
+        "ep": 10
+      }
+    ]
+  },
+  "maskForeshadowLink": {
+    "masks": [
+      {
+        "id": "花心纨绔-mfl",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-mfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mfl137",
+        "maskId": "花心纨绔-mfl",
+        "foreshadowId": "伪人身份-mfl",
+        "ep": 10
+      }
+    ]
+  },
+  "bondForeshadowLink": {
+    "bonds": [
+      {
+        "id": "机长契约-bfl",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份-bfl",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bfl",
+        "bondId": "机长契约-bfl",
+        "foreshadowId": "伪人身份-bfl",
+        "ep": 10
+      }
+    ]
   }
 }

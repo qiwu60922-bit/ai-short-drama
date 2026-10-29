@@ -106,6 +106,8 @@
  *   · vestForeshadowLink · allianceQualityLink · qualityForeshadowLink · personaForeshadowLink
  *   · handoffQualityPeakBridge · abilityQualityPeakBridge · motifForeshadowPeakBridge · frequencyQualityPeakBridge
  *   · motifForeshadowLink · frequencyForeshadowLink · countdownForeshadowLink · handoffForeshadowLink
+ *   · countdownQualityPeakBridge · stageGoalQualityPeakBridge · conflictPayoffPeakBridge · openingCascadeQualityPeakBridge
+ *   · stageGoalForeshadowLink · openingCascadeForeshadowLink · maskForeshadowLink · bondForeshadowLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -1735,6 +1737,49 @@ import {
   type HandoffForeshadowLinkReport,
 } from './handoff-foreshadow-link-gate';
 
+import {
+  CountdownQualityPeakBridgeLinkSchema,
+  evaluateCountdownQualityPeakBridge,
+  type CountdownQualityPeakBridgeReport,
+} from './countdown-quality-peak-bridge-gate';
+import {
+  StageGoalQualityPeakBridgeLinkSchema,
+  evaluateStageGoalQualityPeakBridge,
+  type StageGoalQualityPeakBridgeReport,
+} from './stage-goal-quality-peak-bridge-gate';
+import {
+  ConflictPayoffPeakBridgeLinkSchema,
+  evaluateConflictPayoffPeakBridge,
+  type ConflictPayoffPeakBridgeReport,
+} from './conflict-payoff-peak-bridge-gate';
+import {
+  OpeningCascadeQualityPeakBridgeLinkSchema,
+  OpeningCascadeQualityPeakCascadeEntrySchema,
+  evaluateOpeningCascadeQualityPeakBridge,
+  type OpeningCascadeQualityPeakBridgeReport,
+} from './opening-cascade-quality-peak-bridge-gate';
+import {
+  StageGoalForeshadowLinkEntrySchema,
+  evaluateStageGoalForeshadowLink,
+  type StageGoalForeshadowLinkReport,
+} from './stage-goal-foreshadow-link-gate';
+import {
+  OpeningCascadeForeshadowLinkEntrySchema,
+  OpeningCascadeForeshadowCascadeEntrySchema,
+  evaluateOpeningCascadeForeshadowLink,
+  type OpeningCascadeForeshadowLinkReport,
+} from './opening-cascade-foreshadow-link-gate';
+import {
+  MaskForeshadowLinkEntrySchema,
+  evaluateMaskForeshadowLink,
+  type MaskForeshadowLinkReport,
+} from './mask-foreshadow-link-gate';
+import {
+  BondForeshadowLinkEntrySchema,
+  evaluateBondForeshadowLink,
+  type BondForeshadowLinkReport,
+} from './bond-foreshadow-link-gate';
+
 
 
 
@@ -2052,6 +2097,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'frequencyForeshadowLink',
   'countdownForeshadowLink',
   'handoffForeshadowLink',
+  'countdownQualityPeakBridge',
+  'stageGoalQualityPeakBridge',
+  'conflictPayoffPeakBridge',
+  'openingCascadeQualityPeakBridge',
+  'stageGoalForeshadowLink',
+  'openingCascadeForeshadowLink',
+  'maskForeshadowLink',
+  'bondForeshadowLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -4148,6 +4201,65 @@ const HandoffForeshadowSectionSchema = z.object({
 
 
 
+const CountdownQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  countdowns: z.array(StageCountdownSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CountdownQualityPeakBridgeLinkSchema),
+});
+
+const StageGoalQualityPeakBridgeSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(StageGoalQualityPeakBridgeLinkSchema),
+});
+
+const ConflictPayoffPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  conflicts: z.array(ConflictEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ConflictPayoffPeakBridgeLinkSchema),
+});
+
+const OpeningCascadeQualityPeakBridgeSectionSchema = z.object({
+  minTernaryIntense: z.number().int().min(1).max(5).optional(),
+  cascades: z.array(OpeningCascadeQualityPeakCascadeEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(OpeningCascadeQualityPeakBridgeLinkSchema),
+});
+
+const StageGoalForeshadowSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(StageGoalForeshadowLinkEntrySchema),
+});
+
+const OpeningCascadeForeshadowSectionSchema = z.object({
+  cascades: z.array(OpeningCascadeForeshadowCascadeEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(OpeningCascadeForeshadowLinkEntrySchema),
+});
+
+const MaskForeshadowSectionSchema = z.object({
+  masks: z.array(PersonaMaskEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(MaskForeshadowLinkEntrySchema),
+});
+
+const BondForeshadowSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(BondForeshadowLinkEntrySchema),
+});
+
+
+
+
 
 export const StoryLedgerSuiteSchema = z
   .object({
@@ -4463,6 +4575,14 @@ export const StoryLedgerSuiteSchema = z
     frequencyForeshadowLink: FrequencyForeshadowSectionSchema.optional(),
     countdownForeshadowLink: CountdownForeshadowSectionSchema.optional(),
     handoffForeshadowLink: HandoffForeshadowSectionSchema.optional(),
+    countdownQualityPeakBridge: CountdownQualityPeakBridgeSectionSchema.optional(),
+    stageGoalQualityPeakBridge: StageGoalQualityPeakBridgeSectionSchema.optional(),
+    conflictPayoffPeakBridge: ConflictPayoffPeakBridgeSectionSchema.optional(),
+    openingCascadeQualityPeakBridge: OpeningCascadeQualityPeakBridgeSectionSchema.optional(),
+    stageGoalForeshadowLink: StageGoalForeshadowSectionSchema.optional(),
+    openingCascadeForeshadowLink: OpeningCascadeForeshadowSectionSchema.optional(),
+    maskForeshadowLink: MaskForeshadowSectionSchema.optional(),
+    bondForeshadowLink: BondForeshadowSectionSchema.optional(),
   })
   .strict();
 
@@ -4778,7 +4898,15 @@ export type StoryLedgerChildReport =
   | MotifForeshadowLinkReport
   | FrequencyForeshadowLinkReport
   | CountdownForeshadowLinkReport
-  | HandoffForeshadowLinkReport;
+  | HandoffForeshadowLinkReport
+  | CountdownQualityPeakBridgeReport
+  | StageGoalQualityPeakBridgeReport
+  | ConflictPayoffPeakBridgeReport
+  | OpeningCascadeQualityPeakBridgeReport
+  | StageGoalForeshadowLinkReport
+  | OpeningCascadeForeshadowLinkReport
+  | MaskForeshadowLinkReport
+  | BondForeshadowLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -5438,6 +5566,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateCountdownForeshadowLink({ series, latestEp, ...(section as object) }),
   handoffForeshadowLink: (series, latestEp, section) =>
     evaluateHandoffForeshadowLink({ series, latestEp, ...(section as object) }),
+  countdownQualityPeakBridge: (series, latestEp, section) =>
+    evaluateCountdownQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  stageGoalQualityPeakBridge: (series, latestEp, section) =>
+    evaluateStageGoalQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  conflictPayoffPeakBridge: (series, latestEp, section) =>
+    evaluateConflictPayoffPeakBridge({ series, latestEp, ...(section as object) }),
+  openingCascadeQualityPeakBridge: (series, latestEp, section) =>
+    evaluateOpeningCascadeQualityPeakBridge({ series, latestEp, ...(section as object) }),
+  stageGoalForeshadowLink: (series, latestEp, section) =>
+    evaluateStageGoalForeshadowLink({ series, latestEp, ...(section as object) }),
+  openingCascadeForeshadowLink: (series, latestEp, section) =>
+    evaluateOpeningCascadeForeshadowLink({ series, latestEp, ...(section as object) }),
+  maskForeshadowLink: (series, latestEp, section) =>
+    evaluateMaskForeshadowLink({ series, latestEp, ...(section as object) }),
+  bondForeshadowLink: (series, latestEp, section) =>
+    evaluateBondForeshadowLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
