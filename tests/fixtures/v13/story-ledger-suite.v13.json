@@ -32413,5 +32413,660 @@
         }
       }
     ]
+  },
+  "conflictRhythmPeakBridge": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-b154",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-b154-c",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b154-c",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-crpb-b154",
+        "conflictId": "挑衅反噬-b154",
+        "rhythmId": "EP10-rhythm-b154-c",
+        "peakId": "对峙峰值-b154-c",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyRhythmPeakBridge": {
+    "frequencies": [
+      {
+        "id": "离婚99-b154",
+        "actor": "叶楚",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 3,
+        "plantEp": 1,
+        "plantAtSec": 0,
+        "tipEp": 10,
+        "tipAtSec": 10,
+        "tipLabel": "第3次离婚签字",
+        "ticks": [
+          {
+            "ep": 2,
+            "n": 1
+          },
+          {
+            "ep": 5,
+            "n": 2
+          },
+          {
+            "ep": 10,
+            "n": 3
+          }
+        ]
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-b154-f",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b154-f",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-frpb-b154",
+        "frequencyId": "离婚99-b154",
+        "rhythmId": "EP10-rhythm-b154-f",
+        "peakId": "对峙峰值-b154-f",
+        "ep": 10
+      }
+    ]
+  },
+  "stageRhythmPeakBridge": {
+    "seasonId": "S1",
+    "goals": [
+      {
+        "id": "夺回机长席-b154",
+        "label": "夺回机长席",
+        "destination": "公开身份对峙胜利",
+        "startEp": 1,
+        "dueEp": 10,
+        "status": "met"
+      },
+      {
+        "id": "下一关-b154",
+        "label": "下一关",
+        "destination": "晋级",
+        "startEp": 10,
+        "dueEp": 25,
+        "status": "open"
+      }
+    ],
+    "progress": [
+      {
+        "goalId": "夺回机长席-b154",
+        "ep": 10,
+        "advances": true
+      },
+      {
+        "goalId": "下一关-b154",
+        "ep": 18,
+        "advances": true
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-b154-s",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b154-s",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-srpb-b154",
+        "goalId": "夺回机长席-b154",
+        "rhythmId": "EP10-rhythm-b154-s",
+        "peakId": "对峙峰值-b154-s",
+        "ep": 10
+      }
+    ]
+  },
+  "openingRhythmPeakBridge": {
+    "openings": [
+      {
+        "id": "EP10-open-b154",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "rhythms": [
+      {
+        "id": "EP10-rhythm-b154-o",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-b154-o",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-orpb-b154",
+        "openingId": "EP10-open-b154",
+        "rhythmId": "EP10-rhythm-b154-o",
+        "peakId": "对峙峰值-b154-o",
+        "ep": 10
+      }
+    ]
+  },
+  "qualityDriftLink": {
+    "minDriftIntense": 4,
+    "drifts": [
+      {
+        "id": "EP10-drift-b154",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-drift-b154",
+        "driftId": "EP10-drift-b154",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityAnchorLink": {
+    "minAnchorIntense": 4,
+    "anchors": [
+      {
+        "id": "EP10-anchor-b154",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-anchor-b154",
+        "anchorId": "EP10-anchor-b154",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualitySparkLink": {
+    "minSparkIntense": 4,
+    "sparks": [
+      {
+        "id": "EP10-spark-b154",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-spark-b154",
+        "sparkId": "EP10-spark-b154",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "qualityCrestLink": {
+    "minCrestIntense": 4,
+    "crests": [
+      {
+        "id": "EP10-crest-b154",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-B154-0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-B154-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-B154-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-B154-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-crest-b154",
+        "crestId": "EP10-crest-b154",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }
