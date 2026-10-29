@@ -124,6 +124,22 @@ import {
   type ReactionAfterReversalReport,
 } from './reaction-after-reversal-gate';
 
+import {
+  evaluateHookWindowHard,
+  type HookWindowHardOptions,
+  type HookWindowHardReport,
+} from './hook-window-hard-gate';
+import {
+  evaluateCliffTailTight,
+  type CliffTailTightOptions,
+  type CliffTailTightReport,
+} from './cliff-tail-tight-gate';
+import {
+  evaluateDialogueAfterHook,
+  type DialogueAfterHookOptions,
+  type DialogueAfterHookReport,
+} from './dialogue-after-hook-gate';
+
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
   'openingCascade',
@@ -145,6 +161,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'setupRatioHard',
   'coldOpenCascade',
   'reactionAfterReversal',
+  'hookWindowHard',
+  'cliffTailTight',
+  'dialogueAfterHook',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -351,6 +370,48 @@ const ReactionAfterReversalOptsSchema = z
   })
   .strict();
 
+const HookWindowHardOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    hardHookWindowSec: z.number().positive().optional(),
+  })
+  .strict();
+
+const CliffTailTightOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    hardTailToleranceSec: z.number().positive().optional(),
+  })
+  .strict();
+
+const DialogueAfterHookOptsSchema = z
+  .object({
+    minActionChars: z.number().int().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    unlabeledSpeechMin: z.number().int().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -374,6 +435,9 @@ export const ShotSpecSuiteSchema = z
     setupRatioHard: ShotSpecDocSchema.optional(),
     coldOpenCascade: ShotSpecDocSchema.optional(),
     reactionAfterReversal: ShotSpecDocSchema.optional(),
+    hookWindowHard: ShotSpecDocSchema.optional(),
+    cliffTailTight: ShotSpecDocSchema.optional(),
+    dialogueAfterHook: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -392,6 +456,9 @@ export const ShotSpecSuiteSchema = z
     setupRatioHardOpts: SetupRatioHardOptsSchema.optional(),
     coldOpenCascadeOpts: ColdOpenCascadeOptsSchema.optional(),
     reactionAfterReversalOpts: ReactionAfterReversalOptsSchema.optional(),
+    hookWindowHardOpts: HookWindowHardOptsSchema.optional(),
+    cliffTailTightOpts: CliffTailTightOptsSchema.optional(),
+    dialogueAfterHookOpts: DialogueAfterHookOptsSchema.optional(),
   })
   .strict();
 
@@ -417,7 +484,10 @@ export type ShotSpecChildReport =
   | HookKindMixReport
   | SetupRatioHardReport
   | ColdOpenCascadeReport
-  | ReactionAfterReversalReport;
+  | ReactionAfterReversalReport
+  | HookWindowHardReport
+  | CliffTailTightReport
+  | DialogueAfterHookReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -503,6 +573,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     setupRatioHardOpts,
     coldOpenCascadeOpts,
     reactionAfterReversalOpts,
+    hookWindowHardOpts,
+    cliffTailTightOpts,
+    dialogueAfterHookOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -679,6 +752,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateReactionAfterReversal(
         sections.reactionAfterReversal,
         (reactionAfterReversalOpts ?? {}) as ReactionAfterReversalOptions,
+      ),
+    );
+  }
+  if (sections.hookWindowHard !== undefined) {
+    run(
+      'hookWindowHard',
+      evaluateHookWindowHard(
+        sections.hookWindowHard,
+        (hookWindowHardOpts ?? {}) as HookWindowHardOptions,
+      ),
+    );
+  }
+  if (sections.cliffTailTight !== undefined) {
+    run(
+      'cliffTailTight',
+      evaluateCliffTailTight(
+        sections.cliffTailTight,
+        (cliffTailTightOpts ?? {}) as CliffTailTightOptions,
+      ),
+    );
+  }
+  if (sections.dialogueAfterHook !== undefined) {
+    run(
+      'dialogueAfterHook',
+      evaluateDialogueAfterHook(
+        sections.dialogueAfterHook,
+        (dialogueAfterHookOpts ?? {}) as DialogueAfterHookOptions,
       ),
     );
   }

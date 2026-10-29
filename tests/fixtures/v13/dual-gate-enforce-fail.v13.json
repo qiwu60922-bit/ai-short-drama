@@ -1,0 +1,9 @@
+{
+  "storyLedger": {
+    "series": "dual-enforce-fail",
+    "latestEp": 1
+  },
+  "shotSpecSuite": {
+    "episode": "dual-enforce-fail"
+  }
+}

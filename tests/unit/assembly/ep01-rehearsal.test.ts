@@ -263,3 +263,95 @@ describe('ep01 CLI shot-spec-gate enforce', () => {
     expect(warnReport.stage).not.toBe('shotSpec');
   }, 60_000);
 });
+
+
+describe('ep01 CLI dual-gate enforce combo', () => {
+  it('both enforce + EMPTY fixtures → exit 36 at storyLedger first; default warn unchanged', () => {
+    const w = tmp();
+    const repoRoot = resolve(__dirname, '../../..');
+    const script = resolve(repoRoot, 'scripts/ep01-offline-rehearsal.ts');
+    const shot = resolve(repoRoot, 'tests/fixtures/wave14-ep01/SHOT_SPEC.json');
+    const ref = resolve(repoRoot, 'tests/fixtures/wave14-ep01/REF_INDEX.json');
+    const dual = resolve(repoRoot, 'tests/fixtures/v13/dual-gate-enforce-fail.v13.json');
+    const scene = sceneFile();
+    const dualDoc = JSON.parse(readFileSync(dual, 'utf8'));
+    const storyPath = join(w, 'story-empty.json');
+    const shotPath = join(w, 'shot-empty.json');
+    writeFileSync(storyPath, JSON.stringify(dualDoc.storyLedger));
+    writeFileSync(shotPath, JSON.stringify(dualDoc.shotSpecSuite));
+    try {
+      execFileSync(
+        'npx',
+        [
+          'tsx',
+          script,
+          '--shot-spec',
+          shot,
+          '--ref-index',
+          ref,
+          '--work-dir',
+          w,
+          '--scene-ref',
+          scene,
+          '--allow-candidates-for-dry-run',
+          '--no-detectors',
+          '--story-ledger-gate',
+          'enforce',
+          '--story-ledger',
+          storyPath,
+          '--shot-spec-gate',
+          'enforce',
+          '--shot-spec-suite',
+          shotPath,
+        ],
+        { cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+      );
+      expect.unreachable('expected exit 36');
+    } catch (e: unknown) {
+      const err = e as { status?: number; stdout?: string };
+      expect(err.status).toBe(36);
+      const out = JSON.parse(String(err.stdout || '{}'));
+      expect(out.stage).toBe('storyLedger');
+      expect(out.exitCode).toBe(36);
+      expect(out.storyLedger?.verdict).toBe('FAIL');
+      // shotSpec must not have run when storyLedger enforce blocks first
+      expect(out.shotSpecSuite).toBeUndefined();
+    }
+
+    // default warn on both: continues past storyLedger (not exit 36)
+    const w2 = tmp();
+    const storyPath2 = join(w2, 'story-empty.json');
+    const shotPath2 = join(w2, 'shot-empty.json');
+    writeFileSync(storyPath2, JSON.stringify(dualDoc.storyLedger));
+    writeFileSync(shotPath2, JSON.stringify(dualDoc.shotSpecSuite));
+    const out2 = execFileSync(
+      'npx',
+      [
+        'tsx',
+        script,
+        '--shot-spec',
+        shot,
+        '--ref-index',
+        ref,
+        '--work-dir',
+        w2,
+        '--scene-ref',
+        scene,
+        '--allow-candidates-for-dry-run',
+        '--no-detectors',
+        '--story-ledger',
+        storyPath2,
+        '--shot-spec-suite',
+        shotPath2,
+        // omit gate flags → default warn
+      ],
+      { cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    const warnReport = JSON.parse(out2);
+    expect(warnReport.storyLedger?.verdict).toBe('FAIL');
+    expect(warnReport.shotSpecSuite?.verdict).toBe('FAIL');
+    expect(warnReport.exitCode).not.toBe(36);
+    expect(warnReport.stage).not.toBe('storyLedger');
+    expect(warnReport.stage).not.toBe('shotSpec');
+  }, 90_000);
+});
