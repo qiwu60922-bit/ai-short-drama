@@ -32,3 +32,48 @@ describe('factory batch', () => {
     expect(r.episodes[1].totalSec).toBeCloseTo(62, 0); expect(r.ledger.totalCostUsd).toBe(0); expect(r.ledger.count).toBeGreaterThan(28);
   }, 400_000);
 });
+
+describe('factory batch storyLedgerGate', () => {
+  it('enforce + EMPTY_SUITE FAIL → exit 36, no episodes run, report dumped', async () => {
+    const w = tmp();
+    const r = await runFactoryBatch(
+      w,
+      [{ episodeId: 'ep01', providers: { h3: 'fake', dub: 'fake' }, handlers: fakeHandlers() }],
+      { storyLedger: { series: 'T', latestEp: 1 }, storyLedgerGate: 'enforce' },
+    );
+    expect(r.exitCode).toBe(36);
+    expect((r as { stage?: string }).stage).toBe('storyLedger');
+    expect(r.storyLedger?.verdict).toBe('FAIL');
+    expect(r.episodes).toEqual([]);
+    expect(existsSync(join(w, 'story-ledger-suite-report.json'))).toBe(true);
+    expect(existsSync(join(w, 'ep01', 'FACTORY_QUEUE.json'))).toBe(false);
+    expect(r.canPublish).toBe(false);
+    expect(r.g3).toBe('NOT_EVALUATED');
+  });
+
+  it('warn + FAIL still runs episodes', async () => {
+    const w = tmp();
+    const r = await runFactoryBatch(
+      w,
+      [{ episodeId: 'ep01', providers: { h3: 'fake', dub: 'fake' }, handlers: fakeHandlers() }],
+      { storyLedger: { series: 'T', latestEp: 1 }, storyLedgerGate: 'warn' },
+    );
+    expect(r.exitCode).toBe(0);
+    expect(r.episodes).toHaveLength(1);
+    expect(r.episodes[0].status).toBe('DONE_AWAITING_HUMAN_REVIEW');
+    expect(r.storyLedger?.verdict).toBe('FAIL');
+    expect(r.notes.some((n) => n.includes('story-ledger-suite'))).toBe(true);
+  });
+
+  it('off (default) ignores storyLedger payload', async () => {
+    const w = tmp();
+    const r = await runFactoryBatch(
+      w,
+      [{ episodeId: 'ep01', providers: { h3: 'fake', dub: 'fake' }, handlers: fakeHandlers() }],
+      { storyLedger: { series: 'T', latestEp: 1 } },
+    );
+    expect(r.storyLedger).toBeUndefined();
+    expect(existsSync(join(w, 'story-ledger-suite-report.json'))).toBe(false);
+    expect(r.exitCode).toBe(0);
+  });
+});
