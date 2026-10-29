@@ -22,6 +22,7 @@ describe('v13 suite fixtures', () => {
     expect(r.results.foreshadowPeakLink.status).toBe('PASS');
     expect(r.results.motifForeshadowRhythmBridge.status).toBe('PASS');
     expect(r.results.qualityMaskPeakBridge.status).toBe('PASS');
+    expect(r.results.abilityMaskPeakBridge.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(8);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
@@ -39,6 +40,9 @@ describe('v13 suite fixtures', () => {
     expect(r.results.coldOpenMidHook.status).toBe('PASS');
     expect(r.results.dialogueBeforeCliffBan.status).toBe('PASS');
     expect(r.results.setupMidCap.status).toBe('PASS');
+    expect(r.results.hookKindMixColdOpen.status).toBe('PASS');
+    expect(r.results.dialogueAfterReversalBan.status).toBe('PASS');
+    expect(r.results.midTurnSetupCap.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(11);
   });
 

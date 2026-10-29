@@ -1382,5 +1382,77 @@
         }
       }
     ]
+  },
+  "abilityMaskPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 8,
+        "day": 8,
+        "option": "查验身份"
+      }
+    ],
+    "masks": [
+      {
+        "id": "预言家伪装",
+        "wearer": "linyang",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 8,
+        "revealLabel": "全场唯一揭穿"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "预言家对峙",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "全场唯一对决",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-amp",
+        "abilityId": "seer",
+        "maskId": "预言家伪装",
+        "peakId": "预言家对峙",
+        "ep": 8
+      }
+    ]
   }
 }
