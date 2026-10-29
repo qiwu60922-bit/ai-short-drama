@@ -131,6 +131,8 @@
  *   · qualityMotifLink · bondEnsembleLink · qualityAbilityLink · qualityVestLink
  *   · personaCountdownPeakBridge · ensembleCountdownPeakBridge · countdownEnsemblePeakBridge · personaEnsemblePeakBridge
  *   · qualityRhythmLink · qualityRevealLink · qualityAllianceLink · qualityConflictLink
+ *   · maskCountdownPeakBridge · coldOpenCountdownPeakBridge · rhythmCountdownPeakBridge · ensemblePersonaPeakBridge
+ *   · qualityPeakLink · qualityOpeningLink · qualityDialogueLink · qualityHookLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -2284,6 +2286,52 @@ import {
   type QualityConflictLinkReport,
 } from './quality-conflict-link-gate';
 
+import {
+  MaskCountdownPeakBridgeLinkSchema,
+  evaluateMaskCountdownPeakBridge,
+  type MaskCountdownPeakBridgeReport,
+} from './mask-countdown-peak-bridge-gate';
+import {
+  ColdOpenCountdownPeakBridgeLinkSchema,
+  ColdOpenCountdownPeakColdOpenEntrySchema,
+  evaluateColdOpenCountdownPeakBridge,
+  type ColdOpenCountdownPeakBridgeReport,
+} from './cold-open-countdown-peak-bridge-gate';
+import {
+  RhythmCountdownPeakBridgeLinkSchema,
+  RhythmCountdownPeakRhythmEntrySchema,
+  evaluateRhythmCountdownPeakBridge,
+  type RhythmCountdownPeakBridgeReport,
+} from './rhythm-countdown-peak-bridge-gate';
+import {
+  EnsemblePersonaPeakBridgeLinkSchema,
+  evaluateEnsemblePersonaPeakBridge,
+  type EnsemblePersonaPeakBridgeReport,
+} from './ensemble-persona-peak-bridge-gate';
+import {
+  QualityPeakLinkEntrySchema,
+  evaluateQualityPeakLink,
+  type QualityPeakLinkReport,
+} from './quality-peak-link-gate';
+import {
+  QualityOpeningLinkEntrySchema,
+  QualityOpeningEntrySchema,
+  evaluateQualityOpeningLink,
+  type QualityOpeningLinkReport,
+} from './quality-opening-link-gate';
+import {
+  QualityDialogueLinkEntrySchema,
+  QualityDialogueEntrySchema,
+  evaluateQualityDialogueLink,
+  type QualityDialogueLinkReport,
+} from './quality-dialogue-link-gate';
+import {
+  QualityHookLinkEntrySchema,
+  QualityHookEntrySchema,
+  evaluateQualityHookLink,
+  type QualityHookLinkReport,
+} from './quality-hook-link-gate';
+
 
 
 
@@ -2702,6 +2750,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityRevealLink',
   'qualityAllianceLink',
   'qualityConflictLink',
+  'maskCountdownPeakBridge',
+  'coldOpenCountdownPeakBridge',
+  'rhythmCountdownPeakBridge',
+  'ensemblePersonaPeakBridge',
+  'qualityPeakLink',
+  'qualityOpeningLink',
+  'qualityDialogueLink',
+  'qualityHookLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -5474,6 +5530,59 @@ const QualityConflictSectionSchema = z.object({
   links: z.array(QualityConflictLinkEntrySchema),
 });
 
+const MaskCountdownPeakBridgeSectionSchema = z.object({
+  countdowns: z.array(StageCountdownSchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MaskCountdownPeakBridgeLinkSchema),
+});
+
+const ColdOpenCountdownPeakBridgeSectionSchema = z.object({
+  countdowns: z.array(StageCountdownSchema),
+  coldOpens: z.array(ColdOpenCountdownPeakColdOpenEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ColdOpenCountdownPeakBridgeLinkSchema),
+});
+
+const RhythmCountdownPeakBridgeSectionSchema = z.object({
+  rhythms: z.array(RhythmCountdownPeakRhythmEntrySchema),
+  countdowns: z.array(StageCountdownSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(RhythmCountdownPeakBridgeLinkSchema),
+});
+
+const EnsemblePersonaPeakBridgeSectionSchema = z.object({
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(EnsemblePersonaPeakBridgeLinkSchema),
+});
+
+const QualityPeakSectionSchemaB149 = z.object({
+  minPeakIntense: z.number().int().min(1).max(5).optional(),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(QualityPeakLinkEntrySchema),
+});
+
+const QualityOpeningSectionSchemaB149 = z.object({
+  minOpeningIntense: z.number().int().min(1).max(5).optional(),
+  openings: z.array(QualityOpeningEntrySchema),
+  links: z.array(QualityOpeningLinkEntrySchema),
+});
+
+const QualityDialogueSectionSchemaB149 = z.object({
+  minDialogueIntense: z.number().int().min(1).max(5).optional(),
+  dialogues: z.array(QualityDialogueEntrySchema),
+  links: z.array(QualityDialogueLinkEntrySchema),
+});
+
+const QualityHookSectionSchemaB149 = z.object({
+  minHookIntense: z.number().int().min(1).max(5).optional(),
+  hooks: z.array(QualityHookEntrySchema),
+  links: z.array(QualityHookLinkEntrySchema),
+});
+
 
 
 
@@ -5892,6 +6001,14 @@ export const StoryLedgerSuiteSchema = z
     qualityRevealLink: QualityRevealSectionSchema.optional(),
     qualityAllianceLink: QualityAllianceSectionSchemaB148.optional(),
     qualityConflictLink: QualityConflictSectionSchema.optional(),
+    maskCountdownPeakBridge: MaskCountdownPeakBridgeSectionSchema.optional(),
+    coldOpenCountdownPeakBridge: ColdOpenCountdownPeakBridgeSectionSchema.optional(),
+    rhythmCountdownPeakBridge: RhythmCountdownPeakBridgeSectionSchema.optional(),
+    ensemblePersonaPeakBridge: EnsemblePersonaPeakBridgeSectionSchema.optional(),
+    qualityPeakLink: QualityPeakSectionSchemaB149.optional(),
+    qualityOpeningLink: QualityOpeningSectionSchemaB149.optional(),
+    qualityDialogueLink: QualityDialogueSectionSchemaB149.optional(),
+    qualityHookLink: QualityHookSectionSchemaB149.optional(),
   })
   .strict();
 
@@ -6303,7 +6420,15 @@ export type StoryLedgerChildReport =
   | QualityRhythmLinkReport
   | QualityRevealLinkReport
   | QualityAllianceLinkReport
-  | QualityConflictLinkReport;
+  | QualityConflictLinkReport
+  | MaskCountdownPeakBridgeReport
+  | ColdOpenCountdownPeakBridgeReport
+  | RhythmCountdownPeakBridgeReport
+  | EnsemblePersonaPeakBridgeReport
+  | QualityPeakLinkReport
+  | QualityOpeningLinkReport
+  | QualityDialogueLinkReport
+  | QualityHookLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -7155,6 +7280,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityAllianceLink({ series, latestEp, ...(section as object) }),
   qualityConflictLink: (series, latestEp, section) =>
     evaluateQualityConflictLink({ series, latestEp, ...(section as object) }),
+  maskCountdownPeakBridge: (series, latestEp, section) =>
+    evaluateMaskCountdownPeakBridge({ series, latestEp, ...(section as object) }),
+  coldOpenCountdownPeakBridge: (series, latestEp, section) =>
+    evaluateColdOpenCountdownPeakBridge({ series, latestEp, ...(section as object) }),
+  rhythmCountdownPeakBridge: (series, latestEp, section) =>
+    evaluateRhythmCountdownPeakBridge({ series, latestEp, ...(section as object) }),
+  ensemblePersonaPeakBridge: (series, latestEp, section) =>
+    evaluateEnsemblePersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityPeakLink: (series, latestEp, section) =>
+    evaluateQualityPeakLink({ series, latestEp, ...(section as object) }),
+  qualityOpeningLink: (series, latestEp, section) =>
+    evaluateQualityOpeningLink({ series, latestEp, ...(section as object) }),
+  qualityDialogueLink: (series, latestEp, section) =>
+    evaluateQualityDialogueLink({ series, latestEp, ...(section as object) }),
+  qualityHookLink: (series, latestEp, section) =>
+    evaluateQualityHookLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
