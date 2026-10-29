@@ -951,5 +951,333 @@
         "maskId": "花心纨绔"
       }
     ]
+  },
+  "amnesiaHandoffLink": {
+    "amnesias": [
+      {
+        "id": "祁南失忆",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 8,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9-am",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-AH0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "唤回开场"
+            },
+            {
+              "shotId": "EP08-AH1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对视蓄势"
+            },
+            {
+              "shotId": "EP08-AH2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "记忆闪回"
+            },
+            {
+              "shotId": "EP08-AH3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外脚步未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-AH0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP09-AH1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问延续"
+            },
+            {
+              "shotId": "EP09-AH2",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "新证人"
+            },
+            {
+              "shotId": "EP09-AH3",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-amnesia-handoff",
+        "amnesiaId": "祁南失忆",
+        "handoffId": "H8-9-am"
+      }
+    ]
+  },
+  "bondMaskLink": {
+    "bonds": [
+      {
+        "id": "江少契约",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 8,
+        "upgradeLabel": "真心崩塌后真情"
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 8,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bond-mask",
+        "bondId": "江少契约",
+        "maskId": "花心纨绔"
+      }
+    ]
+  },
+  "foreshadowPeakLink": {
+    "items": [
+      {
+        "id": "伪人身份",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 8,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "peaks": [
+      {
+        "id": "身份对峙",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "揭伪人对峙",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-foreshadow-peak",
+        "foreshadowId": "伪人身份",
+        "peakId": "身份对峙"
+      }
+    ]
+  },
+  "motifForeshadowRhythmBridge": {
+    "profile": "dense",
+    "motifs": [
+      {
+        "id": "white-rose",
+        "label": "白玫瑰",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "white-rose",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "含苞"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 8,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "white-rose",
+        "ep": 20,
+        "role": "payoff",
+        "visualState": "盛放"
+      }
+    ],
+    "items": [
+      {
+        "id": "伪人身份",
+        "name": "预言家真伪",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 8,
+        "lastAdvancedEp": 4
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mfr",
+        "motifId": "white-rose",
+        "foreshadowId": "伪人身份",
+        "ep": 8,
+        "shotSpec": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-MFR0",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR1",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR2",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR3",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR4",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR5",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR6",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR7",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR8",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR9",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR10",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR11",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR12",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR13",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR14",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR15",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR16",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            },
+            {
+              "shotId": "EP08-MFR17",
+              "cast": [],
+              "durSec": 2,
+              "action": "x·y"
+            }
+          ]
+        },
+        "profile": "dense"
+      }
+    ]
   }
 }

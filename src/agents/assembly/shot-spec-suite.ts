@@ -11,6 +11,8 @@
  *   · detailHookKind · tailColdClose
  *   · midTurnDensity · hookKindMix
  *   · setupRatioHard · coldOpenCascade · reactionAfterReversal
+ *   · hookWindowHard · cliffTailTight · dialogueAfterHook
+ *   · midHookEarly · setupAfterHookBan · reactionBeforeCliff
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -139,6 +141,21 @@ import {
   type DialogueAfterHookOptions,
   type DialogueAfterHookReport,
 } from './dialogue-after-hook-gate';
+import {
+  evaluateMidHookEarly,
+  type MidHookEarlyOptions,
+  type MidHookEarlyReport,
+} from './mid-hook-early-gate';
+import {
+  evaluateSetupAfterHookBan,
+  type SetupAfterHookBanOptions,
+  type SetupAfterHookBanReport,
+} from './setup-after-hook-ban-gate';
+import {
+  evaluateReactionBeforeCliff,
+  type ReactionBeforeCliffOptions,
+  type ReactionBeforeCliffReport,
+} from './reaction-before-cliff-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -164,6 +181,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'hookWindowHard',
   'cliffTailTight',
   'dialogueAfterHook',
+  'midHookEarly',
+  'setupAfterHookBan',
+  'reactionBeforeCliff',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -411,6 +431,41 @@ const DialogueAfterHookOptsSchema = z
   })
   .strict();
 
+const MidHookEarlyOptsSchema = z
+  .object({
+    midHookByRatio: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const SetupAfterHookBanOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const ReactionBeforeCliffOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    requirePriorReaction: z.boolean().optional(),
+  })
+  .strict();
+
+
 
 export const ShotSpecSuiteSchema = z
   .object({
@@ -438,6 +493,9 @@ export const ShotSpecSuiteSchema = z
     hookWindowHard: ShotSpecDocSchema.optional(),
     cliffTailTight: ShotSpecDocSchema.optional(),
     dialogueAfterHook: ShotSpecDocSchema.optional(),
+    midHookEarly: ShotSpecDocSchema.optional(),
+    setupAfterHookBan: ShotSpecDocSchema.optional(),
+    reactionBeforeCliff: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -459,6 +517,9 @@ export const ShotSpecSuiteSchema = z
     hookWindowHardOpts: HookWindowHardOptsSchema.optional(),
     cliffTailTightOpts: CliffTailTightOptsSchema.optional(),
     dialogueAfterHookOpts: DialogueAfterHookOptsSchema.optional(),
+    midHookEarlyOpts: MidHookEarlyOptsSchema.optional(),
+    setupAfterHookBanOpts: SetupAfterHookBanOptsSchema.optional(),
+    reactionBeforeCliffOpts: ReactionBeforeCliffOptsSchema.optional(),
   })
   .strict();
 
@@ -487,7 +548,10 @@ export type ShotSpecChildReport =
   | ReactionAfterReversalReport
   | HookWindowHardReport
   | CliffTailTightReport
-  | DialogueAfterHookReport;
+  | DialogueAfterHookReport
+  | MidHookEarlyReport
+  | SetupAfterHookBanReport
+  | ReactionBeforeCliffReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -576,6 +640,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     hookWindowHardOpts,
     cliffTailTightOpts,
     dialogueAfterHookOpts,
+    midHookEarlyOpts,
+    setupAfterHookBanOpts,
+    reactionBeforeCliffOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -779,6 +846,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateDialogueAfterHook(
         sections.dialogueAfterHook,
         (dialogueAfterHookOpts ?? {}) as DialogueAfterHookOptions,
+      ),
+    );
+  }
+  if (sections.midHookEarly !== undefined) {
+    run(
+      'midHookEarly',
+      evaluateMidHookEarly(
+        sections.midHookEarly,
+        (midHookEarlyOpts ?? {}) as MidHookEarlyOptions,
+      ),
+    );
+  }
+  if (sections.setupAfterHookBan !== undefined) {
+    run(
+      'setupAfterHookBan',
+      evaluateSetupAfterHookBan(
+        sections.setupAfterHookBan,
+        (setupAfterHookBanOpts ?? {}) as SetupAfterHookBanOptions,
+      ),
+    );
+  }
+  if (sections.reactionBeforeCliff !== undefined) {
+    run(
+      'reactionBeforeCliff',
+      evaluateReactionBeforeCliff(
+        sections.reactionBeforeCliff,
+        (reactionBeforeCliffOpts ?? {}) as ReactionBeforeCliffOptions,
       ),
     );
   }
