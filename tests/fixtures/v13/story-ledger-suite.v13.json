@@ -20141,5 +20141,842 @@
         }
       }
     ]
+  },
+  "frequencyAmnesiaPeakBridge": {
+    "frequencies": [
+      {
+        "id": "离婚99-fapb",
+        "actor": "叶楚",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 3,
+        "plantEp": 1,
+        "plantAtSec": 0,
+        "tipEp": 10,
+        "tipAtSec": 10,
+        "tipLabel": "第3次离婚签字",
+        "ticks": [
+          {
+            "ep": 2,
+            "n": 1
+          },
+          {
+            "ep": 5,
+            "n": 2
+          },
+          {
+            "ep": 10,
+            "n": 3
+          }
+        ]
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-fapb",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fapb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fapb",
+        "frequencyId": "离婚99-fapb",
+        "amnesiaId": "祁南失忆-fapb",
+        "peakId": "对峙峰值-fapb",
+        "ep": 10
+      }
+    ]
+  },
+  "motifAmnesiaPeakBridge": {
+    "motifs": [
+      {
+        "id": "红伞-mapb",
+        "label": "红伞母题",
+        "kind": "prop"
+      }
+    ],
+    "appearances": [
+      {
+        "motifId": "红伞-mapb",
+        "ep": 1,
+        "role": "seed",
+        "visualState": "收起"
+      },
+      {
+        "motifId": "红伞-mapb",
+        "ep": 4,
+        "role": "echo",
+        "visualState": "半开"
+      },
+      {
+        "motifId": "红伞-mapb",
+        "ep": 10,
+        "role": "payoff",
+        "visualState": "撑开"
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-mapb",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-mapb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mapb",
+        "motifId": "红伞-mapb",
+        "amnesiaId": "祁南失忆-mapb",
+        "peakId": "对峙峰值-mapb",
+        "ep": 10
+      }
+    ]
+  },
+  "countdownAmnesiaPeakBridge": {
+    "countdowns": [
+      {
+        "id": "直播终局-capb",
+        "label": "终局倒计时",
+        "startEp": 1,
+        "deadlineEp": 10,
+        "status": "open"
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-capb",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-capb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-capb",
+        "countdownId": "直播终局-capb",
+        "amnesiaId": "祁南失忆-capb",
+        "peakId": "对峙峰值-capb",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaHandoffPeakBridge": {
+    "handoffs": [
+      {
+        "id": "H10-11-ahpb",
+        "prevEp": 10,
+        "nextEp": 11,
+        "prev": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-AH0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "唤回开场"
+            },
+            {
+              "shotId": "EP10-AH1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对视蓄势"
+            },
+            {
+              "shotId": "EP10-AH2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "记忆闪回"
+            },
+            {
+              "shotId": "EP10-AH3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外脚步未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP11",
+          "shots": [
+            {
+              "shotId": "EP11-AH0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP11-AH1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问延续"
+            },
+            {
+              "shotId": "EP11-AH2",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "新证人"
+            },
+            {
+              "shotId": "EP11-AH3",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "amnesias": [
+      {
+        "id": "祁南失忆-ahpb",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-ahpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ahpb",
+        "handoffId": "H10-11-ahpb",
+        "amnesiaId": "祁南失忆-ahpb",
+        "peakId": "对峙峰值-ahpb",
+        "ep": 10
+      }
+    ]
+  },
+  "cliffQualityLink": {
+    "cliffLinks": [
+      {
+        "id": "C9-10",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qc",
+        "cliffLinkId": "C9-10",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "personaQualityLink": {
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-qpl"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-qpl",
+        "cardSlug": "su-jianqing-qpl",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "面具崩塌对峙。",
+              "durationSec": 4,
+              "dramaPurpose": "揭穿可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "frequencyQualityLink": {
+    "frequencies": [
+      {
+        "id": "离婚99-fql",
+        "actor": "叶楚",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 3,
+        "plantEp": 1,
+        "plantAtSec": 0,
+        "tipEp": 10,
+        "tipAtSec": 10,
+        "tipLabel": "第3次离婚签字",
+        "ticks": [
+          {
+            "ep": 2,
+            "n": 1
+          },
+          {
+            "ep": 5,
+            "n": 2
+          },
+          {
+            "ep": 10,
+            "n": 3
+          }
+        ]
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fql",
+        "frequencyId": "离婚99-fql",
+        "ep": 10,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "handoffQualityLink": {
+    "handoffs": [
+      {
+        "id": "H10-11-hql",
+        "prevEp": 10,
+        "nextEp": 11,
+        "prev": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-AH0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "唤回开场"
+            },
+            {
+              "shotId": "EP10-AH1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对视蓄势"
+            },
+            {
+              "shotId": "EP10-AH2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "记忆闪回"
+            },
+            {
+              "shotId": "EP10-AH3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外脚步未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP11",
+          "shots": [
+            {
+              "shotId": "EP11-AH0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP11-AH1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问延续"
+            },
+            {
+              "shotId": "EP11-AH2",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "新证人"
+            },
+            {
+              "shotId": "EP11-AH3",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-hql",
+        "handoffId": "H10-11-hql",
+        "ep": 11,
+        "qualityLeap": {
+          "style": "live_action",
+          "shots": [
+            {
+              "id": "S01",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S02",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "anger",
+                "intensity": 5,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            },
+            {
+              "id": "S03",
+              "scriptBeat": "表演兑现。",
+              "durationSec": 4,
+              "dramaPurpose": "可见表演",
+              "characterIntent": "撕开伪装",
+              "performance": {
+                "emotion": "doubt",
+                "intensity": 2,
+                "face": "眉峰拧紧",
+                "gaze": "钉住对方",
+                "posture": "前倾"
+              },
+              "camera": {
+                "shotSize": "中近景",
+                "primaryMove": "固定",
+                "moveDetail": "机位固定"
+              },
+              "dialogue": null,
+              "mouthResting": "嘴唇自然闭合",
+              "fullPrompt": "中近景固定，眉峰拧紧，嘴部闭合。"
+            }
+          ]
+        }
+      }
+    ]
   }
 }
