@@ -237,6 +237,8 @@
  *   · qualityOxazoleLink · qualityIsoxazoleLink · qualityOxadiazoleLink · qualityTetrazoleLink
  *   · chuffRhythmPeakBridge · ribbitRhythmPeakBridge · burpRhythmPeakBridge · belchRhythmPeakBridge
  *   · qualityThiadiazoleLink · qualityTriazineLink · qualityPurineLink · qualityPteridineLink
+ *   · hiccupRhythmPeakBridge · gulpRhythmPeakBridge · slurpRhythmPeakBridge · sipRhythmPeakBridge
+ *   · qualityQuinolineLink · qualityIsoquinolineLink · qualityIndoleLink · qualityCarbazoleLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4479,6 +4481,59 @@ import {
   type QualityPteridineLinkReport,
 } from './quality-pteridine-link-gate';
 
+import {
+  HiccupRhythmPeakBridgeLinkSchema,
+  HiccupRhythmPeakHiccupEntrySchema,
+  HiccupRhythmPeakRhythmEntrySchema,
+  evaluateHiccupRhythmPeakBridge,
+  type HiccupRhythmPeakBridgeReport,
+} from './hiccup-rhythm-peak-bridge-gate';
+import {
+  GulpRhythmPeakBridgeLinkSchema,
+  GulpRhythmPeakGulpEntrySchema,
+  GulpRhythmPeakRhythmEntrySchema,
+  evaluateGulpRhythmPeakBridge,
+  type GulpRhythmPeakBridgeReport,
+} from './gulp-rhythm-peak-bridge-gate';
+import {
+  SlurpRhythmPeakBridgeLinkSchema,
+  SlurpRhythmPeakSlurpEntrySchema,
+  SlurpRhythmPeakRhythmEntrySchema,
+  evaluateSlurpRhythmPeakBridge,
+  type SlurpRhythmPeakBridgeReport,
+} from './slurp-rhythm-peak-bridge-gate';
+import {
+  SipRhythmPeakBridgeLinkSchema,
+  SipRhythmPeakSipEntrySchema,
+  SipRhythmPeakRhythmEntrySchema,
+  evaluateSipRhythmPeakBridge,
+  type SipRhythmPeakBridgeReport,
+} from './sip-rhythm-peak-bridge-gate';
+import {
+  QualityQuinolineLinkEntrySchema,
+  QualityQuinolineEntrySchema,
+  evaluateQualityQuinolineLink,
+  type QualityQuinolineLinkReport,
+} from './quality-quinoline-link-gate';
+import {
+  QualityIsoquinolineLinkEntrySchema,
+  QualityIsoquinolineEntrySchema,
+  evaluateQualityIsoquinolineLink,
+  type QualityIsoquinolineLinkReport,
+} from './quality-isoquinoline-link-gate';
+import {
+  QualityIndoleLinkEntrySchema,
+  QualityIndoleEntrySchema,
+  evaluateQualityIndoleLink,
+  type QualityIndoleLinkReport,
+} from './quality-indole-link-gate';
+import {
+  QualityCarbazoleLinkEntrySchema,
+  QualityCarbazoleEntrySchema,
+  evaluateQualityCarbazoleLink,
+  type QualityCarbazoleLinkReport,
+} from './quality-carbazole-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -5208,6 +5263,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityTriazineLink',
   'qualityPurineLink',
   'qualityPteridineLink',
+  'hiccupRhythmPeakBridge',
+  'gulpRhythmPeakBridge',
+  'slurpRhythmPeakBridge',
+  'sipRhythmPeakBridge',
+  'qualityQuinolineLink',
+  'qualityIsoquinolineLink',
+  'qualityIndoleLink',
+  'qualityCarbazoleLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -10071,6 +10134,58 @@ const QualityPteridineSectionSchemaB188 = z.object({
   links: z.array(QualityPteridineLinkEntrySchema),
 });
 
+const HiccupRhythmPeakBridgeSectionSchema = z.object({
+  hiccups: z.array(HiccupRhythmPeakHiccupEntrySchema),
+  rhythms: z.array(HiccupRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HiccupRhythmPeakBridgeLinkSchema),
+});
+
+const GulpRhythmPeakBridgeSectionSchema = z.object({
+  gulps: z.array(GulpRhythmPeakGulpEntrySchema),
+  rhythms: z.array(GulpRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(GulpRhythmPeakBridgeLinkSchema),
+});
+
+const SlurpRhythmPeakBridgeSectionSchema = z.object({
+  slurps: z.array(SlurpRhythmPeakSlurpEntrySchema),
+  rhythms: z.array(SlurpRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SlurpRhythmPeakBridgeLinkSchema),
+});
+
+const SipRhythmPeakBridgeSectionSchema = z.object({
+  sips: z.array(SipRhythmPeakSipEntrySchema),
+  rhythms: z.array(SipRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SipRhythmPeakBridgeLinkSchema),
+});
+
+const QualityQuinolineSectionSchemaB189 = z.object({
+  minQuinolineIntense: z.number().int().min(1).max(5).optional(),
+  quinolines: z.array(QualityQuinolineEntrySchema),
+  links: z.array(QualityQuinolineLinkEntrySchema),
+});
+
+const QualityIsoquinolineSectionSchemaB189 = z.object({
+  minIsoquinolineIntense: z.number().int().min(1).max(5).optional(),
+  isoquinolines: z.array(QualityIsoquinolineEntrySchema),
+  links: z.array(QualityIsoquinolineLinkEntrySchema),
+});
+
+const QualityIndoleSectionSchemaB189 = z.object({
+  minIndoleIntense: z.number().int().min(1).max(5).optional(),
+  indoles: z.array(QualityIndoleEntrySchema),
+  links: z.array(QualityIndoleLinkEntrySchema),
+});
+
+const QualityCarbazoleSectionSchemaB189 = z.object({
+  minCarbazoleIntense: z.number().int().min(1).max(5).optional(),
+  carbazoles: z.array(QualityCarbazoleEntrySchema),
+  links: z.array(QualityCarbazoleLinkEntrySchema),
+});
+
 
 
 
@@ -10814,6 +10929,14 @@ export const StoryLedgerSuiteSchema = z
     qualityTriazineLink: QualityTriazineSectionSchemaB188.optional(),
     qualityPurineLink: QualityPurineSectionSchemaB188.optional(),
     qualityPteridineLink: QualityPteridineSectionSchemaB188.optional(),
+    hiccupRhythmPeakBridge: HiccupRhythmPeakBridgeSectionSchema.optional(),
+    gulpRhythmPeakBridge: GulpRhythmPeakBridgeSectionSchema.optional(),
+    slurpRhythmPeakBridge: SlurpRhythmPeakBridgeSectionSchema.optional(),
+    sipRhythmPeakBridge: SipRhythmPeakBridgeSectionSchema.optional(),
+    qualityQuinolineLink: QualityQuinolineSectionSchemaB189.optional(),
+    qualityIsoquinolineLink: QualityIsoquinolineSectionSchemaB189.optional(),
+    qualityIndoleLink: QualityIndoleSectionSchemaB189.optional(),
+    qualityCarbazoleLink: QualityCarbazoleSectionSchemaB189.optional(),
   })
   .strict();
 
@@ -11545,7 +11668,15 @@ export type StoryLedgerChildReport =
   | QualityThiadiazoleLinkReport
   | QualityTriazineLinkReport
   | QualityPurineLinkReport
-  | QualityPteridineLinkReport;
+  | QualityPteridineLinkReport
+  | HiccupRhythmPeakBridgeReport
+  | GulpRhythmPeakBridgeReport
+  | SlurpRhythmPeakBridgeReport
+  | SipRhythmPeakBridgeReport
+  | QualityQuinolineLinkReport
+  | QualityIsoquinolineLinkReport
+  | QualityIndoleLinkReport
+  | QualityCarbazoleLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -13038,6 +13169,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityPurineLink({ series, latestEp, ...(section as object) }),
   qualityPteridineLink: (series, latestEp, section) =>
     evaluateQualityPteridineLink({ series, latestEp, ...(section as object) }),
+  hiccupRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateHiccupRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  gulpRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateGulpRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  slurpRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSlurpRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  sipRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSipRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityQuinolineLink: (series, latestEp, section) =>
+    evaluateQualityQuinolineLink({ series, latestEp, ...(section as object) }),
+  qualityIsoquinolineLink: (series, latestEp, section) =>
+    evaluateQualityIsoquinolineLink({ series, latestEp, ...(section as object) }),
+  qualityIndoleLink: (series, latestEp, section) =>
+    evaluateQualityIndoleLink({ series, latestEp, ...(section as object) }),
+  qualityCarbazoleLink: (series, latestEp, section) =>
+    evaluateQualityCarbazoleLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
