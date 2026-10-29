@@ -24563,5 +24563,476 @@
         }
       }
     ]
+  },
+  "revealMaskPeakBridge": {
+    "reveals": [
+      {
+        "id": "R-b141",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "主线揭穿"
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b141-rm",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "并行伪装崩"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-rmpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rmpb",
+        "revealId": "R-b141",
+        "maskId": "M-b141-rm",
+        "peakId": "对峙峰值-rmpb",
+        "ep": 10
+      }
+    ]
+  },
+  "coldOpenMaskPeakBridge": {
+    "coldOpens": [
+      {
+        "id": "EP10-cold-compb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b139c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b139c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b141-comp",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-compb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-compb",
+        "coldOpenId": "EP10-cold-compb",
+        "maskId": "M-b141-comp",
+        "peakId": "对峙峰值-compb",
+        "ep": 10
+      }
+    ]
+  },
+  "stageGoalMaskPeakBridge": {
+    "seasonId": "S1",
+    "goals": [
+      {
+        "id": "G-b141-1",
+        "label": "夺回机长席",
+        "destination": "公开身份对峙胜利",
+        "startEp": 1,
+        "dueEp": 10,
+        "status": "met"
+      },
+      {
+        "id": "G-b141-2",
+        "label": "下一关",
+        "destination": "晋级",
+        "startEp": 10,
+        "dueEp": 25,
+        "status": "open"
+      }
+    ],
+    "progress": [
+      {
+        "goalId": "G-b141-1",
+        "ep": 10,
+        "advances": true
+      },
+      {
+        "goalId": "G-b141-2",
+        "ep": 18,
+        "advances": true
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b141-sg",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-sgmpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-sgmpb",
+        "goalId": "G-b141-1",
+        "maskId": "M-b141-sg",
+        "peakId": "对峙峰值-sgmpb",
+        "ep": 10
+      }
+    ]
+  },
+  "vestColdOpenPeakBridge": {
+    "vests": [
+      {
+        "id": "V-b141-1",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-vcopb",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b139c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b139c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-vcopb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vcopb",
+        "vestId": "V-b141-1",
+        "coldOpenId": "EP10-cold-vcopb",
+        "peakId": "对峙峰值-vcopb",
+        "ep": 10
+      }
+    ]
+  },
+  "coldOpenMaskLink": {
+    "coldOpens": [
+      {
+        "id": "EP10-cold-coml",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b139c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b139c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b141-coml",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-coml",
+        "coldOpenId": "EP10-cold-coml",
+        "maskId": "M-b141-coml",
+        "ep": 10
+      }
+    ]
+  },
+  "stageGoalMaskLink": {
+    "seasonId": "S1",
+    "goals": [
+      {
+        "id": "G-b141-m1",
+        "label": "夺回机长席",
+        "destination": "公开身份对峙胜利",
+        "startEp": 1,
+        "dueEp": 10,
+        "status": "met"
+      },
+      {
+        "id": "G-b141-m2",
+        "label": "下一关",
+        "destination": "晋级",
+        "startEp": 10,
+        "dueEp": 25,
+        "status": "open"
+      }
+    ],
+    "progress": [
+      {
+        "goalId": "G-b141-m1",
+        "ep": 10,
+        "advances": true
+      },
+      {
+        "goalId": "G-b141-m2",
+        "ep": 18,
+        "advances": true
+      }
+    ],
+    "masks": [
+      {
+        "id": "M-b141-sgml",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-sgml",
+        "goalId": "G-b141-m1",
+        "maskId": "M-b141-sgml",
+        "ep": 10
+      }
+    ]
+  },
+  "revealBondLink": {
+    "reveals": [
+      {
+        "id": "R-b141-rb",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "B-b141",
+        "partyA": "苏见晴",
+        "partyB": "江少",
+        "contractEp": 1,
+        "contractLabel": "一年契约女友",
+        "upgradeEp": 10,
+        "upgradeLabel": "受伤后真情求婚"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-rbl",
+        "revealId": "R-b141-rb",
+        "bondId": "B-b141"
+      }
+    ]
+  },
+  "vestColdOpenLink": {
+    "vests": [
+      {
+        "id": "V-b141-vco",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "coldOpens": [
+      {
+        "id": "EP10-cold-vcol",
+        "ep": 10,
+        "shotSpec": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-b139c-0",
+              "durSec": 1.5,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "冷开危机",
+              "hookKind": "situation"
+            },
+            {
+              "shotId": "EP10-b139c-1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "身份反转"
+            },
+            {
+              "shotId": "EP10-b139c-2",
+              "durSec": 3,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "加压"
+            },
+            {
+              "shotId": "EP10-b139c-3",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "悬念"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vcol",
+        "vestId": "V-b141-vco",
+        "coldOpenId": "EP10-cold-vcol",
+        "ep": 10
+      }
+    ]
   }
 }
