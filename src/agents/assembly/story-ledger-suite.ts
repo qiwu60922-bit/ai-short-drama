@@ -6,6 +6,7 @@
  * entry so EP01 rehearsal / factory can enforce them before fake generation:
  *   bondFrequencyLink · vestMaskPeakLink · frequencyPeakLink · amnesiaMotifLink
  *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink · foreshadowMotifLink
+ *   · allianceBondLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -69,6 +70,15 @@ import {
   type ForeshadowMotifLinkReport,
 } from './foreshadow-motif-link-gate';
 import { ForeshadowItemSchema } from './foreshadow-ledger-gate';
+import {
+  AllianceBondLinkEntrySchema,
+  evaluateAllianceBondLink,
+  type AllianceBondLinkReport,
+} from './alliance-bond-link-gate';
+import {
+  AllianceEntrySchema,
+  AllianceEventSchema,
+} from './alliance-ledger-gate';
 
 const Ep = z.number().int().positive();
 
@@ -81,6 +91,7 @@ export const STORY_LEDGER_GATE_IDS = [
   'fakeLedgerReconcile',
   'cliffCascadeLink',
   'foreshadowMotifLink',
+  'allianceBondLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -145,6 +156,13 @@ const ForeshadowMotifSectionSchema = z.object({
   links: z.array(ForeshadowMotifLinkEntrySchema),
 });
 
+const AllianceBondSectionSchema = z.object({
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  bonds: z.array(BondContractEntrySchema),
+  links: z.array(AllianceBondLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -157,6 +175,7 @@ export const StoryLedgerSuiteSchema = z
     fakeLedgerReconcile: FakeLedgerSectionSchema.optional(),
     cliffCascadeLink: CliffCascadeSectionSchema.optional(),
     foreshadowMotifLink: ForeshadowMotifSectionSchema.optional(),
+    allianceBondLink: AllianceBondSectionSchema.optional(),
   })
   .strict();
 
@@ -170,7 +189,8 @@ export type StoryLedgerChildReport =
   | EnsembleCastReport
   | FakeLedgerReconcileReport
   | CliffCascadeLinkReport
-  | ForeshadowMotifLinkReport;
+  | ForeshadowMotifLinkReport
+  | AllianceBondLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -227,6 +247,8 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateCliffCascadeLink({ series, latestEp, ...(section as object) }),
   foreshadowMotifLink: (series, latestEp, section) =>
     evaluateForeshadowMotifLink({ series, latestEp, ...(section as object) }),
+  allianceBondLink: (series, latestEp, section) =>
+    evaluateAllianceBondLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
