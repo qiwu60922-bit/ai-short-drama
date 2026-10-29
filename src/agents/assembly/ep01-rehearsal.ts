@@ -17,6 +17,7 @@ import { runMultiShotOneClick, type MultiShotResult } from './multishot-oneclick
 import { createFakeH3Provider } from './fake-h3-provider';
 import { writeQcSummary } from './qc-summary-page';
 import { runV13Detectors, suiteShotsFromSpec, type SuiteDeps } from '@/agents/detectors/v13-suite';
+import { evaluateStoryLedgerSuite, type StoryLedgerSuiteReport } from './story-ledger-suite';
 
 export interface RehearsalInput {
   shotSpec: unknown; beatPlan?: unknown; refIndex: Record<string, unknown>;
@@ -34,10 +35,15 @@ export interface RehearsalInput {
   /** V13: run detector suite after generation and write detectors-report.json (default 'report'). Never PASS. */
   detectors?: 'off' | 'report';
   detectorDeps?: SuiteDeps;
+  /** V12 Story-Ledger Suite (#71–#76): pre-gen bundle. Default 'off' (ignored). */
+  storyLedger?: unknown;
+  /** 'off' (default) · 'warn' (report only) · 'enforce' (FAIL → exit 36 before generation). */
+  storyLedgerGate?: 'off' | 'warn' | 'enforce';
 }
 
 export interface RehearsalReport {
-  ok: boolean; exitCode: number; stage: 'bindings' | 'rhythm' | 'convert' | 'generate' | 'done'; rhythm?: RhythmReport;
+  ok: boolean; exitCode: number; stage: 'bindings' | 'rhythm' | 'storyLedger' | 'convert' | 'generate' | 'done'; rhythm?: RhythmReport;
+  storyLedger?: StoryLedgerSuiteReport;
   decisions: BindingDecision[]; sceneDecisions?: SceneDecision[]; reviewSummary?: ReviewSummary; problems?: ConvertProblem[];
   listPath?: string; run?: MultiShotResult; episodeMp4?: string; qcHtml?: string; qcMd?: string;
   durationRange?: { minSeconds: number; maxSeconds: number }; plannedSeconds?: number;
@@ -60,6 +66,18 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
   const rhythm = evaluateStoryRhythm(input.shotSpec, input.rhythmOptions);
   await writeFile(join(input.workDir, 'rhythm-report.json'), JSON.stringify(rhythm, null, 2));
   if (rhythm.verdict === 'FAIL' && input.rhythmGate === 'enforce') return { ok: false, exitCode: 27, stage: 'rhythm', rhythm, decisions: [], notes };
+
+  let storyLedger: StoryLedgerSuiteReport | undefined;
+  const storyMode = input.storyLedgerGate ?? 'off';
+  if (input.storyLedger != null && storyMode !== 'off') {
+    storyLedger = evaluateStoryLedgerSuite(input.storyLedger);
+    await writeFile(join(input.workDir, 'story-ledger-suite-report.json'), JSON.stringify(storyLedger, null, 2));
+    notes.push(`story-ledger-suite: ${storyLedger.verdict} (ran=${storyLedger.metrics.ran} failed=${storyLedger.metrics.failed} skipped=${storyLedger.metrics.skipped})`);
+    if (storyLedger.verdict === 'FAIL' && storyMode === 'enforce') {
+      return { ok: false, exitCode: 36, stage: 'storyLedger', rhythm, storyLedger, decisions: [], notes };
+    }
+  }
+
   const canvas = input.canvas ?? { width: 1344, height: 768, fps: 24 };
 
   const { bindings, decisions } = bindingsFromRefIndex(input.refIndex, {
@@ -78,7 +96,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     operatorKind: 'hero_portrait', firstFramePath: scenePath, approvedTemporary: { actor: 'ep01-rehearsal', reason: 'scenery ref for fake-provider rehearsal only' } };
 
   const conv = convertShotSpecToMultiShot(input.shotSpec, input.beatPlan, { workDir: join(input.workDir, 'run'), mode: 'live', bindings, sceneRef, sceneRefsByShot: scenes.byShot, canvas, durationRange: input.durationRange });
-  if (!conv.ok) return { ok: false, exitCode: 24, stage: 'convert', rhythm, decisions, problems: conv.problems, notes };
+  if (!conv.ok) return { ok: false, exitCode: 24, stage: 'convert', rhythm, storyLedger, decisions, problems: conv.problems, notes };
   const listPath = join(input.workDir, 'multishot-list.json');
   await writeFile(listPath, JSON.stringify(conv.list, null, 2));
 
@@ -105,7 +123,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
     detectors = { reportPath, overall: suite.summary.overall, g3: suite.summary.g3, failing: suite.summary.failing, incomplete: suite.summary.incomplete };
     notes.push(`V13 detectors: ${suite.summary.overall} (G3 ${suite.summary.g3}; fake-provider material — numbers are not quality evidence)`);
   }
-  const report: RehearsalReport = { detectors, ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', rhythm, decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
+  const report: RehearsalReport = { detectors, ok: run.ok, exitCode: run.exitCode, stage: run.ok ? 'done' : 'generate', rhythm, storyLedger, decisions, sceneDecisions: scenes.decisions, reviewSummary, listPath, run,
     episodeMp4: run.output?.path, qcHtml, qcMd, durationRange: conv.list.durationRange, plannedSeconds, notes };
   await writeFile(join(input.workDir, 'rehearsal-report.json'), JSON.stringify(report, null, 2));
   return report;

@@ -1,0 +1,254 @@
+/**
+ * V12 · Story-Ledger Suite (pre-gen rehearsal/assembly 总入口),
+ * offline, deterministic.
+ *
+ * Bundles the 2026-10-29 cross-ledger / ensemble gates (#71–#76) into one
+ * entry so EP01 rehearsal / factory can enforce them before fake generation:
+ *   bondFrequencyLink · vestMaskPeakLink · frequencyPeakLink · amnesiaMotifLink
+ *   ensembleCast · fakeLedgerReconcile
+ *
+ * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
+ * Unknown keys → SCHEMA FAIL (strict).
+ * Engineering suite only: PASS ≠ Final ≠ G3. $0.
+ */
+import { z } from 'zod';
+import {
+  EnsembleMemberSchema,
+  EnsembleUnitSchema,
+  evaluateEnsembleCast,
+  type EnsembleCastReport,
+} from './ensemble-cast-gate';
+import {
+  FakeLedgerEntrySchema,
+  FakeLedgerLinkSchema,
+  evaluateFakeLedgerReconcile,
+  type FakeLedgerReconcileReport,
+} from './fake-ledger-reconcile-gate';
+import {
+  BondContractEntrySchema,
+} from './bond-contract-gate';
+import {
+  FrequencyTippingEntrySchema,
+} from './frequency-tipping-gate';
+import {
+  BondFrequencyLinkEntrySchema,
+  evaluateBondFrequencyLink,
+  type BondFrequencyLinkReport,
+} from './bond-frequency-link-gate';
+import {
+  evaluateVestMaskPeakLink,
+  VestMaskPeakLinkEntrySchema,
+  type VestMaskPeakLinkReport,
+} from './vest-mask-peak-link-gate';
+import { IdentityVestEntrySchema } from './identity-vest-gate';
+import { PersonaMaskEntrySchema } from './persona-mask-gate';
+import { PeakBeforePayoffEntrySchema } from './peak-before-payoff-gate';
+import {
+  FrequencyPeakLinkEntrySchema,
+  evaluateFrequencyPeakLink,
+  type FrequencyPeakLinkReport,
+} from './frequency-peak-link-gate';
+import {
+  AmnesiaMotifLinkEntrySchema,
+  evaluateAmnesiaMotifLink,
+  type AmnesiaMotifLinkReport,
+} from './amnesia-motif-link-gate';
+import { AmnesiaArcEntrySchema } from './amnesia-arc-gate';
+import {
+  MotifEntrySchema,
+  MotifAppearanceSchema,
+} from './motif-callback-gate';
+
+const Ep = z.number().int().positive();
+
+export const STORY_LEDGER_GATE_IDS = [
+  'bondFrequencyLink',
+  'vestMaskPeakLink',
+  'frequencyPeakLink',
+  'amnesiaMotifLink',
+  'ensembleCast',
+  'fakeLedgerReconcile',
+] as const;
+
+export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
+
+const EnsembleSectionSchema = z.object({
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+});
+
+const FakeLedgerSectionSchema = z.object({
+  surfaceEntries: z.array(FakeLedgerEntrySchema),
+  trueEntries: z.array(FakeLedgerEntrySchema),
+  links: z.array(FakeLedgerLinkSchema),
+});
+
+const BondFrequencySectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  links: z.array(BondFrequencyLinkEntrySchema),
+});
+
+const VestMaskPeakSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(VestMaskPeakLinkEntrySchema),
+});
+
+const FrequencyPeakSectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(FrequencyPeakLinkEntrySchema),
+});
+
+const AmnesiaMotifSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(AmnesiaMotifLinkEntrySchema),
+});
+
+export const StoryLedgerSuiteSchema = z
+  .object({
+    series: z.string().min(1),
+    latestEp: Ep,
+    bondFrequencyLink: BondFrequencySectionSchema.optional(),
+    vestMaskPeakLink: VestMaskPeakSectionSchema.optional(),
+    frequencyPeakLink: FrequencyPeakSectionSchema.optional(),
+    amnesiaMotifLink: AmnesiaMotifSectionSchema.optional(),
+    ensembleCast: EnsembleSectionSchema.optional(),
+    fakeLedgerReconcile: FakeLedgerSectionSchema.optional(),
+  })
+  .strict();
+
+export type StoryLedgerSuiteInput = z.infer<typeof StoryLedgerSuiteSchema>;
+
+export type StoryLedgerChildReport =
+  | BondFrequencyLinkReport
+  | VestMaskPeakLinkReport
+  | FrequencyPeakLinkReport
+  | AmnesiaMotifLinkReport
+  | EnsembleCastReport
+  | FakeLedgerReconcileReport;
+
+export type StoryLedgerGateResult = {
+  status: 'PASS' | 'FAIL' | 'SKIP';
+  report?: StoryLedgerChildReport;
+};
+
+export type StoryLedgerSuiteFinding = {
+  code: 'SCHEMA' | 'EMPTY_SUITE' | 'GATE_FAIL';
+  severity: 'FAIL' | 'WARN';
+  message: string;
+  fix?: string;
+  ids?: string[];
+};
+
+export interface StoryLedgerSuiteReport {
+  schema: 'v12/StoryLedgerSuite/v1';
+  verdict: 'PASS' | 'FAIL';
+  metrics: {
+    ran: number;
+    passed: number;
+    failed: number;
+    skipped: number;
+    latestEp: number;
+  };
+  results: Record<StoryLedgerGateId, StoryLedgerGateResult>;
+  findings: StoryLedgerSuiteFinding[];
+  gates: { Final: 'NOT_EVALUATED'; V11_G3: 'NOT_EVALUATED' };
+}
+
+const GATES = { Final: 'NOT_EVALUATED' as const, V11_G3: 'NOT_EVALUATED' as const };
+
+function emptyResults(): Record<StoryLedgerGateId, StoryLedgerGateResult> {
+  return Object.fromEntries(
+    STORY_LEDGER_GATE_IDS.map((id) => [id, { status: 'SKIP' as const }]),
+  ) as Record<StoryLedgerGateId, StoryLedgerGateResult>;
+}
+
+type Runner = (series: string, latestEp: number, section: unknown) => StoryLedgerChildReport;
+
+const RUNNERS: Record<StoryLedgerGateId, Runner> = {
+  bondFrequencyLink: (series, latestEp, section) =>
+    evaluateBondFrequencyLink({ series, latestEp, ...(section as object) }),
+  vestMaskPeakLink: (series, latestEp, section) =>
+    evaluateVestMaskPeakLink({ series, latestEp, ...(section as object) }),
+  frequencyPeakLink: (series, latestEp, section) =>
+    evaluateFrequencyPeakLink({ series, latestEp, ...(section as object) }),
+  amnesiaMotifLink: (series, latestEp, section) =>
+    evaluateAmnesiaMotifLink({ series, latestEp, ...(section as object) }),
+  ensembleCast: (series, latestEp, section) =>
+    evaluateEnsembleCast({ series, latestEp, ...(section as object) }),
+  fakeLedgerReconcile: (series, latestEp, section) =>
+    evaluateFakeLedgerReconcile({ series, latestEp, ...(section as object) }),
+};
+
+export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
+  const results = emptyResults();
+  const findings: StoryLedgerSuiteFinding[] = [];
+
+  const parsed = StoryLedgerSuiteSchema.safeParse(input);
+  if (!parsed.success) {
+    findings.push({
+      code: 'SCHEMA',
+      severity: 'FAIL',
+      message: `StoryLedgerSuite schema: ${parsed.error.issues[0]?.message ?? 'invalid'}`,
+      fix: '提供 series + latestEp，以及 0+ 已知 section（见 STORY_LEDGER_GATE_IDS）',
+    });
+    return {
+      schema: 'v12/StoryLedgerSuite/v1',
+      verdict: 'FAIL',
+      metrics: { ran: 0, passed: 0, failed: 0, skipped: STORY_LEDGER_GATE_IDS.length, latestEp: 0 },
+      results,
+      findings,
+      gates: GATES,
+    };
+  }
+
+  const { series, latestEp, ...sections } = parsed.data;
+  let ran = 0;
+  let passed = 0;
+  let failed = 0;
+
+  for (const id of STORY_LEDGER_GATE_IDS) {
+    const section = sections[id];
+    if (section === undefined) continue;
+    const report = RUNNERS[id](series, latestEp, section);
+    ran += 1;
+    if (report.verdict === 'PASS') {
+      passed += 1;
+      results[id] = { status: 'PASS', report };
+    } else {
+      failed += 1;
+      results[id] = { status: 'FAIL', report };
+      findings.push({
+        code: 'GATE_FAIL',
+        severity: 'FAIL',
+        ids: [id],
+        message: `${id} verdict=FAIL (${report.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code).join(',') || 'see report'})`,
+        fix: `修复 ${id} 子闸门后重跑 story-ledger-suite`,
+      });
+    }
+  }
+
+  const skipped = STORY_LEDGER_GATE_IDS.length - ran;
+  if (ran === 0) {
+    findings.push({
+      code: 'EMPTY_SUITE',
+      severity: 'FAIL',
+      message: '未提供任何 story-ledger section',
+      fix: `至少挂载一项：${STORY_LEDGER_GATE_IDS.join(' | ')}`,
+    });
+  }
+
+  return {
+    schema: 'v12/StoryLedgerSuite/v1',
+    verdict: findings.some((f) => f.severity === 'FAIL') ? 'FAIL' : 'PASS',
+    metrics: { ran, passed, failed, skipped, latestEp },
+    results,
+    findings,
+    gates: GATES,
+  };
+}
