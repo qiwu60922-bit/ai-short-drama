@@ -137,6 +137,7 @@
     "frequency-tipping:check": "tsx scripts/frequency-tipping-check.ts",
     "amnesia-arc:check": "tsx scripts/amnesia-arc-check.ts",
     "bond-contract:check": "tsx scripts/bond-contract-check.ts",
+    "bond-frequency-link:check": "tsx scripts/bond-frequency-link-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
