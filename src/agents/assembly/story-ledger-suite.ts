@@ -139,6 +139,8 @@
  *   · qualityArcLink · qualityBeatLink · qualityTensionLink · qualityPulseLink
  *   · vestRhythmPeakBridge · amnesiaRhythmPeakBridge · bondRhythmPeakBridge · maskRhythmPeakBridge
  *   · qualityChordLink · qualityLatchLink · qualityThreadLink · qualityPivotLink
+  · abilityRhythmPeakBridge · foreshadowRhythmPeakBridge · allianceRhythmPeakBridge · ensembleRhythmPeakBridge
+  · qualityWeaveLink · qualityStrikeLink · qualityEchoLink · qualitySurgeLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -2481,6 +2483,57 @@ import {
   type QualityPivotLinkReport,
 } from './quality-pivot-link-gate';
 
+import {
+  AbilityRhythmPeakBridgeLinkSchema,
+  AbilityRhythmPeakRhythmEntrySchema,
+  evaluateAbilityRhythmPeakBridge,
+  type AbilityRhythmPeakBridgeReport,
+} from './ability-rhythm-peak-bridge-gate';
+import {
+  ForeshadowRhythmPeakBridgeLinkSchema,
+  ForeshadowRhythmPeakRhythmEntrySchema,
+  evaluateForeshadowRhythmPeakBridge,
+  type ForeshadowRhythmPeakBridgeReport,
+} from './foreshadow-rhythm-peak-bridge-gate';
+import {
+  AllianceRhythmPeakBridgeLinkSchema,
+  AllianceRhythmPeakRhythmEntrySchema,
+  evaluateAllianceRhythmPeakBridge,
+  type AllianceRhythmPeakBridgeReport,
+} from './alliance-rhythm-peak-bridge-gate';
+import {
+  EnsembleRhythmPeakBridgeLinkSchema,
+  EnsembleRhythmPeakRhythmEntrySchema,
+  evaluateEnsembleRhythmPeakBridge,
+  type EnsembleRhythmPeakBridgeReport,
+} from './ensemble-rhythm-peak-bridge-gate';
+import {
+  QualityWeaveLinkEntrySchema,
+  QualityWeaveEntrySchema,
+  evaluateQualityWeaveLink,
+  type QualityWeaveLinkReport,
+} from './quality-weave-link-gate';
+import {
+  QualityStrikeLinkEntrySchema,
+  QualityStrikeEntrySchema,
+  evaluateQualityStrikeLink,
+  type QualityStrikeLinkReport,
+} from './quality-strike-link-gate';
+import {
+  QualityEchoLinkEntrySchema,
+  QualityEchoEntrySchema,
+  evaluateQualityEchoLink,
+  type QualityEchoLinkReport,
+} from './quality-echo-link-gate';
+import {
+  QualitySurgeLinkEntrySchema,
+  QualitySurgeEntrySchema,
+  evaluateQualitySurgeLink,
+  type QualitySurgeLinkReport,
+} from './quality-surge-link-gate';
+
+
+
 
 
 
@@ -2933,6 +2986,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityLatchLink',
   'qualityThreadLink',
   'qualityPivotLink',
+  'abilityRhythmPeakBridge',
+  'foreshadowRhythmPeakBridge',
+  'allianceRhythmPeakBridge',
+  'ensembleRhythmPeakBridge',
+  'qualityWeaveLink',
+  'qualityStrikeLink',
+  'qualityEchoLink',
+  'qualitySurgeLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -5916,6 +5977,61 @@ const QualityPivotSectionSchemaB152 = z.object({
   links: z.array(QualityPivotLinkEntrySchema),
 });
 
+const AbilityRhythmPeakBridgeSectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  rhythms: z.array(AbilityRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AbilityRhythmPeakBridgeLinkSchema),
+});
+
+const ForeshadowRhythmPeakBridgeSectionSchema = z.object({
+  items: z.array(ForeshadowItemSchema),
+  rhythms: z.array(ForeshadowRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ForeshadowRhythmPeakBridgeLinkSchema),
+});
+
+const AllianceRhythmPeakBridgeSectionSchema = z.object({
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  rhythms: z.array(AllianceRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AllianceRhythmPeakBridgeLinkSchema),
+});
+
+const EnsembleRhythmPeakBridgeSectionSchema = z.object({
+  members: z.array(EnsembleMemberSchema),
+  units: z.array(EnsembleUnitSchema),
+  rhythms: z.array(EnsembleRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(EnsembleRhythmPeakBridgeLinkSchema),
+});
+
+const QualityWeaveSectionSchemaB153 = z.object({
+  minWeaveIntense: z.number().int().min(1).max(5).optional(),
+  weaves: z.array(QualityWeaveEntrySchema),
+  links: z.array(QualityWeaveLinkEntrySchema),
+});
+
+const QualityStrikeSectionSchemaB153 = z.object({
+  minStrikeIntense: z.number().int().min(1).max(5).optional(),
+  strikes: z.array(QualityStrikeEntrySchema),
+  links: z.array(QualityStrikeLinkEntrySchema),
+});
+
+const QualityEchoSectionSchemaB153 = z.object({
+  minEchoIntense: z.number().int().min(1).max(5).optional(),
+  echos: z.array(QualityEchoEntrySchema),
+  links: z.array(QualityEchoLinkEntrySchema),
+});
+
+const QualitySurgeSectionSchemaB153 = z.object({
+  minSurgeIntense: z.number().int().min(1).max(5).optional(),
+  surges: z.array(QualitySurgeEntrySchema),
+  links: z.array(QualitySurgeLinkEntrySchema),
+});
+
 
 
 
@@ -6370,6 +6486,14 @@ export const StoryLedgerSuiteSchema = z
     qualityLatchLink: QualityLatchSectionSchemaB152.optional(),
     qualityThreadLink: QualityThreadSectionSchemaB152.optional(),
     qualityPivotLink: QualityPivotSectionSchemaB152.optional(),
+    abilityRhythmPeakBridge: AbilityRhythmPeakBridgeSectionSchema.optional(),
+    foreshadowRhythmPeakBridge: ForeshadowRhythmPeakBridgeSectionSchema.optional(),
+    allianceRhythmPeakBridge: AllianceRhythmPeakBridgeSectionSchema.optional(),
+    ensembleRhythmPeakBridge: EnsembleRhythmPeakBridgeSectionSchema.optional(),
+    qualityWeaveLink: QualityWeaveSectionSchemaB153.optional(),
+    qualityStrikeLink: QualityStrikeSectionSchemaB153.optional(),
+    qualityEchoLink: QualityEchoSectionSchemaB153.optional(),
+    qualitySurgeLink: QualitySurgeSectionSchemaB153.optional(),
   })
   .strict();
 
@@ -6813,7 +6937,15 @@ export type StoryLedgerChildReport =
   | QualityChordLinkReport
   | QualityLatchLinkReport
   | QualityThreadLinkReport
-  | QualityPivotLinkReport;
+  | QualityPivotLinkReport
+  | AbilityRhythmPeakBridgeReport
+  | ForeshadowRhythmPeakBridgeReport
+  | AllianceRhythmPeakBridgeReport
+  | EnsembleRhythmPeakBridgeReport
+  | QualityWeaveLinkReport
+  | QualityStrikeLinkReport
+  | QualityEchoLinkReport
+  | QualitySurgeLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -7729,6 +7861,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityThreadLink({ series, latestEp, ...(section as object) }),
   qualityPivotLink: (series, latestEp, section) =>
     evaluateQualityPivotLink({ series, latestEp, ...(section as object) }),
+  abilityRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateAbilityRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  foreshadowRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateForeshadowRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  allianceRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateAllianceRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  ensembleRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateEnsembleRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityWeaveLink: (series, latestEp, section) =>
+    evaluateQualityWeaveLink({ series, latestEp, ...(section as object) }),
+  qualityStrikeLink: (series, latestEp, section) =>
+    evaluateQualityStrikeLink({ series, latestEp, ...(section as object) }),
+  qualityEchoLink: (series, latestEp, section) =>
+    evaluateQualityEchoLink({ series, latestEp, ...(section as object) }),
+  qualitySurgeLink: (series, latestEp, section) =>
+    evaluateQualitySurgeLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
