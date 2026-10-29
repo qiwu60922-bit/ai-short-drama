@@ -190,6 +190,9 @@
  *   · tickRhythmPeakBridge · whirRhythmPeakBridge · popRhythmPeakBridge · clickRhythmPeakBridge
  *   · qualityFlintLink · qualityGraniteLink · qualityMarbleLink · qualitySlateLink
  *
+ *   · swishRhythmPeakBridge · clackRhythmPeakBridge · whooshRhythmPeakBridge · plinkRhythmPeakBridge
+ *   · qualityBasaltLink · qualityShaleLink · qualityQuartziteLink · qualitySandstoneLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3488,6 +3491,58 @@ import {
   evaluateQualitySlateLink,
   type QualitySlateLinkReport,
 } from './quality-slate-link-gate';
+import {
+  SwishRhythmPeakBridgeLinkSchema,
+  SwishRhythmPeakSwishEntrySchema,
+  SwishRhythmPeakRhythmEntrySchema,
+  evaluateSwishRhythmPeakBridge,
+  type SwishRhythmPeakBridgeReport,
+} from './swish-rhythm-peak-bridge-gate';
+import {
+  ClackRhythmPeakBridgeLinkSchema,
+  ClackRhythmPeakClackEntrySchema,
+  ClackRhythmPeakRhythmEntrySchema,
+  evaluateClackRhythmPeakBridge,
+  type ClackRhythmPeakBridgeReport,
+} from './clack-rhythm-peak-bridge-gate';
+import {
+  WhooshRhythmPeakBridgeLinkSchema,
+  WhooshRhythmPeakWhooshEntrySchema,
+  WhooshRhythmPeakRhythmEntrySchema,
+  evaluateWhooshRhythmPeakBridge,
+  type WhooshRhythmPeakBridgeReport,
+} from './whoosh-rhythm-peak-bridge-gate';
+import {
+  PlinkRhythmPeakBridgeLinkSchema,
+  PlinkRhythmPeakPlinkEntrySchema,
+  PlinkRhythmPeakRhythmEntrySchema,
+  evaluatePlinkRhythmPeakBridge,
+  type PlinkRhythmPeakBridgeReport,
+} from './plink-rhythm-peak-bridge-gate';
+import {
+  QualityBasaltLinkEntrySchema,
+  QualityBasaltEntrySchema,
+  evaluateQualityBasaltLink,
+  type QualityBasaltLinkReport,
+} from './quality-basalt-link-gate';
+import {
+  QualityShaleLinkEntrySchema,
+  QualityShaleEntrySchema,
+  evaluateQualityShaleLink,
+  type QualityShaleLinkReport,
+} from './quality-shale-link-gate';
+import {
+  QualityQuartziteLinkEntrySchema,
+  QualityQuartziteEntrySchema,
+  evaluateQualityQuartziteLink,
+  type QualityQuartziteLinkReport,
+} from './quality-quartzite-link-gate';
+import {
+  QualitySandstoneLinkEntrySchema,
+  QualitySandstoneEntrySchema,
+  evaluateQualitySandstoneLink,
+  type QualitySandstoneLinkReport,
+} from './quality-sandstone-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4074,6 +4129,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityGraniteLink',
   'qualityMarbleLink',
   'qualitySlateLink',
+  'swishRhythmPeakBridge',
+  'clackRhythmPeakBridge',
+  'whooshRhythmPeakBridge',
+  'plinkRhythmPeakBridge',
+  'qualityBasaltLink',
+  'qualityShaleLink',
+  'qualityQuartziteLink',
+  'qualitySandstoneLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -8000,6 +8063,58 @@ const QualitySlateSectionSchemaB170 = z.object({
   links: z.array(QualitySlateLinkEntrySchema),
 });
 
+const SwishRhythmPeakBridgeSectionSchema = z.object({
+  swishes: z.array(SwishRhythmPeakSwishEntrySchema),
+  rhythms: z.array(SwishRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SwishRhythmPeakBridgeLinkSchema),
+});
+
+const ClackRhythmPeakBridgeSectionSchema = z.object({
+  clacks: z.array(ClackRhythmPeakClackEntrySchema),
+  rhythms: z.array(ClackRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ClackRhythmPeakBridgeLinkSchema),
+});
+
+const WhooshRhythmPeakBridgeSectionSchema = z.object({
+  whooshes: z.array(WhooshRhythmPeakWhooshEntrySchema),
+  rhythms: z.array(WhooshRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(WhooshRhythmPeakBridgeLinkSchema),
+});
+
+const PlinkRhythmPeakBridgeSectionSchema = z.object({
+  plinks: z.array(PlinkRhythmPeakPlinkEntrySchema),
+  rhythms: z.array(PlinkRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PlinkRhythmPeakBridgeLinkSchema),
+});
+
+const QualityBasaltSectionSchemaB171 = z.object({
+  minBasaltIntense: z.number().int().min(1).max(5).optional(),
+  basalts: z.array(QualityBasaltEntrySchema),
+  links: z.array(QualityBasaltLinkEntrySchema),
+});
+
+const QualityShaleSectionSchemaB171 = z.object({
+  minShaleIntense: z.number().int().min(1).max(5).optional(),
+  shales: z.array(QualityShaleEntrySchema),
+  links: z.array(QualityShaleLinkEntrySchema),
+});
+
+const QualityQuartziteSectionSchemaB171 = z.object({
+  minQuartziteIntense: z.number().int().min(1).max(5).optional(),
+  quartzites: z.array(QualityQuartziteEntrySchema),
+  links: z.array(QualityQuartziteLinkEntrySchema),
+});
+
+const QualitySandstoneSectionSchemaB171 = z.object({
+  minSandstoneIntense: z.number().int().min(1).max(5).optional(),
+  sandstones: z.array(QualitySandstoneEntrySchema),
+  links: z.array(QualitySandstoneLinkEntrySchema),
+});
+
 
 
 
@@ -8599,6 +8714,14 @@ export const StoryLedgerSuiteSchema = z
     qualityGraniteLink: QualityGraniteSectionSchemaB170.optional(),
     qualityMarbleLink: QualityMarbleSectionSchemaB170.optional(),
     qualitySlateLink: QualitySlateSectionSchemaB170.optional(),
+    swishRhythmPeakBridge: SwishRhythmPeakBridgeSectionSchema.optional(),
+    clackRhythmPeakBridge: ClackRhythmPeakBridgeSectionSchema.optional(),
+    whooshRhythmPeakBridge: WhooshRhythmPeakBridgeSectionSchema.optional(),
+    plinkRhythmPeakBridge: PlinkRhythmPeakBridgeSectionSchema.optional(),
+    qualityBasaltLink: QualityBasaltSectionSchemaB171.optional(),
+    qualityShaleLink: QualityShaleSectionSchemaB171.optional(),
+    qualityQuartziteLink: QualityQuartziteSectionSchemaB171.optional(),
+    qualitySandstoneLink: QualitySandstoneSectionSchemaB171.optional(),
   })
   .strict();
 
@@ -9186,7 +9309,15 @@ export type StoryLedgerChildReport =
   | QualityFlintLinkReport
   | QualityGraniteLinkReport
   | QualityMarbleLinkReport
-  | QualitySlateLinkReport;
+  | QualitySlateLinkReport
+  | SwishRhythmPeakBridgeReport
+  | ClackRhythmPeakBridgeReport
+  | WhooshRhythmPeakBridgeReport
+  | PlinkRhythmPeakBridgeReport
+  | QualityBasaltLinkReport
+  | QualityShaleLinkReport
+  | QualityQuartziteLinkReport
+  | QualitySandstoneLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -10391,6 +10522,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityMarbleLink({ series, latestEp, ...(section as object) }),
   qualitySlateLink: (series, latestEp, section) =>
     evaluateQualitySlateLink({ series, latestEp, ...(section as object) }),
+  swishRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSwishRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  clackRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateClackRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  whooshRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateWhooshRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  plinkRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePlinkRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityBasaltLink: (series, latestEp, section) =>
+    evaluateQualityBasaltLink({ series, latestEp, ...(section as object) }),
+  qualityShaleLink: (series, latestEp, section) =>
+    evaluateQualityShaleLink({ series, latestEp, ...(section as object) }),
+  qualityQuartziteLink: (series, latestEp, section) =>
+    evaluateQualityQuartziteLink({ series, latestEp, ...(section as object) }),
+  qualitySandstoneLink: (series, latestEp, section) =>
+    evaluateQualitySandstoneLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
