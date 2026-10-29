@@ -310,6 +310,14 @@ describe('v13 suite fixtures', () => {
     expect(r.results.stageGoalMaskLink.status).toBe('PASS');
     expect(r.results.revealBondLink.status).toBe('PASS');
     expect(r.results.vestColdOpenLink.status).toBe('PASS');
+    expect(r.results.revealColdOpenPeakBridge.status).toBe('PASS');
+    expect(r.results.qualityColdOpenPeakBridge.status).toBe('PASS');
+    expect(r.results.rhythmMaskPeakBridge.status).toBe('PASS');
+    expect(r.results.ensembleColdOpenPeakBridge.status).toBe('PASS');
+    expect(r.results.revealColdOpenLink.status).toBe('PASS');
+    expect(r.results.qualityColdOpenLink.status).toBe('PASS');
+    expect(r.results.rhythmBondLink.status).toBe('PASS');
+    expect(r.results.ensembleMaskLink.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(80);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
@@ -444,6 +452,9 @@ describe('v13 suite fixtures', () => {
     expect(r.results.hookHardMidFaceCap.status).toBe('PASS');
     expect(r.results.hookHardSetupFaceCap.status).toBe('PASS');
     expect(r.results.hookHardReactionFaceCap.status).toBe('PASS');
+    expect(r.results.hookHardMidTailCap.status).toBe('PASS');
+    expect(r.results.hookHardSetupTailCap.status).toBe('PASS');
+    expect(r.results.hookHardReactionTailCap.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(41);
   });
 
