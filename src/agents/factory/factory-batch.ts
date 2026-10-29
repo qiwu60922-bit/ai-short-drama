@@ -1,5 +1,7 @@
 /** V14 multi-episode batch: each episode its own workDir/queue/ledger; blocked or failed episodes don't stop others. Never PASS; canPublish false.
  * Optional storyLedgerGate + shotSpecGate (symmetric off|warn|enforce) before episodes. $0; ≠G3.
+ * Dual-enforce: storyLedger runs first; FAIL+enforce → exit 36 @ storyLedger (shotSpec skipped).
+ * Default remains warn (report only). Fixture: tests/fixtures/v13/dual-gate-enforce-fail.v13.json.
  */
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';

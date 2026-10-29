@@ -693,5 +693,127 @@
   },
   "reactionAfterReversalOpts": {
     "reactionWindowSec": 8
+  },
+  "midHookEarly": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MHE0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "开场危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MHE1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-MHE2",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "中段再钩",
+        "hookKind": "action"
+      },
+      {
+        "shotId": "EP01-MHE3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-MHE4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "setupAfterHookBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-SAH0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "setup",
+        "action": "环境一瞥"
+      },
+      {
+        "shotId": "EP01-SAH1",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机开场"
+      },
+      {
+        "shotId": "EP01-SAH2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-SAH3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-SAH4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "reactionBeforeCliff": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-RBC0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "开场"
+      },
+      {
+        "shotId": "EP01-RBC1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-RBC2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-RBC3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "脸色煞白"
+      },
+      {
+        "shotId": "EP01-RBC4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "门外脚步"
+      }
+    ]
   }
 }
