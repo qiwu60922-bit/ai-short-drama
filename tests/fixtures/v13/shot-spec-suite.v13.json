@@ -5183,5 +5183,200 @@
       }
     ]
   },
-  "hookHardReactionOpts": {}
+  "hookHardReactionOpts": {},
+  "hookHardCliffTail": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B129-hookHardReaction-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardCliffTailOpts": {},
+  "hookHardSetupCap": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B129-hookHardReaction-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardSetupCapOpts": {},
+  "hookHardSetupRatio": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-B129-hookHardReaction-0",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "冷开危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-1",
+        "cast": [],
+        "durSec": 1,
+        "beatRole": "hook",
+        "action": "细节钩",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-2",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "中段钩",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "加压"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-6",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "反应"
+      },
+      {
+        "shotId": "EP01-B129-hookHardReaction-7",
+        "cast": [],
+        "durSec": 1.5,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookHardSetupRatioOpts": {}
 }
