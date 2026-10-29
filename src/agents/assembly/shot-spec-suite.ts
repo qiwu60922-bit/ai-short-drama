@@ -40,6 +40,7 @@
  *   · midHookHookHard · detailHookHookHard · hookWindowHookHard
  *   · coldOpenHookHard · coldCloseHookHard · hookHardMidHook
  *   · hookHardColdOpen · hookHardColdClose · hookHardDetailHook
+ *   · hookHardHookWindow · hookHardMidTurn · hookHardReaction
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -599,6 +600,21 @@ import {
   type HookHardDetailHookOptions,
   type HookHardDetailHookReport,
 } from './hook-hard-detail-hook-gate';
+import {
+  evaluateHookHardHookWindow,
+  type HookHardHookWindowOptions,
+  type HookHardHookWindowReport,
+} from './hook-hard-hook-window-gate';
+import {
+  evaluateHookHardMidTurn,
+  type HookHardMidTurnOptions,
+  type HookHardMidTurnReport,
+} from './hook-hard-mid-turn-gate';
+import {
+  evaluateHookHardReaction,
+  type HookHardReactionOptions,
+  type HookHardReactionReport,
+} from './hook-hard-reaction-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -708,6 +724,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'hookHardColdOpen',
   'hookHardColdClose',
   'hookHardDetailHook',
+  'hookHardHookWindow',
+  'hookHardMidTurn',
+  'hookHardReaction',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -2244,6 +2263,60 @@ const HookHardDetailHookOptsSchema = z
   })
   .strict();
 
+const HookHardHookWindowOptsSchema = z
+  .object({
+    hardHookWindowSec: z.number().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const HookHardMidTurnOptsSchema = z
+  .object({
+    minTurns: z.number().int().positive().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const HookHardReactionOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    reversalOnly: z.boolean().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -2354,6 +2427,9 @@ export const ShotSpecSuiteSchema = z
     hookHardColdOpen: ShotSpecDocSchema.optional(),
     hookHardColdClose: ShotSpecDocSchema.optional(),
     hookHardDetailHook: ShotSpecDocSchema.optional(),
+    hookHardHookWindow: ShotSpecDocSchema.optional(),
+    hookHardMidTurn: ShotSpecDocSchema.optional(),
+    hookHardReaction: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -2459,6 +2535,9 @@ export const ShotSpecSuiteSchema = z
     hookHardColdOpenOpts: HookHardColdOpenOptsSchema.optional(),
     hookHardColdCloseOpts: HookHardColdCloseOptsSchema.optional(),
     hookHardDetailHookOpts: HookHardDetailHookOptsSchema.optional(),
+    hookHardHookWindowOpts: HookHardHookWindowOptsSchema.optional(),
+    hookHardMidTurnOpts: HookHardMidTurnOptsSchema.optional(),
+    hookHardReactionOpts: HookHardReactionOptsSchema.optional(),
   })
   .strict();
 
@@ -2571,7 +2650,10 @@ export type ShotSpecChildReport =
   | HookHardMidHookReport
   | HookHardColdOpenReport
   | HookHardColdCloseReport
-  | HookHardDetailHookReport;
+  | HookHardDetailHookReport
+  | HookHardHookWindowReport
+  | HookHardMidTurnReport
+  | HookHardReactionReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -2744,6 +2826,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     hookHardColdOpenOpts,
     hookHardColdCloseOpts,
     hookHardDetailHookOpts,
+    hookHardHookWindowOpts,
+    hookHardMidTurnOpts,
+    hookHardReactionOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -3706,6 +3791,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateHookHardDetailHook(
         sections.hookHardDetailHook,
         (hookHardDetailHookOpts ?? {}) as HookHardDetailHookOptions,
+      ),
+    );
+  }
+  if (sections.hookHardHookWindow !== undefined) {
+    run(
+      'hookHardHookWindow',
+      evaluateHookHardHookWindow(
+        sections.hookHardHookWindow,
+        (hookHardHookWindowOpts ?? {}) as HookHardHookWindowOptions,
+      ),
+    );
+  }
+  if (sections.hookHardMidTurn !== undefined) {
+    run(
+      'hookHardMidTurn',
+      evaluateHookHardMidTurn(
+        sections.hookHardMidTurn,
+        (hookHardMidTurnOpts ?? {}) as HookHardMidTurnOptions,
+      ),
+    );
+  }
+  if (sections.hookHardReaction !== undefined) {
+    run(
+      'hookHardReaction',
+      evaluateHookHardReaction(
+        sections.hookHardReaction,
+        (hookHardReactionOpts ?? {}) as HookHardReactionOptions,
       ),
     );
   }
