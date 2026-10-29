@@ -427,5 +427,157 @@
         }
       }
     ]
+  },
+  "maskHandoffLink": {
+    "masks": [
+      {
+        "id": "花心纨绔",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 8,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9",
+        "prevEp": 8,
+        "nextEp": 9,
+        "prev": {
+          "episode": "EP08",
+          "shots": [
+            {
+              "shotId": "EP08-S0",
+              "durSec": 4,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "真心崩塌开场"
+            },
+            {
+              "shotId": "EP08-S1",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "对峙"
+            },
+            {
+              "shotId": "EP08-S2",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "证据甩出"
+            },
+            {
+              "shotId": "EP08-S3",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "门外有人未解"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "hook",
+              "action": "门外脚步未解"
+            },
+            {
+              "shotId": "EP09-S1",
+              "durSec": 2,
+              "cast": [],
+              "beatRole": "increment",
+              "action": "追问延续"
+            },
+            {
+              "shotId": "EP09-S2",
+              "durSec": 10,
+              "cast": [],
+              "beatRole": "reversal",
+              "action": "新证人"
+            },
+            {
+              "shotId": "EP09-S3",
+              "durSec": 8,
+              "cast": [],
+              "beatRole": "cliffhanger",
+              "action": "更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-mask-handoff",
+        "maskId": "花心纨绔",
+        "handoffId": "H8-9"
+      }
+    ]
+  },
+  "abilityPeakLink": {
+    "abilities": [
+      {
+        "id": "seer",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer",
+        "by": "linyang",
+        "ep": 8,
+        "day": 8,
+        "option": "查验身份"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "预言家对峙",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "全场唯一对决",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-ability-peak",
+        "abilityId": "seer",
+        "peakId": "预言家对峙"
+      }
+    ]
   }
 }

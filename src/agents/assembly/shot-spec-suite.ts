@@ -9,6 +9,7 @@
  *   · dialogueExposition · seriesRhythm
  *   · coldOpenHook · mvBeatMap
  *   · detailHookKind · tailColdClose
+ *   · midTurnDensity · hookKindMix
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -96,6 +97,16 @@ import {
   type TailColdCloseOptions,
   type TailColdCloseReport,
 } from './tail-cold-close-gate';
+import {
+  evaluateMidTurnDensity,
+  type MidTurnDensityOptions,
+  type MidTurnDensityReport,
+} from './mid-turn-density-gate';
+import {
+  evaluateHookKindMix,
+  type HookKindMixOptions,
+  type HookKindMixReport,
+} from './hook-kind-mix-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -113,6 +124,8 @@ export const SHOT_SPEC_GATE_IDS = [
   'mvBeatMap',
   'detailHookKind',
   'tailColdClose',
+  'midTurnDensity',
+  'hookKindMix',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -252,6 +265,35 @@ const TailColdOptsSchema = z
   })
   .strict();
 
+
+const MidTurnOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    minTurns: z.number().int().positive().optional(),
+  })
+  .strict();
+
+const HookKindMixOptsSchema = z
+  .object({
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+    minDistinctKinds: z.number().int().positive().optional(),
+    maxFaceRatio: z.number().positive().optional(),
+    earlyHooksOnly: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -270,6 +312,8 @@ export const ShotSpecSuiteSchema = z
     mvBeatMap: MvBeatMapDocSchema.optional(),
     detailHookKind: ShotSpecDocSchema.optional(),
     tailColdClose: ShotSpecDocSchema.optional(),
+    midTurnDensity: ShotSpecDocSchema.optional(),
+    hookKindMix: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -283,6 +327,8 @@ export const ShotSpecSuiteSchema = z
     coldOpenOpts: ColdOpenOptsSchema.optional(),
     detailHookOpts: DetailHookOptsSchema.optional(),
     tailColdOpts: TailColdOptsSchema.optional(),
+    midTurnOpts: MidTurnOptsSchema.optional(),
+    hookKindMixOpts: HookKindMixOptsSchema.optional(),
   })
   .strict();
 
@@ -303,7 +349,9 @@ export type ShotSpecChildReport =
   | ColdOpenHookReport
   | MvBeatMapReport
   | DetailHookKindReport
-  | TailColdCloseReport;
+  | TailColdCloseReport
+  | MidTurnDensityReport
+  | HookKindMixReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -384,6 +432,8 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     coldOpenOpts,
     detailHookOpts,
     tailColdOpts,
+    midTurnOpts,
+    hookKindMixOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -515,6 +565,24 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateTailColdClose(
         sections.tailColdClose,
         (tailColdOpts ?? {}) as TailColdCloseOptions,
+      ),
+    );
+  }
+  if (sections.midTurnDensity !== undefined) {
+    run(
+      'midTurnDensity',
+      evaluateMidTurnDensity(
+        sections.midTurnDensity,
+        (midTurnOpts ?? {}) as MidTurnDensityOptions,
+      ),
+    );
+  }
+  if (sections.hookKindMix !== undefined) {
+    run(
+      'hookKindMix',
+      evaluateHookKindMix(
+        sections.hookKindMix,
+        (hookKindMixOpts ?? {}) as HookKindMixOptions,
       ),
     );
   }
