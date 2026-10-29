@@ -11,6 +11,8 @@
  * Link rules:
  *  SCHEMA / DUP_ID / FUTURE_EP
  *  CHILD_DIALOGUE_FAIL / CHILD_REACTION_FAIL
+ *  EXPOSITION_UNLABELED (WARN|FAIL) — bubble 中段无 beatRole 的台词灌剧情；
+ *    FAIL when requireLabeledExposition (default true on this link)
  * Engineering gate only: PASS ≠ Final ≠ G3.
  */
 import { z } from 'zod';
@@ -30,6 +32,8 @@ export const DialogueReactionLinkEntrySchema = z.object({
 export const DialogueReactionLinkLedgerSchema = z.object({
   series: z.string().min(1),
   latestEp: Ep,
+  /** When true (default), EXPOSITION_UNLABELED from child upgrades to FAIL on the link. */
+  requireLabeledExposition: z.boolean().optional(),
   links: z.array(DialogueReactionLinkEntrySchema),
 });
 
@@ -41,7 +45,8 @@ export type DialogueReactionLinkFinding = {
     | 'DUP_ID'
     | 'FUTURE_EP'
     | 'CHILD_DIALOGUE_FAIL'
-    | 'CHILD_REACTION_FAIL';
+    | 'CHILD_REACTION_FAIL'
+    | 'EXPOSITION_UNLABELED';
   severity: 'FAIL' | 'WARN';
   message: string;
   fix?: string;
@@ -53,6 +58,7 @@ export interface DialogueReactionLinkReport {
   metrics: {
     links: number;
     aligned: number;
+    unlabeledExposition: number;
     latestEp: number;
   };
   findings: DialogueReactionLinkFinding[];
@@ -66,7 +72,7 @@ export function evaluateDialogueReactionLink(input: unknown): DialogueReactionLi
   if (!parsed.success) {
     return {
       verdict: 'FAIL',
-      metrics: { links: 0, aligned: 0, latestEp: 0 },
+      metrics: { links: 0, aligned: 0, unlabeledExposition: 0, latestEp: 0 },
       findings: [
         {
           code: 'SCHEMA',
@@ -78,7 +84,7 @@ export function evaluateDialogueReactionLink(input: unknown): DialogueReactionLi
     };
   }
 
-  const { latestEp, links } = parsed.data;
+  const { latestEp, links, requireLabeledExposition = true } = parsed.data;
   const findings: DialogueReactionLinkFinding[] = [];
   const push = (x: DialogueReactionLinkFinding) => findings.push(x);
 
@@ -99,6 +105,7 @@ export function evaluateDialogueReactionLink(input: unknown): DialogueReactionLi
   }
 
   let aligned = 0;
+  let unlabeledExposition = 0;
   for (const link of links) {
     if (link.ep > latestEp) {
       push({
@@ -123,6 +130,19 @@ export function evaluateDialogueReactionLink(input: unknown): DialogueReactionLi
       continue;
     }
 
+    const unlabeled = dlg.findings.filter((f) => f.code === 'EXPOSITION_UNLABELED');
+    if (unlabeled.length) {
+      unlabeledExposition += unlabeled.length;
+      push({
+        code: 'EXPOSITION_UNLABELED',
+        severity: requireLabeledExposition ? 'FAIL' : 'WARN',
+        ids: [link.id, ...unlabeled.flatMap((f) => f.shotIds ?? [])],
+        message: `${link.id}: 中段台词灌剧情未标 beatRole（联表默认强制标注）`,
+        fix: '给中段对白镜补 beatRole + 可见动作，或设 requireLabeledExposition=false',
+      });
+      if (requireLabeledExposition) continue;
+    }
+
     const rx = evaluateReactionBeats(link.shotSpec, { requireReaction: true });
     if (rx.verdict === 'FAIL') {
       const childFails = rx.findings.filter((f) => f.severity === 'FAIL');
@@ -141,7 +161,7 @@ export function evaluateDialogueReactionLink(input: unknown): DialogueReactionLi
 
   return {
     verdict: findings.some((f) => f.severity === 'FAIL') ? 'FAIL' : 'PASS',
-    metrics: { links: links.length, aligned, latestEp },
+    metrics: { links: links.length, aligned, unlabeledExposition, latestEp },
     findings,
     gates: GATES,
   };

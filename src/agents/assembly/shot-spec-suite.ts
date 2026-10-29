@@ -5,6 +5,8 @@
  * Bundles ShotSpec / CutTimeline / contract gates beside story-ledger-suite:
  *   hookStructure · openingCascade · cutTimeline
  *   · shotContract · shotPrompt · storyRhythm · mvShotlist
+ *   · keyframePlate · reactionBeat
+ * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -49,6 +51,18 @@ import {
   evaluateMvShotlist,
   type MvShotlistReport,
 } from './mv-shotlist-gate';
+import {
+  KeyframePlateDocSchema,
+  evaluateKeyframePlate,
+  type KeyframePlateOptions,
+  type KeyframePlateReport,
+} from './keyframe-plate-gate';
+import {
+  evaluateReactionBeats,
+  type ReactionBeatOptions,
+  type ReactionBeatReport,
+} from './reaction-beat-gate';
+import { DEFAULT_SHOT_CONTRACT_RULESET } from './shot-contract-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -58,6 +72,8 @@ export const SHOT_SPEC_GATE_IDS = [
   'shotPrompt',
   'storyRhythm',
   'mvShotlist',
+  'keyframePlate',
+  'reactionBeat',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -125,6 +141,21 @@ const RhythmOptsSchema = z
   })
   .strict();
 
+const KeyframeOptsSchema = z
+  .object({
+    minPlates: z.number().int().positive().optional(),
+    minClips: z.number().int().positive().optional(),
+  })
+  .strict();
+
+const ReactionOptsSchema = z
+  .object({
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -135,12 +166,16 @@ export const ShotSpecSuiteSchema = z
     shotPrompt: ShotSpecDocSchema.optional(),
     storyRhythm: ShotSpecDocSchema.optional(),
     mvShotlist: MvShotlistDocSchema.optional(),
+    keyframePlate: KeyframePlateDocSchema.optional(),
+    reactionBeat: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
     contractOpts: ContractOptsSchema.optional(),
     promptOpts: PromptOptsSchema.optional(),
     rhythmOpts: RhythmOptsSchema.optional(),
+    keyframeOpts: KeyframeOptsSchema.optional(),
+    reactionOpts: ReactionOptsSchema.optional(),
   })
   .strict();
 
@@ -153,7 +188,9 @@ export type ShotSpecChildReport =
   | ShotContractReport
   | ShotPromptReport
   | RhythmReport
-  | MvShotlistReport;
+  | MvShotlistReport
+  | KeyframePlateReport
+  | ReactionBeatReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -227,6 +264,8 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     contractOpts,
     promptOpts,
     rhythmOpts,
+    keyframeOpts,
+    reactionOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -273,9 +312,13 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     );
   }
   if (sections.shotContract !== undefined) {
+    const co = (contractOpts ?? {}) as ShotContractOptions;
     run(
       'shotContract',
-      evaluateShotContract(sections.shotContract, (contractOpts ?? {}) as ShotContractOptions),
+      evaluateShotContract(sections.shotContract, {
+        ...co,
+        ruleset: co.ruleset === undefined ? DEFAULT_SHOT_CONTRACT_RULESET : co.ruleset,
+      }),
     );
   }
   if (sections.shotPrompt !== undefined) {
@@ -296,6 +339,18 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
   }
   if (sections.mvShotlist !== undefined) {
     run('mvShotlist', evaluateMvShotlist(sections.mvShotlist));
+  }
+  if (sections.keyframePlate !== undefined) {
+    run(
+      'keyframePlate',
+      evaluateKeyframePlate(sections.keyframePlate, (keyframeOpts ?? {}) as KeyframePlateOptions),
+    );
+  }
+  if (sections.reactionBeat !== undefined) {
+    run(
+      'reactionBeat',
+      evaluateReactionBeats(sections.reactionBeat, (reactionOpts ?? {}) as ReactionBeatOptions),
+    );
   }
 
   const skipped = SHOT_SPEC_GATE_IDS.length - ran;

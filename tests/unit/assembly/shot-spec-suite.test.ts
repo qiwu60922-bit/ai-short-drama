@@ -197,11 +197,48 @@ const mvGolden = () => ({
   ],
 });
 
+
+const keyframeGolden = () => ({
+  sceneId: 'cottage-fire',
+  roomLockId: 'room-empty',
+  characterCount: 1,
+  plates: [
+    { id: 'P0', index: 0, roomLockId: 'room-empty' },
+    { id: 'P1', index: 1, roomLockId: 'room-empty' },
+    { id: 'P2', index: 2, roomLockId: 'room-empty' },
+  ],
+  clips: [
+    {
+      id: 'c1',
+      firstPlateId: 'P0',
+      lastPlateId: 'P1',
+      mode: 'fl2va',
+      prompt: 'Old man warms hands then sits. Camera locked.',
+    },
+    {
+      id: 'c2',
+      firstPlateId: 'P1',
+      lastPlateId: 'P2',
+      mode: 'fl2va',
+      prompt: 'Old man leans into the fire. Camera locked.',
+    },
+  ],
+});
+
+const reactionGood = (): S[] => [
+  { durSec: 3, beatRole: 'hook', action: 'crisis' },
+  { durSec: 6, beatRole: 'setup' },
+  { durSec: 6, beatRole: 'reversal', action: 'reveal' },
+  { durSec: 3, beatRole: 'reaction', action: 'face freeze' },
+  { durSec: 6, beatRole: 'cliffhanger', action: 'door slam' },
+  { durSec: 2, beatRole: 'reaction', action: 'group gasp' },
+];
+
 const failCodes = (r: ReturnType<typeof evaluateShotSpecSuite>) =>
   r.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code);
 
 describe('shot-spec-suite', () => {
-  it('lists 7 gates incl. contract/prompt/rhythm/mv', () => {
+  it('lists 9 gates incl. keyframePlate/reactionBeat', () => {
     expect([...SHOT_SPEC_GATE_IDS]).toEqual([
       'hookStructure',
       'openingCascade',
@@ -210,6 +247,8 @@ describe('shot-spec-suite', () => {
       'shotPrompt',
       'storyRhythm',
       'mvShotlist',
+      'keyframePlate',
+      'reactionBeat',
     ]);
   });
 
@@ -217,7 +256,7 @@ describe('shot-spec-suite', () => {
     const r = evaluateShotSpecSuite({ episode: 'EP01' });
     expect(r.verdict).toBe('FAIL');
     expect(failCodes(r)).toContain('EMPTY_SUITE');
-    expect(r.metrics).toMatchObject({ ran: 0, skipped: 7 });
+    expect(r.metrics).toMatchObject({ ran: 0, skipped: 9 });
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -231,13 +270,13 @@ describe('shot-spec-suite', () => {
     );
   });
 
-  it('hookStructure alone PASS → skipped 6', () => {
+  it('hookStructure alone PASS → skipped 8', () => {
     const r = evaluateShotSpecSuite({
       episode: 'EP01',
       hookStructure: shotSpec('EP01', hookGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 6 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 8 });
     expect(r.results.hookStructure.status).toBe('PASS');
     expect(r.results.shotContract.status).toBe('SKIP');
   });
@@ -251,13 +290,13 @@ describe('shot-spec-suite', () => {
       mvShotlist: mvGolden(),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 3 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 5 });
     for (const id of ['shotContract', 'shotPrompt', 'storyRhythm', 'mvShotlist'] as const) {
       expect(r.results[id].status).toBe('PASS');
     }
   });
 
-  it('all seven gates PASS', () => {
+  it('all nine gates PASS', () => {
     const r = evaluateShotSpecSuite({
       episode: 'EP01',
       hookStructure: shotSpec('EP01', hookGood()),
@@ -267,12 +306,34 @@ describe('shot-spec-suite', () => {
       shotPrompt: promptSpec([promptFull(), promptFull()]),
       storyRhythm: rhythmDense(),
       mvShotlist: mvGolden(),
+      keyframePlate: keyframeGolden(),
+      reactionBeat: shotSpec('EP01', reactionGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 0 });
+    expect(r.metrics).toMatchObject({ ran: 9, passed: 9, failed: 0, skipped: 0 });
     for (const id of SHOT_SPEC_GATE_IDS) {
       expect(r.results[id].status).toBe('PASS');
     }
+  });
+
+  it('keyframePlate + reactionBeat alone PASS', () => {
+    const r = evaluateShotSpecSuite({
+      episode: 'EP01',
+      keyframePlate: keyframeGolden(),
+      reactionBeat: shotSpec('EP01', reactionGood()),
+    });
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 7 });
+    expect(r.results.keyframePlate.status).toBe('PASS');
+    expect(r.results.reactionBeat.status).toBe('PASS');
+  });
+
+  it('shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET (unknown rule → GATE_FAIL)', () => {
+    const bad = contractGolden();
+    bad.shots[0].ruleRefs = ['NO-SUCH-RULE'];
+    const r = evaluateShotSpecSuite({ episode: 'EP01', shotContract: bad });
+    expect(r.verdict).toBe('FAIL');
+    expect(r.results.shotContract.status).toBe('FAIL');
   });
 
   it('hook HOOK_LATE → GATE_FAIL bubbles', () => {
