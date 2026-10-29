@@ -220,6 +220,9 @@
  *   · twitterRhythmPeakBridge · chitterRhythmPeakBridge · droneRhythmPeakBridge · fizzRhythmPeakBridge
  *   · qualityResinLink · qualityWaxLink · qualityParaffinLink · qualityNaphthaLink
  *
+ *   · screechRhythmPeakBridge · chatterRhythmPeakBridge · croonRhythmPeakBridge · chirrupRhythmPeakBridge
+ *   · qualityBenzeneLink · qualityTolueneLink · qualityXyleneLink · qualityPhenolLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -4041,6 +4044,59 @@ import {
   type QualityNaphthaLinkReport,
 } from './quality-naphtha-link-gate';
 
+import {
+  ScreechRhythmPeakBridgeLinkSchema,
+  ScreechRhythmPeakScreechEntrySchema,
+  ScreechRhythmPeakRhythmEntrySchema,
+  evaluateScreechRhythmPeakBridge,
+  type ScreechRhythmPeakBridgeReport,
+} from './screech-rhythm-peak-bridge-gate';
+import {
+  ChatterRhythmPeakBridgeLinkSchema,
+  ChatterRhythmPeakChatterEntrySchema,
+  ChatterRhythmPeakRhythmEntrySchema,
+  evaluateChatterRhythmPeakBridge,
+  type ChatterRhythmPeakBridgeReport,
+} from './chatter-rhythm-peak-bridge-gate';
+import {
+  CroonRhythmPeakBridgeLinkSchema,
+  CroonRhythmPeakCroonEntrySchema,
+  CroonRhythmPeakRhythmEntrySchema,
+  evaluateCroonRhythmPeakBridge,
+  type CroonRhythmPeakBridgeReport,
+} from './croon-rhythm-peak-bridge-gate';
+import {
+  ChirrupRhythmPeakBridgeLinkSchema,
+  ChirrupRhythmPeakChirrupEntrySchema,
+  ChirrupRhythmPeakRhythmEntrySchema,
+  evaluateChirrupRhythmPeakBridge,
+  type ChirrupRhythmPeakBridgeReport,
+} from './chirrup-rhythm-peak-bridge-gate';
+import {
+  QualityBenzeneLinkEntrySchema,
+  QualityBenzeneEntrySchema,
+  evaluateQualityBenzeneLink,
+  type QualityBenzeneLinkReport,
+} from './quality-benzene-link-gate';
+import {
+  QualityTolueneLinkEntrySchema,
+  QualityTolueneEntrySchema,
+  evaluateQualityTolueneLink,
+  type QualityTolueneLinkReport,
+} from './quality-toluene-link-gate';
+import {
+  QualityXyleneLinkEntrySchema,
+  QualityXyleneEntrySchema,
+  evaluateQualityXyleneLink,
+  type QualityXyleneLinkReport,
+} from './quality-xylene-link-gate';
+import {
+  QualityPhenolLinkEntrySchema,
+  QualityPhenolEntrySchema,
+  evaluateQualityPhenolLink,
+  type QualityPhenolLinkReport,
+} from './quality-phenol-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -4706,6 +4762,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityWaxLink',
   'qualityParaffinLink',
   'qualityNaphthaLink',
+  'screechRhythmPeakBridge',
+  'chatterRhythmPeakBridge',
+  'croonRhythmPeakBridge',
+  'chirrupRhythmPeakBridge',
+  'qualityBenzeneLink',
+  'qualityTolueneLink',
+  'qualityXyleneLink',
+  'qualityPhenolLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -9152,6 +9216,58 @@ const QualityNaphthaSectionSchemaB180 = z.object({
   links: z.array(QualityNaphthaLinkEntrySchema),
 });
 
+const ScreechRhythmPeakBridgeSectionSchema = z.object({
+  screeches: z.array(ScreechRhythmPeakScreechEntrySchema),
+  rhythms: z.array(ScreechRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ScreechRhythmPeakBridgeLinkSchema),
+});
+
+const ChatterRhythmPeakBridgeSectionSchema = z.object({
+  chatters: z.array(ChatterRhythmPeakChatterEntrySchema),
+  rhythms: z.array(ChatterRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ChatterRhythmPeakBridgeLinkSchema),
+});
+
+const CroonRhythmPeakBridgeSectionSchema = z.object({
+  croons: z.array(CroonRhythmPeakCroonEntrySchema),
+  rhythms: z.array(CroonRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CroonRhythmPeakBridgeLinkSchema),
+});
+
+const ChirrupRhythmPeakBridgeSectionSchema = z.object({
+  chirrups: z.array(ChirrupRhythmPeakChirrupEntrySchema),
+  rhythms: z.array(ChirrupRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ChirrupRhythmPeakBridgeLinkSchema),
+});
+
+const QualityBenzeneSectionSchemaB181 = z.object({
+  minBenzeneIntense: z.number().int().min(1).max(5).optional(),
+  benzenes: z.array(QualityBenzeneEntrySchema),
+  links: z.array(QualityBenzeneLinkEntrySchema),
+});
+
+const QualityTolueneSectionSchemaB181 = z.object({
+  minTolueneIntense: z.number().int().min(1).max(5).optional(),
+  toluenes: z.array(QualityTolueneEntrySchema),
+  links: z.array(QualityTolueneLinkEntrySchema),
+});
+
+const QualityXyleneSectionSchemaB181 = z.object({
+  minXyleneIntense: z.number().int().min(1).max(5).optional(),
+  xylenes: z.array(QualityXyleneEntrySchema),
+  links: z.array(QualityXyleneLinkEntrySchema),
+});
+
+const QualityPhenolSectionSchemaB181 = z.object({
+  minPhenolIntense: z.number().int().min(1).max(5).optional(),
+  phenols: z.array(QualityPhenolEntrySchema),
+  links: z.array(QualityPhenolLinkEntrySchema),
+});
+
 
 
 
@@ -9831,6 +9947,14 @@ export const StoryLedgerSuiteSchema = z
     qualityWaxLink: QualityWaxSectionSchemaB180.optional(),
     qualityParaffinLink: QualityParaffinSectionSchemaB180.optional(),
     qualityNaphthaLink: QualityNaphthaSectionSchemaB180.optional(),
+    screechRhythmPeakBridge: ScreechRhythmPeakBridgeSectionSchema.optional(),
+    chatterRhythmPeakBridge: ChatterRhythmPeakBridgeSectionSchema.optional(),
+    croonRhythmPeakBridge: CroonRhythmPeakBridgeSectionSchema.optional(),
+    chirrupRhythmPeakBridge: ChirrupRhythmPeakBridgeSectionSchema.optional(),
+    qualityBenzeneLink: QualityBenzeneSectionSchemaB181.optional(),
+    qualityTolueneLink: QualityTolueneSectionSchemaB181.optional(),
+    qualityXyleneLink: QualityXyleneSectionSchemaB181.optional(),
+    qualityPhenolLink: QualityPhenolSectionSchemaB181.optional(),
   })
   .strict();
 
@@ -10498,7 +10622,15 @@ export type StoryLedgerChildReport =
   | QualityResinLinkReport
   | QualityWaxLinkReport
   | QualityParaffinLinkReport
-  | QualityNaphthaLinkReport;
+  | QualityNaphthaLinkReport
+  | ScreechRhythmPeakBridgeReport
+  | ChatterRhythmPeakBridgeReport
+  | CroonRhythmPeakBridgeReport
+  | ChirrupRhythmPeakBridgeReport
+  | QualityBenzeneLinkReport
+  | QualityTolueneLinkReport
+  | QualityXyleneLinkReport
+  | QualityPhenolLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -11863,6 +11995,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityParaffinLink({ series, latestEp, ...(section as object) }),
   qualityNaphthaLink: (series, latestEp, section) =>
     evaluateQualityNaphthaLink({ series, latestEp, ...(section as object) }),
+  screechRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateScreechRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  chatterRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateChatterRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  croonRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateCroonRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  chirrupRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateChirrupRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityBenzeneLink: (series, latestEp, section) =>
+    evaluateQualityBenzeneLink({ series, latestEp, ...(section as object) }),
+  qualityTolueneLink: (series, latestEp, section) =>
+    evaluateQualityTolueneLink({ series, latestEp, ...(section as object) }),
+  qualityXyleneLink: (series, latestEp, section) =>
+    evaluateQualityXyleneLink({ series, latestEp, ...(section as object) }),
+  qualityPhenolLink: (series, latestEp, section) =>
+    evaluateQualityPhenolLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
