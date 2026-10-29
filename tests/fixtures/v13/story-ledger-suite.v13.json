@@ -14999,7 +14999,9 @@
           }
         ],
         "tipEp": 9,
-        "tipLabel": "接受第99次离婚彻底离开"
+        "tipLabel": "接受第99次离婚彻底离开",
+        "tipAtSec": 10,
+        "plantAtSec": 0
       }
     ],
     "links": [
@@ -15008,6 +15010,647 @@
         "bondId": "江少契约-hb-fb",
         "frequencyId": "离婚99次-fc-cf-cfpb-fb",
         "terminal": "upgrade"
+      }
+    ]
+  },
+  "bondAbilityPeakBridge": {
+    "abilities": [
+      {
+        "id": "seer-bapb",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-bapb",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-bapb",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-bapb",
+        "by": "linyang",
+        "ep": 8,
+        "day": 8,
+        "option": "查验身份"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "江少契约-bapb",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 8,
+        "upgradeLabel": "真心崩塌后真情"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "机长对峙峰值-bapb",
+        "openEp": 1,
+        "peakEp": 8,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 8
+      }
+    ],
+    "links": [
+      {
+        "id": "L-abp-bapb",
+        "abilityId": "seer-bapb",
+        "bondId": "江少契约-bapb",
+        "peakId": "机长对峙峰值-bapb",
+        "ep": 8
+      }
+    ]
+  },
+  "vestBondPeakBridge": {
+    "bonds": [
+      {
+        "id": "江少契约-bvp-vbpb",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-bvp-vbpb",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-bvp-vbpb",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bvp-vbpb",
+        "bondId": "江少契约-bvp-vbpb",
+        "vestId": "机长马甲-bvp-vbpb",
+        "peakId": "对峙峰值-bvp-vbpb",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyBondPeakBridge": {
+    "bonds": [
+      {
+        "id": "江少契约-hb-fb-fbpb",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 9,
+        "upgradeLabel": "真心崩塌后真情"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": "离婚99次-fc-cf-cfpb-fb-fbpb",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 9,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 9,
+        "tipLabel": "接受第99次离婚彻底离开",
+        "tipAtSec": 10,
+        "plantAtSec": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fbpb",
+        "frequencyId": "离婚99次-fc-cf-cfpb-fb-fbpb",
+        "bondId": "江少契约-hb-fb-fbpb",
+        "peakId": "对峙峰值-fbpb",
+        "ep": 9
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-fbpb",
+        "openEp": 1,
+        "peakEp": 9,
+        "peakLabel": "揭穿对峙",
+        "payoffEp": 9
+      }
+    ]
+  },
+  "handoffCliffPeakBridge": {
+    "cliffLinks": [
+      {
+        "id": "C9-10-cb-ca-hc-hcpb",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "H8-9-bh-hb-hc-hcpb",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-hcpb",
+        "handoffId": "H8-9-bh-hb-hc-hcpb",
+        "cliffLinkId": "C9-10-cb-ca-hc-hcpb",
+        "peakId": "对峙峰值-hcpb",
+        "ep": 9
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-hcpb",
+        "openEp": 1,
+        "peakEp": 9,
+        "peakLabel": "揭穿对峙",
+        "payoffEp": 9
+      }
+    ]
+  },
+  "cliffVestLink": {
+    "vests": [
+      {
+        "id": "机长马甲-cvl",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropLabel": "公开机长身份反击",
+        "dropEp": 10
+      }
+    ],
+    "cliffLinks": [
+      {
+        "id": "C9-10-cvl",
+        "prevEp": 9,
+        "nextEp": 10,
+        "prev": {
+          "episode": "EP09",
+          "shots": [
+            {
+              "shotId": "EP09-S0",
+              "cast": [],
+              "durSec": 4,
+              "beatRole": "hook",
+              "action": "危机开场"
+            },
+            {
+              "shotId": "EP09-S1",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "increment",
+              "action": "追查线索"
+            },
+            {
+              "shotId": "EP09-S2",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "reversal",
+              "action": "身份暴露"
+            },
+            {
+              "shotId": "EP09-S3",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "cliffhanger",
+              "action": "持械闯入皇城大门被围"
+            }
+          ]
+        },
+        "next": {
+          "episode": "EP10",
+          "shots": [
+            {
+              "shotId": "EP10-S0",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "hook",
+              "action": "皇城门口持械对峙未解"
+            },
+            {
+              "shotId": "EP10-S1",
+              "cast": [],
+              "durSec": 2,
+              "beatRole": "increment",
+              "action": "追兵逼近"
+            },
+            {
+              "shotId": "EP10-S2",
+              "cast": [],
+              "durSec": 10,
+              "beatRole": "reversal",
+              "action": "旧友现身"
+            },
+            {
+              "shotId": "EP10-S3",
+              "cast": [],
+              "durSec": 8,
+              "beatRole": "cliffhanger",
+              "action": "下一场更大危机"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vc-cvl",
+        "vestId": "机长马甲-cvl",
+        "cliffLinkId": "C9-10-cvl",
+        "ep": 10
+      }
+    ]
+  },
+  "frequencyVestLink": {
+    "vests": [
+      {
+        "id": "机长马甲-vfl-fvl",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "frequencies": [
+      {
+        "id": "离婚要挟-vfl-fvl",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 10,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 10,
+        "tipLabel": "接受第99次离婚彻底离开",
+        "tipAtSec": 10,
+        "plantAtSec": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vfl-fvl",
+        "vestId": "机长马甲-vfl-fvl",
+        "frequencyId": "离婚要挟-vfl-fvl"
+      }
+    ]
+  },
+  "personaFrequencyLink": {
+    "frequencies": [
+      {
+        "id": "离婚要挟-fpl-pfl",
+        "actor": "丈夫",
+        "motif": "离婚要挟",
+        "unit": "count",
+        "threshold": 99,
+        "plantEp": 1,
+        "ticks": [
+          {
+            "ep": 3,
+            "n": 10
+          },
+          {
+            "ep": 5,
+            "n": 50
+          },
+          {
+            "ep": 8,
+            "n": 99,
+            "label": "第99次"
+          }
+        ],
+        "tipEp": 8,
+        "tipLabel": "接受第99次离婚彻底离开",
+        "tipAtSec": 10,
+        "plantAtSec": 0
+      }
+    ],
+    "cards": [
+      {
+        "name": "苏见晴",
+        "adult": true,
+        "age": 28,
+        "gender": "女",
+        "resemblance": "none",
+        "face": {
+          "faceShape": "偏长的鹅蛋脸，颧骨略平",
+          "eyeShape": "内双，眼尾微垂，卧蚕浅",
+          "noseShape": "鼻梁中等高度，鼻头偏圆",
+          "lips": "上唇薄于下唇，唇峰不明显"
+        },
+        "hair": {
+          "hairColor": "自然黑，发尾偏棕",
+          "hairLength": "锁骨下 5cm"
+        },
+        "skin": {
+          "skinTone": "偏白，微暖调"
+        },
+        "body": {
+          "heightFeel": "168cm 左右",
+          "bodyProportion": "七头身"
+        },
+        "ageCues": [
+          "眼下两条浅细纹",
+          "法令纹浅，笑起来才明显"
+        ],
+        "wardrobe": [
+          {
+            "id": "W1",
+            "name": "通勤",
+            "items": "米白衬衫、深灰长裤、黑色乐福鞋",
+            "occasion": "基准服装"
+          },
+          {
+            "id": "W2",
+            "name": "制服暗示",
+            "items": "深色飞行员夹克、白衬衫、黑靴"
+          },
+          {
+            "id": "W3",
+            "name": "晚宴",
+            "items": "黑色礼服裙、细跟凉鞋"
+          }
+        ],
+        "anchors": [
+          "偏长的鹅蛋脸，颧骨平",
+          "内双眼尾微垂",
+          "齐刘海锁骨下黑发，中间偏左分线",
+          "下颌线清晰但不方"
+        ],
+        "reference": {
+          "sourcePhoto": "none",
+          "sheetImages": [
+            "sheet1.png"
+          ]
+        },
+        "notes": "机长马甲角色",
+        "slug": "su-jianqing-fpl"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fpl-pfl",
+        "frequencyId": "离婚要挟-fpl-pfl",
+        "cardSlug": "su-jianqing-fpl"
+      }
+    ]
+  },
+  "vestMaskLink": {
+    "masks": [
+      {
+        "id": "花心纨绔-vml",
+        "wearer": "苏见晴",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "人设崩塌"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-vml",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-vml",
+        "maskId": "花心纨绔-vml",
+        "vestId": "机长马甲-vml"
       }
     ]
   }
