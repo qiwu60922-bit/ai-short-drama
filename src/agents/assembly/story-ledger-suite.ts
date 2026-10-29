@@ -73,6 +73,9 @@
  *   · amnesiaPersonaPeakBridge · motifPersonaPeakBridge · countdownPersonaPeakBridge · qualityPersonaPeakBridge
  *   · frequencyPersonaLink · handoffPersonaLink · cliffPersonaLink · bondPersonaLink
  *
+ *   · frequencyPersonaPeakBridge · handoffPersonaPeakBridge · cliffPersonaPeakBridge · bondPersonaPeakBridge
+ *   · abilityFrequencyLink · vestHandoffLink · maskCliffLink · maskFrequencyLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -1023,6 +1026,49 @@ import {
   type BondPersonaLinkReport,
 } from './bond-persona-link-gate';
 
+import {
+  FrequencyPersonaPeakBridgeLinkSchema,
+  evaluateFrequencyPersonaPeakBridge,
+  type FrequencyPersonaPeakBridgeReport,
+} from './frequency-persona-peak-bridge-gate';
+import {
+  HandoffPersonaPeakBridgeLinkSchema,
+  HandoffPersonaPeakHandoffEntrySchema,
+  evaluateHandoffPersonaPeakBridge,
+  type HandoffPersonaPeakBridgeReport,
+} from './handoff-persona-peak-bridge-gate';
+import {
+  CliffPersonaPeakBridgeLinkSchema,
+  evaluateCliffPersonaPeakBridge,
+  type CliffPersonaPeakBridgeReport,
+} from './cliff-persona-peak-bridge-gate';
+import {
+  BondPersonaPeakBridgeLinkSchema,
+  evaluateBondPersonaPeakBridge,
+  type BondPersonaPeakBridgeReport,
+} from './bond-persona-peak-bridge-gate';
+import {
+  AbilityFrequencyLinkEntrySchema,
+  evaluateAbilityFrequencyLink,
+  type AbilityFrequencyLinkReport,
+} from './ability-frequency-link-gate';
+import {
+  VestHandoffLinkEntrySchema,
+  VestHandoffEntrySchema,
+  evaluateVestHandoffLink,
+  type VestHandoffLinkReport,
+} from './vest-handoff-link-gate';
+import {
+  MaskCliffLinkEntrySchema,
+  evaluateMaskCliffLink,
+  type MaskCliffLinkReport,
+} from './mask-cliff-link-gate';
+import {
+  MaskFrequencyLinkEntrySchema,
+  evaluateMaskFrequencyLink,
+  type MaskFrequencyLinkReport,
+} from './mask-frequency-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -1208,6 +1254,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'handoffPersonaLink',
   'cliffPersonaLink',
   'bondPersonaLink',
+  'frequencyPersonaPeakBridge',
+  'handoffPersonaPeakBridge',
+  'cliffPersonaPeakBridge',
+  'bondPersonaPeakBridge',
+  'abilityFrequencyLink',
+  'vestHandoffLink',
+  'maskCliffLink',
+  'maskFrequencyLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -2415,6 +2469,59 @@ const BondPersonaSectionSchema = z.object({
   links: z.array(BondPersonaLinkEntrySchema),
 });
 
+const FrequencyPersonaPeakBridgeSectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(FrequencyPersonaPeakBridgeLinkSchema),
+});
+
+const HandoffPersonaPeakBridgeSectionSchema = z.object({
+  handoffs: z.array(HandoffPersonaPeakHandoffEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HandoffPersonaPeakBridgeLinkSchema),
+});
+
+const CliffPersonaPeakBridgeSectionSchema = z.object({
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CliffPersonaPeakBridgeLinkSchema),
+});
+
+const BondPersonaPeakBridgeSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  cards: z.array(PersonaCardSchema).min(1),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BondPersonaPeakBridgeLinkSchema),
+});
+
+const AbilityFrequencySectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  links: z.array(AbilityFrequencyLinkEntrySchema),
+});
+
+const VestHandoffSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  handoffs: z.array(VestHandoffEntrySchema),
+  links: z.array(VestHandoffLinkEntrySchema),
+});
+
+const MaskCliffSectionSchema = z.object({
+  masks: z.array(PersonaMaskEntrySchema),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  links: z.array(MaskCliffLinkEntrySchema),
+});
+
+const MaskFrequencySectionSchema = z.object({
+  masks: z.array(PersonaMaskEntrySchema),
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  links: z.array(MaskFrequencyLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -2601,6 +2708,14 @@ export const StoryLedgerSuiteSchema = z
     handoffPersonaLink: HandoffPersonaSectionSchema.optional(),
     cliffPersonaLink: CliffPersonaSectionSchema.optional(),
     bondPersonaLink: BondPersonaSectionSchema.optional(),
+    frequencyPersonaPeakBridge: FrequencyPersonaPeakBridgeSectionSchema.optional(),
+    handoffPersonaPeakBridge: HandoffPersonaPeakBridgeSectionSchema.optional(),
+    cliffPersonaPeakBridge: CliffPersonaPeakBridgeSectionSchema.optional(),
+    bondPersonaPeakBridge: BondPersonaPeakBridgeSectionSchema.optional(),
+    abilityFrequencyLink: AbilityFrequencySectionSchema.optional(),
+    vestHandoffLink: VestHandoffSectionSchema.optional(),
+    maskCliffLink: MaskCliffSectionSchema.optional(),
+    maskFrequencyLink: MaskFrequencySectionSchema.optional(),
   })
   .strict();
 
@@ -2788,7 +2903,15 @@ export type StoryLedgerChildReport =
   | FrequencyPersonaLinkReport
   | HandoffPersonaLinkReport
   | CliffPersonaLinkReport
-  | BondPersonaLinkReport;
+  | BondPersonaLinkReport
+  | FrequencyPersonaPeakBridgeReport
+  | HandoffPersonaPeakBridgeReport
+  | CliffPersonaPeakBridgeReport
+  | BondPersonaPeakBridgeReport
+  | AbilityFrequencyLinkReport
+  | VestHandoffLinkReport
+  | MaskCliffLinkReport
+  | MaskFrequencyLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -3192,6 +3315,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateCliffPersonaLink({ series, latestEp, ...(section as object) }),
   bondPersonaLink: (series, latestEp, section) =>
     evaluateBondPersonaLink({ series, latestEp, ...(section as object) }),
+  frequencyPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateFrequencyPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  handoffPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateHandoffPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  cliffPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateCliffPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  bondPersonaPeakBridge: (series, latestEp, section) =>
+    evaluateBondPersonaPeakBridge({ series, latestEp, ...(section as object) }),
+  abilityFrequencyLink: (series, latestEp, section) =>
+    evaluateAbilityFrequencyLink({ series, latestEp, ...(section as object) }),
+  vestHandoffLink: (series, latestEp, section) =>
+    evaluateVestHandoffLink({ series, latestEp, ...(section as object) }),
+  maskCliffLink: (series, latestEp, section) =>
+    evaluateMaskCliffLink({ series, latestEp, ...(section as object) }),
+  maskFrequencyLink: (series, latestEp, section) =>
+    evaluateMaskFrequencyLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
