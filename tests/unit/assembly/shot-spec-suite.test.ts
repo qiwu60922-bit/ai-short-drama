@@ -247,7 +247,7 @@ const failCodes = (r: ReturnType<typeof evaluateShotSpecSuite>) =>
   r.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code);
 
 describe('shot-spec-suite', () => {
-  it('lists 15 gates incl. detailHookKind/tailColdClose', () => {
+  it('lists 17 gates incl. midTurnDensity/hookKindMix', () => {
     expect([...SHOT_SPEC_GATE_IDS]).toEqual([
       'hookStructure',
       'openingCascade',
@@ -264,6 +264,8 @@ describe('shot-spec-suite', () => {
       'mvBeatMap',
       'detailHookKind',
       'tailColdClose',
+      'midTurnDensity',
+      'hookKindMix',
     ]);
   });
 
@@ -271,7 +273,7 @@ describe('shot-spec-suite', () => {
     const r = evaluateShotSpecSuite({ episode: 'EP01' });
     expect(r.verdict).toBe('FAIL');
     expect(failCodes(r)).toContain('EMPTY_SUITE');
-    expect(r.metrics).toMatchObject({ ran: 0, skipped: 15 });
+    expect(r.metrics).toMatchObject({ ran: 0, skipped: 17 });
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -291,7 +293,7 @@ describe('shot-spec-suite', () => {
       hookStructure: shotSpec('EP01', hookGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 14 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 16 });
     expect(r.results.hookStructure.status).toBe('PASS');
     expect(r.results.shotContract.status).toBe('SKIP');
   });
@@ -305,13 +307,13 @@ describe('shot-spec-suite', () => {
       mvShotlist: mvGolden(),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 11 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 13 });
     for (const id of ['shotContract', 'shotPrompt', 'storyRhythm', 'mvShotlist'] as const) {
       expect(r.results[id].status).toBe('PASS');
     }
   });
 
-  it('all fifteen gates PASS', () => {
+  it('all seventeen gates PASS', () => {
     const r = evaluateShotSpecSuite({
       episode: 'EP01',
       hookStructure: shotSpec('EP01', hookGood()),
@@ -354,9 +356,26 @@ describe('shot-spec-suite', () => {
         { durSec: 6, beatRole: 'reversal', action: '反转' },
         { durSec: 4, beatRole: 'cliffhanger', action: '冷收尾' },
       ]),
+      midTurnDensity: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '危机', hookKind: 'situation' },
+        { durSec: 3, beatRole: 'setup', action: '铺垫' },
+        { durSec: 4, beatRole: 'increment', action: '信息增量A' },
+        { durSec: 4, beatRole: 'reversal', action: '反转' },
+        { durSec: 4, beatRole: 'increment', action: '信息增量B' },
+        { durSec: 4, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      midTurnOpts: { minTurns: 2 },
+      hookKindMix: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '双手交叠', hookKind: 'detail_cu' },
+        { durSec: 2, beatRole: 'hook', action: '危机局面', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '追问' },
+        { durSec: 6, beatRole: 'reversal', action: '反转' },
+        { durSec: 6, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      hookKindMixOpts: { hookWindowSec: 8, minDistinctKinds: 2 },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 15, passed: 15, failed: 0, skipped: 0 });
+    expect(r.metrics).toMatchObject({ ran: 17, passed: 17, failed: 0, skipped: 0 });
     for (const id of SHOT_SPEC_GATE_IDS) {
       expect(r.results[id].status).toBe('PASS');
     }
@@ -369,7 +388,7 @@ describe('shot-spec-suite', () => {
       reactionBeat: shotSpec('EP01', reactionGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 13 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 15 });
     expect(r.results.keyframePlate.status).toBe('PASS');
     expect(r.results.reactionBeat.status).toBe('PASS');
   });
@@ -382,7 +401,7 @@ describe('shot-spec-suite', () => {
       seriesRhythmOpts: { profile: 'dense' },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 13 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 15 });
     expect(r.results.dialogueExposition.status).toBe('PASS');
     expect(r.results.seriesRhythm.status).toBe('PASS');
   });
@@ -408,7 +427,7 @@ describe('shot-spec-suite', () => {
       },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 13 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 15 });
     expect(r.results.coldOpenHook.status).toBe('PASS');
     expect(r.results.mvBeatMap.status).toBe('PASS');
   });
@@ -430,10 +449,38 @@ describe('shot-spec-suite', () => {
       ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 13 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 15 });
     expect(r.results.detailHookKind.status).toBe('PASS');
     expect(r.results.tailColdClose.status).toBe('PASS');
   });
+
+  it('midTurnDensity + hookKindMix alone PASS', () => {
+    const r = evaluateShotSpecSuite({
+      episode: 'EP01',
+      midTurnDensity: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '危机', hookKind: 'situation' },
+        { durSec: 3, beatRole: 'setup', action: '铺垫' },
+        { durSec: 4, beatRole: 'increment', action: '信息增量A' },
+        { durSec: 4, beatRole: 'reversal', action: '反转' },
+        { durSec: 4, beatRole: 'increment', action: '信息增量B' },
+        { durSec: 4, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      midTurnOpts: { minTurns: 2 },
+      hookKindMix: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: '双手交叠', hookKind: 'detail_cu' },
+        { durSec: 2, beatRole: 'hook', action: '危机局面', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '追问' },
+        { durSec: 6, beatRole: 'reversal', action: '反转' },
+        { durSec: 6, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      hookKindMixOpts: { hookWindowSec: 8 },
+    });
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 15 });
+    expect(r.results.midTurnDensity.status).toBe('PASS');
+    expect(r.results.hookKindMix.status).toBe('PASS');
+  });
+
 
   it('shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET (unknown rule → GATE_FAIL)', () => {
     const bad = contractGolden();

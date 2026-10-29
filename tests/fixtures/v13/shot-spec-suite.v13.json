@@ -456,5 +456,102 @@
         "action": "冷收尾"
       }
     ]
+  },
+  "midTurnDensity": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MT0",
+        "durSec": 2,
+        "cast": [],
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MT1",
+        "durSec": 3,
+        "cast": [],
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-MT2",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "信息增量A"
+      },
+      {
+        "shotId": "EP01-MT3",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-MT4",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "信息增量B"
+      },
+      {
+        "shotId": "EP01-MT5",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "midTurnOpts": {
+    "minTurns": 2
+  },
+  "hookKindMix": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-HK0",
+        "durSec": 2,
+        "cast": [],
+        "beatRole": "hook",
+        "action": "双手交叠",
+        "hookKind": "detail_cu"
+      },
+      {
+        "shotId": "EP01-HK1",
+        "durSec": 2,
+        "cast": [],
+        "beatRole": "hook",
+        "action": "危机局面",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-HK2",
+        "durSec": 4,
+        "cast": [],
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-HK3",
+        "durSec": 6,
+        "cast": [],
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-HK4",
+        "durSec": 6,
+        "cast": [],
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookKindMixOpts": {
+    "hookWindowSec": 8,
+    "minDistinctKinds": 2
   }
 }

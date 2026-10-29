@@ -105,3 +105,83 @@ describe('ep01 rehearsal', () => {
     expect(JSON.stringify(det.summary)).not.toMatch(/"PASS"/);
   }, 120_000);
 });
+
+describe('ep01 CLI story-ledger-gate enforce', () => {
+  it('--story-ledger-gate enforce + EMPTY_SUITE fixture → exit 36; default warn unchanged', () => {
+    const w = tmp();
+    const repoRoot = resolve(__dirname, '../../..');
+    const script = resolve(repoRoot, 'scripts/ep01-offline-rehearsal.ts');
+    const shot = resolve(repoRoot, 'tests/fixtures/wave14-ep01/SHOT_SPEC.json');
+    const ref = resolve(repoRoot, 'tests/fixtures/wave14-ep01/REF_INDEX.json');
+    const failLedger = resolve(
+      repoRoot,
+      'tests/fixtures/v13/story-ledger-suite.enforce-fail.v13.json',
+    );
+    const scene = sceneFile();
+    try {
+      execFileSync(
+        'npx',
+        [
+          'tsx',
+          script,
+          '--shot-spec',
+          shot,
+          '--ref-index',
+          ref,
+          '--work-dir',
+          w,
+          '--scene-ref',
+          scene,
+          '--allow-candidates-for-dry-run',
+          '--no-detectors',
+          '--story-ledger-gate',
+          'enforce',
+          '--story-ledger',
+          failLedger,
+          '--shot-spec-gate',
+          'off',
+        ],
+        { cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+      );
+      expect.unreachable('expected exit 36');
+    } catch (e: unknown) {
+      const err = e as { status?: number; stdout?: string };
+      expect(err.status).toBe(36);
+      const out = JSON.parse(String(err.stdout || '{}'));
+      expect(out.stage).toBe('storyLedger');
+      expect(out.exitCode).toBe(36);
+      expect(out.storyLedger?.verdict).toBe('FAIL');
+    }
+
+    // default --story-ledger-gate warn: EMPTY_SUITE still reports but does not force 36
+    const w2 = tmp();
+    const out2 = execFileSync(
+      'npx',
+      [
+        'tsx',
+        script,
+        '--shot-spec',
+        shot,
+        '--ref-index',
+        ref,
+        '--work-dir',
+        w2,
+        '--scene-ref',
+        scene,
+        '--allow-candidates-for-dry-run',
+        '--no-detectors',
+        '--story-ledger',
+        failLedger,
+        '--shot-spec-gate',
+        'off',
+        // omit --story-ledger-gate → default warn
+      ],
+      { cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    const warnReport = JSON.parse(out2);
+    expect(warnReport.storyLedger?.verdict).toBe('FAIL');
+    // warn mode continues past storyLedger (likely convert stage ≠36)
+    expect(warnReport.exitCode).not.toBe(36);
+    expect(warnReport.stage).not.toBe('storyLedger');
+  }, 60_000);
+});
