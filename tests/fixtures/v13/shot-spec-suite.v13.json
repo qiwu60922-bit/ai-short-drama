@@ -815,5 +815,128 @@
         "action": "门外脚步"
       }
     ]
+  },
+  "coldOpenMidHook": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-COM0",
+        "cast": [],
+        "durSec": 2,
+        "action": "冷开危机",
+        "beatRole": "hook",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-COM1",
+        "cast": [],
+        "durSec": 3,
+        "action": "追问",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-COM2",
+        "cast": [],
+        "durSec": 2,
+        "action": "中段再钩",
+        "beatRole": "hook",
+        "hookKind": "action"
+      },
+      {
+        "shotId": "EP01-COM3",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-COM4",
+        "cast": [],
+        "durSec": 4,
+        "action": "悬念",
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "dialogueBeforeCliffBan": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-DBC0",
+        "cast": [],
+        "durSec": 2,
+        "action": "开场",
+        "beatRole": "hook"
+      },
+      {
+        "shotId": "EP01-DBC1",
+        "cast": [],
+        "durSec": 4,
+        "action": "追问",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-DBC2",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-DBC3",
+        "cast": [],
+        "durSec": 3,
+        "action": "脸色煞白",
+        "beatRole": "reaction"
+      },
+      {
+        "shotId": "EP01-DBC4",
+        "cast": [],
+        "durSec": 4,
+        "action": "门外脚步",
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "setupMidCap": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-SMC0",
+        "cast": [],
+        "durSec": 2,
+        "action": "危机",
+        "beatRole": "hook",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-SMC1",
+        "cast": [],
+        "durSec": 2,
+        "action": "短铺垫",
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-SMC2",
+        "cast": [],
+        "durSec": 4,
+        "action": "增量",
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-SMC3",
+        "cast": [],
+        "durSec": 4,
+        "action": "反转",
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-SMC4",
+        "cast": [],
+        "durSec": 4,
+        "action": "悬念",
+        "beatRole": "cliffhanger"
+      }
+    ]
   }
 }
