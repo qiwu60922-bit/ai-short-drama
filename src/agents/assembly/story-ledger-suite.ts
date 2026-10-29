@@ -7,6 +7,7 @@
  *   bondFrequencyLink · vestMaskPeakLink · frequencyPeakLink · amnesiaMotifLink
  *   ensembleCast · fakeLedgerReconcile · cliffCascadeLink · foreshadowMotifLink
  *   · allianceBondLink · personaVestLink · stageGoalConflictLink · reactionPeakLink
+ *   · stageGoal · conflictPayoff · peakBeforePayoff · abilityRule  (baseline singles)
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -102,8 +103,26 @@ import {
   evaluateReactionPeakLink,
   type ReactionPeakLinkReport,
 } from './reaction-peak-link-gate';
-import { PeakBeforePayoffEntrySchema } from './peak-before-payoff-gate';
+import {
+  PeakBeforePayoffEntrySchema,
+  evaluatePeakBeforePayoff,
+  type PeakBeforePayoffReport,
+} from './peak-before-payoff-gate';
 import { ShotSpecDocSchema } from './beatplan-to-multishot';
+import {
+  evaluateStageGoals,
+  type StageGoalReport,
+} from './stage-goal-gate';
+import {
+  evaluateConflictPayoffGap,
+  type ConflictPayoffReport,
+} from './conflict-payoff-gap-gate';
+import {
+  AbilityEntrySchema,
+  AbilityUseSchema,
+  evaluateAbilityRules,
+  type AbilityRuleReport,
+} from './ability-rule-gate';
 
 const Ep = z.number().int().positive();
 
@@ -120,6 +139,10 @@ export const STORY_LEDGER_GATE_IDS = [
   'personaVestLink',
   'stageGoalConflictLink',
   'reactionPeakLink',
+  'stageGoal',
+  'conflictPayoff',
+  'peakBeforePayoff',
+  'abilityRule',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -211,6 +234,26 @@ const ReactionPeakSectionSchema = z.object({
   links: z.array(ReactionPeakLinkEntrySchema),
 });
 
+const StageGoalSectionSchema = z.object({
+  seasonId: z.string().min(1),
+  goals: z.array(StageGoalEntrySchema).min(1),
+  progress: z.array(StageProgressSchema),
+  countdowns: z.array(StageCountdownSchema).optional(),
+});
+
+const ConflictPayoffSectionSchema = z.object({
+  conflicts: z.array(ConflictEntrySchema),
+});
+
+const PeakBeforePayoffSectionSchema = z.object({
+  entries: z.array(PeakBeforePayoffEntrySchema),
+});
+
+const AbilityRuleSectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -227,6 +270,10 @@ export const StoryLedgerSuiteSchema = z
     personaVestLink: PersonaVestSectionSchema.optional(),
     stageGoalConflictLink: StageGoalConflictSectionSchema.optional(),
     reactionPeakLink: ReactionPeakSectionSchema.optional(),
+    stageGoal: StageGoalSectionSchema.optional(),
+    conflictPayoff: ConflictPayoffSectionSchema.optional(),
+    peakBeforePayoff: PeakBeforePayoffSectionSchema.optional(),
+    abilityRule: AbilityRuleSectionSchema.optional(),
   })
   .strict();
 
@@ -244,7 +291,11 @@ export type StoryLedgerChildReport =
   | AllianceBondLinkReport
   | PersonaVestLinkReport
   | StageGoalConflictLinkReport
-  | ReactionPeakLinkReport;
+  | ReactionPeakLinkReport
+  | StageGoalReport
+  | ConflictPayoffReport
+  | PeakBeforePayoffReport
+  | AbilityRuleReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -309,6 +360,14 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateStageGoalConflictLink({ series, latestEp, ...(section as object) }),
   reactionPeakLink: (series, latestEp, section) =>
     evaluateReactionPeakLink({ series, latestEp, ...(section as object) }),
+  stageGoal: (series, latestEp, section) =>
+    evaluateStageGoals({ series, latestEp, ...(section as object) }),
+  conflictPayoff: (series, latestEp, section) =>
+    evaluateConflictPayoffGap({ series, latestEp, ...(section as object) }),
+  peakBeforePayoff: (series, latestEp, section) =>
+    evaluatePeakBeforePayoff({ series, latestEp, ...(section as object) }),
+  abilityRule: (series, latestEp, section) =>
+    evaluateAbilityRules({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
