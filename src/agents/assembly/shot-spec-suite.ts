@@ -27,6 +27,7 @@
  *   · coldCloseHookWindow · reactionCliffTail · midTurnColdClose
  *   · coldCloseMidTurn · hookWindowColdClose · cliffTailMidHook
  *   · coldCloseReaction · hookWindowMidHook · cliffTailHookWindow
+ *   · cliffTailColdClose · midHookColdClose · reactionHookWindow
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -385,6 +386,22 @@ import {
   type CliffTailHookWindowReport,
 } from './cliff-tail-hook-window-gate';
 
+import {
+  evaluateCliffTailColdClose,
+  type CliffTailColdCloseOptions,
+  type CliffTailColdCloseReport,
+} from './cliff-tail-cold-close-gate';
+import {
+  evaluateMidHookColdClose,
+  type MidHookColdCloseOptions,
+  type MidHookColdCloseReport,
+} from './mid-hook-cold-close-gate';
+import {
+  evaluateReactionHookWindow,
+  type ReactionHookWindowOptions,
+  type ReactionHookWindowReport,
+} from './reaction-hook-window-gate';
+
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
   'openingCascade',
@@ -454,6 +471,9 @@ export const SHOT_SPEC_GATE_IDS = [
   'coldCloseReaction',
   'hookWindowMidHook',
   'cliffTailHookWindow',
+  'cliffTailColdClose',
+  'midHookColdClose',
+  'reactionHookWindow',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -1371,6 +1391,54 @@ const CliffTailHookWindowOptsSchema = z
   })
   .strict();
 
+const CliffTailColdCloseOptsSchema = z
+  .object({
+    hardTailToleranceSec: z.number().positive().optional(),
+    coldTailSec: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const MidHookColdCloseOptsSchema = z
+  .object({
+    midHookByRatio: z.number().positive().optional(),
+    coldTailSec: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
+const ReactionHookWindowOptsSchema = z
+  .object({
+    hardHookWindowSec: z.number().positive().optional(),
+    requirePriorReaction: z.boolean().optional(),
+    reactionWindowSec: z.number().positive().optional(),
+    lookbackSec: z.number().positive().optional(),
+    requireReaction: z.boolean().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    midWindowHook: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 
 export const ShotSpecSuiteSchema = z
   .object({
@@ -1443,6 +1511,9 @@ export const ShotSpecSuiteSchema = z
     coldCloseReaction: ShotSpecDocSchema.optional(),
     hookWindowMidHook: ShotSpecDocSchema.optional(),
     cliffTailHookWindow: ShotSpecDocSchema.optional(),
+    cliffTailColdClose: ShotSpecDocSchema.optional(),
+    midHookColdClose: ShotSpecDocSchema.optional(),
+    reactionHookWindow: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -1509,6 +1580,9 @@ export const ShotSpecSuiteSchema = z
     coldCloseReactionOpts: ColdCloseReactionOptsSchema.optional(),
     hookWindowMidHookOpts: HookWindowMidHookOptsSchema.optional(),
     cliffTailHookWindowOpts: CliffTailHookWindowOptsSchema.optional(),
+    cliffTailColdCloseOpts: CliffTailColdCloseOptsSchema.optional(),
+    midHookColdCloseOpts: MidHookColdCloseOptsSchema.optional(),
+    reactionHookWindowOpts: ReactionHookWindowOptsSchema.optional(),
   })
   .strict();
 
@@ -1582,7 +1656,10 @@ export type ShotSpecChildReport =
   | CliffTailMidHookReport
   | ColdCloseReactionReport
   | HookWindowMidHookReport
-  | CliffTailHookWindowReport;
+  | CliffTailHookWindowReport
+  | CliffTailColdCloseReport
+  | MidHookColdCloseReport
+  | ReactionHookWindowReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -1716,6 +1793,9 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     coldCloseReactionOpts,
     hookWindowMidHookOpts,
     cliffTailHookWindowOpts,
+    cliffTailColdCloseOpts,
+    midHookColdCloseOpts,
+    reactionHookWindowOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -2324,6 +2404,33 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
       evaluateCliffTailHookWindow(
         sections.cliffTailHookWindow,
         (cliffTailHookWindowOpts ?? {}) as CliffTailHookWindowOptions,
+      ),
+    );
+  }
+  if (sections.cliffTailColdClose !== undefined) {
+    run(
+      'cliffTailColdClose',
+      evaluateCliffTailColdClose(
+        sections.cliffTailColdClose,
+        (cliffTailColdCloseOpts ?? {}) as CliffTailColdCloseOptions,
+      ),
+    );
+  }
+  if (sections.midHookColdClose !== undefined) {
+    run(
+      'midHookColdClose',
+      evaluateMidHookColdClose(
+        sections.midHookColdClose,
+        (midHookColdCloseOpts ?? {}) as MidHookColdCloseOptions,
+      ),
+    );
+  }
+  if (sections.reactionHookWindow !== undefined) {
+    run(
+      'reactionHookWindow',
+      evaluateReactionHookWindow(
+        sections.reactionHookWindow,
+        (reactionHookWindowOpts ?? {}) as ReactionHookWindowOptions,
       ),
     );
   }
