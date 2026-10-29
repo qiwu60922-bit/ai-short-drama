@@ -137,6 +137,8 @@
  *   · qualityStageLink · qualityCascadeLink · qualityCutLink · qualityPayoffLink
  *   · personaColdOpenPeakBridge · motifRhythmPeakBridge · personaRhythmPeakBridge · coldOpenRhythmPeakBridge
  *   · qualityArcLink · qualityBeatLink · qualityTensionLink · qualityPulseLink
+ *   · vestRhythmPeakBridge · amnesiaRhythmPeakBridge · bondRhythmPeakBridge · maskRhythmPeakBridge
+ *   · qualityChordLink · qualityLatchLink · qualityThreadLink · qualityPivotLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -2430,6 +2432,55 @@ import {
   type QualityPulseLinkReport,
 } from './quality-pulse-link-gate';
 
+import {
+  VestRhythmPeakBridgeLinkSchema,
+  VestRhythmPeakRhythmEntrySchema,
+  evaluateVestRhythmPeakBridge,
+  type VestRhythmPeakBridgeReport,
+} from './vest-rhythm-peak-bridge-gate';
+import {
+  AmnesiaRhythmPeakBridgeLinkSchema,
+  AmnesiaRhythmPeakRhythmEntrySchema,
+  evaluateAmnesiaRhythmPeakBridge,
+  type AmnesiaRhythmPeakBridgeReport,
+} from './amnesia-rhythm-peak-bridge-gate';
+import {
+  BondRhythmPeakBridgeLinkSchema,
+  BondRhythmPeakRhythmEntrySchema,
+  evaluateBondRhythmPeakBridge,
+  type BondRhythmPeakBridgeReport,
+} from './bond-rhythm-peak-bridge-gate';
+import {
+  MaskRhythmPeakBridgeLinkSchema,
+  MaskRhythmPeakRhythmEntrySchema,
+  evaluateMaskRhythmPeakBridge,
+  type MaskRhythmPeakBridgeReport,
+} from './mask-rhythm-peak-bridge-gate';
+import {
+  QualityChordLinkEntrySchema,
+  QualityChordEntrySchema,
+  evaluateQualityChordLink,
+  type QualityChordLinkReport,
+} from './quality-chord-link-gate';
+import {
+  QualityLatchLinkEntrySchema,
+  QualityLatchEntrySchema,
+  evaluateQualityLatchLink,
+  type QualityLatchLinkReport,
+} from './quality-latch-link-gate';
+import {
+  QualityThreadLinkEntrySchema,
+  QualityThreadEntrySchema,
+  evaluateQualityThreadLink,
+  type QualityThreadLinkReport,
+} from './quality-thread-link-gate';
+import {
+  QualityPivotLinkEntrySchema,
+  QualityPivotEntrySchema,
+  evaluateQualityPivotLink,
+  type QualityPivotLinkReport,
+} from './quality-pivot-link-gate';
+
 
 
 
@@ -2874,6 +2925,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityBeatLink',
   'qualityTensionLink',
   'qualityPulseLink',
+  'vestRhythmPeakBridge',
+  'amnesiaRhythmPeakBridge',
+  'bondRhythmPeakBridge',
+  'maskRhythmPeakBridge',
+  'qualityChordLink',
+  'qualityLatchLink',
+  'qualityThreadLink',
+  'qualityPivotLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -5805,6 +5864,58 @@ const QualityPulseSectionSchemaB151 = z.object({
   links: z.array(QualityPulseLinkEntrySchema),
 });
 
+const VestRhythmPeakBridgeSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  rhythms: z.array(VestRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(VestRhythmPeakBridgeLinkSchema),
+});
+
+const AmnesiaRhythmPeakBridgeSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  rhythms: z.array(AmnesiaRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AmnesiaRhythmPeakBridgeLinkSchema),
+});
+
+const BondRhythmPeakBridgeSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  rhythms: z.array(BondRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BondRhythmPeakBridgeLinkSchema),
+});
+
+const MaskRhythmPeakBridgeSectionSchema = z.object({
+  masks: z.array(PersonaMaskEntrySchema),
+  rhythms: z.array(MaskRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MaskRhythmPeakBridgeLinkSchema),
+});
+
+const QualityChordSectionSchemaB152 = z.object({
+  minChordIntense: z.number().int().min(1).max(5).optional(),
+  chords: z.array(QualityChordEntrySchema),
+  links: z.array(QualityChordLinkEntrySchema),
+});
+
+const QualityLatchSectionSchemaB152 = z.object({
+  minLatchIntense: z.number().int().min(1).max(5).optional(),
+  latches: z.array(QualityLatchEntrySchema),
+  links: z.array(QualityLatchLinkEntrySchema),
+});
+
+const QualityThreadSectionSchemaB152 = z.object({
+  minThreadIntense: z.number().int().min(1).max(5).optional(),
+  threads: z.array(QualityThreadEntrySchema),
+  links: z.array(QualityThreadLinkEntrySchema),
+});
+
+const QualityPivotSectionSchemaB152 = z.object({
+  minPivotIntense: z.number().int().min(1).max(5).optional(),
+  pivots: z.array(QualityPivotEntrySchema),
+  links: z.array(QualityPivotLinkEntrySchema),
+});
+
 
 
 
@@ -6251,6 +6362,14 @@ export const StoryLedgerSuiteSchema = z
     qualityBeatLink: QualityBeatSectionSchemaB151.optional(),
     qualityTensionLink: QualityTensionSectionSchemaB151.optional(),
     qualityPulseLink: QualityPulseSectionSchemaB151.optional(),
+    vestRhythmPeakBridge: VestRhythmPeakBridgeSectionSchema.optional(),
+    amnesiaRhythmPeakBridge: AmnesiaRhythmPeakBridgeSectionSchema.optional(),
+    bondRhythmPeakBridge: BondRhythmPeakBridgeSectionSchema.optional(),
+    maskRhythmPeakBridge: MaskRhythmPeakBridgeSectionSchema.optional(),
+    qualityChordLink: QualityChordSectionSchemaB152.optional(),
+    qualityLatchLink: QualityLatchSectionSchemaB152.optional(),
+    qualityThreadLink: QualityThreadSectionSchemaB152.optional(),
+    qualityPivotLink: QualityPivotSectionSchemaB152.optional(),
   })
   .strict();
 
@@ -6686,7 +6805,15 @@ export type StoryLedgerChildReport =
   | QualityArcLinkReport
   | QualityBeatLinkReport
   | QualityTensionLinkReport
-  | QualityPulseLinkReport;
+  | QualityPulseLinkReport
+  | VestRhythmPeakBridgeReport
+  | AmnesiaRhythmPeakBridgeReport
+  | BondRhythmPeakBridgeReport
+  | MaskRhythmPeakBridgeReport
+  | QualityChordLinkReport
+  | QualityLatchLinkReport
+  | QualityThreadLinkReport
+  | QualityPivotLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -7586,6 +7713,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityTensionLink({ series, latestEp, ...(section as object) }),
   qualityPulseLink: (series, latestEp, section) =>
     evaluateQualityPulseLink({ series, latestEp, ...(section as object) }),
+  vestRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateVestRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  amnesiaRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateAmnesiaRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  bondRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBondRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  maskRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateMaskRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityChordLink: (series, latestEp, section) =>
+    evaluateQualityChordLink({ series, latestEp, ...(section as object) }),
+  qualityLatchLink: (series, latestEp, section) =>
+    evaluateQualityLatchLink({ series, latestEp, ...(section as object) }),
+  qualityThreadLink: (series, latestEp, section) =>
+    evaluateQualityThreadLink({ series, latestEp, ...(section as object) }),
+  qualityPivotLink: (series, latestEp, section) =>
+    evaluateQualityPivotLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {

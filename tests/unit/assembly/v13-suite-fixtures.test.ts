@@ -390,6 +390,14 @@ describe('v13 suite fixtures', () => {
     expect(r.results.qualityBeatLink.status).toBe('PASS');
     expect(r.results.qualityTensionLink.status).toBe('PASS');
     expect(r.results.qualityPulseLink.status).toBe('PASS');
+    expect(r.results.vestRhythmPeakBridge.status).toBe('PASS');
+    expect(r.results.amnesiaRhythmPeakBridge.status).toBe('PASS');
+    expect(r.results.bondRhythmPeakBridge.status).toBe('PASS');
+    expect(r.results.maskRhythmPeakBridge.status).toBe('PASS');
+    expect(r.results.qualityChordLink.status).toBe('PASS');
+    expect(r.results.qualityLatchLink.status).toBe('PASS');
+    expect(r.results.qualityThreadLink.status).toBe('PASS');
+    expect(r.results.qualityPivotLink.status).toBe('PASS');
     expect(r.metrics.ran).toBeGreaterThanOrEqual(80);
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
@@ -553,8 +561,11 @@ describe('v13 suite fixtures', () => {
     expect(r.results.hookHardReactionWinEdge.status).toBe('PASS');
     expect(r.results.hookHardMidWinEdge.status).toBe('PASS');
     expect(r.results.hookHardSetupWinEdge.status).toBe('PASS');
-    expect(r.results.hookHardReactionWinCrest.status).toBe('PASS');
-    expect(r.metrics.ran).toBeGreaterThanOrEqual(41);
+        expect(r.results.hookHardReactionWinCrest.status).toBe('PASS');
+    expect(r.results.hookHardMidWinLatch.status).toBe('PASS');
+    expect(r.results.hookHardSetupWinLatch.status).toBe('PASS');
+    expect(r.results.hookHardReactionWinLatch.status).toBe('PASS');
+expect(r.metrics.ran).toBeGreaterThanOrEqual(41);
   });
 
 
