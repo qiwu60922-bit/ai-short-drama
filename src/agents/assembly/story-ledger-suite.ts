@@ -181,6 +181,9 @@
  *   · chimeRhythmPeakBridge · mewlRhythmPeakBridge · patRhythmPeakBridge · scratchRhythmPeakBridge
  *   · qualityZirconLink · qualityPeridotLink · qualitySpinelLink · qualityMoonstoneLink
  *
+ *   · pingRhythmPeakBridge · purrRhythmPeakBridge · clapRhythmPeakBridge · rakeRhythmPeakBridge
+ *   · qualityObsidianLink · qualityCoralLink · qualityTurquoiseLink · qualityLapisLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3323,6 +3326,58 @@ import {
   evaluateQualityMoonstoneLink,
   type QualityMoonstoneLinkReport,
 } from './quality-moonstone-link-gate';
+import {
+  PingRhythmPeakBridgeLinkSchema,
+  PingRhythmPeakPingEntrySchema,
+  PingRhythmPeakRhythmEntrySchema,
+  evaluatePingRhythmPeakBridge,
+  type PingRhythmPeakBridgeReport,
+} from './ping-rhythm-peak-bridge-gate';
+import {
+  PurrRhythmPeakBridgeLinkSchema,
+  PurrRhythmPeakPurrEntrySchema,
+  PurrRhythmPeakRhythmEntrySchema,
+  evaluatePurrRhythmPeakBridge,
+  type PurrRhythmPeakBridgeReport,
+} from './purr-rhythm-peak-bridge-gate';
+import {
+  ClapRhythmPeakBridgeLinkSchema,
+  ClapRhythmPeakClapEntrySchema,
+  ClapRhythmPeakRhythmEntrySchema,
+  evaluateClapRhythmPeakBridge,
+  type ClapRhythmPeakBridgeReport,
+} from './clap-rhythm-peak-bridge-gate';
+import {
+  RakeRhythmPeakBridgeLinkSchema,
+  RakeRhythmPeakRakeEntrySchema,
+  RakeRhythmPeakRhythmEntrySchema,
+  evaluateRakeRhythmPeakBridge,
+  type RakeRhythmPeakBridgeReport,
+} from './rake-rhythm-peak-bridge-gate';
+import {
+  QualityObsidianLinkEntrySchema,
+  QualityObsidianEntrySchema,
+  evaluateQualityObsidianLink,
+  type QualityObsidianLinkReport,
+} from './quality-obsidian-link-gate';
+import {
+  QualityCoralLinkEntrySchema,
+  QualityCoralEntrySchema,
+  evaluateQualityCoralLink,
+  type QualityCoralLinkReport,
+} from './quality-coral-link-gate';
+import {
+  QualityTurquoiseLinkEntrySchema,
+  QualityTurquoiseEntrySchema,
+  evaluateQualityTurquoiseLink,
+  type QualityTurquoiseLinkReport,
+} from './quality-turquoise-link-gate';
+import {
+  QualityLapisLinkEntrySchema,
+  QualityLapisEntrySchema,
+  evaluateQualityLapisLink,
+  type QualityLapisLinkReport,
+} from './quality-lapis-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -3885,6 +3940,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityPeridotLink',
   'qualitySpinelLink',
   'qualityMoonstoneLink',
+  'pingRhythmPeakBridge',
+  'purrRhythmPeakBridge',
+  'clapRhythmPeakBridge',
+  'rakeRhythmPeakBridge',
+  'qualityObsidianLink',
+  'qualityCoralLink',
+  'qualityTurquoiseLink',
+  'qualityLapisLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -7655,6 +7718,58 @@ const QualityMoonstoneSectionSchemaB167 = z.object({
   links: z.array(QualityMoonstoneLinkEntrySchema),
 });
 
+const PingRhythmPeakBridgeSectionSchema = z.object({
+  pings: z.array(PingRhythmPeakPingEntrySchema),
+  rhythms: z.array(PingRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PingRhythmPeakBridgeLinkSchema),
+});
+
+const PurrRhythmPeakBridgeSectionSchema = z.object({
+  purrs: z.array(PurrRhythmPeakPurrEntrySchema),
+  rhythms: z.array(PurrRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PurrRhythmPeakBridgeLinkSchema),
+});
+
+const ClapRhythmPeakBridgeSectionSchema = z.object({
+  claps: z.array(ClapRhythmPeakClapEntrySchema),
+  rhythms: z.array(ClapRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ClapRhythmPeakBridgeLinkSchema),
+});
+
+const RakeRhythmPeakBridgeSectionSchema = z.object({
+  rakes: z.array(RakeRhythmPeakRakeEntrySchema),
+  rhythms: z.array(RakeRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(RakeRhythmPeakBridgeLinkSchema),
+});
+
+const QualityObsidianSectionSchemaB168 = z.object({
+  minObsidianIntense: z.number().int().min(1).max(5).optional(),
+  obsidians: z.array(QualityObsidianEntrySchema),
+  links: z.array(QualityObsidianLinkEntrySchema),
+});
+
+const QualityCoralSectionSchemaB168 = z.object({
+  minCoralIntense: z.number().int().min(1).max(5).optional(),
+  corals: z.array(QualityCoralEntrySchema),
+  links: z.array(QualityCoralLinkEntrySchema),
+});
+
+const QualityTurquoiseSectionSchemaB168 = z.object({
+  minTurquoiseIntense: z.number().int().min(1).max(5).optional(),
+  turquoises: z.array(QualityTurquoiseEntrySchema),
+  links: z.array(QualityTurquoiseLinkEntrySchema),
+});
+
+const QualityLapisSectionSchemaB168 = z.object({
+  minLapisIntense: z.number().int().min(1).max(5).optional(),
+  lapises: z.array(QualityLapisEntrySchema),
+  links: z.array(QualityLapisLinkEntrySchema),
+});
+
 
 
 
@@ -8230,6 +8345,14 @@ export const StoryLedgerSuiteSchema = z
     qualityPeridotLink: QualityPeridotSectionSchemaB167.optional(),
     qualitySpinelLink: QualitySpinelSectionSchemaB167.optional(),
     qualityMoonstoneLink: QualityMoonstoneSectionSchemaB167.optional(),
+    pingRhythmPeakBridge: PingRhythmPeakBridgeSectionSchema.optional(),
+    purrRhythmPeakBridge: PurrRhythmPeakBridgeSectionSchema.optional(),
+    clapRhythmPeakBridge: ClapRhythmPeakBridgeSectionSchema.optional(),
+    rakeRhythmPeakBridge: RakeRhythmPeakBridgeSectionSchema.optional(),
+    qualityObsidianLink: QualityObsidianSectionSchemaB168.optional(),
+    qualityCoralLink: QualityCoralSectionSchemaB168.optional(),
+    qualityTurquoiseLink: QualityTurquoiseSectionSchemaB168.optional(),
+    qualityLapisLink: QualityLapisSectionSchemaB168.optional(),
   })
   .strict();
 
@@ -8793,7 +8916,15 @@ export type StoryLedgerChildReport =
   | QualityZirconLinkReport
   | QualityPeridotLinkReport
   | QualitySpinelLinkReport
-  | QualityMoonstoneLinkReport;
+  | QualityMoonstoneLinkReport
+  | PingRhythmPeakBridgeReport
+  | PurrRhythmPeakBridgeReport
+  | ClapRhythmPeakBridgeReport
+  | RakeRhythmPeakBridgeReport
+  | QualityObsidianLinkReport
+  | QualityCoralLinkReport
+  | QualityTurquoiseLinkReport
+  | QualityLapisLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -9950,6 +10081,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualitySpinelLink({ series, latestEp, ...(section as object) }),
   qualityMoonstoneLink: (series, latestEp, section) =>
     evaluateQualityMoonstoneLink({ series, latestEp, ...(section as object) }),
+  pingRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePingRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  purrRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePurrRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  clapRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateClapRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  rakeRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateRakeRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityObsidianLink: (series, latestEp, section) =>
+    evaluateQualityObsidianLink({ series, latestEp, ...(section as object) }),
+  qualityCoralLink: (series, latestEp, section) =>
+    evaluateQualityCoralLink({ series, latestEp, ...(section as object) }),
+  qualityTurquoiseLink: (series, latestEp, section) =>
+    evaluateQualityTurquoiseLink({ series, latestEp, ...(section as object) }),
+  qualityLapisLink: (series, latestEp, section) =>
+    evaluateQualityLapisLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
