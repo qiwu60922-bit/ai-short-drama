@@ -84,7 +84,7 @@ const failCodes = (r: ReturnType<typeof evaluateStoryLedgerSuite>) =>
   r.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code);
 
 describe('STORY_LEDGER_GATE_IDS', () => {
-  it('lists story-ledger gates including baseline singles', () => {
+  it('lists story-ledger gates including qualityLeap + more baselines', () => {
     expect([...STORY_LEDGER_GATE_IDS]).toEqual([
       'bondFrequencyLink',
       'vestMaskPeakLink',
@@ -102,6 +102,13 @@ describe('STORY_LEDGER_GATE_IDS', () => {
       'conflictPayoff',
       'peakBeforePayoff',
       'abilityRule',
+      'qualityLeap',
+      'foreshadowLedger',
+      'motifCallback',
+      'allianceLedger',
+      'bondContract',
+      'identityVest',
+      'frequencyTipping',
     ]);
   });
 });
@@ -113,7 +120,7 @@ describe('evaluateStoryLedgerSuite', () => {
     );
     expect(r.verdict).toBe('PASS');
     expect(r.schema).toBe('v12/StoryLedgerSuite/v1');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 14 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 21 });
     expect(r.results.ensembleCast.status).toBe('PASS');
     expect(r.results.fakeLedgerReconcile.status).toBe('PASS');
     expect(r.results.bondFrequencyLink.status).toBe('SKIP');
@@ -180,11 +187,185 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 10),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 12 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 19 });
     expect(r.results.stageGoal.status).toBe('PASS');
     expect(r.results.conflictPayoff.status).toBe('PASS');
     expect(r.results.peakBeforePayoff.status).toBe('PASS');
     expect(r.results.abilityRule.status).toBe('PASS');
+  });
+
+  it('qualityLeap + foreshadow/motif/alliance/bond/vest/frequency → PASS', () => {
+    const qlShot = (id: string, over: Record<string, unknown> = {}) => ({
+      id,
+      scriptBeat: '她看完手机，抬眼说完一句台词。',
+      durationSec: 4,
+      dramaPurpose: '揭示被隐瞒后的克制反应',
+      characterIntent: '压住怒意、确认对方知情',
+      performance: {
+        emotion: 'anger',
+        intensity: 3,
+        face: '眉心轻收，嘴唇抿住',
+        gaze: '目光短暂发紧看向对面',
+        posture: '肩膀保持克制紧绷',
+      },
+      camera: {
+        shotSize: '中近景',
+        primaryMove: '缓慢推进',
+        moveDetail: '从中景缓慢推到胸上景',
+      },
+      dialogue: {
+        speaker: '她',
+        line: '原来你早就知道。',
+        lipsyncNote: '按自然中文节奏；句末停发音动作',
+      },
+      fullPrompt:
+        '中近景缓慢推进，人物眉心轻收嘴唇抿住，目光发紧；口型按中文节奏。焦点在眼睛。',
+      ...over,
+    });
+    const r = evaluateStoryLedgerSuite(
+      bundle({
+        qualityLeap: {
+          style: 'live_action',
+          shots: [
+            qlShot('S01', {
+              performance: {
+                emotion: 'doubt',
+                intensity: 2,
+                face: '一侧眉微抬',
+                gaze: '视线在对方脸上停留',
+                posture: '身体稍稍后靠',
+              },
+              camera: { shotSize: '中景', primaryMove: '固定', moveDetail: '机位固定' },
+              dialogue: null,
+              mouthResting: '嘴唇自然闭合',
+              fullPrompt: '中景固定机位，一侧眉微抬，视线停留，身体稍后靠；嘴部自然闭合。',
+            }),
+            qlShot('S02'),
+            qlShot('S03', {
+              performance: {
+                emotion: 'relief',
+                intensity: 2,
+                face: '眉间力道减轻',
+                gaze: '目光重新落回对方',
+                posture: '肩膀落下',
+              },
+              camera: { shotSize: '近景', primaryMove: '拉远', moveDetail: '缓慢拉远' },
+              dialogue: null,
+              mouthResting: '嘴角淡淡暖意，自然闭合',
+              fullPrompt: '近景，眉间放松肩膀落下；摄影机缓慢拉远，焦点在眼睛。',
+            }),
+          ],
+        },
+        foreshadowLedger: {
+          items: [
+            {
+              id: 'F01',
+              name: '伏笔F01',
+              priority: 'S',
+              plantEp: 1,
+              status: 'active',
+              lastAdvancedEp: 78,
+            },
+            {
+              id: 'F02',
+              name: '伏笔F02',
+              plantEp: 1,
+              status: 'closed',
+              payoffEp: 4,
+            },
+          ],
+        },
+        motifCallback: {
+          motifs: [{ id: 'white-rose', label: '白玫瑰', kind: 'prop' }],
+          appearances: [
+            { motifId: 'white-rose', ep: 1, role: 'seed', visualState: '含苞' },
+            { motifId: 'white-rose', ep: 36, role: 'echo', visualState: '半开' },
+            { motifId: 'white-rose', ep: 78, role: 'payoff', visualState: '盛放' },
+          ],
+        },
+        allianceLedger: {
+          alliances: [
+            {
+              id: 'oni-fang',
+              label: '恶鬼之牙',
+              members: ['chen-haoyu', 'guild'],
+              formedEp: 1,
+            },
+          ],
+          events: [
+            { allianceId: 'oni-fang', ep: 1, role: 'seed', note: '收留' },
+            { allianceId: 'oni-fang', ep: 20, role: 'echo', note: '护短' },
+            {
+              allianceId: 'oni-fang',
+              ep: 40,
+              role: 'payoff',
+              evidence: '红色神印',
+              note: '赠神印',
+            },
+          ],
+        },
+        bondContract: {
+          entries: [
+            {
+              id: '邱秘书契约',
+              partyA: '邱秘书',
+              partyB: '陆总',
+              contractEp: 5,
+              contractLabel: '一年契约女友',
+              terms: '对外伪装情侣，到期解除',
+              companionEps: [12, 28, 45],
+              upgradeEp: 70,
+              upgradeLabel: '受伤后真情求婚',
+            },
+          ],
+        },
+        identityVest: {
+          entries: [
+            {
+              id: '机长马甲',
+              wearer: '苏见晴',
+              vestLabel: '机长',
+              plantEp: 1,
+              teaseEps: [8, 15, 22],
+              dropEp: 35,
+              dropLabel: '公开机长身份反击',
+            },
+          ],
+        },
+        frequencyTipping: {
+          entries: [
+            {
+              id: '分手天数',
+              actor: '池茉',
+              motif: '分手后天数',
+              unit: 'day',
+              threshold: 70,
+              plantEp: 1,
+              ticks: [
+                { ep: 5, n: 30, label: '分手满月' },
+                { ep: 12, n: 60, label: '分手两月' },
+                { ep: 18, n: 70, label: '第70天' },
+              ],
+              tipEp: 18,
+              tipLabel: '分手第70天吻了宋淮聿',
+            },
+          ],
+        },
+      }, 80),
+    );
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 16 });
+    for (const id of [
+      'qualityLeap',
+      'foreshadowLedger',
+      'motifCallback',
+      'allianceLedger',
+      'bondContract',
+      'identityVest',
+      'frequencyTipping',
+    ] as const) {
+      expect(r.results[id].status).toBe('PASS');
+    }
   });
 
   it('bad top-level schema → SCHEMA FAIL', () => {
@@ -233,7 +414,7 @@ describe('evaluateStoryLedgerSuite', () => {
   it('only fakeLedger section runs; others SKIP', () => {
     const r = evaluateStoryLedgerSuite(bundle({ fakeLedgerReconcile: fakeOk }, 20));
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 15 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 22 });
     expect(r.results.fakeLedgerReconcile.report?.verdict).toBe('PASS');
   });
 });
