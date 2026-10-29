@@ -386,6 +386,9 @@ describe('shot-spec-suite', () => {
       'hookHardWindowCap',
       'hookHardFaceRatio',
       'hookHardFaceCap',
+      'hookHardWindowFaceCap',
+      'hookHardTailRatio',
+      'hookHardColdRatio',
     ]);
   });
 
@@ -393,7 +396,7 @@ describe('shot-spec-suite', () => {
     const r = evaluateShotSpecSuite({ episode: 'EP01' });
     expect(r.verdict).toBe('FAIL');
     expect(failCodes(r)).toContain('EMPTY_SUITE');
-    expect(r.metrics).toMatchObject({ ran: 0, skipped: 137 });
+    expect(r.metrics).toMatchObject({ ran: 0, skipped: 140 });
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -413,7 +416,7 @@ describe('shot-spec-suite', () => {
       hookStructure: shotSpec('EP01', hookGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 136 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 139 });
     expect(r.results.hookStructure.status).toBe('PASS');
     expect(r.results.shotContract.status).toBe('SKIP');
   });
@@ -427,7 +430,7 @@ describe('shot-spec-suite', () => {
       mvShotlist: mvGolden(),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 133 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 136 });
     for (const id of ['shotContract', 'shotPrompt', 'storyRhythm', 'mvShotlist'] as const) {
       expect(r.results[id].status).toBe('PASS');
     }
@@ -1624,9 +1627,42 @@ describe('shot-spec-suite', () => {
         { shotId: 'EP01-B138fc-7', durSec: 1.5, cast: [], beatRole: 'cliffhanger', action: '悬念' },
       ]),
       hookHardFaceCapOpts: {},
+      hookHardWindowFaceCap: shotSpec('EP01', [
+        { shotId: 'EP01-B139wfc-0', durSec: 1, cast: [], beatRole: 'hook', action: '冷开危机', hookKind: 'situation' },
+        { shotId: 'EP01-B139wfc-1', durSec: 1, cast: [], beatRole: 'hook', action: '细节钩', hookKind: 'detail_cu' },
+        { shotId: 'EP01-B139wfc-2', durSec: 3, cast: [], beatRole: 'increment', action: '加压推进' },
+        { shotId: 'EP01-B139wfc-3', durSec: 3, cast: [], beatRole: 'hook', action: '中段钩', hookKind: 'situation' },
+        { shotId: 'EP01-B139wfc-4', durSec: 4, cast: [], beatRole: 'increment', action: '加压' },
+        { shotId: 'EP01-B139wfc-5', durSec: 4, cast: [], beatRole: 'reversal', action: '反转' },
+        { shotId: 'EP01-B139wfc-6', durSec: 2, cast: [], beatRole: 'reaction', action: '反应' },
+        { shotId: 'EP01-B139wfc-7', durSec: 1.5, cast: [], beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      hookHardWindowFaceCapOpts: {},
+      hookHardTailRatio: shotSpec('EP01', [
+        { shotId: 'EP01-B139tr-0', durSec: 1, cast: [], beatRole: 'hook', action: '冷开危机', hookKind: 'situation' },
+        { shotId: 'EP01-B139tr-1', durSec: 1, cast: [], beatRole: 'hook', action: '细节钩', hookKind: 'detail_cu' },
+        { shotId: 'EP01-B139tr-2', durSec: 3, cast: [], beatRole: 'increment', action: '加压推进' },
+        { shotId: 'EP01-B139tr-3', durSec: 3, cast: [], beatRole: 'hook', action: '中段钩', hookKind: 'situation' },
+        { shotId: 'EP01-B139tr-4', durSec: 4, cast: [], beatRole: 'increment', action: '加压' },
+        { shotId: 'EP01-B139tr-5', durSec: 4, cast: [], beatRole: 'reversal', action: '反转' },
+        { shotId: 'EP01-B139tr-6', durSec: 2, cast: [], beatRole: 'reaction', action: '反应' },
+        { shotId: 'EP01-B139tr-7', durSec: 1.5, cast: [], beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      hookHardTailRatioOpts: {},
+      hookHardColdRatio: shotSpec('EP01', [
+        { shotId: 'EP01-B139cr-0', durSec: 1, cast: [], beatRole: 'hook', action: '冷开危机', hookKind: 'situation' },
+        { shotId: 'EP01-B139cr-1', durSec: 1, cast: [], beatRole: 'hook', action: '细节钩', hookKind: 'detail_cu' },
+        { shotId: 'EP01-B139cr-2', durSec: 3, cast: [], beatRole: 'increment', action: '加压推进' },
+        { shotId: 'EP01-B139cr-3', durSec: 3, cast: [], beatRole: 'hook', action: '中段钩', hookKind: 'situation' },
+        { shotId: 'EP01-B139cr-4', durSec: 4, cast: [], beatRole: 'increment', action: '加压' },
+        { shotId: 'EP01-B139cr-5', durSec: 4, cast: [], beatRole: 'reversal', action: '反转' },
+        { shotId: 'EP01-B139cr-6', durSec: 2, cast: [], beatRole: 'reaction', action: '反应' },
+        { shotId: 'EP01-B139cr-7', durSec: 1.5, cast: [], beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      hookHardColdRatioOpts: {},
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 137, passed: 137, failed: 0, skipped: 0 });
+    expect(r.metrics).toMatchObject({ ran: 140, passed: 140, failed: 0, skipped: 0 });
     for (const id of SHOT_SPEC_GATE_IDS) {
       expect(r.results[id].status).toBe('PASS');
     }
@@ -1639,7 +1675,7 @@ describe('shot-spec-suite', () => {
       reactionBeat: shotSpec('EP01', reactionGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 135 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 138 });
     expect(r.results.keyframePlate.status).toBe('PASS');
     expect(r.results.reactionBeat.status).toBe('PASS');
   });
@@ -1652,7 +1688,7 @@ describe('shot-spec-suite', () => {
       seriesRhythmOpts: { profile: 'dense' },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 135 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 138 });
     expect(r.results.dialogueExposition.status).toBe('PASS');
     expect(r.results.seriesRhythm.status).toBe('PASS');
   });
@@ -1678,7 +1714,7 @@ describe('shot-spec-suite', () => {
       },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 135 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 138 });
     expect(r.results.coldOpenHook.status).toBe('PASS');
     expect(r.results.mvBeatMap.status).toBe('PASS');
   });
@@ -1700,7 +1736,7 @@ describe('shot-spec-suite', () => {
       ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 135 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 138 });
     expect(r.results.detailHookKind.status).toBe('PASS');
     expect(r.results.tailColdClose.status).toBe('PASS');
   });
@@ -1727,7 +1763,7 @@ describe('shot-spec-suite', () => {
       hookKindMixOpts: { hookWindowSec: 8 },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 135 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 138 });
     expect(r.results.midTurnDensity.status).toBe('PASS');
     expect(r.results.hookKindMix.status).toBe('PASS');
   });
@@ -1760,7 +1796,7 @@ describe('shot-spec-suite', () => {
       ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 134 });
+    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 137 });
     expect(r.results.setupRatioHard.status).toBe('PASS');
     expect(r.results.coldOpenCascade.status).toBe('PASS');
     expect(r.results.reactionAfterReversal.status).toBe('PASS');
@@ -1836,7 +1872,7 @@ describe('shot-spec-suite', () => {
       ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 134 });
+    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 137 });
     expect(r.results.hookWindowHard.status).toBe('PASS');
     expect(r.results.cliffTailTight.status).toBe('PASS');
     expect(r.results.dialogueAfterHook.status).toBe('PASS');
@@ -1945,7 +1981,7 @@ describe('ep01-rehearsal shotSpecGate wiring', () => {
       ]),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 134 });
+    expect(r.metrics).toMatchObject({ ran: 3, passed: 3, failed: 0, skipped: 137 });
     expect(r.results.coldOpenMidHook.status).toBe('PASS');
     expect(r.results.dialogueBeforeCliffBan.status).toBe('PASS');
     expect(r.results.setupMidCap.status).toBe('PASS');
