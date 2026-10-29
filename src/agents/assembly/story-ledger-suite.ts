@@ -96,6 +96,8 @@
  *   · frequencyAmnesiaLink · amnesiaFrequencyLink · abilityAmnesiaLink · amnesiaAbilityLink
  *   · cliffMaskPeakBridge · maskAmnesiaPeakBridge · abilityAmnesiaPeakBridge · cliffAmnesiaPeakBridge
  *   · cliffAmnesiaLink · maskAmnesiaLink · bondAmnesiaLink · personaAmnesiaLink
+ *   · amnesiaAbilityPeakBridge · amnesiaCliffPeakBridge · bondAmnesiaPeakBridge · personaAmnesiaPeakBridge
+ *   · handoffAmnesiaLink · vestAmnesiaLink · qualityAmnesiaLink · amnesiaForeshadowLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -1512,6 +1514,50 @@ import {
 } from './persona-amnesia-link-gate';
 
 
+import {
+  AmnesiaAbilityPeakBridgeLinkSchema,
+  evaluateAmnesiaAbilityPeakBridge,
+  type AmnesiaAbilityPeakBridgeReport,
+} from './amnesia-ability-peak-bridge-gate';
+import {
+  AmnesiaCliffPeakBridgeLinkSchema,
+  evaluateAmnesiaCliffPeakBridge,
+  type AmnesiaCliffPeakBridgeReport,
+} from './amnesia-cliff-peak-bridge-gate';
+import {
+  BondAmnesiaPeakBridgeLinkSchema,
+  evaluateBondAmnesiaPeakBridge,
+  type BondAmnesiaPeakBridgeReport,
+} from './bond-amnesia-peak-bridge-gate';
+import {
+  PersonaAmnesiaPeakBridgeLinkSchema,
+  evaluatePersonaAmnesiaPeakBridge,
+  type PersonaAmnesiaPeakBridgeReport,
+} from './persona-amnesia-peak-bridge-gate';
+import {
+  HandoffAmnesiaEntrySchema,
+  HandoffAmnesiaLinkEntrySchema,
+  evaluateHandoffAmnesiaLink,
+  type HandoffAmnesiaLinkReport,
+} from './handoff-amnesia-link-gate';
+import {
+  VestAmnesiaLinkEntrySchema,
+  evaluateVestAmnesiaLink,
+  type VestAmnesiaLinkReport,
+} from './vest-amnesia-link-gate';
+import {
+  QualityAmnesiaLinkEntrySchema,
+  evaluateQualityAmnesiaLink,
+  type QualityAmnesiaLinkReport,
+} from './quality-amnesia-link-gate';
+import {
+  AmnesiaForeshadowLinkEntrySchema,
+  evaluateAmnesiaForeshadowLink,
+  type AmnesiaForeshadowLinkReport,
+} from './amnesia-foreshadow-link-gate';
+
+
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -1785,6 +1831,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'maskAmnesiaLink',
   'bondAmnesiaLink',
   'personaAmnesiaLink',
+  'amnesiaAbilityPeakBridge',
+  'amnesiaCliffPeakBridge',
+  'bondAmnesiaPeakBridge',
+  'personaAmnesiaPeakBridge',
+  'handoffAmnesiaLink',
+  'vestAmnesiaLink',
+  'qualityAmnesiaLink',
+  'amnesiaForeshadowLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -3607,6 +3661,61 @@ const PersonaAmnesiaSectionSchema = z.object({
   links: z.array(PersonaAmnesiaLinkEntrySchema),
 });
 
+
+const AmnesiaAbilityPeakBridgeSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AmnesiaAbilityPeakBridgeLinkSchema),
+});
+
+const AmnesiaCliffPeakBridgeSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  cliffLinks: z.array(CliffCascadeLinkEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AmnesiaCliffPeakBridgeLinkSchema),
+});
+
+const BondAmnesiaPeakBridgeSectionSchema = z.object({
+  bonds: z.array(BondContractEntrySchema),
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BondAmnesiaPeakBridgeLinkSchema),
+});
+
+const PersonaAmnesiaPeakBridgeSectionSchema = z.object({
+  cards: z.array(PersonaCardSchema).min(1),
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PersonaAmnesiaPeakBridgeLinkSchema),
+});
+
+const HandoffAmnesiaSectionSchema = z.object({
+  handoffs: z.array(HandoffAmnesiaEntrySchema),
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  links: z.array(HandoffAmnesiaLinkEntrySchema),
+});
+
+const VestAmnesiaSectionSchema = z.object({
+  vests: z.array(IdentityVestEntrySchema),
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  links: z.array(VestAmnesiaLinkEntrySchema),
+});
+
+const QualityAmnesiaSectionSchema = z.object({
+  minRecoverIntense: z.number().int().min(1).max(5).optional(),
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  links: z.array(QualityAmnesiaLinkEntrySchema),
+});
+
+const AmnesiaForeshadowSectionSchema = z.object({
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(AmnesiaForeshadowLinkEntrySchema),
+});
+
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -3881,6 +3990,14 @@ export const StoryLedgerSuiteSchema = z
     maskAmnesiaLink: MaskAmnesiaSectionSchema.optional(),
     bondAmnesiaLink: BondAmnesiaSectionSchema.optional(),
     personaAmnesiaLink: PersonaAmnesiaSectionSchema.optional(),
+    amnesiaAbilityPeakBridge: AmnesiaAbilityPeakBridgeSectionSchema.optional(),
+    amnesiaCliffPeakBridge: AmnesiaCliffPeakBridgeSectionSchema.optional(),
+    bondAmnesiaPeakBridge: BondAmnesiaPeakBridgeSectionSchema.optional(),
+    personaAmnesiaPeakBridge: PersonaAmnesiaPeakBridgeSectionSchema.optional(),
+    handoffAmnesiaLink: HandoffAmnesiaSectionSchema.optional(),
+    vestAmnesiaLink: VestAmnesiaSectionSchema.optional(),
+    qualityAmnesiaLink: QualityAmnesiaSectionSchema.optional(),
+    amnesiaForeshadowLink: AmnesiaForeshadowSectionSchema.optional(),
   })
   .strict();
 
@@ -4156,7 +4273,15 @@ export type StoryLedgerChildReport =
   | CliffAmnesiaLinkReport
   | MaskAmnesiaLinkReport
   | BondAmnesiaLinkReport
-  | PersonaAmnesiaLinkReport;
+  | PersonaAmnesiaLinkReport
+  | AmnesiaAbilityPeakBridgeReport
+  | AmnesiaCliffPeakBridgeReport
+  | BondAmnesiaPeakBridgeReport
+  | PersonaAmnesiaPeakBridgeReport
+  | HandoffAmnesiaLinkReport
+  | VestAmnesiaLinkReport
+  | QualityAmnesiaLinkReport
+  | AmnesiaForeshadowLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -4736,6 +4861,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateBondAmnesiaLink({ series, latestEp, ...(section as object) }),
   personaAmnesiaLink: (series, latestEp, section) =>
     evaluatePersonaAmnesiaLink({ series, latestEp, ...(section as object) }),
+  amnesiaAbilityPeakBridge: (series, latestEp, section) =>
+    evaluateAmnesiaAbilityPeakBridge({ series, latestEp, ...(section as object) }),
+  amnesiaCliffPeakBridge: (series, latestEp, section) =>
+    evaluateAmnesiaCliffPeakBridge({ series, latestEp, ...(section as object) }),
+  bondAmnesiaPeakBridge: (series, latestEp, section) =>
+    evaluateBondAmnesiaPeakBridge({ series, latestEp, ...(section as object) }),
+  personaAmnesiaPeakBridge: (series, latestEp, section) =>
+    evaluatePersonaAmnesiaPeakBridge({ series, latestEp, ...(section as object) }),
+  handoffAmnesiaLink: (series, latestEp, section) =>
+    evaluateHandoffAmnesiaLink({ series, latestEp, ...(section as object) }),
+  vestAmnesiaLink: (series, latestEp, section) =>
+    evaluateVestAmnesiaLink({ series, latestEp, ...(section as object) }),
+  qualityAmnesiaLink: (series, latestEp, section) =>
+    evaluateQualityAmnesiaLink({ series, latestEp, ...(section as object) }),
+  amnesiaForeshadowLink: (series, latestEp, section) =>
+    evaluateAmnesiaForeshadowLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
