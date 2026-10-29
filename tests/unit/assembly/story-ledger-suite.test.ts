@@ -84,7 +84,7 @@ const failCodes = (r: ReturnType<typeof evaluateStoryLedgerSuite>) =>
   r.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code);
 
 describe('STORY_LEDGER_GATE_IDS', () => {
-  it('lists story-ledger gates including three new link gates', () => {
+  it('lists story-ledger gates including persona/amnesia/opening/cliff baselines', () => {
     expect([...STORY_LEDGER_GATE_IDS]).toEqual([
       'bondFrequencyLink',
       'vestMaskPeakLink',
@@ -112,6 +112,11 @@ describe('STORY_LEDGER_GATE_IDS', () => {
       'abilityStageLink',
       'countdownCliffLink',
       'dialogueReactionLink',
+      'personaCard',
+      'personaMask',
+      'amnesiaArc',
+      'openingCascade',
+      'cliffhangerHandoff',
     ]);
   });
 });
@@ -123,7 +128,7 @@ describe('evaluateStoryLedgerSuite', () => {
     );
     expect(r.verdict).toBe('PASS');
     expect(r.schema).toBe('v12/StoryLedgerSuite/v1');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 24 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 29 });
     expect(r.results.ensembleCast.status).toBe('PASS');
     expect(r.results.fakeLedgerReconcile.status).toBe('PASS');
     expect(r.results.bondFrequencyLink.status).toBe('SKIP');
@@ -190,7 +195,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 10),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 22 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 27 });
     expect(r.results.stageGoal.status).toBe('PASS');
     expect(r.results.conflictPayoff.status).toBe('PASS');
     expect(r.results.peakBeforePayoff.status).toBe('PASS');
@@ -357,7 +362,7 @@ describe('evaluateStoryLedgerSuite', () => {
       }, 80),
     );
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 19 });
+    expect(r.metrics).toMatchObject({ ran: 7, passed: 7, failed: 0, skipped: 24 });
     for (const id of [
       'qualityLeap',
       'foreshadowLedger',
@@ -366,6 +371,112 @@ describe('evaluateStoryLedgerSuite', () => {
       'bondContract',
       'identityVest',
       'frequencyTipping',
+    ] as const) {
+      expect(r.results[id].status).toBe('PASS');
+    }
+  });
+
+  it('personaCard/mask/amnesiaArc/openingCascade/cliffhangerHandoff → PASS', () => {
+    type S = { durSec: number; beatRole?: string; action?: string };
+    const shotSpec = (episode: string, shots: S[]) => ({
+      episode,
+      shots: shots.map((s, i) => ({ shotId: `${episode}-S${i}`, cast: [], ...s })),
+    });
+    const cascadeShots: S[] = [
+      { durSec: 2, beatRole: 'hook', action: 'crisis cold open' },
+      { durSec: 2, beatRole: 'increment', action: 'identity twist lands' },
+      { durSec: 8, beatRole: 'setup' },
+      { durSec: 10, beatRole: 'increment' },
+      { durSec: 10, beatRole: 'reversal' },
+      { durSec: 10, beatRole: 'increment' },
+      { durSec: 10, beatRole: 'increment' },
+      { durSec: 8, beatRole: 'cliffhanger' },
+    ];
+    const prevGood: S[] = [
+      { durSec: 4, beatRole: 'hook', action: '危机开场' },
+      { durSec: 8, beatRole: 'increment', action: '追查线索' },
+      { durSec: 8, beatRole: 'reversal', action: '身份暴露' },
+      { durSec: 10, beatRole: 'cliffhanger', action: '持械闯入皇城大门被围' },
+    ];
+    const nextGood: S[] = [
+      { durSec: 2, beatRole: 'hook', action: '皇城门口持械对峙未解' },
+      { durSec: 10, beatRole: 'increment', action: '追兵逼近' },
+      { durSec: 10, beatRole: 'reversal', action: '旧友现身' },
+      { durSec: 8, beatRole: 'cliffhanger', action: '下一场更大危机' },
+    ];
+    const r = evaluateStoryLedgerSuite(
+      bundle({
+        personaCard: {
+          slug: 'su-jianqing',
+          name: '苏见晴',
+          adult: true,
+          age: 28,
+          gender: '女',
+          resemblance: 'none',
+          face: {
+            faceShape: '偏长的鹅蛋脸，颧骨略平',
+            eyeShape: '内双，眼尾微垂，卧蚕浅',
+            noseShape: '鼻梁中等高度，鼻头偏圆',
+            lips: '上唇薄于下唇，唇峰不明显',
+          },
+          hair: { hairColor: '自然黑，发尾偏棕', hairLength: '锁骨下 5cm' },
+          skin: { skinTone: '偏白，微暖调' },
+          body: { heightFeel: '168cm 左右', bodyProportion: '七头身' },
+          ageCues: ['眼下两条浅细纹', '法令纹浅，笑起来才明显'],
+          wardrobe: [
+            { id: 'W1', name: '通勤', items: '米白衬衫、深灰长裤、黑色乐福鞋', occasion: '基准服装' },
+            { id: 'W2', name: '制服暗示', items: '深色飞行员夹克、白衬衫、黑靴' },
+            { id: 'W3', name: '晚宴', items: '黑色礼服裙、细跟凉鞋' },
+          ],
+          anchors: [
+            '偏长的鹅蛋脸，颧骨平',
+            '内双眼尾微垂',
+            '齐刘海锁骨下黑发，中间偏左分线',
+            '下颌线清晰但不方',
+          ],
+          reference: { sourcePhoto: 'none', sheetImages: ['sheet1.png'] },
+        },
+        personaMask: {
+          entries: [
+            {
+              id: '花心人设',
+              wearer: '江少',
+              plantEp: 1,
+              maintainEps: [3, 5, 8],
+              revealEp: 12,
+              revealLabel: '真心崩塌',
+            },
+          ],
+        },
+        amnesiaArc: {
+          entries: [
+            {
+              id: '祁南失忆',
+              actor: '祁南',
+              plantEp: 10,
+              plantCause: '爆炸',
+              companionEps: [20, 40, 60],
+              recoverEp: 70,
+              recoverLabel: '摩天轮告白唤回',
+              recoverTrigger: '摩天轮',
+            },
+          ],
+        },
+        openingCascade: shotSpec('EP01', cascadeShots),
+        cliffhangerHandoff: {
+          prev: shotSpec('EP01', prevGood),
+          next: shotSpec('EP02', nextGood),
+        },
+      }, 80),
+    );
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics).toMatchObject({ ran: 5, passed: 5, failed: 0, skipped: 26 });
+    for (const id of [
+      'personaCard',
+      'personaMask',
+      'amnesiaArc',
+      'openingCascade',
+      'cliffhangerHandoff',
     ] as const) {
       expect(r.results[id].status).toBe('PASS');
     }
@@ -417,7 +528,7 @@ describe('evaluateStoryLedgerSuite', () => {
   it('only fakeLedger section runs; others SKIP', () => {
     const r = evaluateStoryLedgerSuite(bundle({ fakeLedgerReconcile: fakeOk }, 20));
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 25 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, skipped: 30 });
     expect(r.results.fakeLedgerReconcile.report?.verdict).toBe('PASS');
   });
 });
