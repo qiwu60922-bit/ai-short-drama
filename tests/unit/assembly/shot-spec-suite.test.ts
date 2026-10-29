@@ -247,7 +247,7 @@ const failCodes = (r: ReturnType<typeof evaluateShotSpecSuite>) =>
   r.findings.filter((f) => f.severity === 'FAIL').map((f) => f.code);
 
 describe('shot-spec-suite', () => {
-  it('lists 11 gates incl. dialogueExposition/seriesRhythm', () => {
+  it('lists 13 gates incl. coldOpenHook/mvBeatMap', () => {
     expect([...SHOT_SPEC_GATE_IDS]).toEqual([
       'hookStructure',
       'openingCascade',
@@ -260,6 +260,8 @@ describe('shot-spec-suite', () => {
       'reactionBeat',
       'dialogueExposition',
       'seriesRhythm',
+      'coldOpenHook',
+      'mvBeatMap',
     ]);
   });
 
@@ -267,7 +269,7 @@ describe('shot-spec-suite', () => {
     const r = evaluateShotSpecSuite({ episode: 'EP01' });
     expect(r.verdict).toBe('FAIL');
     expect(failCodes(r)).toContain('EMPTY_SUITE');
-    expect(r.metrics).toMatchObject({ ran: 0, skipped: 11 });
+    expect(r.metrics).toMatchObject({ ran: 0, skipped: 13 });
     expect(r.gates).toEqual({ Final: 'NOT_EVALUATED', V11_G3: 'NOT_EVALUATED' });
   });
 
@@ -287,7 +289,7 @@ describe('shot-spec-suite', () => {
       hookStructure: shotSpec('EP01', hookGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 10 });
+    expect(r.metrics).toMatchObject({ ran: 1, passed: 1, failed: 0, skipped: 12 });
     expect(r.results.hookStructure.status).toBe('PASS');
     expect(r.results.shotContract.status).toBe('SKIP');
   });
@@ -301,13 +303,13 @@ describe('shot-spec-suite', () => {
       mvShotlist: mvGolden(),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 7 });
+    expect(r.metrics).toMatchObject({ ran: 4, passed: 4, failed: 0, skipped: 9 });
     for (const id of ['shotContract', 'shotPrompt', 'storyRhythm', 'mvShotlist'] as const) {
       expect(r.results[id].status).toBe('PASS');
     }
   });
 
-  it('all eleven gates PASS', () => {
+  it('all thirteen gates PASS', () => {
     const r = evaluateShotSpecSuite({
       episode: 'EP01',
       hookStructure: shotSpec('EP01', hookGood()),
@@ -322,9 +324,25 @@ describe('shot-spec-suite', () => {
       dialogueExposition: shotSpec('EP01', dialogueGood()),
       seriesRhythm: rhythmDense(),
       seriesRhythmOpts: { profile: 'dense' },
+      coldOpenHook: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: 'crisis cold open', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '追问' },
+        { durSec: 6, beatRole: 'reversal', action: '反转' },
+        { durSec: 6, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      mvBeatMap: {
+        fps: 24,
+        shots: [
+          { no: '1', start: 0, end: 2, dur: 2, section: 'intro', lyric: '', shot: 'ELS', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '1', asset: 'A1' },
+          { no: '2', start: 2, end: 4, dur: 2, section: 'verse', lyric: '主歌', shot: 'MS', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '2', asset: 'A1' },
+          { no: '3', start: 4, end: 5, dur: 1, section: 'verse', lyric: '', shot: 'CU', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '3', asset: 'A1' },
+          { no: '4', start: 5, end: 7, dur: 2, section: 'chorus', lyric: '副歌', shot: 'MCU', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '4', asset: 'A1' },
+          { no: '5', start: 7, end: 10, dur: 3, section: 'outro', lyric: '', shot: 'ELS', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '5', asset: 'A1' },
+        ],
+      },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 11, passed: 11, failed: 0, skipped: 0 });
+    expect(r.metrics).toMatchObject({ ran: 13, passed: 13, failed: 0, skipped: 0 });
     for (const id of SHOT_SPEC_GATE_IDS) {
       expect(r.results[id].status).toBe('PASS');
     }
@@ -337,7 +355,7 @@ describe('shot-spec-suite', () => {
       reactionBeat: shotSpec('EP01', reactionGood()),
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 9 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 11 });
     expect(r.results.keyframePlate.status).toBe('PASS');
     expect(r.results.reactionBeat.status).toBe('PASS');
   });
@@ -350,9 +368,35 @@ describe('shot-spec-suite', () => {
       seriesRhythmOpts: { profile: 'dense' },
     });
     expect(r.verdict).toBe('PASS');
-    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 9 });
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 11 });
     expect(r.results.dialogueExposition.status).toBe('PASS');
     expect(r.results.seriesRhythm.status).toBe('PASS');
+  });
+
+  it('coldOpenHook + mvBeatMap alone PASS', () => {
+    const r = evaluateShotSpecSuite({
+      episode: 'EP01',
+      coldOpenHook: shotSpec('EP01', [
+        { durSec: 2, beatRole: 'hook', action: 'crisis cold open', hookKind: 'situation' },
+        { durSec: 4, beatRole: 'increment', action: '追问' },
+        { durSec: 6, beatRole: 'reversal', action: '反转' },
+        { durSec: 6, beatRole: 'cliffhanger', action: '悬念' },
+      ]),
+      mvBeatMap: {
+        fps: 24,
+        shots: [
+          { no: '1', start: 0, end: 2, dur: 2, section: 'intro', lyric: '', shot: 'ELS', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '1', asset: 'A1' },
+          { no: '2', start: 2, end: 4, dur: 2, section: 'verse', lyric: '主歌', shot: 'MS', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '2', asset: 'A1' },
+          { no: '3', start: 4, end: 5, dur: 1, section: 'verse', lyric: '', shot: 'CU', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '3', asset: 'A1' },
+          { no: '4', start: 5, end: 7, dur: 2, section: 'chorus', lyric: '副歌', shot: 'MCU', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '4', asset: 'A1' },
+          { no: '5', start: 7, end: 10, dur: 3, section: 'outro', lyric: '', shot: 'ELS', angle: 'eye', subject: 'hero', move: 'static', trans: 'cut', beat: '5', asset: 'A1' },
+        ],
+      },
+    });
+    expect(r.verdict).toBe('PASS');
+    expect(r.metrics).toMatchObject({ ran: 2, passed: 2, failed: 0, skipped: 11 });
+    expect(r.results.coldOpenHook.status).toBe('PASS');
+    expect(r.results.mvBeatMap.status).toBe('PASS');
   });
 
   it('shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET (unknown rule → GATE_FAIL)', () => {

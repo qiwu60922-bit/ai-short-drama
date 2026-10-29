@@ -58,8 +58,12 @@ const loadOpt = (p: string | undefined) => {
   return read(p);
 };
 
-const defaultStory = resolve('tests/fixtures/v12/story-ledger-suite.v12.json');
-const defaultShot = resolve('tests/fixtures/v12/shot-spec-suite.v12.json');
+const defaultStoryV13 = resolve('tests/fixtures/v13/story-ledger-suite.v13.json');
+const defaultShotV13 = resolve('tests/fixtures/v13/shot-spec-suite.v13.json');
+const defaultStoryV12 = resolve('tests/fixtures/v12/story-ledger-suite.v12.json');
+const defaultShotV12 = resolve('tests/fixtures/v12/shot-spec-suite.v12.json');
+const defaultStory = existsSync(defaultStoryV13) ? defaultStoryV13 : defaultStoryV12;
+const defaultShot = existsSync(defaultShotV13) ? defaultShotV13 : defaultShotV12;
 
 const storyLedgerGate = parseGate('--story-ledger-gate', 'warn');
 const shotSpecGate = parseGate('--shot-spec-gate', 'warn');

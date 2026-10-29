@@ -78,7 +78,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
   if (input.storyLedger != null && storyMode !== 'off') {
     storyLedger = evaluateStoryLedgerSuite(input.storyLedger);
     await writeFile(join(input.workDir, 'story-ledger-suite-report.json'), JSON.stringify(storyLedger, null, 2));
-    notes.push(`story-ledger-suite: ${storyLedger.verdict} (ran=${storyLedger.metrics.ran} failed=${storyLedger.metrics.failed} skipped=${storyLedger.metrics.skipped})`);
+    notes.push(`story-ledger-suite: ${storyLedger.verdict} (ran=${storyLedger.metrics.ran} passed=${storyLedger.metrics.passed} failed=${storyLedger.metrics.failed} skipped=${storyLedger.metrics.skipped})`);
     if (storyLedger.verdict === 'FAIL' && storyMode === 'enforce') {
       return { ok: false, exitCode: 36, stage: 'storyLedger', rhythm, storyLedger, decisions: [], notes };
     }
@@ -89,7 +89,7 @@ export async function runEp01Rehearsal(input: RehearsalInput): Promise<Rehearsal
   if (input.shotSpecSuite != null && shotMode !== 'off') {
     shotSpecSuite = evaluateShotSpecSuite(input.shotSpecSuite);
     await writeFile(join(input.workDir, 'shot-spec-suite-report.json'), JSON.stringify(shotSpecSuite, null, 2));
-    notes.push(`shot-spec-suite: ${shotSpecSuite.verdict} (ran=${shotSpecSuite.metrics.ran} failed=${shotSpecSuite.metrics.failed} skipped=${shotSpecSuite.metrics.skipped})`);
+    notes.push(`shot-spec-suite: ${shotSpecSuite.verdict} (ran=${shotSpecSuite.metrics.ran} passed=${shotSpecSuite.metrics.passed} failed=${shotSpecSuite.metrics.failed} skipped=${shotSpecSuite.metrics.skipped})`);
     if (shotSpecSuite.verdict === 'FAIL' && shotMode === 'enforce') {
       return { ok: false, exitCode: 36, stage: 'shotSpec', rhythm, storyLedger, shotSpecSuite, decisions: [], notes };
     }

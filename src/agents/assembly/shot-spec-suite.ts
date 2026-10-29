@@ -7,6 +7,7 @@
  *   · shotContract · shotPrompt · storyRhythm · mvShotlist
  *   · keyframePlate · reactionBeat
  *   · dialogueExposition · seriesRhythm
+ *   · coldOpenHook · mvBeatMap
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -74,6 +75,16 @@ import {
   type SeriesRhythmOptions,
   type SeriesRhythmReport,
 } from './series-rhythm-profile';
+import {
+  evaluateColdOpenHook,
+  type ColdOpenHookOptions,
+  type ColdOpenHookReport,
+} from './cold-open-hook-gate';
+import {
+  MvBeatMapDocSchema,
+  evaluateMvBeatMap,
+  type MvBeatMapReport,
+} from './mv-beat-map-gate';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -87,6 +98,8 @@ export const SHOT_SPEC_GATE_IDS = [
   'reactionBeat',
   'dialogueExposition',
   'seriesRhythm',
+  'coldOpenHook',
+  'mvBeatMap',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -187,6 +200,19 @@ const SeriesRhythmOptsSchema = z
   })
   .strict();
 
+const ColdOpenOptsSchema = z
+  .object({
+    coldOpenWindowSec: z.number().positive().optional(),
+    hookWindowSec: z.number().positive().optional(),
+    maxFirstShotSec: z.number().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    tailToleranceSec: z.number().positive().optional(),
+    maxSetupRatio: z.number().positive().optional(),
+    requireAllTagged: z.boolean().optional(),
+    requireHookKind: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -201,6 +227,8 @@ export const ShotSpecSuiteSchema = z
     reactionBeat: ShotSpecDocSchema.optional(),
     dialogueExposition: ShotSpecDocSchema.optional(),
     seriesRhythm: ShotSpecDocSchema.optional(),
+    coldOpenHook: ShotSpecDocSchema.optional(),
+    mvBeatMap: MvBeatMapDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -211,6 +239,7 @@ export const ShotSpecSuiteSchema = z
     reactionOpts: ReactionOptsSchema.optional(),
     dialogueOpts: DialogueOptsSchema.optional(),
     seriesRhythmOpts: SeriesRhythmOptsSchema.optional(),
+    coldOpenOpts: ColdOpenOptsSchema.optional(),
   })
   .strict();
 
@@ -227,7 +256,9 @@ export type ShotSpecChildReport =
   | KeyframePlateReport
   | ReactionBeatReport
   | DialogueExpositionReport
-  | SeriesRhythmReport;
+  | SeriesRhythmReport
+  | ColdOpenHookReport
+  | MvBeatMapReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -305,6 +336,7 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     reactionOpts,
     dialogueOpts,
     seriesRhythmOpts,
+    coldOpenOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -408,6 +440,18 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
         (seriesRhythmOpts ?? {}) as SeriesRhythmOptions,
       ),
     );
+  }
+  if (sections.coldOpenHook !== undefined) {
+    run(
+      'coldOpenHook',
+      evaluateColdOpenHook(
+        sections.coldOpenHook,
+        (coldOpenOpts ?? {}) as ColdOpenHookOptions,
+      ),
+    );
+  }
+  if (sections.mvBeatMap !== undefined) {
+    run('mvBeatMap', evaluateMvBeatMap(sections.mvBeatMap));
   }
 
   const skipped = SHOT_SPEC_GATE_IDS.length - ran;

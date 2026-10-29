@@ -1,0 +1,392 @@
+{
+  "episode": "EP01",
+  "hookStructure": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "crisis open",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S6",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-S7",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S8",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S9",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S10",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "reactionBeat": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "crisis"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal",
+        "action": "reveal"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "face freeze"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "cliffhanger",
+        "action": "door slam"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "group gasp"
+      }
+    ]
+  },
+  "dialogueExposition": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "hook",
+        "action": "黑衣人破窗闯入举枪"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "setup",
+        "action": "走廊空镜缓慢推进"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal",
+        "action": "齐耶抬腕刻印亮起格开一剑"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "齐耶瞳孔收缩后退"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 5,
+        "beatRole": "cliffhanger",
+        "action": "门外更多脚步逼近"
+      }
+    ]
+  },
+  "seriesRhythm": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S6",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S7",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S8",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S9",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S10",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S11",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S12",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S13",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S14",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S15",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S16",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S17",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      }
+    ]
+  },
+  "seriesRhythmOpts": {
+    "profile": "dense"
+  },
+  "coldOpenHook": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-C0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "crisis cold open",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-C1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问真相"
+      },
+      {
+        "shotId": "EP01-C2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal",
+        "action": "身份反转"
+      },
+      {
+        "shotId": "EP01-C3",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "cliffhanger",
+        "action": "门外有人"
+      }
+    ]
+  },
+  "mvBeatMap": {
+    "fps": 24,
+    "shots": [
+      {
+        "no": "1",
+        "start": 0,
+        "end": 2,
+        "dur": 2,
+        "section": "intro",
+        "lyric": "",
+        "shot": "ELS",
+        "angle": "eye",
+        "subject": "hero",
+        "move": "static",
+        "trans": "cut",
+        "beat": "1",
+        "asset": "A1"
+      },
+      {
+        "no": "2",
+        "start": 2,
+        "end": 4,
+        "dur": 2,
+        "section": "verse",
+        "lyric": "主歌",
+        "shot": "MS",
+        "angle": "eye",
+        "subject": "hero",
+        "move": "static",
+        "trans": "cut",
+        "beat": "2",
+        "asset": "A1"
+      },
+      {
+        "no": "3",
+        "start": 4,
+        "end": 5,
+        "dur": 1,
+        "section": "verse",
+        "lyric": "",
+        "shot": "CU",
+        "angle": "eye",
+        "subject": "hero",
+        "move": "static",
+        "trans": "cut",
+        "beat": "3",
+        "asset": "A1"
+      },
+      {
+        "no": "4",
+        "start": 5,
+        "end": 7,
+        "dur": 2,
+        "section": "chorus",
+        "lyric": "副歌",
+        "shot": "MCU",
+        "angle": "eye",
+        "subject": "hero",
+        "move": "static",
+        "trans": "cut",
+        "beat": "4",
+        "asset": "A1"
+      },
+      {
+        "no": "5",
+        "start": 7,
+        "end": 10,
+        "dur": 3,
+        "section": "outro",
+        "lyric": "",
+        "shot": "ELS",
+        "angle": "eye",
+        "subject": "hero",
+        "move": "static",
+        "trans": "cut",
+        "beat": "5",
+        "asset": "A1"
+      }
+    ]
+  }
+}
