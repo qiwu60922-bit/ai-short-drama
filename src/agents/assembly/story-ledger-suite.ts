@@ -245,6 +245,8 @@
  *   · qualityAnthraceneLink · qualityPhenanthreneLink · qualityNaphthaleneLink · qualityBiphenylLink
  *   · bowRhythmPeakBridge · saluteRhythmPeakBridge · pointRhythmPeakBridge · beckonRhythmPeakBridge
  *   · qualityFluoreneLink · qualityPyreneLink · qualityChryseneLink · qualityCoroneneLink
+ *   · thumbsRhythmPeakBridge · crossRhythmPeakBridge · fistRhythmPeakBridge · palmRhythmPeakBridge
+ *   · qualityTetraceneLink · qualityPeryleneLink · qualityOvaleneLink · qualityPentaceneLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4699,6 +4701,59 @@ import {
   type QualityCoroneneLinkReport,
 } from './quality-coronene-link-gate';
 
+import {
+  ThumbsRhythmPeakBridgeLinkSchema,
+  ThumbsRhythmPeakThumbsEntrySchema,
+  ThumbsRhythmPeakRhythmEntrySchema,
+  evaluateThumbsRhythmPeakBridge,
+  type ThumbsRhythmPeakBridgeReport,
+} from './thumbs-rhythm-peak-bridge-gate';
+import {
+  CrossRhythmPeakBridgeLinkSchema,
+  CrossRhythmPeakCrossEntrySchema,
+  CrossRhythmPeakRhythmEntrySchema,
+  evaluateCrossRhythmPeakBridge,
+  type CrossRhythmPeakBridgeReport,
+} from './cross-rhythm-peak-bridge-gate';
+import {
+  FistRhythmPeakBridgeLinkSchema,
+  FistRhythmPeakFistEntrySchema,
+  FistRhythmPeakRhythmEntrySchema,
+  evaluateFistRhythmPeakBridge,
+  type FistRhythmPeakBridgeReport,
+} from './fist-rhythm-peak-bridge-gate';
+import {
+  PalmRhythmPeakBridgeLinkSchema,
+  PalmRhythmPeakPalmEntrySchema,
+  PalmRhythmPeakRhythmEntrySchema,
+  evaluatePalmRhythmPeakBridge,
+  type PalmRhythmPeakBridgeReport,
+} from './palm-rhythm-peak-bridge-gate';
+import {
+  QualityTetraceneLinkEntrySchema,
+  QualityTetraceneEntrySchema,
+  evaluateQualityTetraceneLink,
+  type QualityTetraceneLinkReport,
+} from './quality-tetracene-link-gate';
+import {
+  QualityPeryleneLinkEntrySchema,
+  QualityPeryleneEntrySchema,
+  evaluateQualityPeryleneLink,
+  type QualityPeryleneLinkReport,
+} from './quality-perylene-link-gate';
+import {
+  QualityOvaleneLinkEntrySchema,
+  QualityOvaleneEntrySchema,
+  evaluateQualityOvaleneLink,
+  type QualityOvaleneLinkReport,
+} from './quality-ovalene-link-gate';
+import {
+  QualityPentaceneLinkEntrySchema,
+  QualityPentaceneEntrySchema,
+  evaluateQualityPentaceneLink,
+  type QualityPentaceneLinkReport,
+} from './quality-pentacene-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -5460,6 +5515,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityPyreneLink',
   'qualityChryseneLink',
   'qualityCoroneneLink',
+  'thumbsRhythmPeakBridge',
+  'crossRhythmPeakBridge',
+  'fistRhythmPeakBridge',
+  'palmRhythmPeakBridge',
+  'qualityTetraceneLink',
+  'qualityPeryleneLink',
+  'qualityOvaleneLink',
+  'qualityPentaceneLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -10531,6 +10594,58 @@ const QualityCoroneneSectionSchemaB192 = z.object({
   links: z.array(QualityCoroneneLinkEntrySchema),
 });
 
+const ThumbsRhythmPeakBridgeSectionSchema = z.object({
+  thumbs: z.array(ThumbsRhythmPeakThumbsEntrySchema),
+  rhythms: z.array(ThumbsRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ThumbsRhythmPeakBridgeLinkSchema),
+});
+
+const CrossRhythmPeakBridgeSectionSchema = z.object({
+  crosses: z.array(CrossRhythmPeakCrossEntrySchema),
+  rhythms: z.array(CrossRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CrossRhythmPeakBridgeLinkSchema),
+});
+
+const FistRhythmPeakBridgeSectionSchema = z.object({
+  fists: z.array(FistRhythmPeakFistEntrySchema),
+  rhythms: z.array(FistRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(FistRhythmPeakBridgeLinkSchema),
+});
+
+const PalmRhythmPeakBridgeSectionSchema = z.object({
+  palms: z.array(PalmRhythmPeakPalmEntrySchema),
+  rhythms: z.array(PalmRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PalmRhythmPeakBridgeLinkSchema),
+});
+
+const QualityTetraceneSectionSchemaB193 = z.object({
+  minTetraceneIntense: z.number().int().min(1).max(5).optional(),
+  tetracenes: z.array(QualityTetraceneEntrySchema),
+  links: z.array(QualityTetraceneLinkEntrySchema),
+});
+
+const QualityPeryleneSectionSchemaB193 = z.object({
+  minPeryleneIntense: z.number().int().min(1).max(5).optional(),
+  perylenes: z.array(QualityPeryleneEntrySchema),
+  links: z.array(QualityPeryleneLinkEntrySchema),
+});
+
+const QualityOvaleneSectionSchemaB193 = z.object({
+  minOvaleneIntense: z.number().int().min(1).max(5).optional(),
+  ovalenes: z.array(QualityOvaleneEntrySchema),
+  links: z.array(QualityOvaleneLinkEntrySchema),
+});
+
+const QualityPentaceneSectionSchemaB193 = z.object({
+  minPentaceneIntense: z.number().int().min(1).max(5).optional(),
+  pentacenes: z.array(QualityPentaceneEntrySchema),
+  links: z.array(QualityPentaceneLinkEntrySchema),
+});
+
 
 
 
@@ -11306,6 +11421,14 @@ export const StoryLedgerSuiteSchema = z
     qualityPyreneLink: QualityPyreneSectionSchemaB192.optional(),
     qualityChryseneLink: QualityChryseneSectionSchemaB192.optional(),
     qualityCoroneneLink: QualityCoroneneSectionSchemaB192.optional(),
+    thumbsRhythmPeakBridge: ThumbsRhythmPeakBridgeSectionSchema.optional(),
+    crossRhythmPeakBridge: CrossRhythmPeakBridgeSectionSchema.optional(),
+    fistRhythmPeakBridge: FistRhythmPeakBridgeSectionSchema.optional(),
+    palmRhythmPeakBridge: PalmRhythmPeakBridgeSectionSchema.optional(),
+    qualityTetraceneLink: QualityTetraceneSectionSchemaB193.optional(),
+    qualityPeryleneLink: QualityPeryleneSectionSchemaB193.optional(),
+    qualityOvaleneLink: QualityOvaleneSectionSchemaB193.optional(),
+    qualityPentaceneLink: QualityPentaceneSectionSchemaB193.optional(),
   })
   .strict();
 
@@ -12069,7 +12192,15 @@ export type StoryLedgerChildReport =
   | QualityFluoreneLinkReport
   | QualityPyreneLinkReport
   | QualityChryseneLinkReport
-  | QualityCoroneneLinkReport;
+  | QualityCoroneneLinkReport
+  | ThumbsRhythmPeakBridgeReport
+  | CrossRhythmPeakBridgeReport
+  | FistRhythmPeakBridgeReport
+  | PalmRhythmPeakBridgeReport
+  | QualityTetraceneLinkReport
+  | QualityPeryleneLinkReport
+  | QualityOvaleneLinkReport
+  | QualityPentaceneLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -13626,6 +13757,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityChryseneLink({ series, latestEp, ...(section as object) }),
   qualityCoroneneLink: (series, latestEp, section) =>
     evaluateQualityCoroneneLink({ series, latestEp, ...(section as object) }),
+  thumbsRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateThumbsRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  crossRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateCrossRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  fistRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateFistRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  palmRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePalmRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityTetraceneLink: (series, latestEp, section) =>
+    evaluateQualityTetraceneLink({ series, latestEp, ...(section as object) }),
+  qualityPeryleneLink: (series, latestEp, section) =>
+    evaluateQualityPeryleneLink({ series, latestEp, ...(section as object) }),
+  qualityOvaleneLink: (series, latestEp, section) =>
+    evaluateQualityOvaleneLink({ series, latestEp, ...(section as object) }),
+  qualityPentaceneLink: (series, latestEp, section) =>
+    evaluateQualityPentaceneLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
