@@ -1408,5 +1408,159 @@
         "action": "悬念"
       }
     ]
+  },
+  "midTurnHookWindow": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MTHW0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MTHW1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-MTHW2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "信息增量A"
+      },
+      {
+        "shotId": "EP01-MTHW3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-MTHW4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "信息增量B"
+      },
+      {
+        "shotId": "EP01-MTHW5",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "midTurnHookWindowOpts": {
+    "minTurns": 2,
+    "hardHookWindowSec": 2
+  },
+  "hookWindowReaction": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-HWR0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-HWR1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "追问"
+      },
+      {
+        "shotId": "EP01-HWR2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-HWR3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "脸色煞白"
+      },
+      {
+        "shotId": "EP01-HWR4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "hookWindowReactionOpts": {
+    "hardHookWindowSec": 2
+  },
+  "midTurnReaction": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-MTR0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "危机",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-MTR1",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "setup",
+        "action": "铺垫"
+      },
+      {
+        "shotId": "EP01-MTR2",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "信息增量A"
+      },
+      {
+        "shotId": "EP01-MTR3",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "reversal",
+        "action": "反转"
+      },
+      {
+        "shotId": "EP01-MTR4",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "increment",
+        "action": "信息增量B"
+      },
+      {
+        "shotId": "EP01-MTR5",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "脸色煞白"
+      },
+      {
+        "shotId": "EP01-MTR6",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "cliffhanger",
+        "action": "悬念"
+      }
+    ]
+  },
+  "midTurnReactionOpts": {
+    "minTurns": 2
   }
 }
