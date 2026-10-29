@@ -52,6 +52,9 @@
  *   · conflictBondPeakBridge · foreshadowBondPeakBridge · abilityConflictPeakBridge
  *   · conflictBondLink · amnesiaMaskLink · motifVestLink · abilityForeshadowLink
  *
+ *   · motifBondPeakBridge · personaMaskPeakBridge · allianceForeshadowPeakBridge
+ *   · foreshadowBondLink · abilityAllianceLink · conflictForeshadowLink · allianceAmnesiaLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -745,6 +748,41 @@ import {
   evaluateAbilityForeshadowLink,
   type AbilityForeshadowLinkReport,
 } from './ability-foreshadow-link-gate';
+import {
+  MotifBondPeakBridgeLinkSchema,
+  evaluateMotifBondPeakBridge,
+  type MotifBondPeakBridgeReport,
+} from './motif-bond-peak-bridge-gate';
+import {
+  PersonaMaskPeakBridgeLinkSchema,
+  evaluatePersonaMaskPeakBridge,
+  type PersonaMaskPeakBridgeReport,
+} from './persona-mask-peak-bridge-gate';
+import {
+  AllianceForeshadowPeakBridgeLinkSchema,
+  evaluateAllianceForeshadowPeakBridge,
+  type AllianceForeshadowPeakBridgeReport,
+} from './alliance-foreshadow-peak-bridge-gate';
+import {
+  ForeshadowBondLinkEntrySchema,
+  evaluateForeshadowBondLink,
+  type ForeshadowBondLinkReport,
+} from './foreshadow-bond-link-gate';
+import {
+  AbilityAllianceLinkEntrySchema,
+  evaluateAbilityAllianceLink,
+  type AbilityAllianceLinkReport,
+} from './ability-alliance-link-gate';
+import {
+  ConflictForeshadowLinkEntrySchema,
+  evaluateConflictForeshadowLink,
+  type ConflictForeshadowLinkReport,
+} from './conflict-foreshadow-link-gate';
+import {
+  AllianceAmnesiaLinkEntrySchema,
+  evaluateAllianceAmnesiaLink,
+  type AllianceAmnesiaLinkReport,
+} from './alliance-amnesia-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -881,6 +919,13 @@ export const STORY_LEDGER_GATE_IDS = [
   'amnesiaMaskLink',
   'motifVestLink',
   'abilityForeshadowLink',
+  'motifBondPeakBridge',
+  'personaMaskPeakBridge',
+  'allianceForeshadowPeakBridge',
+  'foreshadowBondLink',
+  'abilityAllianceLink',
+  'conflictForeshadowLink',
+  'allianceAmnesiaLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -1738,6 +1783,56 @@ const AbilityForeshadowSectionSchema = z.object({
   links: z.array(AbilityForeshadowLinkEntrySchema),
 });
 
+const MotifBondPeakBridgeSectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  bonds: z.array(BondContractEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(MotifBondPeakBridgeLinkSchema),
+});
+
+const PersonaMaskPeakBridgeSectionSchema = z.object({
+  cards: z.array(PersonaCardSchema).min(1),
+  masks: z.array(PersonaMaskEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PersonaMaskPeakBridgeLinkSchema),
+});
+
+const AllianceForeshadowPeakBridgeSectionSchema = z.object({
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  items: z.array(ForeshadowItemSchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(AllianceForeshadowPeakBridgeLinkSchema),
+});
+
+const ForeshadowBondSectionSchema = z.object({
+  items: z.array(ForeshadowItemSchema),
+  bonds: z.array(BondContractEntrySchema),
+  links: z.array(ForeshadowBondLinkEntrySchema),
+});
+
+const AbilityAllianceSectionSchema = z.object({
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  links: z.array(AbilityAllianceLinkEntrySchema),
+});
+
+const ConflictForeshadowSectionSchema = z.object({
+  conflicts: z.array(ConflictEntrySchema),
+  items: z.array(ForeshadowItemSchema),
+  links: z.array(ConflictForeshadowLinkEntrySchema),
+});
+
+const AllianceAmnesiaSectionSchema = z.object({
+  alliances: z.array(AllianceEntrySchema),
+  events: z.array(AllianceEventSchema),
+  amnesias: z.array(AmnesiaArcEntrySchema),
+  links: z.array(AllianceAmnesiaLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -1874,6 +1969,13 @@ export const StoryLedgerSuiteSchema = z
     amnesiaMaskLink: AmnesiaMaskSectionSchema.optional(),
     motifVestLink: MotifVestSectionSchema.optional(),
     abilityForeshadowLink: AbilityForeshadowSectionSchema.optional(),
+    motifBondPeakBridge: MotifBondPeakBridgeSectionSchema.optional(),
+    personaMaskPeakBridge: PersonaMaskPeakBridgeSectionSchema.optional(),
+    allianceForeshadowPeakBridge: AllianceForeshadowPeakBridgeSectionSchema.optional(),
+    foreshadowBondLink: ForeshadowBondSectionSchema.optional(),
+    abilityAllianceLink: AbilityAllianceSectionSchema.optional(),
+    conflictForeshadowLink: ConflictForeshadowSectionSchema.optional(),
+    allianceAmnesiaLink: AllianceAmnesiaSectionSchema.optional(),
   })
   .strict();
 
@@ -2011,7 +2113,14 @@ export type StoryLedgerChildReport =
   | ConflictBondLinkReport
   | AmnesiaMaskLinkReport
   | MotifVestLinkReport
-  | AbilityForeshadowLinkReport;
+  | AbilityForeshadowLinkReport
+  | MotifBondPeakBridgeReport
+  | PersonaMaskPeakBridgeReport
+  | AllianceForeshadowPeakBridgeReport
+  | ForeshadowBondLinkReport
+  | AbilityAllianceLinkReport
+  | ConflictForeshadowLinkReport
+  | AllianceAmnesiaLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -2315,6 +2424,20 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateMotifVestLink({ series, latestEp, ...(section as object) }),
   abilityForeshadowLink: (series, latestEp, section) =>
     evaluateAbilityForeshadowLink({ series, latestEp, ...(section as object) }),
+  motifBondPeakBridge: (series, latestEp, section) =>
+    evaluateMotifBondPeakBridge({ series, latestEp, ...(section as object) }),
+  personaMaskPeakBridge: (series, latestEp, section) =>
+    evaluatePersonaMaskPeakBridge({ series, latestEp, ...(section as object) }),
+  allianceForeshadowPeakBridge: (series, latestEp, section) =>
+    evaluateAllianceForeshadowPeakBridge({ series, latestEp, ...(section as object) }),
+  foreshadowBondLink: (series, latestEp, section) =>
+    evaluateForeshadowBondLink({ series, latestEp, ...(section as object) }),
+  abilityAllianceLink: (series, latestEp, section) =>
+    evaluateAbilityAllianceLink({ series, latestEp, ...(section as object) }),
+  conflictForeshadowLink: (series, latestEp, section) =>
+    evaluateConflictForeshadowLink({ series, latestEp, ...(section as object) }),
+  allianceAmnesiaLink: (series, latestEp, section) =>
+    evaluateAllianceAmnesiaLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
