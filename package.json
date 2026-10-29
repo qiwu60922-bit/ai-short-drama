@@ -147,6 +147,7 @@
     "cliff-cascade-link:check": "tsx scripts/cliff-cascade-link-check.ts",
     "foreshadow-motif-link:check": "tsx scripts/foreshadow-motif-link-check.ts",
     "alliance-bond-link:check": "tsx scripts/alliance-bond-link-check.ts",
+    "persona-vest-link:check": "tsx scripts/persona-vest-link-check.ts",
     "ability-rule:check": "tsx scripts/ability-rule-check.ts",
     "stage-goal:check": "tsx scripts/stage-goal-check.ts",
     "reaction-beat:check": "tsx scripts/reaction-beat-check.ts",
