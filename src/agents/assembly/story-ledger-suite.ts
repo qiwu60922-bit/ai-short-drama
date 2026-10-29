@@ -243,6 +243,8 @@
  *   · qualityAcridineLink · qualityPhenazineLink · qualityPhenanthrolineLink · qualityBenzofuranLink
  *   · flexRhythmPeakBridge · nodRhythmPeakBridge · winkRhythmPeakBridge · waveRhythmPeakBridge
  *   · qualityAnthraceneLink · qualityPhenanthreneLink · qualityNaphthaleneLink · qualityBiphenylLink
+ *   · bowRhythmPeakBridge · saluteRhythmPeakBridge · pointRhythmPeakBridge · beckonRhythmPeakBridge
+ *   · qualityFluoreneLink · qualityPyreneLink · qualityChryseneLink · qualityCoroneneLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4644,6 +4646,59 @@ import {
   type QualityBiphenylLinkReport,
 } from './quality-biphenyl-link-gate';
 
+import {
+  BowRhythmPeakBridgeLinkSchema,
+  BowRhythmPeakBowEntrySchema,
+  BowRhythmPeakRhythmEntrySchema,
+  evaluateBowRhythmPeakBridge,
+  type BowRhythmPeakBridgeReport,
+} from './bow-rhythm-peak-bridge-gate';
+import {
+  SaluteRhythmPeakBridgeLinkSchema,
+  SaluteRhythmPeakSaluteEntrySchema,
+  SaluteRhythmPeakRhythmEntrySchema,
+  evaluateSaluteRhythmPeakBridge,
+  type SaluteRhythmPeakBridgeReport,
+} from './salute-rhythm-peak-bridge-gate';
+import {
+  PointRhythmPeakBridgeLinkSchema,
+  PointRhythmPeakPointEntrySchema,
+  PointRhythmPeakRhythmEntrySchema,
+  evaluatePointRhythmPeakBridge,
+  type PointRhythmPeakBridgeReport,
+} from './point-rhythm-peak-bridge-gate';
+import {
+  BeckonRhythmPeakBridgeLinkSchema,
+  BeckonRhythmPeakBeckonEntrySchema,
+  BeckonRhythmPeakRhythmEntrySchema,
+  evaluateBeckonRhythmPeakBridge,
+  type BeckonRhythmPeakBridgeReport,
+} from './beckon-rhythm-peak-bridge-gate';
+import {
+  QualityFluoreneLinkEntrySchema,
+  QualityFluoreneEntrySchema,
+  evaluateQualityFluoreneLink,
+  type QualityFluoreneLinkReport,
+} from './quality-fluorene-link-gate';
+import {
+  QualityPyreneLinkEntrySchema,
+  QualityPyreneEntrySchema,
+  evaluateQualityPyreneLink,
+  type QualityPyreneLinkReport,
+} from './quality-pyrene-link-gate';
+import {
+  QualityChryseneLinkEntrySchema,
+  QualityChryseneEntrySchema,
+  evaluateQualityChryseneLink,
+  type QualityChryseneLinkReport,
+} from './quality-chrysene-link-gate';
+import {
+  QualityCoroneneLinkEntrySchema,
+  QualityCoroneneEntrySchema,
+  evaluateQualityCoroneneLink,
+  type QualityCoroneneLinkReport,
+} from './quality-coronene-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -5397,6 +5452,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityPhenanthreneLink',
   'qualityNaphthaleneLink',
   'qualityBiphenylLink',
+  'bowRhythmPeakBridge',
+  'saluteRhythmPeakBridge',
+  'pointRhythmPeakBridge',
+  'beckonRhythmPeakBridge',
+  'qualityFluoreneLink',
+  'qualityPyreneLink',
+  'qualityChryseneLink',
+  'qualityCoroneneLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -10416,6 +10479,58 @@ const QualityBiphenylSectionSchemaB191 = z.object({
   links: z.array(QualityBiphenylLinkEntrySchema),
 });
 
+const BowRhythmPeakBridgeSectionSchema = z.object({
+  bows: z.array(BowRhythmPeakBowEntrySchema),
+  rhythms: z.array(BowRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BowRhythmPeakBridgeLinkSchema),
+});
+
+const SaluteRhythmPeakBridgeSectionSchema = z.object({
+  salutes: z.array(SaluteRhythmPeakSaluteEntrySchema),
+  rhythms: z.array(SaluteRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SaluteRhythmPeakBridgeLinkSchema),
+});
+
+const PointRhythmPeakBridgeSectionSchema = z.object({
+  points: z.array(PointRhythmPeakPointEntrySchema),
+  rhythms: z.array(PointRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(PointRhythmPeakBridgeLinkSchema),
+});
+
+const BeckonRhythmPeakBridgeSectionSchema = z.object({
+  beckons: z.array(BeckonRhythmPeakBeckonEntrySchema),
+  rhythms: z.array(BeckonRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BeckonRhythmPeakBridgeLinkSchema),
+});
+
+const QualityFluoreneSectionSchemaB192 = z.object({
+  minFluoreneIntense: z.number().int().min(1).max(5).optional(),
+  fluorenes: z.array(QualityFluoreneEntrySchema),
+  links: z.array(QualityFluoreneLinkEntrySchema),
+});
+
+const QualityPyreneSectionSchemaB192 = z.object({
+  minPyreneIntense: z.number().int().min(1).max(5).optional(),
+  pyrenes: z.array(QualityPyreneEntrySchema),
+  links: z.array(QualityPyreneLinkEntrySchema),
+});
+
+const QualityChryseneSectionSchemaB192 = z.object({
+  minChryseneIntense: z.number().int().min(1).max(5).optional(),
+  chrysenes: z.array(QualityChryseneEntrySchema),
+  links: z.array(QualityChryseneLinkEntrySchema),
+});
+
+const QualityCoroneneSectionSchemaB192 = z.object({
+  minCoroneneIntense: z.number().int().min(1).max(5).optional(),
+  coronenes: z.array(QualityCoroneneEntrySchema),
+  links: z.array(QualityCoroneneLinkEntrySchema),
+});
+
 
 
 
@@ -11183,6 +11298,14 @@ export const StoryLedgerSuiteSchema = z
     qualityPhenanthreneLink: QualityPhenanthreneSectionSchemaB191.optional(),
     qualityNaphthaleneLink: QualityNaphthaleneSectionSchemaB191.optional(),
     qualityBiphenylLink: QualityBiphenylSectionSchemaB191.optional(),
+    bowRhythmPeakBridge: BowRhythmPeakBridgeSectionSchema.optional(),
+    saluteRhythmPeakBridge: SaluteRhythmPeakBridgeSectionSchema.optional(),
+    pointRhythmPeakBridge: PointRhythmPeakBridgeSectionSchema.optional(),
+    beckonRhythmPeakBridge: BeckonRhythmPeakBridgeSectionSchema.optional(),
+    qualityFluoreneLink: QualityFluoreneSectionSchemaB192.optional(),
+    qualityPyreneLink: QualityPyreneSectionSchemaB192.optional(),
+    qualityChryseneLink: QualityChryseneSectionSchemaB192.optional(),
+    qualityCoroneneLink: QualityCoroneneSectionSchemaB192.optional(),
   })
   .strict();
 
@@ -11938,7 +12061,15 @@ export type StoryLedgerChildReport =
   | QualityAnthraceneLinkReport
   | QualityPhenanthreneLinkReport
   | QualityNaphthaleneLinkReport
-  | QualityBiphenylLinkReport;
+  | QualityBiphenylLinkReport
+  | BowRhythmPeakBridgeReport
+  | SaluteRhythmPeakBridgeReport
+  | PointRhythmPeakBridgeReport
+  | BeckonRhythmPeakBridgeReport
+  | QualityFluoreneLinkReport
+  | QualityPyreneLinkReport
+  | QualityChryseneLinkReport
+  | QualityCoroneneLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -13479,6 +13610,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityNaphthaleneLink({ series, latestEp, ...(section as object) }),
   qualityBiphenylLink: (series, latestEp, section) =>
     evaluateQualityBiphenylLink({ series, latestEp, ...(section as object) }),
+  bowRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBowRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  saluteRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSaluteRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  pointRhythmPeakBridge: (series, latestEp, section) =>
+    evaluatePointRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  beckonRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBeckonRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityFluoreneLink: (series, latestEp, section) =>
+    evaluateQualityFluoreneLink({ series, latestEp, ...(section as object) }),
+  qualityPyreneLink: (series, latestEp, section) =>
+    evaluateQualityPyreneLink({ series, latestEp, ...(section as object) }),
+  qualityChryseneLink: (series, latestEp, section) =>
+    evaluateQualityChryseneLink({ series, latestEp, ...(section as object) }),
+  qualityCoroneneLink: (series, latestEp, section) =>
+    evaluateQualityCoroneneLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
