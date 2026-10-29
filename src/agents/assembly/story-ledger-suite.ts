@@ -12,6 +12,7 @@
  *   · bondContract · identityVest · frequencyTipping  (more baselines)
  *   · abilityStageLink · countdownCliffLink · dialogueReactionLink
  *   · personaCard · personaMask · amnesiaArc · openingCascade · cliffhangerHandoff
+ *   · maskVestLink · frequencyAbilityLink · motifQualityLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -181,6 +182,21 @@ import {
   evaluateCliffhangerHandoff,
   type CliffhangerHandoffReport,
 } from './cliffhanger-handoff-gate';
+import {
+  MaskVestLinkEntrySchema,
+  evaluateMaskVestLink,
+  type MaskVestLinkReport,
+} from './mask-vest-link-gate';
+import {
+  FrequencyAbilityLinkEntrySchema,
+  evaluateFrequencyAbilityLink,
+  type FrequencyAbilityLinkReport,
+} from './frequency-ability-link-gate';
+import {
+  MotifQualityLinkEntrySchema,
+  evaluateMotifQualityLink,
+  type MotifQualityLinkReport,
+} from './motif-quality-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -216,6 +232,9 @@ export const STORY_LEDGER_GATE_IDS = [
   'amnesiaArc',
   'openingCascade',
   'cliffhangerHandoff',
+  'maskVestLink',
+  'frequencyAbilityLink',
+  'motifQualityLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -399,6 +418,25 @@ const CliffhangerHandoffSectionSchema = z.object({
   next: ShotSpecDocSchema,
 });
 
+const MaskVestSectionSchema = z.object({
+  masks: z.array(PersonaMaskEntrySchema),
+  vests: z.array(IdentityVestEntrySchema),
+  links: z.array(MaskVestLinkEntrySchema),
+});
+
+const FrequencyAbilitySectionSchema = z.object({
+  frequencies: z.array(FrequencyTippingEntrySchema),
+  abilities: z.array(AbilityEntrySchema),
+  uses: z.array(AbilityUseSchema),
+  links: z.array(FrequencyAbilityLinkEntrySchema),
+});
+
+const MotifQualitySectionSchema = z.object({
+  motifs: z.array(MotifEntrySchema),
+  appearances: z.array(MotifAppearanceSchema),
+  links: z.array(MotifQualityLinkEntrySchema),
+});
+
 export const StoryLedgerSuiteSchema = z
   .object({
     series: z.string().min(1),
@@ -434,6 +472,9 @@ export const StoryLedgerSuiteSchema = z
     amnesiaArc: AmnesiaArcSectionSchema.optional(),
     openingCascade: ShotSpecDocSchema.optional(),
     cliffhangerHandoff: CliffhangerHandoffSectionSchema.optional(),
+    maskVestLink: MaskVestSectionSchema.optional(),
+    frequencyAbilityLink: FrequencyAbilitySectionSchema.optional(),
+    motifQualityLink: MotifQualitySectionSchema.optional(),
   })
   .strict();
 
@@ -470,7 +511,10 @@ export type StoryLedgerChildReport =
   | PersonaMaskReport
   | AmnesiaArcReport
   | OpeningCascadeReport
-  | CliffhangerHandoffReport;
+  | CliffhangerHandoffReport
+  | MaskVestLinkReport
+  | FrequencyAbilityLinkReport
+  | MotifQualityLinkReport;
 
 export type StoryLedgerGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -572,6 +616,12 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     const s = section as { prev: unknown; next: unknown };
     return evaluateCliffhangerHandoff(s.prev, s.next);
   },
+  maskVestLink: (series, latestEp, section) =>
+    evaluateMaskVestLink({ series, latestEp, ...(section as object) }),
+  frequencyAbilityLink: (series, latestEp, section) =>
+    evaluateFrequencyAbilityLink({ series, latestEp, ...(section as object) }),
+  motifQualityLink: (series, latestEp, section) =>
+    evaluateMotifQualityLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
