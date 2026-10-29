@@ -175,6 +175,9 @@
  *   · barkRhythmPeakBridge · hissRhythmPeakBridge · knockRhythmPeakBridge · grindRhythmPeakBridge
  *   · qualityTopazLink · qualityGarnetLink · qualitySapphireLink · qualityEmeraldLink
  *
+ *   · chirpRhythmPeakBridge · whineRhythmPeakBridge · tapRhythmPeakBridge · scrapeRhythmPeakBridge
+ *   · qualityCitrineLink · qualityAmethystLink · qualityAquamarineLink · qualityTourmalineLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3197,6 +3200,59 @@ import {
   type QualityEmeraldLinkReport,
 } from './quality-emerald-link-gate';
 
+import {
+  ChirpRhythmPeakBridgeLinkSchema,
+  ChirpRhythmPeakChirpEntrySchema,
+  ChirpRhythmPeakRhythmEntrySchema,
+  evaluateChirpRhythmPeakBridge,
+  type ChirpRhythmPeakBridgeReport,
+} from './chirp-rhythm-peak-bridge-gate';
+import {
+  WhineRhythmPeakBridgeLinkSchema,
+  WhineRhythmPeakWhineEntrySchema,
+  WhineRhythmPeakRhythmEntrySchema,
+  evaluateWhineRhythmPeakBridge,
+  type WhineRhythmPeakBridgeReport,
+} from './whine-rhythm-peak-bridge-gate';
+import {
+  TapRhythmPeakBridgeLinkSchema,
+  TapRhythmPeakTapEntrySchema,
+  TapRhythmPeakRhythmEntrySchema,
+  evaluateTapRhythmPeakBridge,
+  type TapRhythmPeakBridgeReport,
+} from './tap-rhythm-peak-bridge-gate';
+import {
+  ScrapeRhythmPeakBridgeLinkSchema,
+  ScrapeRhythmPeakScrapeEntrySchema,
+  ScrapeRhythmPeakRhythmEntrySchema,
+  evaluateScrapeRhythmPeakBridge,
+  type ScrapeRhythmPeakBridgeReport,
+} from './scrape-rhythm-peak-bridge-gate';
+import {
+  QualityCitrineLinkEntrySchema,
+  QualityCitrineEntrySchema,
+  evaluateQualityCitrineLink,
+  type QualityCitrineLinkReport,
+} from './quality-citrine-link-gate';
+import {
+  QualityAmethystLinkEntrySchema,
+  QualityAmethystEntrySchema,
+  evaluateQualityAmethystLink,
+  type QualityAmethystLinkReport,
+} from './quality-amethyst-link-gate';
+import {
+  QualityAquamarineLinkEntrySchema,
+  QualityAquamarineEntrySchema,
+  evaluateQualityAquamarineLink,
+  type QualityAquamarineLinkReport,
+} from './quality-aquamarine-link-gate';
+import {
+  QualityTourmalineLinkEntrySchema,
+  QualityTourmalineEntrySchema,
+  evaluateQualityTourmalineLink,
+  type QualityTourmalineLinkReport,
+} from './quality-tourmaline-link-gate';
+
 
 
 
@@ -3756,6 +3812,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityGarnetLink',
   'qualitySapphireLink',
   'qualityEmeraldLink',
+  'chirpRhythmPeakBridge',
+  'whineRhythmPeakBridge',
+  'tapRhythmPeakBridge',
+  'scrapeRhythmPeakBridge',
+  'qualityCitrineLink',
+  'qualityAmethystLink',
+  'qualityAquamarineLink',
+  'qualityTourmalineLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -7422,6 +7486,58 @@ const QualityEmeraldSectionSchemaB165 = z.object({
   links: z.array(QualityEmeraldLinkEntrySchema),
 });
 
+const ChirpRhythmPeakBridgeSectionSchema = z.object({
+  chirps: z.array(ChirpRhythmPeakChirpEntrySchema),
+  rhythms: z.array(ChirpRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ChirpRhythmPeakBridgeLinkSchema),
+});
+
+const WhineRhythmPeakBridgeSectionSchema = z.object({
+  whines: z.array(WhineRhythmPeakWhineEntrySchema),
+  rhythms: z.array(WhineRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(WhineRhythmPeakBridgeLinkSchema),
+});
+
+const TapRhythmPeakBridgeSectionSchema = z.object({
+  taps: z.array(TapRhythmPeakTapEntrySchema),
+  rhythms: z.array(TapRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(TapRhythmPeakBridgeLinkSchema),
+});
+
+const ScrapeRhythmPeakBridgeSectionSchema = z.object({
+  scrapes: z.array(ScrapeRhythmPeakScrapeEntrySchema),
+  rhythms: z.array(ScrapeRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(ScrapeRhythmPeakBridgeLinkSchema),
+});
+
+const QualityCitrineSectionSchemaB166 = z.object({
+  minCitrineIntense: z.number().int().min(1).max(5).optional(),
+  citrines: z.array(QualityCitrineEntrySchema),
+  links: z.array(QualityCitrineLinkEntrySchema),
+});
+
+const QualityAmethystSectionSchemaB166 = z.object({
+  minAmethystIntense: z.number().int().min(1).max(5).optional(),
+  amethysts: z.array(QualityAmethystEntrySchema),
+  links: z.array(QualityAmethystLinkEntrySchema),
+});
+
+const QualityAquamarineSectionSchemaB166 = z.object({
+  minAquamarineIntense: z.number().int().min(1).max(5).optional(),
+  aquamarines: z.array(QualityAquamarineEntrySchema),
+  links: z.array(QualityAquamarineLinkEntrySchema),
+});
+
+const QualityTourmalineSectionSchemaB166 = z.object({
+  minTourmalineIntense: z.number().int().min(1).max(5).optional(),
+  tourmalines: z.array(QualityTourmalineEntrySchema),
+  links: z.array(QualityTourmalineLinkEntrySchema),
+});
+
 
 
 
@@ -7980,6 +8096,14 @@ export const StoryLedgerSuiteSchema = z
     qualityGarnetLink: QualityGarnetSectionSchemaB165.optional(),
     qualitySapphireLink: QualitySapphireSectionSchemaB165.optional(),
     qualityEmeraldLink: QualityEmeraldSectionSchemaB165.optional(),
+    chirpRhythmPeakBridge: ChirpRhythmPeakBridgeSectionSchema.optional(),
+    whineRhythmPeakBridge: WhineRhythmPeakBridgeSectionSchema.optional(),
+    tapRhythmPeakBridge: TapRhythmPeakBridgeSectionSchema.optional(),
+    scrapeRhythmPeakBridge: ScrapeRhythmPeakBridgeSectionSchema.optional(),
+    qualityCitrineLink: QualityCitrineSectionSchemaB166.optional(),
+    qualityAmethystLink: QualityAmethystSectionSchemaB166.optional(),
+    qualityAquamarineLink: QualityAquamarineSectionSchemaB166.optional(),
+    qualityTourmalineLink: QualityTourmalineSectionSchemaB166.optional(),
   })
   .strict();
 
@@ -8527,7 +8651,15 @@ export type StoryLedgerChildReport =
   | QualityTopazLinkReport
   | QualityGarnetLinkReport
   | QualitySapphireLinkReport
-  | QualityEmeraldLinkReport;
+  | QualityEmeraldLinkReport
+  | ChirpRhythmPeakBridgeReport
+  | WhineRhythmPeakBridgeReport
+  | TapRhythmPeakBridgeReport
+  | ScrapeRhythmPeakBridgeReport
+  | QualityCitrineLinkReport
+  | QualityAmethystLinkReport
+  | QualityAquamarineLinkReport
+  | QualityTourmalineLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -9652,6 +9784,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualitySapphireLink({ series, latestEp, ...(section as object) }),
   qualityEmeraldLink: (series, latestEp, section) =>
     evaluateQualityEmeraldLink({ series, latestEp, ...(section as object) }),
+  chirpRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateChirpRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  whineRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateWhineRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  tapRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateTapRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  scrapeRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateScrapeRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityCitrineLink: (series, latestEp, section) =>
+    evaluateQualityCitrineLink({ series, latestEp, ...(section as object) }),
+  qualityAmethystLink: (series, latestEp, section) =>
+    evaluateQualityAmethystLink({ series, latestEp, ...(section as object) }),
+  qualityAquamarineLink: (series, latestEp, section) =>
+    evaluateQualityAquamarineLink({ series, latestEp, ...(section as object) }),
+  qualityTourmalineLink: (series, latestEp, section) =>
+    evaluateQualityTourmalineLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
