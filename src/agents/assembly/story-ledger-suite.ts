@@ -229,6 +229,8 @@
  *   · qualityCatecholLink · qualityResorcinolLink · qualityHydroquinoneLink · qualityQuinoneLink
  *   · gruntRhythmPeakBridge · snortRhythmPeakBridge · coughRhythmPeakBridge · sneezeRhythmPeakBridge
  *   · qualityAnisoleLink · qualityNaphtholLink · qualityFuranLink · qualityPyrroleLink
+ *   · bellowRhythmPeakBridge · heaveRhythmPeakBridge · wheezeRhythmPeakBridge · snoreRhythmPeakBridge
+ *   · qualityThiopheneLink · qualityImidazoleLink · qualityPyridineLink · qualityPyrazineLink
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
@@ -4261,6 +4263,59 @@ import {
   type QualityPyrroleLinkReport,
 } from './quality-pyrrole-link-gate';
 
+import {
+  BellowRhythmPeakBridgeLinkSchema,
+  BellowRhythmPeakBellowEntrySchema,
+  BellowRhythmPeakRhythmEntrySchema,
+  evaluateBellowRhythmPeakBridge,
+  type BellowRhythmPeakBridgeReport,
+} from './bellow-rhythm-peak-bridge-gate';
+import {
+  HeaveRhythmPeakBridgeLinkSchema,
+  HeaveRhythmPeakHeaveEntrySchema,
+  HeaveRhythmPeakRhythmEntrySchema,
+  evaluateHeaveRhythmPeakBridge,
+  type HeaveRhythmPeakBridgeReport,
+} from './heave-rhythm-peak-bridge-gate';
+import {
+  WheezeRhythmPeakBridgeLinkSchema,
+  WheezeRhythmPeakWheezeEntrySchema,
+  WheezeRhythmPeakRhythmEntrySchema,
+  evaluateWheezeRhythmPeakBridge,
+  type WheezeRhythmPeakBridgeReport,
+} from './wheeze-rhythm-peak-bridge-gate';
+import {
+  SnoreRhythmPeakBridgeLinkSchema,
+  SnoreRhythmPeakSnoreEntrySchema,
+  SnoreRhythmPeakRhythmEntrySchema,
+  evaluateSnoreRhythmPeakBridge,
+  type SnoreRhythmPeakBridgeReport,
+} from './snore-rhythm-peak-bridge-gate';
+import {
+  QualityThiopheneLinkEntrySchema,
+  QualityThiopheneEntrySchema,
+  evaluateQualityThiopheneLink,
+  type QualityThiopheneLinkReport,
+} from './quality-thiophene-link-gate';
+import {
+  QualityImidazoleLinkEntrySchema,
+  QualityImidazoleEntrySchema,
+  evaluateQualityImidazoleLink,
+  type QualityImidazoleLinkReport,
+} from './quality-imidazole-link-gate';
+import {
+  QualityPyridineLinkEntrySchema,
+  QualityPyridineEntrySchema,
+  evaluateQualityPyridineLink,
+  type QualityPyridineLinkReport,
+} from './quality-pyridine-link-gate';
+import {
+  QualityPyrazineLinkEntrySchema,
+  QualityPyrazineEntrySchema,
+  evaluateQualityPyrazineLink,
+  type QualityPyrazineLinkReport,
+} from './quality-pyrazine-link-gate';
+
 const Ep = z.number().int().positive();
 
 export const STORY_LEDGER_GATE_IDS = [
@@ -4958,6 +5013,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityNaphtholLink',
   'qualityFuranLink',
   'qualityPyrroleLink',
+  'bellowRhythmPeakBridge',
+  'heaveRhythmPeakBridge',
+  'wheezeRhythmPeakBridge',
+  'snoreRhythmPeakBridge',
+  'qualityThiopheneLink',
+  'qualityImidazoleLink',
+  'qualityPyridineLink',
+  'qualityPyrazineLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -9613,6 +9676,58 @@ const QualityPyrroleSectionSchemaB184 = z.object({
   links: z.array(QualityPyrroleLinkEntrySchema),
 });
 
+const BellowRhythmPeakBridgeSectionSchema = z.object({
+  bellows: z.array(BellowRhythmPeakBellowEntrySchema),
+  rhythms: z.array(BellowRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BellowRhythmPeakBridgeLinkSchema),
+});
+
+const HeaveRhythmPeakBridgeSectionSchema = z.object({
+  heaves: z.array(HeaveRhythmPeakHeaveEntrySchema),
+  rhythms: z.array(HeaveRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HeaveRhythmPeakBridgeLinkSchema),
+});
+
+const WheezeRhythmPeakBridgeSectionSchema = z.object({
+  wheezes: z.array(WheezeRhythmPeakWheezeEntrySchema),
+  rhythms: z.array(WheezeRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(WheezeRhythmPeakBridgeLinkSchema),
+});
+
+const SnoreRhythmPeakBridgeSectionSchema = z.object({
+  snores: z.array(SnoreRhythmPeakSnoreEntrySchema),
+  rhythms: z.array(SnoreRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SnoreRhythmPeakBridgeLinkSchema),
+});
+
+const QualityThiopheneSectionSchemaB185 = z.object({
+  minThiopheneIntense: z.number().int().min(1).max(5).optional(),
+  thiophenes: z.array(QualityThiopheneEntrySchema),
+  links: z.array(QualityThiopheneLinkEntrySchema),
+});
+
+const QualityImidazoleSectionSchemaB185 = z.object({
+  minImidazoleIntense: z.number().int().min(1).max(5).optional(),
+  imidazoles: z.array(QualityImidazoleEntrySchema),
+  links: z.array(QualityImidazoleLinkEntrySchema),
+});
+
+const QualityPyridineSectionSchemaB185 = z.object({
+  minPyridineIntense: z.number().int().min(1).max(5).optional(),
+  pyridines: z.array(QualityPyridineEntrySchema),
+  links: z.array(QualityPyridineLinkEntrySchema),
+});
+
+const QualityPyrazineSectionSchemaB185 = z.object({
+  minPyrazineIntense: z.number().int().min(1).max(5).optional(),
+  pyrazines: z.array(QualityPyrazineEntrySchema),
+  links: z.array(QualityPyrazineLinkEntrySchema),
+});
+
 
 
 
@@ -10324,6 +10439,14 @@ export const StoryLedgerSuiteSchema = z
     qualityNaphtholLink: QualityNaphtholSectionSchemaB184.optional(),
     qualityFuranLink: QualityFuranSectionSchemaB184.optional(),
     qualityPyrroleLink: QualityPyrroleSectionSchemaB184.optional(),
+    bellowRhythmPeakBridge: BellowRhythmPeakBridgeSectionSchema.optional(),
+    heaveRhythmPeakBridge: HeaveRhythmPeakBridgeSectionSchema.optional(),
+    wheezeRhythmPeakBridge: WheezeRhythmPeakBridgeSectionSchema.optional(),
+    snoreRhythmPeakBridge: SnoreRhythmPeakBridgeSectionSchema.optional(),
+    qualityThiopheneLink: QualityThiopheneSectionSchemaB185.optional(),
+    qualityImidazoleLink: QualityImidazoleSectionSchemaB185.optional(),
+    qualityPyridineLink: QualityPyridineSectionSchemaB185.optional(),
+    qualityPyrazineLink: QualityPyrazineSectionSchemaB185.optional(),
   })
   .strict();
 
@@ -11023,7 +11146,15 @@ export type StoryLedgerChildReport =
   | QualityAnisoleLinkReport
   | QualityNaphtholLinkReport
   | QualityFuranLinkReport
-  | QualityPyrroleLinkReport;
+  | QualityPyrroleLinkReport
+  | BellowRhythmPeakBridgeReport
+  | HeaveRhythmPeakBridgeReport
+  | WheezeRhythmPeakBridgeReport
+  | SnoreRhythmPeakBridgeReport
+  | QualityThiopheneLinkReport
+  | QualityImidazoleLinkReport
+  | QualityPyridineLinkReport
+  | QualityPyrazineLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -12452,6 +12583,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityFuranLink({ series, latestEp, ...(section as object) }),
   qualityPyrroleLink: (series, latestEp, section) =>
     evaluateQualityPyrroleLink({ series, latestEp, ...(section as object) }),
+  bellowRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBellowRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  heaveRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateHeaveRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  wheezeRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateWheezeRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  snoreRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSnoreRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityThiopheneLink: (series, latestEp, section) =>
+    evaluateQualityThiopheneLink({ series, latestEp, ...(section as object) }),
+  qualityImidazoleLink: (series, latestEp, section) =>
+    evaluateQualityImidazoleLink({ series, latestEp, ...(section as object) }),
+  qualityPyridineLink: (series, latestEp, section) =>
+    evaluateQualityPyridineLink({ series, latestEp, ...(section as object) }),
+  qualityPyrazineLink: (series, latestEp, section) =>
+    evaluateQualityPyrazineLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
