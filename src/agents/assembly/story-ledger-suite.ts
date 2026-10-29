@@ -199,6 +199,9 @@
  *   · croakRhythmPeakBridge · trillRhythmPeakBridge · warbleRhythmPeakBridge · cooRhythmPeakBridge
  *   · qualityGabbroLink · qualityAndesiteLink · qualityRhyoliteLink · qualityDioriteLink
  *
+ *   · hootRhythmPeakBridge · cawRhythmPeakBridge · squawkRhythmPeakBridge · bleatRhythmPeakBridge
+ *   · qualityDaciteLink · qualityPeridotiteLink · qualityLimestoneLink · qualityDolomiteLink
+ *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
  * Unknown keys → SCHEMA FAIL (strict).
  * Engineering suite only: PASS ≠ Final ≠ G3. $0.
@@ -3655,6 +3658,58 @@ import {
   evaluateQualityDioriteLink,
   type QualityDioriteLinkReport,
 } from './quality-diorite-link-gate';
+import {
+  HootRhythmPeakBridgeLinkSchema,
+  HootRhythmPeakHootEntrySchema,
+  HootRhythmPeakRhythmEntrySchema,
+  evaluateHootRhythmPeakBridge,
+  type HootRhythmPeakBridgeReport,
+} from './hoot-rhythm-peak-bridge-gate';
+import {
+  CawRhythmPeakBridgeLinkSchema,
+  CawRhythmPeakCawEntrySchema,
+  CawRhythmPeakRhythmEntrySchema,
+  evaluateCawRhythmPeakBridge,
+  type CawRhythmPeakBridgeReport,
+} from './caw-rhythm-peak-bridge-gate';
+import {
+  SquawkRhythmPeakBridgeLinkSchema,
+  SquawkRhythmPeakSquawkEntrySchema,
+  SquawkRhythmPeakRhythmEntrySchema,
+  evaluateSquawkRhythmPeakBridge,
+  type SquawkRhythmPeakBridgeReport,
+} from './squawk-rhythm-peak-bridge-gate';
+import {
+  BleatRhythmPeakBridgeLinkSchema,
+  BleatRhythmPeakBleatEntrySchema,
+  BleatRhythmPeakRhythmEntrySchema,
+  evaluateBleatRhythmPeakBridge,
+  type BleatRhythmPeakBridgeReport,
+} from './bleat-rhythm-peak-bridge-gate';
+import {
+  QualityDaciteLinkEntrySchema,
+  QualityDaciteEntrySchema,
+  evaluateQualityDaciteLink,
+  type QualityDaciteLinkReport,
+} from './quality-dacite-link-gate';
+import {
+  QualityPeridotiteLinkEntrySchema,
+  QualityPeridotiteEntrySchema,
+  evaluateQualityPeridotiteLink,
+  type QualityPeridotiteLinkReport,
+} from './quality-peridotite-link-gate';
+import {
+  QualityLimestoneLinkEntrySchema,
+  QualityLimestoneEntrySchema,
+  evaluateQualityLimestoneLink,
+  type QualityLimestoneLinkReport,
+} from './quality-limestone-link-gate';
+import {
+  QualityDolomiteLinkEntrySchema,
+  QualityDolomiteEntrySchema,
+  evaluateQualityDolomiteLink,
+  type QualityDolomiteLinkReport,
+} from './quality-dolomite-link-gate';
 
 const Ep = z.number().int().positive();
 
@@ -4265,6 +4320,14 @@ export const STORY_LEDGER_GATE_IDS = [
   'qualityAndesiteLink',
   'qualityRhyoliteLink',
   'qualityDioriteLink',
+  'hootRhythmPeakBridge',
+  'cawRhythmPeakBridge',
+  'squawkRhythmPeakBridge',
+  'bleatRhythmPeakBridge',
+  'qualityDaciteLink',
+  'qualityPeridotiteLink',
+  'qualityLimestoneLink',
+  'qualityDolomiteLink',
 ] as const;
 
 export type StoryLedgerGateId = (typeof STORY_LEDGER_GATE_IDS)[number];
@@ -8347,6 +8410,58 @@ const QualityDioriteSectionSchemaB173 = z.object({
   links: z.array(QualityDioriteLinkEntrySchema),
 });
 
+const HootRhythmPeakBridgeSectionSchema = z.object({
+  hoots: z.array(HootRhythmPeakHootEntrySchema),
+  rhythms: z.array(HootRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(HootRhythmPeakBridgeLinkSchema),
+});
+
+const CawRhythmPeakBridgeSectionSchema = z.object({
+  caws: z.array(CawRhythmPeakCawEntrySchema),
+  rhythms: z.array(CawRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(CawRhythmPeakBridgeLinkSchema),
+});
+
+const SquawkRhythmPeakBridgeSectionSchema = z.object({
+  squawks: z.array(SquawkRhythmPeakSquawkEntrySchema),
+  rhythms: z.array(SquawkRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(SquawkRhythmPeakBridgeLinkSchema),
+});
+
+const BleatRhythmPeakBridgeSectionSchema = z.object({
+  bleats: z.array(BleatRhythmPeakBleatEntrySchema),
+  rhythms: z.array(BleatRhythmPeakRhythmEntrySchema),
+  peaks: z.array(PeakBeforePayoffEntrySchema),
+  links: z.array(BleatRhythmPeakBridgeLinkSchema),
+});
+
+const QualityDaciteSectionSchemaB174 = z.object({
+  minDaciteIntense: z.number().int().min(1).max(5).optional(),
+  dacites: z.array(QualityDaciteEntrySchema),
+  links: z.array(QualityDaciteLinkEntrySchema),
+});
+
+const QualityPeridotiteSectionSchemaB174 = z.object({
+  minPeridotiteIntense: z.number().int().min(1).max(5).optional(),
+  peridotites: z.array(QualityPeridotiteEntrySchema),
+  links: z.array(QualityPeridotiteLinkEntrySchema),
+});
+
+const QualityLimestoneSectionSchemaB174 = z.object({
+  minLimestoneIntense: z.number().int().min(1).max(5).optional(),
+  limestones: z.array(QualityLimestoneEntrySchema),
+  links: z.array(QualityLimestoneLinkEntrySchema),
+});
+
+const QualityDolomiteSectionSchemaB174 = z.object({
+  minDolomiteIntense: z.number().int().min(1).max(5).optional(),
+  dolomites: z.array(QualityDolomiteEntrySchema),
+  links: z.array(QualityDolomiteLinkEntrySchema),
+});
+
 
 
 
@@ -8970,6 +9085,14 @@ export const StoryLedgerSuiteSchema = z
     qualityAndesiteLink: QualityAndesiteSectionSchemaB173.optional(),
     qualityRhyoliteLink: QualityRhyoliteSectionSchemaB173.optional(),
     qualityDioriteLink: QualityDioriteSectionSchemaB173.optional(),
+    hootRhythmPeakBridge: HootRhythmPeakBridgeSectionSchema.optional(),
+    cawRhythmPeakBridge: CawRhythmPeakBridgeSectionSchema.optional(),
+    squawkRhythmPeakBridge: SquawkRhythmPeakBridgeSectionSchema.optional(),
+    bleatRhythmPeakBridge: BleatRhythmPeakBridgeSectionSchema.optional(),
+    qualityDaciteLink: QualityDaciteSectionSchemaB174.optional(),
+    qualityPeridotiteLink: QualityPeridotiteSectionSchemaB174.optional(),
+    qualityLimestoneLink: QualityLimestoneSectionSchemaB174.optional(),
+    qualityDolomiteLink: QualityDolomiteSectionSchemaB174.optional(),
   })
   .strict();
 
@@ -9581,7 +9704,15 @@ export type StoryLedgerChildReport =
   | QualityGabbroLinkReport
   | QualityAndesiteLinkReport
   | QualityRhyoliteLinkReport
-  | QualityDioriteLinkReport;
+  | QualityDioriteLinkReport
+  | HootRhythmPeakBridgeReport
+  | CawRhythmPeakBridgeReport
+  | SquawkRhythmPeakBridgeReport
+  | BleatRhythmPeakBridgeReport
+  | QualityDaciteLinkReport
+  | QualityPeridotiteLinkReport
+  | QualityLimestoneLinkReport
+  | QualityDolomiteLinkReport;
 
 
 export type StoryLedgerGateResult = {
@@ -10834,6 +10965,22 @@ const RUNNERS: Record<StoryLedgerGateId, Runner> = {
     evaluateQualityRhyoliteLink({ series, latestEp, ...(section as object) }),
   qualityDioriteLink: (series, latestEp, section) =>
     evaluateQualityDioriteLink({ series, latestEp, ...(section as object) }),
+  hootRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateHootRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  cawRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateCawRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  squawkRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateSquawkRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  bleatRhythmPeakBridge: (series, latestEp, section) =>
+    evaluateBleatRhythmPeakBridge({ series, latestEp, ...(section as object) }),
+  qualityDaciteLink: (series, latestEp, section) =>
+    evaluateQualityDaciteLink({ series, latestEp, ...(section as object) }),
+  qualityPeridotiteLink: (series, latestEp, section) =>
+    evaluateQualityPeridotiteLink({ series, latestEp, ...(section as object) }),
+  qualityLimestoneLink: (series, latestEp, section) =>
+    evaluateQualityLimestoneLink({ series, latestEp, ...(section as object) }),
+  qualityDolomiteLink: (series, latestEp, section) =>
+    evaluateQualityDolomiteLink({ series, latestEp, ...(section as object) }),
 };
 
 export function evaluateStoryLedgerSuite(input: unknown): StoryLedgerSuiteReport {
