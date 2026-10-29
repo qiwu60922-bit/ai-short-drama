@@ -1,0 +1,278 @@
+{
+  "episode": "EP01",
+  "hookStructure": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "hook",
+        "action": "crisis open",
+        "hookKind": "situation"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S6",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal"
+      },
+      {
+        "shotId": "EP01-S7",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S8",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S9",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "increment"
+      },
+      {
+        "shotId": "EP01-S10",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "cliffhanger"
+      }
+    ]
+  },
+  "reactionBeat": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "hook",
+        "action": "crisis"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "setup"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal",
+        "action": "reveal"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "face freeze"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "cliffhanger",
+        "action": "door slam"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 2,
+        "beatRole": "reaction",
+        "action": "group gasp"
+      }
+    ]
+  },
+  "dialogueExposition": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "hook",
+        "action": "黑衣人破窗闯入举枪"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 4,
+        "beatRole": "setup",
+        "action": "走廊空镜缓慢推进"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 6,
+        "beatRole": "reversal",
+        "action": "齐耶抬腕刻印亮起格开一剑"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 3,
+        "beatRole": "reaction",
+        "action": "齐耶瞳孔收缩后退"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 5,
+        "beatRole": "cliffhanger",
+        "action": "门外更多脚步逼近"
+      }
+    ]
+  },
+  "seriesRhythm": {
+    "episode": "EP01",
+    "shots": [
+      {
+        "shotId": "EP01-S0",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S1",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S2",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S3",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S4",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S5",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S6",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S7",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S8",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S9",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S10",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S11",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S12",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S13",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S14",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S15",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S16",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      },
+      {
+        "shotId": "EP01-S17",
+        "cast": [],
+        "durSec": 2,
+        "action": "x·y"
+      }
+    ]
+  },
+  "seriesRhythmOpts": {
+    "profile": "dense"
+  }
+}

@@ -6,8 +6,10 @@
  *   npx tsx scripts/factory-batch-rehearsal.ts <rootDir> [ep01Dir]
  *     [--story-ledger-gate off|warn|enforce] [--story-ledger PATH.json]
  *     [--shot-spec-gate off|warn|enforce] [--shot-spec-suite PATH.json]
+ * Defaults: gate=warn and auto-load tests/fixtures/v12/*-suite.v12.json when present.
  */
 import { readFileSync, existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { runFactoryBatch } from '@/agents/factory/factory-batch';
 import { repoHandlers } from '@/agents/factory/repo-handlers';
 
@@ -18,9 +20,9 @@ function arg(flag: string): string | undefined {
   return i >= 0 ? process.argv[i + 1] : undefined;
 }
 
-function parseGate(flag: string): GateMode {
+function parseGate(flag: string, fallback: GateMode = 'warn'): GateMode {
   const v = arg(flag);
-  if (v == null) return 'off';
+  if (v == null) return fallback;
   if (v === 'off' || v === 'warn' || v === 'enforce') return v;
   console.error(`invalid ${flag} value: ${v} (expected off|warn|enforce)`);
   process.exit(2);
@@ -47,8 +49,8 @@ if (!root) {
   process.exit(2);
 }
 
-const storyLedgerGate = parseGate('--story-ledger-gate');
-const shotSpecGate = parseGate('--shot-spec-gate');
+const storyLedgerGate = parseGate('--story-ledger-gate', 'warn');
+const shotSpecGate = parseGate('--shot-spec-gate', 'warn');
 const storyLedgerPath = arg('--story-ledger');
 const shotSpecSuitePath = arg('--shot-spec-suite');
 
@@ -62,9 +64,16 @@ const loadOpt = (p: string | undefined) => {
   return j(p);
 };
 
+const defaultStory = resolve('tests/fixtures/v12/story-ledger-suite.v12.json');
+const defaultShot = resolve('tests/fixtures/v12/shot-spec-suite.v12.json');
+
 const REF = j(`${ep01Dir}/pack/REF_INDEX.json`);
-const storyLedger = loadOpt(storyLedgerPath);
-const shotSpecSuite = loadOpt(shotSpecSuitePath);
+const storyLedger =
+  loadOpt(storyLedgerPath) ??
+  (storyLedgerGate !== 'off' && existsSync(defaultStory) ? j(defaultStory) : undefined);
+const shotSpecSuite =
+  loadOpt(shotSpecSuitePath) ??
+  (shotSpecGate !== 'off' && existsSync(defaultShot) ? j(defaultShot) : undefined);
 
 runFactoryBatch(
   root,

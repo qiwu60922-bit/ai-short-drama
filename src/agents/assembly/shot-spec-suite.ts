@@ -6,6 +6,7 @@
  *   hookStructure · openingCascade · cutTimeline
  *   · shotContract · shotPrompt · storyRhythm · mvShotlist
  *   · keyframePlate · reactionBeat
+ *   · dialogueExposition · seriesRhythm
  * shotContract mounts DEFAULT_SHOT_CONTRACT_RULESET when contractOpts.ruleset omitted.
  *
  * Absent sections → SKIP. Zero sections → EMPTY_SUITE FAIL.
@@ -63,6 +64,16 @@ import {
   type ReactionBeatReport,
 } from './reaction-beat-gate';
 import { DEFAULT_SHOT_CONTRACT_RULESET } from './shot-contract-gate';
+import {
+  evaluateDialogueExposition,
+  type DialogueExpositionOptions,
+  type DialogueExpositionReport,
+} from './dialogue-exposition-gate';
+import {
+  evaluateSeriesRhythm,
+  type SeriesRhythmOptions,
+  type SeriesRhythmReport,
+} from './series-rhythm-profile';
 
 export const SHOT_SPEC_GATE_IDS = [
   'hookStructure',
@@ -74,6 +85,8 @@ export const SHOT_SPEC_GATE_IDS = [
   'mvShotlist',
   'keyframePlate',
   'reactionBeat',
+  'dialogueExposition',
+  'seriesRhythm',
 ] as const;
 
 export type ShotSpecGateId = (typeof SHOT_SPEC_GATE_IDS)[number];
@@ -156,6 +169,24 @@ const ReactionOptsSchema = z
   })
   .strict();
 
+const DialogueOptsSchema = z
+  .object({
+    minActionChars: z.number().int().positive().optional(),
+    midWindow: z.tuple([z.number(), z.number()]).optional(),
+    unlabeledSpeechMin: z.number().int().positive().optional(),
+  })
+  .strict();
+
+const SeriesRhythmOptsSchema = z
+  .object({
+    profile: z.enum(['dense', 'default', 'intrigue', 'slow_burn']).optional(),
+    minEventsPer90s: z.number().positive().optional(),
+    maxShotSeconds: z.number().positive().optional(),
+    maxSecondsPerEvent: z.number().positive().optional(),
+    requireCutMotive: z.boolean().optional(),
+  })
+  .strict();
+
 export const ShotSpecSuiteSchema = z
   .object({
     episode: z.string().min(1),
@@ -168,6 +199,8 @@ export const ShotSpecSuiteSchema = z
     mvShotlist: MvShotlistDocSchema.optional(),
     keyframePlate: KeyframePlateDocSchema.optional(),
     reactionBeat: ShotSpecDocSchema.optional(),
+    dialogueExposition: ShotSpecDocSchema.optional(),
+    seriesRhythm: ShotSpecDocSchema.optional(),
     hookOpts: HookOptsSchema.optional(),
     cascadeOpts: CascadeOptsSchema.optional(),
     cutOpts: CutOptsSchema.optional(),
@@ -176,6 +209,8 @@ export const ShotSpecSuiteSchema = z
     rhythmOpts: RhythmOptsSchema.optional(),
     keyframeOpts: KeyframeOptsSchema.optional(),
     reactionOpts: ReactionOptsSchema.optional(),
+    dialogueOpts: DialogueOptsSchema.optional(),
+    seriesRhythmOpts: SeriesRhythmOptsSchema.optional(),
   })
   .strict();
 
@@ -190,7 +225,9 @@ export type ShotSpecChildReport =
   | RhythmReport
   | MvShotlistReport
   | KeyframePlateReport
-  | ReactionBeatReport;
+  | ReactionBeatReport
+  | DialogueExpositionReport
+  | SeriesRhythmReport;
 
 export type ShotSpecGateResult = {
   status: 'PASS' | 'FAIL' | 'SKIP';
@@ -266,6 +303,8 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     rhythmOpts,
     keyframeOpts,
     reactionOpts,
+    dialogueOpts,
+    seriesRhythmOpts,
     ...sections
   } = parsed.data;
   let ran = 0;
@@ -350,6 +389,24 @@ export function evaluateShotSpecSuite(input: unknown): ShotSpecSuiteReport {
     run(
       'reactionBeat',
       evaluateReactionBeats(sections.reactionBeat, (reactionOpts ?? {}) as ReactionBeatOptions),
+    );
+  }
+  if (sections.dialogueExposition !== undefined) {
+    run(
+      'dialogueExposition',
+      evaluateDialogueExposition(
+        sections.dialogueExposition,
+        (dialogueOpts ?? {}) as DialogueExpositionOptions,
+      ),
+    );
+  }
+  if (sections.seriesRhythm !== undefined) {
+    run(
+      'seriesRhythm',
+      evaluateSeriesRhythm(
+        sections.seriesRhythm,
+        (seriesRhythmOpts ?? {}) as SeriesRhythmOptions,
+      ),
     );
   }
 
