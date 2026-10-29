@@ -6567,5 +6567,355 @@
         "ep": 10
       }
     ]
+  },
+  "allianceBondPeakBridge": {
+    "alliances": [
+      {
+        "id": "oni-fang-abp2",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-abp2",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang-abp2",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang-abp2",
+        "ep": 10,
+        "role": "payoff",
+        "note": "当众护短"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "机长契约-abp2",
+        "partyA": "苏见晴",
+        "partyB": "傅司宴",
+        "contractEp": 1,
+        "contractLabel": "契约联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-abp2",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-abp2",
+        "allianceId": "oni-fang-abp2",
+        "bondId": "机长契约-abp2",
+        "peakId": "对峙峰值-abp2",
+        "ep": 10
+      }
+    ]
+  },
+  "bondVestPeakBridge": {
+    "bonds": [
+      {
+        "id": "江少契约-bvp",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-bvp",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-bvp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-bvp",
+        "bondId": "江少契约-bvp",
+        "vestId": "机长马甲-bvp",
+        "peakId": "对峙峰值-bvp",
+        "ep": 10
+      }
+    ]
+  },
+  "amnesiaVestPeakBridge": {
+    "amnesias": [
+      {
+        "id": "祁南失忆-avp",
+        "actor": "祁南",
+        "plantEp": 1,
+        "plantCause": "爆炸",
+        "companionEps": [
+          2,
+          4,
+          6
+        ],
+        "recoverEp": 10,
+        "recoverLabel": "摩天轮唤回",
+        "recoverTrigger": "圣诞摩天轮"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-avp",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "peaks": [
+      {
+        "id": "对峙峰值-avp",
+        "openEp": 1,
+        "peakEp": 10,
+        "peakLabel": "公开身份对峙",
+        "payoffEp": 10
+      }
+    ],
+    "links": [
+      {
+        "id": "L-avp",
+        "amnesiaId": "祁南失忆-avp",
+        "vestId": "机长马甲-avp",
+        "peakId": "对峙峰值-avp",
+        "ep": 10
+      }
+    ]
+  },
+  "allianceVestLink": {
+    "alliances": [
+      {
+        "id": "oni-fang-avl",
+        "label": "鬼牙同盟",
+        "members": [
+          "chen-haoyu",
+          "guild"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "allianceId": "oni-fang-avl",
+        "ep": 1,
+        "role": "seed",
+        "note": "收留"
+      },
+      {
+        "allianceId": "oni-fang-avl",
+        "ep": 5,
+        "role": "echo",
+        "note": "并肩"
+      },
+      {
+        "allianceId": "oni-fang-avl",
+        "ep": 10,
+        "role": "payoff",
+        "note": "当众护短"
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-avl",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-avl",
+        "allianceId": "oni-fang-avl",
+        "vestId": "机长马甲-avl",
+        "ep": 10
+      }
+    ]
+  },
+  "conflictVestLink": {
+    "conflicts": [
+      {
+        "id": "挑衅反噬-cv",
+        "name": "配角挑衅",
+        "openEp": 9,
+        "payoffEp": 10
+      }
+    ],
+    "vests": [
+      {
+        "id": "机长马甲-cv",
+        "wearer": "苏见晴",
+        "vestLabel": "机长",
+        "plantEp": 1,
+        "teaseEps": [
+          3,
+          5
+        ],
+        "dropEp": 10,
+        "dropLabel": "公开机长身份反击"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-cv",
+        "conflictId": "挑衅反噬-cv",
+        "vestId": "机长马甲-cv",
+        "ep": 10
+      }
+    ]
+  },
+  "foreshadowMaskLink": {
+    "items": [
+      {
+        "id": "机长身份-fm",
+        "name": "机长马甲伏笔",
+        "priority": "S",
+        "plantEp": 1,
+        "status": "closed",
+        "payoffEp": 10,
+        "lastAdvancedEp": 5
+      }
+    ],
+    "masks": [
+      {
+        "id": "花心纨绔-fm",
+        "wearer": "江少",
+        "plantEp": 1,
+        "maintainEps": [
+          2,
+          3
+        ],
+        "revealEp": 10,
+        "revealLabel": "真心崩塌"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-fm",
+        "foreshadowId": "机长身份-fm",
+        "maskId": "花心纨绔-fm"
+      }
+    ]
+  },
+  "abilityBondLink": {
+    "abilities": [
+      {
+        "id": "seer-abl",
+        "holder": "linyang",
+        "acquiredEp": 1,
+        "exclusive": true,
+        "rule": {
+          "cycle": "day",
+          "maxUsesPerCycle": 1,
+          "options": [
+            "查验身份",
+            "生存情报"
+          ]
+        }
+      }
+    ],
+    "uses": [
+      {
+        "abilityId": "seer-abl",
+        "by": "linyang",
+        "ep": 1,
+        "day": 1,
+        "option": "查验身份"
+      },
+      {
+        "abilityId": "seer-abl",
+        "by": "linyang",
+        "ep": 2,
+        "day": 2,
+        "option": "生存情报"
+      },
+      {
+        "abilityId": "seer-abl",
+        "by": "linyang",
+        "ep": 10,
+        "day": 10,
+        "option": "查验身份"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "江少契约-abl",
+        "partyA": "江少",
+        "partyB": "女主",
+        "contractEp": 1,
+        "contractLabel": "假面联姻",
+        "companionEps": [
+          2,
+          3,
+          5
+        ],
+        "upgradeEp": 10,
+        "upgradeLabel": "真心升级"
+      }
+    ],
+    "links": [
+      {
+        "id": "L-abl",
+        "abilityId": "seer-abl",
+        "bondId": "江少契约-abl",
+        "ep": 10
+      }
+    ]
   }
 }
